@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design System CSS Variables */
+:root {
+  /* Light theme colors */
+  --color-white: #FFFFFF;
+  --color-wave: #F4F4F4;
+  --color-light-deco: #E0E0E0;
+  --color-twilight: #6F6F6F;
+  --color-night: #161616;
+  --color-blue-default: #0F62FE;
+  --color-active-background: #E0F3FE;
+  
+  /* Dark theme colors */
+  --color-vacuum: #161616;
+  --color-deep-space: #262626;
+  --color-dark-deco: #393939;
+  --color-moonlight: #A8A8A8;
+  --color-white-dark: #FFFFFF;
+  --color-blue: #4589FF;
+  --color-dk-blue: #0043CE;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  /* Border radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --color-white: var(--color-vacuum);
+  --color-wave: var(--color-deep-space);
+  --color-light-deco: var(--color-dark-deco);
+  --color-twilight: var(--color-moonlight);
+  --color-night: var(--color-white-dark);
+}
+
+/* Global text transformation - Remove all uppercase/capitalize */
+*,
+*::before,
+*::after {
+  text-transform: none !important;
+}
+
+/* Specific overrides for common uppercase elements */
+button,
+.btn,
+.button,
+th,
+thead,
+nav a,
+nav button,
+.nav-link,
+.menu-item,
+.chip,
+label,
+.uppercase,
+.text-uppercase {
+  text-transform: none !important;
+}
+
+/* Base styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Component library specific styles */
+.odl-component {
+  box-sizing: border-box;
+}
+
+.odl-component *,
+.odl-component *::before,
+.odl-component *::after {
+  box-sizing: border-box;
+}
+
+/* Spin animation for AI loading */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Pulse animation for drag zone */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+/* Progress slide animation */
+@keyframes slideProgress {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* Icon bounce animation */
+@keyframes bounceIn {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Success checkmark animation */
+@keyframes checkmark {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Shimmer effect for processing */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Float animation for icons */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Glow effect for upload zones */
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.2); }
+}
+
+/* Scale bounce for cards */
+@keyframes scaleBounce {
+  0% { transform: scale(0.9); opacity: 0; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Gradient shift animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Custom scrollbar styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Remove top gap from drawer and enhance slide animation */
+.drawer-no-top-gap.drawer--right,
+.tools-drawer-no-gap.drawer--right {
+  top: 0 !important;
+  height: 100vh !important;
+  animation: slideInFromRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.tools-drawer-no-gap.drawer--right.drawer--closing {
+  animation: slideOutToRight 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+} 

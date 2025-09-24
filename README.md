@@ -1,0 +1,167 @@
+# ODL Design System
+
+A comprehensive React component library for building modern, accessible web applications with consistent design patterns.
+
+## 🚀 Quick Start
+
+```bash
+cd content
+npm install
+npm run dev
+```
+
+Then open **http://localhost:3000/components-showcase.html** to view all components.
+
+## 📦 What's Inside
+
+### Components (53 Total)
+The ODL Design System includes 53 production-ready React components organized into categories:
+
+- **Data Display** - Tables, Graphs, Charts, Treemaps
+- **Navigation** - Headers, Breadcrumbs, Navigation Rails, Tree Navigation
+- **Forms & Input** - Buttons, Inputs, Dropdowns, Text Areas
+- **Layout** - Cards, Grids, Templates, Page Layouts
+- **Feedback** - Modals, Alerts, Drawers, Notifications
+- **Display** - Chips, Avatars, Lists, Status Indicators
+
+### Demo Pages (28 Interactive Demos)
+Each major component has a dedicated demo page showcasing:
+- Different component variants
+- Interactive examples
+- State management patterns
+- Accessibility features
+
+## 🎨 Design Philosophy
+
+The ODL Design System follows these core principles:
+
+1. **Consistency** - Uniform patterns across all components
+2. **Accessibility** - WCAG 2.1 AA compliant
+3. **Performance** - Optimized bundle sizes and rendering
+4. **Flexibility** - Composable and customizable components
+5. **Developer Experience** - TypeScript support and clear documentation
+
+## 🏗️ Project Structure
+
+```
+odl-design-system/
+├── content/                 # Main design system code
+│   ├── src/
+│   │   ├── components/     # 53 React components
+│   │   ├── pages/          # Demo pages (*Demo.tsx files)
+│   │   ├── styles/         # Global styles and themes
+│   │   ├── utils/          # Utility functions
+│   │   └── hooks/          # Custom React hooks
+│   ├── example/            # HTML demo files
+│   └── package.json        # Dependencies
+└── README.md               # This file
+```
+
+## 💻 Development
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Commands
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run type checking
+npm run type-check
+
+# Run linting
+npm run lint
+```
+
+## 🎯 Using Components
+
+### Viewing the Component Showcase
+
+1. Start the dev server: `npm run dev`
+2. Open: **http://localhost:3000/components-showcase.html**
+3. Browse components by category
+4. Click on any component card to see its demo
+
+### Key Features
+
+- **Search** - Find components quickly
+- **Categories** - Filter by component type
+- **Interactive Demos** - Test components in real-time
+- **Status Badges** - See component stability
+
+## 📚 Component Categories
+
+### Data Display
+- **Table** - Advanced data tables with sorting, filtering, pagination
+- **Graph** - Line, bar, pie, area charts using Recharts
+- **Kanban** - Drag-and-drop board layouts
+- **Hierarchy Visualizations** - Tree maps, org charts, Miller columns
+
+### Navigation
+- **Header** - Application headers with branding
+- **NavigationRail** - Vertical navigation sidebars
+- **Breadcrumb** - Hierarchical navigation paths
+- **Tabs** - Tabbed content organization
+- **Stepper** - Multi-step process indicators
+
+### Forms & Input
+- **Button** - Primary, secondary, tertiary variants
+- **Input** - Text fields with validation
+- **Dropdown** - Select menus with search
+- **SimpleEditor** - Rich text editing
+
+### Layout & Display
+- **Cards** - Content containers
+- **Chip** - Tags and status indicators
+- **Modal** - Dialog overlays
+- **Drawer** - Sliding panels
+- **AlertBanner** - Notification messages
+
+## 🎨 Theming
+
+The design system uses ODLTheme for consistent styling:
+
+```tsx
+import { ODLTheme } from '@odl/design-system';
+
+// Use theme values
+const styles = {
+  color: ODLTheme.colors.primary,
+  padding: ODLTheme.spacing[4],
+  fontSize: ODLTheme.typography.fontSize.base
+};
+```
+
+## 🔧 Configuration
+
+The design system is configured to work with:
+- React 18+
+- TypeScript 5+
+- Vite for development
+- Rollup for production builds
+- Tailwind CSS for utility classes
+
+## 📝 License
+
+MIT
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow the existing code style and component patterns.
+
+## 📞 Support
+
+For questions or issues, please contact the ODL team.
+
+---
+
+Built with ❤️ by the ODL Team

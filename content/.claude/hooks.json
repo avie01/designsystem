@@ -1,0 +1,39 @@
+{
+  "user-prompt-submit-hook": {
+    "command": "echo 'Running ODL compliance checks...'",
+    "enabled": false
+  },
+  "post-tool-use-hook": {
+    "filePatterns": [
+      "src/components/**/*.tsx",
+      "src/pages/**/*.tsx",
+      "src/components/**/*.css",
+      "src/styles/**/*.ts"
+    ],
+    "tools": ["Edit", "Write", "MultiEdit"],
+    "command": "if [[ \"$TOOL_NAME\" == \"Edit\" || \"$TOOL_NAME\" == \"Write\" || \"$TOOL_NAME\" == \"MultiEdit\" ]]; then echo 'ODL & WCAG 2.1 AA compliance check triggered for file: $FILE_PATH - Checking accessibility and design system compliance'; fi",
+    "enabled": true
+  },
+  "accessibility-validation-hook": {
+    "description": "Validate WCAG 2.1 AA compliance on component changes",
+    "filePatterns": [
+      "src/components/**/*.tsx"
+    ],
+    "tools": ["Edit", "Write", "MultiEdit"],
+    "agent": "general-purpose",
+    "prompt": "ACCESSIBILITY VALIDATION REQUIRED: A component file has been modified. Perform comprehensive WCAG 2.1 AA compliance validation for {file_path}:\n\n**CRITICAL CHECKS:**\n1. Color contrast ratios (4.5:1 normal text, 3:1 large text/UI)\n2. Keyboard navigation support (Tab/Enter/Space)\n3. ARIA attributes (aria-label, role, etc.)\n4. Focus indicators (visible, 3:1+ contrast)\n5. Screen reader compatibility\n6. Text spacing (1.5+ line height)\n\n**ODL THEME VALIDATION:**\n7. CSS custom properties usage (var(--odl-*))\n8. No hardcoded color/spacing values\n9. Component interface standards\n\nReference ODL_COMPLIANCE_GUIDE.md and report any violations with priority classification.",
+    "enabled": true,
+    "debounce": 3000
+  },
+  "file-change-hook": {
+    "description": "Trigger ODL compliance check on file changes",
+    "filePatterns": [
+      "src/components/**/*.tsx",
+      "src/pages/**/*.tsx"
+    ],
+    "agent": "general-purpose",
+    "prompt": "A file matching ODL component patterns has been modified. Please run the ODL compliance agent to check this file: {file_path}",
+    "enabled": true,
+    "debounce": 2000
+  }
+}

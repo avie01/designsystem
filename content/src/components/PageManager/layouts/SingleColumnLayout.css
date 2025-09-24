@@ -1,0 +1,70 @@
+/* SingleColumnLayout - ODL Compliant CSS */
+
+.single-column-layout {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.single-column-layout--padded {
+  padding: var(--odl-spacing-6);
+}
+
+.single-column-layout--sm .single-column-layout__container {
+  padding: var(--odl-spacing-4);
+}
+
+.single-column-layout--lg .single-column-layout__container {
+  padding: var(--odl-spacing-8);
+}
+
+.single-column-layout__container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Max width variants */
+.single-column-layout__container--sm {
+  max-width: 672px; /* ~2xl equivalent */
+}
+
+.single-column-layout__container--md {
+  max-width: 896px; /* ~4xl equivalent */
+}
+
+.single-column-layout__container--lg {
+  max-width: 1152px; /* ~6xl equivalent */
+}
+
+.single-column-layout__container--xl {
+  max-width: 1280px; /* ~7xl equivalent */
+}
+
+.single-column-layout__container--full {
+  max-width: 100%;
+}
+
+/* Error and disabled states */
+.single-column-layout--error {
+  border: var(--odl-border-width-thin) solid var(--odl-error);
+}
+
+.single-column-layout--disabled {
+  opacity: var(--odl-opacity-disabled);
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .single-column-layout--padded {
+    padding: var(--odl-spacing-4);
+  }
+  
+  .single-column-layout__container--sm,
+  .single-column-layout__container--md,
+  .single-column-layout__container--lg,
+  .single-column-layout__container--xl {
+    max-width: 100%;
+    padding: 0 var(--odl-spacing-2);
+  }
+}

@@ -1,0 +1,196 @@
+.ol1 ol li ol li ol li ol {
+  padding-left: 34px;
+  padding-bottom: 5px;
+}
+
+.ol1 ol li ol li ol li ol > li:before {
+  content: "(" counter(list, upper-alpha) ") "!important;
+}
+
+.ol1 ol li ol li ol {
+  padding-left: 34px;
+  padding-bottom: 5px;
+}
+
+.ol1 ol li ol li ol > li:before {
+  content: "(" counter(list, lower-roman) ") "!important;
+}
+
+.ol1 ol li ol {
+  padding-left: 34px;
+  padding-bottom: 5px;
+}
+
+.ol1 ol li ol > li:before {
+  content: "(" counter(list, lower-alpha) ") "!important;
+}
+
+.ol1 ol > li:before {
+  counter-increment: list;
+  content: "(" counter(list, decimal) ") ";
+  position: absolute;
+  left: -2.6em;
+}
+
+.ol1 ol > li {
+  list-style: none;
+  position: relative;
+}
+
+.ol1 ol {
+  list-style-position: inside;
+  padding-left: 34px;
+  padding-top: 5px;
+  counter-reset: list;
+  margin: 0;
+}
+
+.ol2 ol li ol li ol {
+  padding-left: 34px;
+  padding-bottom: 5px;
+}
+
+.ol2 ol li ol li ol > li:before {
+  content: "(" counter(list, upper-alpha) ") "!important;
+}
+
+
+.ol2 ol li ol {
+  padding-left: 34px;
+  padding-bottom: 5px;
+}
+
+.ol2 ol li ol > li:before {
+  content: "(" counter(list, lower-roman) ") "!important;
+}
+
+.ol2 ol > li:before {
+  counter-increment: list;
+  content: "(" counter(list, lower-alpha) ") ";
+  position: absolute;
+  left: -2.6em;
+}
+
+.ol2 ol > li {
+  list-style: none;
+  position: relative;
+}
+
+.ol2 ol {
+  list-style-position: inside;
+  padding-left: 34px;
+  padding-top: 5px;
+  counter-reset: list;
+  margin: 0;
+}
+
+.ol3 ol li ol {
+  padding-left: 34px;
+  padding-bottom: 5px;
+}
+
+.ol3 ol li ol > li:before {
+  content: "(" counter(list, upper-alpha) ") "!important;
+}
+
+.ol3 ol > li:before {
+  counter-increment: list;
+  content: "(" counter(list, lower-roman) ") ";
+  position: absolute;
+  left: -2.6em;
+}
+
+.ol3 ol > li {
+  list-style: none;
+  position: relative;
+  padding-left: 5px;
+}
+
+.ol3 ol {
+  list-style-position: inside;
+  padding-left: 34px;
+  padding-top: 5px;
+  counter-reset: list;
+  margin: 0;
+}
+
+.ol4 ol > li:before {
+  counter-increment: list;
+  content: "(" counter(list, upper-alpha) ") ";
+  position: absolute;
+  left: -2.6em;
+}
+
+.ol4 ol > li {
+  list-style: none;
+  position: relative;
+  padding-left: 5px;
+}
+
+.ol4 ol {
+  list-style-position: inside;
+  padding-left: 73px;
+  padding-top: 5px;
+  counter-reset: list;
+  margin: 0;
+}
+
+.ol5 ol li ol {
+  padding-left: 34px;
+  padding-bottom: 5px;
+}
+
+.ol5 ol li ol > li:before {
+  content: "(" counter(list, decimal) ") "!important;
+}
+
+.ol5 ol > li:before {
+  counter-increment: list;
+  content: "(" counter(list, lower-alpha) ") ";
+  position: absolute;
+  left: -2.6em;
+}
+
+.ol5 ol > li {
+  list-style: none;
+  position: relative;
+  padding-left: 5px;
+}
+
+.ol5 ol {
+  list-style-position: inside;
+  padding-left: 34px;
+  padding-top: 5px;
+  counter-reset: list;
+  margin: 0;
+}
+
+.ol6 ol li ol {
+  padding-left: 34px;
+  padding-bottom: 5px;
+}
+
+.ol6 ol li ol > li:before {
+  content: "(" counter(list, lower-roman) ") "!important;
+}
+
+.ol6 ol > li:before {
+  counter-increment: list;
+  content: "(" counter(list, decimal) ") ";
+  position: absolute;
+  left: -2.6em;
+}
+
+.ol6 ol > li {
+  list-style: none;
+  position: relative;
+  padding-left: 5px;
+}
+
+.ol6 ol {
+  list-style-position: inside;
+  padding-left: 34px;
+  padding-top: 5px;
+  counter-reset: list;
+  margin: 0;
+}

@@ -1,0 +1,137 @@
+{
+  "project": {
+    "name": "ODL Isovist Library",
+    "description": "Open Design Library React component library with automatic ODL compliance checking",
+    "version": "1.0.0"
+  },
+  "automation": {
+    "enabled": true,
+    "fileWatching": {
+      "enabled": true,
+      "patterns": [
+        "src/components/**/*.tsx",
+        "src/pages/**/*.tsx",
+        "src/styles/ODLTheme.ts"
+      ],
+      "ignorePatterns": [
+        "node_modules/**",
+        ".git/**",
+        "dist/**",
+        "build/**",
+        "*.stories.tsx",
+        "*.test.tsx",
+        "*.spec.tsx"
+      ],
+      "debounceMs": 1000
+    },
+    "agents": {
+      "odl-compliance": {
+        "enabled": true,
+        "priority": "critical",
+        "runOnStartup": false,
+        "cooldownMs": 180000,
+        "wcagCompliance": {
+          "enabled": true,
+          "contrastRatios": {
+            "normalText": 4.5,
+            "largeText": 3.0,
+            "uiComponents": 3.0,
+            "focusIndicators": 3.0
+          },
+          "keyboardNavigation": true,
+          "ariaAttributes": true,
+          "screenReaderSupport": true
+        },
+        "odlThemeCompliance": {
+          "enforceCustomProperties": true,
+          "allowHardcodedExceptions": false,
+          "spacingGridSystem": "8px",
+          "componentInterfaceStandards": true
+        }
+      }
+    }
+  },
+  "compliance": {
+    "odl": {
+      "enabled": true,
+      "strictMode": true,
+      "authoritative": "/Users/andrewk/Documents/ODL-Library/Isovist/ODL_COMPLIANCE_GUIDE.md",
+      "wcag21AA": {
+        "enabled": true,
+        "mandatory": true,
+        "colorContrast": {
+          "normalText": 4.5,
+          "largeText": 3.0,
+          "uiComponents": 3.0,
+          "focusIndicators": 3.0
+        },
+        "accessibility": {
+          "keyboardNavigation": true,
+          "ariaAttributes": true,
+          "focusManagement": true,
+          "screenReaderSupport": true,
+          "textSpacing": {
+            "minLineHeight": 1.5,
+            "letterSpacing": "0.12em",
+            "wordSpacing": "0.16em"
+          },
+          "touchTargets": {
+            "minSize": "44x44px"
+          }
+        }
+      },
+      "cssCustomProperties": {
+        "required": true,
+        "pattern": "var(--odl-*)",
+        "replaceDirectConstants": true
+      },
+      "themeImportRequired": false,
+      "allowedHardcodedValues": [
+        "maxWidth: '1400px'",
+        "margin: '0 auto'", 
+        "position: 'sticky'",
+        "top: 0",
+        "display: 'flex'",
+        "alignItems: 'center'",
+        "justifyContent: 'center'",
+        "overflow: 'hidden'",
+        "white-space: 'nowrap'"
+      ],
+      "requiredImports": [
+        "Icon from '../Icon/Icon'"
+      ],
+      "iconSystem": {
+        "primaryChoice": "Carbon",
+        "customSvgAllowed": true,
+        "emojiForFlags": true,
+        "accessibilityRequired": true
+      },
+      "componentArchitecture": {
+        "standardInterface": ["size", "disabled", "error", "className", "aria-label"],
+        "sizeVariations": ["sm", "md", "lg"],
+        "stateManagement": ["hover", "focus", "disabled", "error"]
+      }
+    }
+  },
+  "notifications": {
+    "wcagViolations": {
+      "enabled": true,
+      "level": "critical",
+      "autoBlock": true
+    },
+    "complianceIssues": {
+      "enabled": true,
+      "level": "error"
+    },
+    "accessibilityWarnings": {
+      "enabled": true,
+      "level": "warning"
+    },
+    "autoFixSuggestions": {
+      "enabled": true,
+      "level": "info",
+      "includeCodeExamples": true,
+      "referenceSections": true
+    }
+  }
+}

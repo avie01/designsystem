@@ -1,0 +1,578 @@
+{
+  "title": "Brisbane City Plan 2014",
+  "sections": [
+    {
+      "id": "citation",
+      "title": "Citation and commencement"
+    },
+    {
+      "id": "part1",
+      "title": "Part 1 About the planning scheme"
+    },
+    {
+      "id": "part2",
+      "title": "Part 2 State planning provisions"
+    },
+    {
+      "id": "part3",
+      "title": "Part 3 Strategic framework",
+      "subsections": [
+        {
+          "id": "3.1",
+          "title": "Preliminary"
+        },
+        {
+          "id": "3.2",
+          "title": "Strategic intent"
+        },
+        {
+          "id": "3.3",
+          "title": "Theme 1: Brisbane's globally competitive economy"
+        },
+        {
+          "id": "3.4",
+          "title": "Theme 2: Brisbane's outstanding lifestyle"
+        },
+        {
+          "id": "3.5",
+          "title": "Theme 3: Brisbane's clean and green leading environmental performance"
+        },
+        {
+          "id": "3.6",
+          "title": "Theme 4: Brisbane's highly effective transport and infrastructure"
+        },
+        {
+          "id": "3.7",
+          "title": "Theme 5: Brisbane's CityShape"
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4 Local government infrastructure plan",
+      "subsections": [
+        {
+          "id": "4.1",
+          "title": "Preliminary"
+        },
+        {
+          "id": "4.2",
+          "title": "Planning assumptions"
+        },
+        {
+          "id": "4.3",
+          "title": "Priority infrastructure area"
+        },
+        {
+          "id": "4.4",
+          "title": "Desired standards of service"
+        },
+        {
+          "id": "4.5",
+          "title": "Plans for trunk infrastructure"
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5 Tables of assessment",
+      "subsections": [
+        {
+          "id": "5.1",
+          "title": "Preliminary"
+        },
+        {
+          "id": "5.2",
+          "title": "Reading the tables"
+        },
+        {
+          "id": "5.3",
+          "title": "Categories of development and assessment"
+        },
+        {
+          "id": "5.4",
+          "title": "Regulated categories of development and assessment prescribed by the Regulation"
+        },
+        {
+          "id": "5.5",
+          "title": "Categories of development and assessment – Material change of use",
+          "zones": {
+            "residential": [
+              "Low density residential zone TOA",
+              "Low-medium density residential zone TOA",
+              "Medium density residential zone TOA",
+              "High density residential zone TOA",
+              "Character residential zone TOA",
+              "Tourist accommodation zone TOA"
+            ],
+            "centre": [
+              "Principal centre zone TOA",
+              "Major centre zone TOA",
+              "District centre zone TOA",
+              "Neighbourhood centre zone TOA"
+            ],
+            "recreation": [
+              "Sport and recreation zone TOA",
+              "Open space zone TOA"
+            ],
+            "environmental": [
+              "Environmental management zone TOA",
+              "Conservation zone TOA"
+            ],
+            "industry": [
+              "Low impact industry zone TOA",
+              "Industry zone TOA",
+              "Special industry zone TOA",
+              "Industry investigation zone TOA"
+            ],
+            "other": [
+              "Community facilities zone TOA",
+              "Emerging community zone TOA",
+              "Extractive industry zone TOA",
+              "Mixed use zone TOA",
+              "Rural zone TOA",
+              "Rural residential zone TOA",
+              "Special purpose zone TOA",
+              "Specialised centre zone TOA",
+              "Township zone TOA"
+            ]
+          }
+        },
+        {
+          "id": "5.6",
+          "title": "Categories of development and assessment—Reconfiguring a lot"
+        },
+        {
+          "id": "5.7",
+          "title": "Categories of development and assessment—Building work"
+        },
+        {
+          "id": "5.8",
+          "title": "Categories of development and assessment—Operational work"
+        },
+        {
+          "id": "5.9",
+          "title": "Categories of development and assessment—Neighbourhood plans",
+          "neighbourhoods": [
+            "Acacia Ridge—Archerfield",
+            "Albion",
+            "Algester—Parkinson—Stretton",
+            "Ashgrove—Grange district",
+            "Aspley district",
+            "Australia TradeCoast",
+            "Banyo—Northgate",
+            "Bowen Hills",
+            "Bracken Ridge and district",
+            "Bridgeman Downs",
+            "Bulimba district",
+            "Calamvale district",
+            "Capalaba West",
+            "Carina—Carindale",
+            "Carindale centre",
+            "Centenary suburbs",
+            "Chermside centre",
+            "City Centre",
+            "City west",
+            "Clayfield—Wooloowin district",
+            "Coorparoo and districts",
+            "Darra—Oxley district",
+            "Doolandella",
+            "Dutton Park—Fairfield",
+            "East Brisbane—Coorparoo district",
+            "Eastern corridor",
+            "Eight Mile Plains gateway",
+            "Enoggera district",
+            "Everton Park",
+            "Ferny Grove—Upper Kedron",
+            "Fig Tree Pocket",
+            "Forest Lake",
+            "Fortitude Valley",
+            "Hemmant—Lytton",
+            "Holland Park—Tarragindi district",
+            "Indooroopilly centre",
+            "Ithaca district",
+            "Kangaroo Point peninsula",
+            "Kangaroo Point south",
+            "Kelvin Grove urban village",
+            "Kuraby",
+            "Lake Manchester",
+            "Latrobe and Given Terraces",
+            "Lower Oxley Creek north",
+            "Lower Oxley Creek south",
+            "Lutwyche Road corridor",
+            "McDowall",
+            "Milton",
+            "Milton Station",
+            "Mitchelton centre",
+            "Mitchelton",
+            "Moggill—Bellbowrie district",
+            "Moreton Island settlements",
+            "Mt Coot-tha",
+            "Mt Gravatt corridor",
+            "Nathan—Salisbury—Moorooka",
+            "New Farm and Teneriffe Hill",
+            "Newstead north",
+            "Newstead and Teneriffe waterfront",
+            "Nudgee Beach",
+            "Nundah district",
+            "Pinkenba—Eagle Farm",
+            "Racecourse precinct",
+            "Richlands—Wacol corridor",
+            "River gateway",
+            "Rochedale urban community",
+            "Sandgate district",
+            "Sandgate Road",
+            "Sherwood—Graceville district",
+            "South Brisbane riverside",
+            "Spring Hill",
+            "Stephens district",
+            "Taringa",
+            "The Gap",
+            "Toombul—Nundah",
+            "Toowong—Auchenflower",
+            "Toowong—Indooroopilly district",
+            "Wakerley",
+            "West End—Woolloongabba district",
+            "Western gateway",
+            "Willawong",
+            "Woolloongabba centre",
+            "Wynnum—Manly",
+            "Wynnum West",
+            "Yeerongpilly Transit Oriented Development"
+          ]
+        },
+        {
+          "id": "5.10",
+          "title": "Categories of development and assessment - Overlays",
+          "overlays": [
+            "Active frontages in residential zones overlay",
+            "Airport environs overlay",
+            "Bicycle network overlay",
+            "Biodiversity areas overlay",
+            "Bushfire overlay",
+            "Coastal hazard overlay",
+            "Commercial character building overlay",
+            "Community purposes network overlay",
+            "Critical infrastructure and movement network overlay",
+            "Dwelling house character overlay",
+            "Extractive resources overlay",
+            "Flood overlay",
+            "Heritage overlay",
+            "Industrial amenity overlay",
+            "Key civic space and iconic vista overlay",
+            "Landslide overlay",
+            "Potential and actual acid sulfate soils overlay",
+            "Pre-1911 building overlay",
+            "Regional infrastructure corridors and substations overlay",
+            "Road hierarchy overlay",
+            "Significant landscape tree overlay",
+            "Streetscape hierarchy overlay",
+            "Traditional building character overlay",
+            "Transport air quality corridor overlay",
+            "Transport noise corridor overlay",
+            "Water resource catchments overlay",
+            "Waterway corridors overlay",
+            "Wetlands overlay"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6 Zones",
+      "subsections": [
+        {
+          "id": "6.1",
+          "title": "Preliminary"
+        },
+        {
+          "id": "6.2",
+          "title": "Zone codes",
+          "categories": [
+            {
+              "id": "6.2.1",
+              "title": "Residential zones category",
+              "codes": [
+                "6.2.1.1 Low density residential zone code",
+                "6.2.1.2 Low-medium density residential zone code",
+                "6.2.1.3 Medium density residential zone code",
+                "6.2.1.4 High density residential zone code",
+                "6.2.1.5 Character residential zone code",
+                "6.2.1.6 Tourist accommodation zone code"
+              ]
+            },
+            {
+              "id": "6.2.2",
+              "title": "Centre zones category",
+              "codes": [
+                "6.2.2.1 Principal centre zone code",
+                "6.2.2.2 Major centre zone code",
+                "6.2.2.3 District centre zone code",
+                "6.2.2.4 Neighbourhood centre zone code"
+              ]
+            },
+            {
+              "id": "6.2.3",
+              "title": "Recreation zones category",
+              "codes": [
+                "6.2.3.1 Sport and recreation zone code",
+                "6.2.3.2 Open space zone code"
+              ]
+            },
+            {
+              "id": "6.2.4",
+              "title": "Environmental zones category",
+              "codes": [
+                "6.2.4.1 Environmental management zone code",
+                "6.2.4.2 Conservation zone code"
+              ]
+            },
+            {
+              "id": "6.2.5",
+              "title": "Industry zones category",
+              "codes": [
+                "6.2.5.1 Low impact industry zone code",
+                "6.2.5.2 Industry zone code",
+                "6.2.5.3 Special industry zone code",
+                "6.2.5.4 Industry investigation zone code"
+              ]
+            },
+            {
+              "id": "6.2.6",
+              "title": "Other zones category",
+              "codes": [
+                "6.2.6.1 Community facilities zone code",
+                "6.2.6.2 Emerging community zone code",
+                "6.2.6.3 Extractive industry zone code",
+                "6.2.6.4 Mixed use zone code",
+                "6.2.6.5 Rural zone code",
+                "6.2.6.6 Rural residential zone code",
+                "6.2.6.7 Special purpose zone code",
+                "6.2.6.8 Specialised centre zone code",
+                "6.2.6.9 Township zone code"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7 Neighbourhood plans",
+      "subsections": [
+        {
+          "id": "7.1",
+          "title": "Preliminary"
+        },
+        {
+          "id": "7.2",
+          "title": "Neighbourhood plan codes"
+        }
+      ]
+    },
+    {
+      "id": "part8",
+      "title": "Part 8 Overlays",
+      "subsections": [
+        {
+          "id": "8.1",
+          "title": "Preliminary"
+        },
+        {
+          "id": "8.2",
+          "title": "Overlay codes",
+          "codes": [
+            "8.2.1 Active frontages in residential zones overlay code",
+            "8.2.2 Airport environs overlay code",
+            "8.2.3 Bicycle network overlay code",
+            "8.2.4 Biodiversity areas overlay code",
+            "8.2.5 Bushfire overlay code",
+            "8.2.6 Coastal hazard overlay code",
+            "8.2.7 Commercial character building (activities) overlay code",
+            "8.2.8 Commercial character building (demolition) overlay code",
+            "8.2.8.A Community purposes network overlay code",
+            "8.2.9 Critical infrastructure and movement network overlay code",
+            "8.2.10 Extractive resources overlay code",
+            "8.2.11 Flood overlay code",
+            "8.2.12 Heritage overlay code",
+            "8.2.13 Industrial amenity overlay code",
+            "8.2.13A Key civic space and iconic vista overlay code",
+            "8.2.14 Landslide overlay code",
+            "8.2.15 Potential and actual acid sulfate soils overlay code",
+            "8.2.16 Pre-1911 building overlay code",
+            "8.2.17 Regional infrastructure corridors and substations overlay code",
+            "8.2.18 Road hierarchy overlay code",
+            "8.2.19 Significant landscape tree overlay code",
+            "8.2.20 Streetscape hierarchy overlay code",
+            "8.2.21 Traditional building character (demolition) overlay code",
+            "8.2.22 Traditional building character (design) overlay code",
+            "8.2.23 Transport air quality corridor overlay code",
+            "8.2.24 Transport noise corridor overlay code",
+            "8.2.25 Water resource catchments overlay code",
+            "8.2.26 Waterway corridors overlay code",
+            "8.2.27 Wetlands overlay code"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "part9",
+      "title": "Part 9 Development codes",
+      "subsections": [
+        {
+          "id": "9.1",
+          "title": "Preliminary"
+        },
+        {
+          "id": "9.2",
+          "title": "Development that cannot be made assessable in accordance with schedule 6 of the Planning Regulation 2017"
+        },
+        {
+          "id": "9.3",
+          "title": "Use codes",
+          "codes": [
+            "9.3.1 Animal keeping code",
+            "9.3.2 Caretaker's accommodation code",
+            "9.3.3 Centre or mixed use code",
+            "9.3.4 Childcare centre code",
+            "9.3.5 Community facilities code",
+            "9.3.6 Dual occupancy code",
+            "9.3.7 Dwelling house code",
+            "9.3.8 Dwelling house (small lot) code",
+            "9.3.9 Extractive industry code",
+            "9.3.10 Home-based business code",
+            "9.3.11 Indoor sport and recreation code",
+            "9.3.12 Industry code",
+            "9.3.13 Intensive food production code",
+            "9.3.14 Multiple dwelling code",
+            "9.3.15 Outdoor sport and recreation code",
+            "9.3.16 Park code",
+            "9.3.17 Park planning and design code",
+            "9.3.18 Retirement and residential care facility code",
+            "9.3.19 Rooming accommodation code",
+            "9.3.20 Rural activities code",
+            "9.3.21 Service station code",
+            "9.3.22 Short-term accommodation code",
+            "9.3.23 Small-scale non-residential uses code",
+            "9.3.24 Special purpose code",
+            "9.3.25 Specialised centre code",
+            "9.3.26 Telecommunications facility code",
+            "9.3.27 Tourist park and relocatable home park code"
+          ]
+        },
+        {
+          "id": "9.4",
+          "title": "Other development codes",
+          "codes": [
+            "9.4.1 Page intentionally left blank",
+            "9.4.2 Demolition of rooming accommodation code",
+            "9.4.3 Filling and excavation code",
+            "9.4.4 Infrastructure design code",
+            "9.4.5 Landscape work code",
+            "9.4.6 Operational work code",
+            "9.4.7 Outdoor lighting code",
+            "9.4.8 Prescribed tidal work code",
+            "9.4.9 Stormwater code",
+            "9.4.10 Subdivision code",
+            "9.4.11 Transport, access, parking and servicing code",
+            "9.4.12 Wastewater code"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "part10",
+      "title": "Part 10 Other plans"
+    },
+    {
+      "id": "schedules",
+      "title": "Schedules",
+      "items": [
+        {
+          "id": "schedule1",
+          "title": "Schedule 1 Definitions",
+          "subsections": [
+            "SC1.1 Use definitions",
+            "SC1.2 Administrative terms"
+          ]
+        },
+        {
+          "id": "schedule2",
+          "title": "Schedule 2 Mapping",
+          "subsections": [
+            "SC2.1 Strategic framework maps",
+            "SC2.2 Zone maps",
+            "SC2.3 Neighbourhood plan maps",
+            "SC2.4 Overlay maps",
+            "SC2.5 Other plan maps"
+          ]
+        },
+        {
+          "id": "schedule3",
+          "title": "Schedule 3 Local government infrastructure plan mapping and tables",
+          "subsections": [
+            "SC3.1 Planning assumption tables",
+            "SC3.2 Schedules of works",
+            "SC3.3 Local government infrastructure plan maps"
+          ]
+        },
+        {
+          "id": "schedule4",
+          "title": "Schedule 4 Notations required under the Planning Act 2016"
+        },
+        {
+          "id": "schedule5",
+          "title": "Schedule 5 Land designated for community infrastructure"
+        },
+        {
+          "id": "schedule6",
+          "title": "Schedule 6 Planning scheme policies",
+          "policies": [
+            "SC6.1 Planning scheme policy index",
+            "SC6.2 Air quality planning scheme policy",
+            "SC6.3 Biodiversity areas planning scheme policy",
+            "SC6.4 Bushfire planning scheme policy",
+            "SC6.5 Coastal hazard planning scheme policy",
+            "SC6.6 Commercial character building planning scheme policy",
+            "SC6.7 Compensatory earthworks planning scheme policy",
+            "SC6.8 Concrete batching plants planning scheme policy",
+            "SC6.9 Consultation planning scheme policy",
+            "SC6.10 Crime prevention through environmental design planning scheme policy",
+            "SC6.11 Flood planning scheme policy",
+            "SC6.12 Graffiti prevention planning scheme policy",
+            "SC6.13 Heritage planning scheme policy",
+            "SC6.14 Independent design advisory panel planning scheme policy",
+            "SC6.15 Industrial hazard and risk assessment planning scheme policy",
+            "SC6.16 Infrastructure design planning scheme policy",
+            "SC6.17 Landscape design planning scheme policy",
+            "SC6.18 Landslide planning scheme policy",
+            "SC6.19 Management of hazardous chemicals in flood affected areas planning scheme policy",
+            "SC6.20 Management plans planning scheme policy",
+            "SC6.21 Noise impact assessment planning scheme policy",
+            "SC6.22 Offsets planning scheme policy",
+            "SC6.23 Park management plan planning scheme policy",
+            "SC6.24 Planting species planning scheme policy",
+            "SC6.25 Potential and actual acid sulfate soils planning scheme policy",
+            "SC6.26 Refuse planning scheme policy",
+            "SC6.27 Social and health impact assessment planning scheme policy",
+            "SC6.28 Storage and dispensing of petroleum products planning scheme policy",
+            "SC6.29 Structure planning planning scheme policy",
+            "SC6.29A Subtropical building design planning scheme policy",
+            "SC6.30 Traditional building character planning scheme policy",
+            "SC6.31 Transport, access, parking and servicing planning scheme policy",
+            "SC6.32 Transport air quality corridor planning scheme policy",
+            "SC6.33 Vegetation planning scheme policy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "appendices",
+      "title": "Appendices",
+      "items": [
+        "Appendix 1 Index and glossary of abbreviations and acronyms",
+        "Appendix 2 Table of amendments"
+      ]
+    }
+  ]
+}

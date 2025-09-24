@@ -1,0 +1,238 @@
+/* ODL-Compliant Input component styles */
+/* Using CSS custom properties to reference ODL Theme constants */
+
+:root {
+  /* ODL Theme Colors */
+  --odl-text-primary: #161616;
+  --odl-text-secondary: #525252;
+  --odl-text-tertiary: #8D8D8D;
+  --odl-text-disabled: #C6C6C6;
+  --odl-error: #DA1E28;
+  --odl-info: #0F62FE;
+  --odl-primary: #3560C1;
+  --odl-surface: #F4F4F4;
+  --odl-surface-hover: #EBEBEB;
+  --odl-border: #E0E0E0;
+  
+  /* ODL Theme Typography */
+  --odl-font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --odl-font-size-xs: 11px;
+  --odl-font-size-sm: 12px;
+  --odl-font-size-base: 14px;
+  --odl-font-weight-normal: 400;
+  --odl-line-height-input-sm: 1rem;
+  --odl-line-height-input-base: 1.125rem;
+  
+  /* ODL Theme Spacing */
+  --odl-spacing-1: 4px;
+  --odl-spacing-2: 8px;
+  --odl-spacing-3: 12px;
+  --odl-spacing-4: 16px;
+  --odl-spacing-5: 20px;
+  --odl-spacing-8: 32px;
+  --odl-spacing-10: 40px;
+  --odl-spacing-11: 44px;
+  
+  /* ODL Theme Borders */
+  --odl-border-width-base: 2px;
+  
+  /* ODL Theme Transitions */
+  --odl-transition-input: all 0.15s cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.input-wrapper {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.input-label {
+  display: block;
+  font-size: var(--odl-font-size-base);
+  font-weight: var(--odl-font-weight-normal);
+  line-height: var(--odl-line-height-input-base);
+  color: var(--odl-text-primary);
+  margin-bottom: var(--odl-spacing-2);
+  font-family: var(--odl-font-family-sans);
+}
+
+.input-label--required {
+  color: var(--odl-error);
+}
+
+.input-field-wrapper {
+  position: relative;
+}
+
+.custom-input {
+  width: 100%;
+  padding: var(--odl-spacing-3) var(--odl-spacing-4);
+  border: var(--odl-border-width-base) solid transparent;
+  border-bottom: var(--odl-border-width-base) solid var(--odl-border);
+  background-color: var(--odl-surface);
+  color: var(--odl-text-primary);
+  font-size: var(--odl-font-size-base);
+  font-weight: var(--odl-font-weight-normal);
+  line-height: var(--odl-line-height-input-base);
+  font-family: var(--odl-font-family-sans);
+  outline: none;
+  transition: var(--odl-transition-input);
+  border-radius: 0;
+}
+
+.custom-input::placeholder {
+  color: var(--odl-text-tertiary);
+  opacity: 1;
+}
+
+.custom-input:hover:not(.custom-input--disabled):not(.custom-input--readonly) {
+  background-color: var(--odl-surface-hover);
+  border-bottom-color: var(--odl-primary);
+}
+
+.custom-input:focus:not(.custom-input--readonly),
+.custom-input:active:not(.custom-input--readonly) {
+  border: var(--odl-border-width-base) solid var(--odl-primary);
+  outline: none;
+}
+
+.custom-input:focus-visible:not(.custom-input--readonly) {
+  border: var(--odl-border-width-base) solid var(--odl-primary);
+  outline: var(--odl-border-width-base) solid var(--odl-primary);
+  outline-offset: var(--odl-border-width-base);
+}
+
+.custom-input--readonly:focus,
+.custom-input--readonly:active {
+  border: var(--odl-border-width-base) solid transparent;
+  border-bottom: var(--odl-border-width-base) solid var(--odl-border);
+  outline: none;
+}
+
+/* Size variants */
+.input-size--sm {
+  padding: var(--odl-spacing-2) var(--odl-spacing-3);
+  font-size: var(--odl-font-size-xs);
+  line-height: var(--odl-line-height-input-sm);
+}
+
+.input-size--lg {
+  padding: var(--odl-spacing-3) var(--odl-spacing-4);
+  font-size: var(--odl-font-size-base);
+  line-height: var(--odl-line-height-input-base);
+  min-height: var(--odl-spacing-11);
+  height: var(--odl-spacing-11);
+}
+
+/* Dynamic padding classes for icons */
+.custom-input--with-icon {
+  padding-left: var(--odl-spacing-10); /* 2.5rem equivalent for left icon */
+}
+
+.custom-input--with-right-elements {
+  padding-right: var(--odl-spacing-10); /* 2.5rem equivalent for right icon/error */
+}
+
+.custom-textarea--with-error {
+  padding-right: var(--odl-spacing-10); /* 2.5rem equivalent for textarea error icon */
+}
+
+/* Resize options for textarea */
+.custom-textarea--resize-none {
+  resize: none;
+}
+
+.custom-textarea--resize-vertical {
+  resize: vertical;
+}
+
+.custom-textarea--resize-horizontal {
+  resize: horizontal;
+}
+
+.custom-textarea--resize-both {
+  resize: both;
+}
+
+/* States */
+.custom-input--disabled {
+  background-color: var(--odl-surface);
+  color: var(--odl-text-disabled);
+  border: var(--odl-border-width-base) solid transparent;
+  border-bottom: var(--odl-border-width-base) solid transparent;
+  cursor: not-allowed;
+}
+
+.custom-input--disabled::placeholder {
+  color: var(--odl-text-disabled);
+}
+
+.custom-input--readonly {
+  background-color: var(--odl-surface);
+  border: var(--odl-border-width-base) solid transparent;
+  border-bottom: var(--odl-border-width-base) solid var(--odl-border);
+  cursor: default;
+}
+
+.custom-input--error {
+  border: var(--odl-border-width-base) solid transparent;
+  border-bottom: var(--odl-border-width-base) solid var(--odl-error);
+  outline: none;
+}
+
+.custom-input--error:focus,
+.custom-input--error:active {
+  border: var(--odl-border-width-base) solid var(--odl-error);
+  outline: none;
+}
+
+/* Icons */
+.input-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-icon--left {
+  left: var(--odl-spacing-3);
+  color: var(--odl-text-secondary);
+}
+
+.input-icon--right {
+  right: var(--odl-spacing-3);
+  color: var(--odl-text-secondary);
+}
+
+.input-icon--right button {
+  pointer-events: auto;
+}
+
+.input-error-icon {
+  color: var(--odl-error);
+}
+
+.input-icon svg {
+  fill: currentColor;
+}
+
+/* Helper text and error messages */
+.input-error-message {
+  margin-top: var(--odl-spacing-1);
+  font-size: var(--odl-font-size-xs);
+  line-height: var(--odl-line-height-input-sm);
+  color: var(--odl-error);
+  font-weight: var(--odl-font-weight-normal);
+  font-family: var(--odl-font-family-sans);
+}
+
+.input-helper-text {
+  margin-top: var(--odl-spacing-1);
+  font-size: var(--odl-font-size-xs);
+  line-height: var(--odl-line-height-input-sm);
+  color: var(--odl-text-secondary);
+  font-weight: var(--odl-font-weight-normal);
+  font-family: var(--odl-font-family-sans);
+}

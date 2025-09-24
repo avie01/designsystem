@@ -1,0 +1,286 @@
+/* ApplicationsPage - Responsive Styles */
+
+/* Filters container - flex wrap behavior */
+.applications-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--odl-spacing-4);
+}
+
+@media (min-width: 1024px) {
+  .applications-filters {
+    flex-direction: row;
+  }
+}
+
+/* Controls container - wraps buttons and inputs when they overflow */
+.applications-controls {
+  display: flex;
+  gap: var(--odl-spacing-2);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Individual control items */
+.applications-controls__item {
+  flex-shrink: 0;
+}
+
+.applications-controls__dropdown {
+  min-width: 200px;
+  flex-shrink: 0;
+}
+
+/* Ensure dropdowns can shrink on very small screens */
+@media (max-width: 640px) {
+  .applications-controls__dropdown {
+    min-width: 160px;
+    flex: 1 1 160px;
+  }
+}
+
+/* View toggle buttons container */
+.applications-view-toggle {
+  display: flex;
+  height: 44px;
+  border-radius: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* New Amendment button responsive behavior */
+.new-amendment-button {
+  position: relative;
+  min-width: auto;
+  transition: var(--odl-transition-normal);
+  flex-shrink: 0;
+}
+
+.new-amendment-button__text {
+  display: inline;
+  transition: var(--odl-transition-normal);
+}
+
+/* At mobile sizes, ensure proper touch target and full wrapping */
+@media (max-width: 768px) {
+  .new-amendment-button {
+    min-width: 48px;
+    height: 48px !important;
+  }
+  
+  /* Stack all controls vertically on mobile */
+  .applications-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .applications-controls__item,
+  .applications-controls__dropdown {
+    width: 100%;
+  }
+  
+  .applications-view-toggle {
+    align-self: center;
+    width: auto;
+  }
+}
+
+/* Pagination controls - responsive wrapping */
+.applications-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--odl-spacing-4);
+  padding: var(--odl-spacing-3) var(--odl-spacing-4);
+  border-top: var(--odl-border-width-thin) solid var(--odl-border);
+  flex-wrap: wrap;
+  gap: var(--odl-spacing-3);
+}
+
+.applications-pagination__info {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-2);
+  font-size: var(--odl-font-size-sm);
+  color: var(--odl-text-secondary);
+}
+
+.applications-pagination__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-2);
+  flex-wrap: wrap;
+}
+
+.applications-pagination__pages {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-1);
+  flex-wrap: wrap;
+}
+
+/* On smaller screens, stack pagination vertically */
+@media (max-width: 768px) {
+  .applications-pagination {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--odl-spacing-2);
+  }
+  
+  .applications-pagination__info {
+    justify-content: center;
+  }
+  
+  .applications-pagination__controls {
+    justify-content: center;
+  }
+}
+
+/* Responsive table to cards transformation */
+.applications-table-container {
+  overflow: hidden;
+}
+
+/* Column resizing functionality - Simple CSS approach */
+.applications-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.applications-table th {
+  resize: horizontal;
+  overflow: hidden;
+  min-width: 60px;
+  max-width: 500px;
+}
+
+.applications-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Desktop: Show table, hide cards */
+.applications-table {
+  display: block;
+}
+
+.applications-cards {
+  display: none;
+}
+
+/* Mobile/Tablet: Hide table, show cards */
+@media (max-width: 768px) {
+  .applications-table {
+    display: none;
+  }
+  
+  .applications-cards {
+    display: block;
+  }
+}
+
+/* Card layout styles */
+.applications-cards__grid {
+  display: grid;
+  gap: var(--odl-spacing-4);
+  grid-template-columns: 1fr;
+}
+
+.applications-card {
+  background-color: var(--odl-white);
+  border: var(--odl-border-width-thin) solid var(--odl-border);
+  border-radius: var(--odl-border-radius-lg);
+  padding: var(--odl-spacing-4);
+  transition: var(--odl-transition-color);
+}
+
+.applications-card:hover {
+  border-color: var(--odl-primary-light);
+  box-shadow: var(--odl-shadow-medium);
+}
+
+.applications-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--odl-spacing-3);
+}
+
+.applications-card__title {
+  font-size: var(--odl-font-size-base);
+  font-weight: var(--odl-font-weight-medium);
+  color: var(--odl-text-primary);
+  margin: 0;
+  flex: 1;
+  margin-right: var(--odl-spacing-2);
+}
+
+.applications-card__status {
+  flex-shrink: 0;
+}
+
+.applications-card__content {
+  display: grid;
+  gap: var(--odl-spacing-2);
+  margin-bottom: var(--odl-spacing-3);
+}
+
+.applications-card__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--odl-spacing-1) 0;
+  border-bottom: var(--odl-border-width-thin) solid var(--odl-surface);
+}
+
+.applications-card__row:last-child {
+  border-bottom: none;
+}
+
+.applications-card__label {
+  font-size: var(--odl-font-size-sm);
+  font-weight: var(--odl-font-weight-medium);
+  color: var(--odl-text-secondary);
+  flex-shrink: 0;
+  min-width: 80px;
+}
+
+.applications-card__value {
+  font-size: var(--odl-font-size-sm);
+  color: var(--odl-text-primary);
+  text-align: right;
+  flex: 1;
+}
+
+.applications-card__actions {
+  display: flex;
+  gap: var(--odl-spacing-2);
+  justify-content: flex-end;
+  margin-top: var(--odl-spacing-2);
+  padding-top: var(--odl-spacing-2);
+  border-top: var(--odl-border-width-thin) solid var(--odl-surface);
+}
+
+/* Chip styling in cards */
+.applications-card .chip {
+  font-size: var(--odl-font-size-xs);
+  padding: var(--odl-spacing-1) var(--odl-spacing-2);
+}
+
+/* Status colors for cards */
+.applications-card--active {
+  border-left: 4px solid var(--odl-success);
+}
+
+.applications-card--pending {
+  border-left: 4px solid var(--odl-warning);
+}
+
+.applications-card--rejected {
+  border-left: 4px solid var(--odl-error);
+}
+
+.applications-card--review {
+  border-left: 4px solid var(--odl-info);
+}

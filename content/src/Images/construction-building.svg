@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <!-- Note: This is a placeholder SVG representing the construction site image -->
+  <!-- The actual image should be replaced with the provided construction building image -->
+  <rect width="1200" height="800" fill="#f5f5f5"/>
+  <text x="600" y="400" text-anchor="middle" font-size="24" fill="#999">
+    Construction Building Image Placeholder
+  </text>
+</svg>

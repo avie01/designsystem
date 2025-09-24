@@ -1,0 +1,56 @@
+{
+  "amendments": [
+    {
+      "name": "Amendment P - Planning scheme policy amendment",
+      "role": "Project Lead",
+      "status": "Draft",
+      "step": "Issue for Council approval - Lead",
+      "sendToManager": true,
+      "managerApproval": 417,
+      "redraft": true,
+      "approved": 0,
+      "rebase": true,
+      "comments": 0,
+      "checklist": false
+    },
+    {
+      "name": "Amendment S - Planning scheme policy amendment",
+      "role": "Project Lead",
+      "status": "Draft",
+      "step": "Issue for Council approval - Lead",
+      "sendToManager": true,
+      "managerApproval": 832,
+      "redraft": true,
+      "approved": 432,
+      "rebase": true,
+      "comments": 0,
+      "checklist": true
+    },
+    {
+      "name": "Major amendment - Suburban Housing Choice",
+      "role": "Project Lead",
+      "status": "Draft",
+      "step": "Approve for State Interest Review - Lead",
+      "sendToManager": false,
+      "managerApproval": 571,
+      "redraft": 12,
+      "approved": true,
+      "rebase": 0,
+      "comments": 22,
+      "checklist": 352
+    },
+    {
+      "name": "Major amendment package - Flood resilience",
+      "role": "Project Lead",
+      "status": "Draft",
+      "step": "Approve for State Interest Review - Lead",
+      "sendToManager": true,
+      "managerApproval": 115,
+      "redraft": true,
+      "approved": 81,
+      "rebase": 3,
+      "comments": 0,
+      "checklist": true
+    }
+  ]
+}

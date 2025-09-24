@@ -1,0 +1,54 @@
+{
+  "brisbane_city_council_planning_scheme": {
+    "citation_and_commencement": {
+      "citation": "This planning scheme may be cited as Brisbane City Plan 2014",
+      "gazette_notice": "A notice was published in the Government Gazette No. 47 on 30 June 2014 for the planning scheme for the City of Brisbane",
+      "commencement_date": "30 June 2014",
+      "amendments_reference": "Appendix 2"
+    },
+    "community_statement": {
+      "location": "Brisbane is Queensland's capital city and the third largest metropolis in Australia. It is the core of the South East Queensland Region",
+      "growth_context": "In recent decades Brisbane has been Australia's fastest growing city for both employment and population growth. Brisbane has become one of the nation's most important centres for creative activity, infrastructure and service provision, culture, education, governance and population",
+      "long_term_plan": {
+        "vision_name": "Brisbane Vision",
+        "vision_year": 2031,
+        "description": "Brisbane will have a high performing economy with strong business and cultural links to Asia. The city will be a leader in innovative business sectors such as aviation and aerospace, information and digital technologies, professional and scientific services, mining services, advanced manufacturing and creative industries. By linking its economy to the strong growth prospects of the Asia Pacific, Brisbane will continue to reinforce its long term economic prosperity"
+      },
+      "infrastructure": "The city will have world class infrastructure including air and sea ports to ensure the efficient operation of Brisbane's core industrial and economic areas. An extensive and efficient public transport network will also physically connect Brisbane's residential communities with key employment, economic activity and lifestyle locations",
+      "civic_governance": {
+        "leadership_areas": [
+          "develop active and healthy communities",
+          "drive a strong economy",
+          "sustain a clean and green environment",
+          "create a city of cultural vibrancy",
+          "provide an enduring legacy of liveability for future generations"
+        ],
+        "lifestyle_role": "The city's lifestyle plays an ever increasing role in creating a place where people want to live and work. The city's cultural assets include its arts, performances, music, festivals, multicultural offerings, entertainment and dining precincts. The lifestyle of a city is also measured by the quality of its housing, public transport, public spaces and community facilities. Brisbane's outstanding lifestyle attracts a highly skilled workforce and is a memorable destination for business visitors and tourists with the city being a natural host for signature global events and international business conventions"
+      },
+      "protected_areas": "The green forested areas of Brisbane will be protected, maintaining a habitat for our diverse wildlife. Leafy suburbs with big backyards will remain, but there will also be a balcony culture emerging from people embracing a growing variety of living options that take advantage of vibrant urban centres, employment centres and transport infrastructure. New buildings will be designed to reflect Brisbane's subtropical climate, and the City's heritage and character housing will be protected",
+      "future_outlook": "In 2031, Australia's New World City, Brisbane, will have thriving economic commercial and retail hubs, productive industrial areas with easy access to freight, sea and airports. Residents will have a choice of green leafy suburbs and vibrant urban corridors well serviced by transport to reside in. Brisbane will have grown up, but the essence of the city will remain the same"
+    },
+    "editorial_note": "The community statement is extrinsic material to the planning scheme",
+    "strategic_vision": {
+      "cityshape_2031": {
+        "description": "Brisbane's strategic vision is reflected in Brisbane's CityShape 2031, which shows how we will effectively manage growth in Brisbane",
+        "land_use_framework": "CityShape 2031 is the land use planning framework which underpins the Brisbane Vision and the Strategic Plan",
+        "strategic_plan_integration": "This Strategic Plan together with City Plan provides the tool to ensure and plan carefully for population growth while maintaining the high quality of life for Brisbane residents"
+      },
+      "shared_aspirations": {
+        "source": "Brisbane Vision",
+        "elements": [
+          "an accessible, connected city",
+          "an active, healthy city",
+          "a clean, green city",
+          "a friendly, safe city",
+          "a New World City",
+          "a smart, prosperous city",
+          "a vibrant, creative city",
+          "a well-designed, subtropical city"
+        ]
+      }
+    },
+    "editorial_note_strategic_vision": "The strategic vision is extrinsic material to the planning scheme"
+  }
+}

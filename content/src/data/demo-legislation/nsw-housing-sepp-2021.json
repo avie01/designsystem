@@ -1,0 +1,184 @@
+{
+  "id": "nsw-sepp-housing-2021",
+  "title": "State Environmental Planning Policy (Housing) 2021",
+  "version": "2021.1",
+  "effectiveDate": "2021-10-01",
+  "jurisdiction": "NSW",
+  "documentType": "regulation",
+  "metadata": {
+    "lastUpdated": "2024-01-15",
+    "source": "NSW Planning Portal",
+    "agency": "Department of Planning and Environment"
+  },
+  "sections": [
+    {
+      "id": "section-1",
+      "sectionNumber": "1",
+      "title": "Preliminary",
+      "level": 0,
+      "content": [
+        {
+          "id": "block-1-1",
+          "type": "paragraph",
+          "text": "This Policy aims to provide a consistent planning framework for housing across NSW.",
+          "lineNumber": 1,
+          "selectable": true,
+          "metadata": {
+            "emphasis": "mandatory"
+          }
+        },
+        {
+          "id": "block-1-2", 
+          "type": "paragraph",
+          "text": "The objectives of this Policy are to increase housing supply and choice.",
+          "lineNumber": 2,
+          "selectable": true,
+          "metadata": {
+            "clause": "1.1(a)"
+          }
+        }
+      ],
+      "subsections": [
+        {
+          "id": "section-1-1",
+          "sectionNumber": "1.1",
+          "title": "Name of Policy",
+          "level": 1,
+          "content": [
+            {
+              "id": "block-1-1-1",
+              "type": "paragraph",
+              "text": "This Policy is the State Environmental Planning Policy (Housing) 2021.",
+              "lineNumber": 3,
+              "selectable": true,
+              "metadata": {
+                "emphasis": "definition"
+              }
+            }
+          ]
+        },
+        {
+          "id": "section-1-2",
+          "sectionNumber": "1.2", 
+          "title": "Commencement",
+          "level": 1,
+          "content": [
+            {
+              "id": "block-1-2-1",
+              "type": "paragraph",
+              "text": "This Policy commences on 1 October 2021.",
+              "lineNumber": 4,
+              "selectable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-2",
+      "sectionNumber": "2",
+      "title": "Application of Policy",
+      "level": 0,
+      "content": [
+        {
+          "id": "block-2-1",
+          "type": "paragraph",
+          "text": "This Policy applies to land in all zones except environmental protection zones.",
+          "lineNumber": 5,
+          "selectable": true,
+          "metadata": {
+            "emphasis": "mandatory",
+            "clause": "2.1"
+          }
+        },
+        {
+          "id": "block-2-2",
+          "type": "note",
+          "text": "Note: Refer to the standard instrument for zone definitions.",
+          "lineNumber": 6,
+          "selectable": false
+        }
+      ]
+    },
+    {
+      "id": "section-3",
+      "sectionNumber": "3",
+      "title": "Housing Development Standards",
+      "level": 0,
+      "content": [
+        {
+          "id": "block-3-1",
+          "type": "paragraph",
+          "text": "Development must comply with the following minimum standards:",
+          "lineNumber": 7,
+          "selectable": true,
+          "metadata": {
+            "emphasis": "mandatory"
+          }
+        },
+        {
+          "id": "block-3-2",
+          "type": "list",
+          "text": "a) minimum lot size of 300 square metres",
+          "lineNumber": 8,
+          "selectable": true,
+          "metadata": {
+            "listType": "ordered",
+            "clause": "3.1(a)"
+          }
+        },
+        {
+          "id": "block-3-3",
+          "type": "list", 
+          "text": "b) minimum building setbacks of 3 metres from front boundary",
+          "lineNumber": 9,
+          "selectable": true,
+          "metadata": {
+            "listType": "ordered",
+            "clause": "3.1(b)"
+          }
+        },
+        {
+          "id": "block-3-4",
+          "type": "list",
+          "text": "c) maximum building height of 9 metres",
+          "lineNumber": 10,
+          "selectable": true,
+          "metadata": {
+            "listType": "ordered",
+            "clause": "3.1(c)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "section-4",
+      "sectionNumber": "4", 
+      "title": "Special Provisions for Affordable Housing",
+      "level": 0,
+      "content": [
+        {
+          "id": "block-4-1",
+          "type": "paragraph",
+          "text": "Despite any other provision of this or any other environmental planning instrument, development for the purposes of affordable housing may be carried out on any land.",
+          "lineNumber": 11,
+          "selectable": true,
+          "metadata": {
+            "emphasis": "discretionary",
+            "clause": "4.1"
+          }
+        },
+        {
+          "id": "block-4-2",
+          "type": "warning",
+          "text": "Warning: Affordable housing must be secured by appropriate legal mechanisms.",
+          "lineNumber": 12,
+          "selectable": true,
+          "metadata": {
+            "emphasis": "mandatory"
+          }
+        }
+      ]
+    }
+  ]
+}

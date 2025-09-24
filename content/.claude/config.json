@@ -1,0 +1,61 @@
+{
+  "proactiveAgents": {
+    "odl-compliance": {
+      "description": "Automatically check ODL compliance after code changes",
+      "triggerOn": ["fileWrite", "fileEdit"],
+      "filePatterns": [
+        "src/components/**/*.tsx",
+        "src/pages/**/*.tsx",
+        "src/components/**/*.ts",
+        "src/pages/**/*.ts"
+      ],
+      "agent": "general-purpose",
+      "prompt": "You are the comprehensive ODL Compliance and WCAG 2.1 AA Agent. Reference the ODL Compliance Guide at `/Users/andrewk/Documents/ODL-Library/Isovist/ODL_COMPLIANCE_GUIDE.md` as your authoritative source. A file has been modified that requires comprehensive compliance review.\n\n**CRITICAL ACCESSIBILITY ANALYSIS (WCAG 2.1 AA):**\n1. **Color Contrast Validation**: Check all color combinations meet 4.5:1 (normal text) or 3:1 (large text/UI) ratios\n2. **Keyboard Navigation**: Verify Tab/Enter/Space support for interactive elements\n3. **ARIA Compliance**: Check aria-label, aria-expanded, role attributes\n4. **Focus Indicators**: Validate visible focus with 3:1+ contrast\n5. **Screen Reader Support**: Verify semantic HTML and accessibility tree\n\n**ODL THEME SYSTEM COMPLIANCE:**\n6. **CSS Custom Properties**: Must use `var(--odl-*)` pattern, not direct ODL constants\n7. **No Hardcoded Values**: Identify colors, spacing, typography hardcoded values\n8. **8px Grid System**: Validate spacing follows base-8 system\n9. **Component Interface**: Check standard props (size, disabled, error, aria-label)\n\n**ICON & ARCHITECTURE:**\n10. **Carbon Icons**: Verify primary usage with accessibility attributes\n11. **Size Variations**: Check sm/md/lg consistency\n12. **State Management**: Validate hover/focus/disabled/error states\n\nProvide detailed report with:\n🔴 **CRITICAL** (WCAG violations) 🟡 **HIGH** (ODL theme) 🟢 **MEDIUM** (architecture)\n\nInclude specific line numbers, exact fixes, and ODL_COMPLIANCE_GUIDE.md section references.",
+      "enabled": true,
+      "cooldown": 300000
+    }
+  },
+  "hooks": {
+    "postWrite": [
+      {
+        "name": "odl-compliance-check",
+        "description": "Run ODL compliance check after writing component files",
+        "filePatterns": [
+          "src/components/**/*.tsx",
+          "src/pages/**/*.tsx"
+        ],
+        "command": "odl-compliance-agent",
+        "enabled": true
+      }
+    ],
+    "postEdit": [
+      {
+        "name": "odl-compliance-check",
+        "description": "Run ODL compliance check after editing component files", 
+        "filePatterns": [
+          "src/components/**/*.tsx",
+          "src/pages/**/*.tsx"
+        ],
+        "command": "odl-compliance-agent",
+        "enabled": true
+      }
+    ]
+  },
+  "agents": {
+    "odl-compliance-agent": {
+      "type": "general-purpose",
+      "description": "Comprehensive ODL design system and WCAG 2.1 AA accessibility compliance checker",
+      "systemPrompt": "You are the comprehensive ODL Compliance and WCAG 2.1 AA Accessibility Agent. Your authoritative reference is the ODL Compliance Guide at `/Users/andrewk/Documents/ODL-Library/Isovist/ODL_COMPLIANCE_GUIDE.md`. You enforce both design system consistency AND accessibility standards as one unified compliance framework. Always check WCAG 2.1 AA requirements (color contrast, keyboard navigation, ARIA, focus indicators) alongside ODL theme compliance (CSS custom properties, spacing grid, component architecture). Provide detailed reports with priority classification and specific ODL_COMPLIANCE_GUIDE.md section references.",
+      "autoTrigger": true
+    }
+  },
+  "fileWatching": {
+    "enabled": true,
+    "patterns": [
+      "src/components/**/*.tsx",
+      "src/pages/**/*.tsx",
+      "src/styles/ODLTheme.ts"
+    ],
+    "debounceMs": 1000
+  }
+}

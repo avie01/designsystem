@@ -1,0 +1,104 @@
+{
+  "checklistItems": [
+    {
+      "id": "1",
+      "content": "Structural Elements",
+      "description": "The foundation, load-bearing walls, beams, columns, and overall structural integrity are always evaluated. Assessors check for cracks, settlement issues, water damage, and signs of structural movement or failure.",
+      "status": "pending",
+      "category": "Structural",
+      "source": "Building Assessment Standards - Section 1.1",
+      "required": "Structural engineer report, foundation inspection, load-bearing analysis",
+      "proposed": "Visual inspection, structural drawings review"
+    },
+    {
+      "id": "2",
+      "content": "Roof System",
+      "description": "Every assessment includes examination of the roof covering, drainage systems, gutters, downspouts, flashing, and any visible signs of leaks or damage. The expected remaining life of the roofing system is often noted.",
+      "status": "compliant",
+      "category": "Building Envelope",
+      "source": "Building Assessment Standards - Section 2.1",
+      "required": "Roof inspection report, drainage system evaluation, material condition assessment",
+      "proposed": "Visual roof survey, gutter inspection"
+    },
+    {
+      "id": "3",
+      "content": "Building Envelope",
+      "description": "This covers all exterior walls, windows, doors, and any exterior cladding or siding. Assessors look for water infiltration points, damaged seals, cracks, and overall weatherproofing condition.",
+      "status": "in-progress",
+      "category": "Building Envelope",
+      "source": "Building Assessment Standards - Section 2.2",
+      "required": "Exterior wall assessment, window/door inspection, weatherproofing evaluation",
+      "proposed": "Envelope integrity survey, seal condition check"
+    },
+    {
+      "id": "4",
+      "content": "Life Safety Systems",
+      "description": "Fire detection and suppression systems, emergency exits, egress routes, emergency lighting, exit signage, and stairwell conditions are universal assessment items due to their critical importance for occupant safety.",
+      "status": "non-compliant",
+      "category": "Safety",
+      "source": "Fire Safety Code - Section 3.1",
+      "required": "Fire system inspection, egress analysis, emergency lighting test, exit signage audit",
+      "proposed": "Basic fire system check, exit route verification"
+    },
+    {
+      "id": "5",
+      "content": "Mechanical Systems (HVAC)",
+      "description": "Heating, ventilation, and air conditioning equipment, including their age, condition, operational status, and maintenance history are standard check items.",
+      "status": "pending",
+      "category": "Mechanical",
+      "source": "HVAC Standards - Section 4.1",
+      "required": "HVAC system inspection, maintenance records, efficiency testing, air quality assessment",
+      "proposed": "Visual HVAC inspection, basic operational check"
+    },
+    {
+      "id": "6",
+      "content": "Electrical Systems",
+      "description": "The main electrical service, distribution panels, wiring condition (where visible), grounding systems, and any obvious code violations or safety hazards are assessed.",
+      "status": "compliant",
+      "category": "Electrical",
+      "source": "Electrical Code - Section 5.1",
+      "required": "Electrical system inspection, panel assessment, grounding verification, code compliance check",
+      "proposed": "Electrical panel review, basic wiring inspection"
+    },
+    {
+      "id": "7",
+      "content": "Plumbing Systems",
+      "description": "Water supply, drainage systems, visible piping, water heaters, fixtures, and any signs of leaks or water damage are reviewed.",
+      "status": "in-progress",
+      "category": "Plumbing",
+      "source": "Plumbing Code - Section 6.1",
+      "required": "Plumbing system inspection, pressure testing, fixture assessment, leak detection",
+      "proposed": "Visual plumbing check, fixture operation test"
+    },
+    {
+      "id": "8",
+      "content": "Accessibility Compliance",
+      "description": "Most modern assessments include checks for ADA/accessibility compliance, including ramps, doorway widths, bathroom facilities, and parking provisions.",
+      "status": "pending",
+      "category": "Accessibility",
+      "source": "ADA Standards - Section 7.1",
+      "required": "Accessibility audit, ramp measurements, doorway assessments, bathroom compliance check",
+      "proposed": "Basic accessibility survey, door width measurements"
+    },
+    {
+      "id": "9",
+      "content": "Site Conditions",
+      "description": "Parking areas, walkways, landscaping, drainage, retaining walls, and any site lighting or security features are evaluated.",
+      "status": "compliant",
+      "category": "Site",
+      "source": "Site Development Standards - Section 8.1",
+      "required": "Site survey, drainage assessment, parking evaluation, landscaping review",
+      "proposed": "Visual site inspection, basic drainage check"
+    },
+    {
+      "id": "10",
+      "content": "Documentation Review",
+      "description": "Assessors typically review available maintenance records, warranty information, previous inspection reports, and any relevant permits or certificates of occupancy.",
+      "status": "no-status",
+      "category": "Documentation",
+      "source": "Assessment Procedures - Section 9.1",
+      "required": "Complete documentation review, permit verification, maintenance record analysis",
+      "proposed": "Basic document collection, permit status check"
+    }
+  ]
+}
