@@ -1,5 +1,4 @@
 import React from 'react';
-import { colors } from '../../design-system/designTokens';
 
 export interface ApplicationDetailCardProps {
   siteAddress: string;
@@ -11,6 +10,13 @@ export interface ApplicationDetailCardProps {
   approver: string;
   className?: string;
 }
+
+const DetailRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+  <div className="grid grid-cols-[140px_1fr] gap-2 py-1">
+    <span className="text-sm text-gray-500">{label}</span>
+    <span className="text-sm text-gray-900">{value}</span>
+  </div>
+);
 
 const ApplicationDetailCard: React.FC<ApplicationDetailCardProps> = ({
   siteAddress,
@@ -25,40 +31,13 @@ const ApplicationDetailCard: React.FC<ApplicationDetailCardProps> = ({
   return (
     <div className={className}>
       <div className="space-y-2">
-        <div className="grid gap-2 py-1" style={{ gridTemplateColumns: '140px 1fr' }}>
-          <span className="text-sm" style={{ color: colors.secondary }}>Site address</span>
-          <span className="text-sm" style={{ color: colors.primary }}>{siteAddress}</span>
-        </div>
-        
-        <div className="grid gap-2 py-1" style={{ gridTemplateColumns: '140px 1fr' }}>
-          <span className="text-sm" style={{ color: colors.secondary }}>Reference</span>
-          <span className="text-sm" style={{ color: colors.primary }}>{reference}</span>
-        </div>
-        
-        <div className="grid gap-2 py-1" style={{ gridTemplateColumns: '140px 1fr' }}>
-          <span className="text-sm" style={{ color: colors.secondary }}>Applicant</span>
-          <span className="text-sm" style={{ color: colors.primary }}>{applicant}</span>
-        </div>
-        
-        <div className="grid gap-2 py-1" style={{ gridTemplateColumns: '140px 1fr' }}>
-          <span className="text-sm" style={{ color: colors.secondary }}>Owner</span>
-          <span className="text-sm" style={{ color: colors.primary }}>{owner}</span>
-        </div>
-        
-        <div className="grid gap-2 py-1" style={{ gridTemplateColumns: '140px 1fr' }}>
-          <span className="text-sm" style={{ color: colors.secondary }}>Contact</span>
-          <span className="text-sm" style={{ color: colors.primary }}>{contact}</span>
-        </div>
-        
-        <div className="grid gap-2 py-1" style={{ gridTemplateColumns: '140px 1fr' }}>
-          <span className="text-sm" style={{ color: colors.secondary }}>Description</span>
-          <span className="text-sm" style={{ color: colors.primary }}>{description}</span>
-        </div>
-        
-        <div className="grid gap-2 py-1" style={{ gridTemplateColumns: '140px 1fr' }}>
-          <span className="text-sm" style={{ color: colors.secondary }}>Approver</span>
-          <span className="text-sm" style={{ color: colors.primary }}>{approver}</span>
-        </div>
+        <DetailRow label="Site address" value={siteAddress} />
+        <DetailRow label="Reference" value={reference} />
+        <DetailRow label="Applicant" value={applicant} />
+        <DetailRow label="Owner" value={owner} />
+        <DetailRow label="Contact" value={contact} />
+        <DetailRow label="Description" value={description} />
+        <DetailRow label="Approver" value={approver} />
       </div>
     </div>
   );

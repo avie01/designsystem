@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
+import styles from './ChartCard.module.css';
 
 export interface ChartCardProps {
   title: string;
@@ -44,7 +45,6 @@ const ChartCard: React.FC<ChartCardProps> = ({
   className = '',
 }) => {
   const [isSaved, setIsSaved] = useState(saved);
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleSave = () => {
     const newSaved = !isSaved;
@@ -55,9 +55,9 @@ const ChartCard: React.FC<ChartCardProps> = ({
   const getTrendColor = () => {
     if (!change) return '#525252';
     switch (change.trend) {
-      case 'up': return '#198038'; // Darker green for WCAG AA (4.5:1 contrast)
-      case 'down': return '#A21920'; // Darker red for WCAG AA (4.5:1 contrast)
-      case 'neutral': return '#6F6F6F'; // Darker gray for WCAG AA (4.5:1 contrast)
+      case 'up': return '#198038';
+      case 'down': return '#A21920';
+      case 'neutral': return '#6F6F6F';
       default: return '#525252';
     }
   };
@@ -72,16 +72,25 @@ const ChartCard: React.FC<ChartCardProps> = ({
     }
   };
 
-  // Simple sparkline chart generator
+  const getChangeBadgeClass = () => {
+    if (!change) return styles.changeBadge;
+    switch (change.trend) {
+      case 'up': return `${styles.changeBadge} ${styles.changeBadgeUp}`;
+      case 'down': return `${styles.changeBadge} ${styles.changeBadgeDown}`;
+      case 'neutral': return `${styles.changeBadge} ${styles.changeBadgeNeutral}`;
+      default: return styles.changeBadge;
+    }
+  };
+
   const renderSparkline = () => {
     if (!sparklineData || sparklineData.length === 0) return null;
-    
+
     const max = Math.max(...sparklineData);
     const min = Math.min(...sparklineData);
     const range = max - min || 1;
     const width = 100;
     const height = 40;
-    
+
     const points = sparklineData.map((val, i) => {
       const x = (i / (sparklineData.length - 1)) * width;
       const y = height - ((val - min) / range) * height;
@@ -90,7 +99,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
 
     if (type === 'line') {
       return (
-        <svg width="100%" height={height} style={{ display: 'block' }} role="presentation" aria-hidden="true">
+        <svg width="100%" height={height} className={styles.sparkline} role="presentation" aria-hidden="true">
           <polyline
             points={points}
             fill="none"
@@ -104,7 +113,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
     } else if (type === 'bar') {
       const barWidth = width / sparklineData.length;
       return (
-        <svg width="100%" height={height} style={{ display: 'block' }} role="presentation" aria-hidden="true">
+        <svg width="100%" height={height} className={styles.sparkline} role="presentation" aria-hidden="true">
           {sparklineData.map((val, i) => {
             const barHeight = ((val - min) / range) * height;
             const x = i * barWidth + barWidth * 0.1;
@@ -126,7 +135,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
     } else if (type === 'area') {
       const areaPoints = `0,${height} ${points} ${width},${height}`;
       return (
-        <svg width="100%" height={height} style={{ display: 'block' }} role="presentation" aria-hidden="true">
+        <svg width="100%" height={height} className={styles.sparkline} role="presentation" aria-hidden="true">
           <polygon
             points={areaPoints}
             fill={color}
@@ -146,68 +155,24 @@ const ChartCard: React.FC<ChartCardProps> = ({
   };
 
   return (
-    <div 
-      className={className}
-      style={{
-        backgroundColor: isHovered ? '#f8f8f8' : '#ffffff',
-        border: '1px solid #e0e0e0',
-        borderRadius: '8px',
-        padding: '20px',
-        transition: 'all 0.2s ease',
-        boxShadow: isHovered ? '0 4px 12px rgba(0,0,0,0.08)' : '0 2px 4px rgba(0,0,0,0.04)',
-        cursor: 'pointer',
-        position: 'relative',
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Header */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'flex-start',
-        marginBottom: '16px',
-      }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <div className={`${styles.chartCard} ${className}`}>
+      <div className={styles.header}>
+        <div className={styles.titleContainer}>
+          <div className={styles.titleRow}>
             {icon && (
               <Icon name={icon} size={20} color={color} />
             )}
-            <h3 style={{ 
-              fontSize: '14px', 
-              fontWeight: '600', 
-              color: '#161616',
-              margin: 0,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-            }}>
-              {title}
-            </h3>
+            <h3 className={styles.title}>{title}</h3>
           </div>
           {subtitle && (
-            <p style={{
-              fontSize: '12px',
-              color: '#6F6F6F', // Darker gray for WCAG AA (4.5:1 contrast)
-              margin: '4px 0 0 0',
-            }}>
-              {subtitle}
-            </p>
+            <p className={styles.subtitle}>{subtitle}</p>
           )}
         </div>
 
-        {/* Save Button */}
         <button
           onClick={handleSave}
           aria-label={isSaved ? "Remove from saved charts" : "Save chart"}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '4px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          className={styles.saveButton}
         >
           <Icon
             name={isSaved ? "bookmark-filled" : "bookmark"}
@@ -218,61 +183,32 @@ const ChartCard: React.FC<ChartCardProps> = ({
         </button>
       </div>
 
-      {/* Value and Change */}
-      <div style={{ marginBottom: '16px' }}>
-        <div style={{ 
-          fontSize: '32px', 
-          fontWeight: '700', 
-          color: '#161616',
-          lineHeight: '1',
-          marginBottom: '8px',
-        }}>
-          {value}
-        </div>
-        
+      <div className={styles.valueSection}>
+        <div className={styles.value}>{value}</div>
+
         {change && (
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '8px',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '2px 8px',
-              backgroundColor: change.trend === 'up' ? '#DEFBE6' : change.trend === 'down' ? '#FFD7D9' : '#F4F4F4',
-              borderRadius: '12px',
-            }}>
+          <div className={styles.changeContainer}>
+            <div className={getChangeBadgeClass()}>
               {getTrendIcon() && (
                 <Icon name={getTrendIcon()!} size={12} color={getTrendColor()} aria-hidden="true" />
               )}
-              <span style={{ 
-                fontSize: '12px', 
-                fontWeight: '600',
-                color: getTrendColor(),
-              }}>
+              <span
+                className={styles.changePercentage}
+                style={{ color: getTrendColor() }}
+              >
                 {change.percentage > 0 ? '+' : ''}{change.percentage}%
               </span>
             </div>
-            <span style={{
-              fontSize: '12px',
-              color: '#6F6F6F', // Darker gray for WCAG AA (4.5:1 contrast)
-            }}>
+            <span className={styles.changeText}>
               {change.value > 0 ? '+' : ''}{change.value} from {timeframe || 'last period'}
             </span>
           </div>
         )}
       </div>
 
-      {/* Chart Area */}
       {(chart || sparklineData) && (
         <div
-          style={{
-            marginBottom: '16px',
-            minHeight: '60px',
-            position: 'relative',
-          }}
+          className={styles.chartArea}
           role="img"
           aria-label={`Chart showing ${title} data trend`}
         >
@@ -280,38 +216,20 @@ const ChartCard: React.FC<ChartCardProps> = ({
         </div>
       )}
 
-      {/* Timeframe Badge */}
       {timeframe && !change && (
-        <div style={{ 
-          marginBottom: '16px',
-        }}>
-          <span style={{
-            padding: '4px 12px',
-            backgroundColor: '#F4F4F4',
-            color: '#525252',
-            borderRadius: '16px',
-            fontSize: '12px',
-            fontWeight: '500',
-          }}>
-            {timeframe}
-          </span>
+        <div className={styles.timeframeBadge}>
+          <span className={styles.timeframeLabel}>{timeframe}</span>
         </div>
       )}
 
-      {/* Action Buttons */}
       {actions && (
-        <div style={{ 
-          display: 'flex', 
-          gap: '8px',
-          paddingTop: '16px',
-          borderTop: '1px solid #e0e0e0',
-        }}>
+        <div className={styles.actionsContainer}>
           {actions.onViewDetails && (
             <Button
               variant="ghost"
               size="small"
               onClick={actions.onViewDetails}
-              style={{ flex: 1 }}
+              className={styles.actionButton}
             >
               View Details
             </Button>

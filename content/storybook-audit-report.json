@@ -1,0 +1,1661 @@
+{
+  "timestamp": "2025-12-12T04:38:03.234Z",
+  "totalFiles": 51,
+  "totalStories": 444,
+  "highRiskComponents": [
+    {
+      "title": "Components/Layout/Accordion",
+      "file": "src/components/Accordion/Accordion.stories.tsx",
+      "stories": [
+        "Default",
+        "SingleExpand",
+        "WithoutIcons",
+        "BorderedVariant",
+        "FilledVariant",
+        "NestedAccordion",
+        "DeepNesting",
+        "LongContent"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": true,
+        "hasChildrenProp": true,
+        "hasRenderFunction": false,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Forms/Stepper",
+      "file": "src/components/Stepper/Stepper.stories.tsx",
+      "stories": [
+        "HorizontalDefault",
+        "VerticalDefault",
+        "WithIcons",
+        "WithError",
+        "SmallSize",
+        "LargeSize",
+        "Compact",
+        "WithExpandedContent",
+        "ClickableSteps",
+        "AllCompleted",
+        "LongVerticalStepper",
+        "Disabled"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": true,
+        "hasChildrenProp": false,
+        "hasRenderFunction": false,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Navigation/Tabs",
+      "file": "src/components/Tabs/Tabs.stories.tsx",
+      "stories": [
+        "Default",
+        "CompactVariant",
+        "WithoutContent",
+        "ControlledTabs",
+        "ManyTabs",
+        "WithDisabledTabs",
+        "LongLabels",
+        "BothVariants",
+        "Playground"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": true,
+        "hasChildrenProp": false,
+        "hasRenderFunction": true,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Navigation/SimpleTabs",
+      "file": "src/components/SimpleTabs/SimpleTabs.stories.tsx",
+      "stories": [
+        "Default",
+        "CompactVariant",
+        "FullWidth",
+        "WithLeftIcons",
+        "WithRightIcons",
+        "WithoutContent",
+        "WithDisabledTabs",
+        "ControlledTabs",
+        "ManyTabs",
+        "AllVariants",
+        "Playground"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": true,
+        "hasChildrenProp": false,
+        "hasRenderFunction": true,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/DataDisplay/List",
+      "file": "src/components/List/List.stories.tsx",
+      "stories": [
+        "Default",
+        "Sizes",
+        "WithCaptions",
+        "Hierarchical",
+        "MultipleSelection",
+        "SingleSelection",
+        "WithDisabledItems",
+        "WithDefaultSelection",
+        "NonSelectable",
+        "FileExplorer",
+        "NavigationMenu",
+        "Playground"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": true,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Cards/CollapsibleCard",
+      "file": "src/components/CollapsibleCard/CollapsibleCard.stories.tsx",
+      "stories": [
+        "Default",
+        "DefaultExpanded",
+        "WithRichContent",
+        "MultipleCards",
+        "FAQSection",
+        "WithNestedContent",
+        "WithTable",
+        "WithForm",
+        "DashboardPanels",
+        "Playground"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": true,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Modal",
+      "file": "src/components/Modal/Modal.stories.tsx",
+      "stories": [
+        "Default",
+        "Confirmation",
+        "LargeContent"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": true,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/AlertBanner",
+      "file": "src/components/AlertBanner/AlertBanner.stories.tsx",
+      "stories": [
+        "Info",
+        "Success",
+        "Warning",
+        "Error",
+        "Dismissible"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": false,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Button",
+      "file": "src/components/Button/Button.stories.tsx",
+      "stories": [
+        "Default",
+        "AllVariants",
+        "Sizes",
+        "WithLeftIcon",
+        "WithRightIcon",
+        "IconOnly",
+        "States",
+        "CommonPatterns",
+        "ButtonGroups",
+        "Playground"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": true,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Editors/SimpleEditor",
+      "file": "src/components/SimpleEditor/SimpleEditor.stories.tsx",
+      "stories": [
+        "Default",
+        "WithInitialContent",
+        "EmptyEditor",
+        "DocumentEditor",
+        "WithImageHandler",
+        "FormattingShowcase",
+        "MinimalSetup",
+        "Playground"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": true,
+        "hasChildrenProp": false,
+        "hasRenderFunction": true,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/DataVisualization/DualPaneExplorer",
+      "file": "src/components/DualPaneExplorer/DualPaneExplorer.stories.tsx",
+      "stories": [
+        "Default",
+        "DocumentLibrary",
+        "CodeExplorer",
+        "WithSelectedFile",
+        "WithSelectedPackageJson",
+        "WideLeftPane",
+        "NarrowLeftPane",
+        "WithoutMetadata",
+        "CustomTitle",
+        "WithClickHandler"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": true,
+        "hasChildrenProp": true,
+        "hasRenderFunction": false,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Navigation/TreeNavigation",
+      "file": "src/components/TreeNavigation/TreeNavigation.stories.tsx",
+      "stories": [
+        "Default",
+        "WithDocuments",
+        "DeepNesting",
+        "NoFilter",
+        "WithSelection"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": false,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Advanced/MillerColumns",
+      "file": "src/components/MillerColumns/MillerColumns.stories.tsx",
+      "stories": [
+        "Default",
+        "OrganizationChart",
+        "ProductCatalog",
+        "WideColumns",
+        "NarrowColumns",
+        "WithoutIcons",
+        "TallView"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": false,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Utilities/ErrorBoundary",
+      "file": "src/components/ErrorBoundary/ErrorBoundary.stories.tsx",
+      "stories": [
+        "Default",
+        "ComponentLevel",
+        "SectionLevel",
+        "PageLevel",
+        "CustomFallback",
+        "WithErrorHandler",
+        "AutoResetOnKeyChange",
+        "MultipleErrorBoundaries",
+        "NestedErrorBoundaries",
+        "AsyncError",
+        "FormValidationError",
+        "Playground"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": true,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Overlays/Popover",
+      "file": "src/components/Popover/Popover.stories.tsx",
+      "stories": [
+        "BottomStart",
+        "TopCenter",
+        "LeftAlign",
+        "RightAlign",
+        "WithIconTrigger",
+        "WithList",
+        "WithForm",
+        "UserProfile",
+        "RichContent",
+        "ColorPicker"
+      ],
+      "issues": {
+        "hasTriggerProp": true,
+        "hasContentProp": true,
+        "hasChildrenProp": false,
+        "hasRenderFunction": true,
+        "hasMappingControl": true
+      }
+    },
+    {
+      "title": "Components/Layout/Card",
+      "file": "src/components/Card/Card.stories.tsx",
+      "stories": [
+        "Default",
+        "Hoverable",
+        "Clickable",
+        "NoBorder",
+        "SmallPadding",
+        "CardGrid"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": true,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Navigation/BreadcrumbGrid",
+      "file": "src/components/BreadcrumbGrid/BreadcrumbGrid.stories.tsx",
+      "stories": [
+        "Default",
+        "CompactView",
+        "WithCallbacks",
+        "EmptyFolder",
+        "FilesOnly",
+        "WithStatusAndPriority"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": false,
+        "hasMappingControl": false
+      }
+    },
+    {
+      "title": "Components/Layout/PageTemplate",
+      "file": "src/components/PageTemplate/PageTemplate.stories.tsx",
+      "stories": [
+        "Default",
+        "WithLeftNavigation",
+        "MinimalHeader",
+        "WithSubtitle",
+        "WithAlerts",
+        "CustomColors",
+        "LongBreadcrumbs"
+      ],
+      "issues": {
+        "hasTriggerProp": false,
+        "hasContentProp": false,
+        "hasChildrenProp": true,
+        "hasRenderFunction": false,
+        "hasMappingControl": false
+      }
+    }
+  ],
+  "allComponents": [
+    {
+      "file": "src/components/Header/Header.stories.tsx",
+      "title": "Components/Header",
+      "stories": [
+        "Build",
+        "Connect",
+        "Keystone",
+        "WithNotifications"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/Table/Table.stories.tsx",
+      "title": "Components/Table",
+      "stories": [
+        "Default",
+        "Striped",
+        "Hoverable",
+        "Sortable",
+        "EmptyState"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/templates/PageTemplates.stories.tsx",
+      "title": "Templates/MUI Page Templates",
+      "stories": [
+        "BasicPage",
+        "Dashboard",
+        "TableList",
+        "TwoColumn",
+        "FormPage",
+        "CardsGrid",
+        "AllTemplates"
+      ],
+      "hasArgTypes": false,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/Icon/CarbonIcons.stories.tsx",
+      "title": "Foundation/Carbon Icons",
+      "stories": [
+        "AllIcons",
+        "CategorizedView",
+        "IconSizes",
+        "ColorVariations",
+        "CommonlyUsed"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onDisplay:",
+        "onName:",
+        "onSizes:"
+      ]
+    },
+    {
+      "file": "src/components/Chip/ChipMUI.stories.tsx",
+      "title": "Components/Chip (MUI)",
+      "stories": [
+        "Default",
+        "AllVariants",
+        "Sizes",
+        "WithIcons",
+        "Clickable",
+        "Deletable",
+        "StatusChips",
+        "TagChips"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onMap:",
+        "onName:"
+      ]
+    },
+    {
+      "file": "src/components/Drawer/Drawer.stories.tsx",
+      "title": "Components/Overlays/Drawer",
+      "stories": [
+        "RightDrawer",
+        "LeftDrawer",
+        "TopDrawer",
+        "BottomDrawer",
+        "AllSizes",
+        "WithFooter",
+        "WithoutOverlay",
+        "WithError",
+        "HalfWidth",
+        "CustomDimensions",
+        "NoCloseOnBackdrop",
+        "NoCloseOnEscape",
+        "AllPositions",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/Accordion/Accordion.stories.tsx",
+      "title": "Components/Layout/Accordion",
+      "stories": [
+        "Default",
+        "SingleExpand",
+        "WithoutIcons",
+        "BorderedVariant",
+        "FilledVariant",
+        "NestedAccordion",
+        "DeepNesting",
+        "LongContent"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": true,
+      "hasChildrenProp": true,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/Graph/Graph.stories.tsx",
+      "title": "Components/DataVisualization/Graph",
+      "stories": [
+        "LineChart",
+        "LineChartMultiSeries",
+        "BarChart",
+        "BarChartStacked",
+        "AreaChart",
+        "AreaChartWithGradient",
+        "AreaChartStacked",
+        "PieChart",
+        "RadarChart",
+        "ScatterChart",
+        "ComposedChart",
+        "RadialBarChart",
+        "AllChartTypes",
+        "CompactCharts",
+        "CustomizationOptions",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onOptions:"
+      ]
+    },
+    {
+      "file": "src/components/Stepper/Stepper.stories.tsx",
+      "title": "Components/Forms/Stepper",
+      "stories": [
+        "HorizontalDefault",
+        "VerticalDefault",
+        "WithIcons",
+        "WithError",
+        "SmallSize",
+        "LargeSize",
+        "Compact",
+        "WithExpandedContent",
+        "ClickableSteps",
+        "AllCompleted",
+        "LongVerticalStepper",
+        "Disabled"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": true,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onStepClick:"
+      ]
+    },
+    {
+      "file": "src/components/ChartCard/ChartCard.stories.tsx",
+      "title": "Components/DataVisualization/ChartCard",
+      "stories": [
+        "Default",
+        "WithLineSparkline",
+        "WithBarSparkline",
+        "WithAreaSparkline",
+        "WithCustomChart",
+        "WithCustomAreaChart",
+        "TrendIndicators",
+        "WithActionButtons",
+        "Dashboard",
+        "DifferentSizes",
+        "MinimalCards",
+        "FullFeatured",
+        "ColorVariations",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onButtons:",
+        "onViewDetails:",
+        "onExport:",
+        "onRefresh:"
+      ]
+    },
+    {
+      "file": "src/components/StatsCard/StatsCard.stories.tsx",
+      "title": "Components/Cards/StatsCard",
+      "stories": [
+        "Default",
+        "AllColors",
+        "BusinessMetrics",
+        "ApplicationStats",
+        "ProjectManagement",
+        "ContentMetrics",
+        "EcommerceMetrics",
+        "LargeNumbers",
+        "PercentageValues",
+        "CompactGrid",
+        "WithCustomStyling",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onName:",
+        "onColor:",
+        "onBackground:",
+        "onStats:"
+      ]
+    },
+    {
+      "file": "src/components/StatsGrid/StatsGrid.stories.tsx",
+      "title": "Components/Cards/StatsGrid",
+      "stories": [
+        "Default",
+        "TwoColumns",
+        "ThreeColumns",
+        "FourColumns",
+        "CustomGap",
+        "CustomMinWidth",
+        "BusinessDashboard",
+        "ProjectManagement",
+        "ApplicationMetrics",
+        "EcommerceDashboard",
+        "ContentManagement",
+        "MultipleGrids",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onMetrics:"
+      ]
+    },
+    {
+      "file": "src/components/Tabs/Tabs.stories.tsx",
+      "title": "Components/Navigation/Tabs",
+      "stories": [
+        "Default",
+        "CompactVariant",
+        "WithoutContent",
+        "ControlledTabs",
+        "ManyTabs",
+        "WithDisabledTabs",
+        "LongLabels",
+        "BothVariants",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": true,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/SimpleTabs/SimpleTabs.stories.tsx",
+      "title": "Components/Navigation/SimpleTabs",
+      "stories": [
+        "Default",
+        "CompactVariant",
+        "FullWidth",
+        "WithLeftIcons",
+        "WithRightIcons",
+        "WithoutContent",
+        "WithDisabledTabs",
+        "ControlledTabs",
+        "ManyTabs",
+        "AllVariants",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": true,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onPosition:"
+      ]
+    },
+    {
+      "file": "src/components/Dropdown/Dropdown.stories.tsx",
+      "title": "Components/Dropdown",
+      "stories": [
+        "Default",
+        "WithValue",
+        "Searchable",
+        "Required",
+        "ErrorState",
+        "Disabled"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onChange:"
+      ]
+    },
+    {
+      "file": "src/components/List/List.stories.tsx",
+      "title": "Components/DataDisplay/List",
+      "stories": [
+        "Default",
+        "Sizes",
+        "WithCaptions",
+        "Hierarchical",
+        "MultipleSelection",
+        "SingleSelection",
+        "WithDisabledItems",
+        "WithDefaultSelection",
+        "NonSelectable",
+        "FileExplorer",
+        "NavigationMenu",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onItemClick:",
+        "onSelectionChange:",
+        "onSelectable:",
+        "onMenu:"
+      ]
+    },
+    {
+      "file": "src/components/CollapsibleCard/CollapsibleCard.stories.tsx",
+      "title": "Components/Cards/CollapsibleCard",
+      "stories": [
+        "Default",
+        "DefaultExpanded",
+        "WithRichContent",
+        "MultipleCards",
+        "FAQSection",
+        "WithNestedContent",
+        "WithTable",
+        "WithForm",
+        "DashboardPanels",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onToggle:"
+      ]
+    },
+    {
+      "file": "src/components/NavigationRail/NavigationRail.stories.tsx",
+      "title": "Components/NavigationRail",
+      "stories": [
+        "Default",
+        "Collapsed",
+        "WithToggleButton",
+        "RightPosition",
+        "WithDisabledItems",
+        "NoTooltips"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onNavigate:",
+        "onHelpClick:",
+        "onCollapseToggle:",
+        "onName:"
+      ]
+    },
+    {
+      "file": "src/components/Modal/Modal.stories.tsx",
+      "title": "Components/Modal",
+      "stories": [
+        "Default",
+        "Confirmation",
+        "LargeContent"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": true,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onClose:"
+      ]
+    },
+    {
+      "file": "src/components/Cards/Cards.stories.tsx",
+      "title": "Components/Cards",
+      "stories": [
+        "Default",
+        "AllStates",
+        "Sizes",
+        "InteractiveFeatures",
+        "IconVariations",
+        "RealWorldExamples",
+        "AccessibilityFocus",
+        "EdgeCases",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onSelect:",
+        "onInfoClick:",
+        "onMenuClick:",
+        "onVariations:"
+      ]
+    },
+    {
+      "file": "src/components/AlertBanner/AlertBanner.stories.tsx",
+      "title": "Components/AlertBanner",
+      "stories": [
+        "Info",
+        "Success",
+        "Warning",
+        "Error",
+        "Dismissible"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onDismiss:"
+      ]
+    },
+    {
+      "file": "src/components/Icon/Icon.stories.tsx",
+      "title": "Components/Icon",
+      "stories": [
+        "Default",
+        "Sizes",
+        "Colors",
+        "Interactive",
+        "InButtons",
+        "CommonIcons",
+        "IconGallery",
+        "LoadingStates",
+        "Accessibility"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onClick:",
+        "onName:",
+        "onIcons:",
+        "onGallery:"
+      ]
+    },
+    {
+      "file": "src/components/StatusCard/StatusCard.stories.tsx",
+      "title": "Components/Cards/StatusCard",
+      "stories": [
+        "Default",
+        "AllVariants",
+        "WithTrends",
+        "BusinessMetrics",
+        "ApplicationMetrics",
+        "WithoutComparison",
+        "WithoutIcon",
+        "Clickable",
+        "LargeNumbers",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onClick:",
+        "onMetrics:"
+      ]
+    },
+    {
+      "file": "src/components/Button/Button.stories.tsx",
+      "title": "Components/Button",
+      "stories": [
+        "Default",
+        "AllVariants",
+        "Sizes",
+        "WithLeftIcon",
+        "WithRightIcon",
+        "IconOnly",
+        "States",
+        "CommonPatterns",
+        "ButtonGroups",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onClick:",
+        "onOnly:",
+        "onPatterns:",
+        "onGroups:"
+      ]
+    },
+    {
+      "file": "src/components/Input/Input.stories.tsx",
+      "title": "Components/Input",
+      "stories": [
+        "Default",
+        "Required",
+        "WithHelperText",
+        "ErrorState",
+        "Disabled",
+        "Textarea"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onChange:"
+      ]
+    },
+    {
+      "file": "src/components/Breadcrumb/Breadcrumb.stories.tsx",
+      "title": "Components/Breadcrumb",
+      "stories": [
+        "Default",
+        "Short",
+        "LongTrail",
+        "ApplicationContext",
+        "FileSystem",
+        "Dashboard",
+        "Settings",
+        "AllClickable",
+        "DisplayOnly",
+        "CustomStyling",
+        "SlashSeparator",
+        "ArrowSeparator",
+        "PipeSeparator",
+        "DoubleChevronSeparator",
+        "DotSeparator",
+        "Playground",
+        "WithChips"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": true,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onNavigate:",
+        "onContext:",
+        "onSeparator:"
+      ]
+    },
+    {
+      "file": "src/components/DocumentTreemap/DocumentTreemap.stories.tsx",
+      "title": "Components/DataVisualization/DocumentTreemap",
+      "stories": [
+        "Default",
+        "WithClickHandler",
+        "LargeDataset",
+        "SmallDataset",
+        "SingleClassification",
+        "DepartmentHeavy"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onNodeClick:"
+      ]
+    },
+    {
+      "file": "src/components/ApplicationDetailCard/ApplicationDetailCard.stories.tsx",
+      "title": "Components/Cards/ApplicationDetailCard",
+      "stories": [
+        "Default",
+        "CommercialApplication",
+        "Subdivision",
+        "MinorWorks",
+        "WithCustomClassName"
+      ],
+      "hasArgTypes": false,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/DocumentLibraryCard/DocumentLibraryCard.stories.tsx",
+      "title": "Components/Cards/DocumentLibraryCard",
+      "stories": [
+        "Default",
+        "WithOnView",
+        "PlanningDocuments",
+        "ApplicationFiles",
+        "TechnicalReports",
+        "ComplianceCertificates",
+        "BuildingPlans",
+        "WithCustomClassName"
+      ],
+      "hasArgTypes": false,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onView:",
+        "onFiles:"
+      ]
+    },
+    {
+      "file": "src/components/UserCard/UserCard.stories.tsx",
+      "title": "Components/Cards/UserCard",
+      "stories": [
+        "Default",
+        "WithAvatar",
+        "WithInitials",
+        "WithTags",
+        "WithActions",
+        "OfflineStatus",
+        "AwayStatus",
+        "Saved",
+        "MinimalInfo",
+        "FullyFeatured",
+        "WithCustomClassName"
+      ],
+      "hasArgTypes": false,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onMessage:",
+        "onCall:"
+      ]
+    },
+    {
+      "file": "src/components/Treemap/Treemap.stories.tsx",
+      "title": "Components/DataVisualization/Treemap",
+      "stories": [
+        "Default",
+        "SalesRegions",
+        "HeatMapScheme",
+        "CoolScheme",
+        "RainbowScheme",
+        "CustomColors",
+        "LabelsOnly",
+        "ValuesOnly",
+        "NoLabels",
+        "WithClickHandler",
+        "TallLayout",
+        "ShortLayout",
+        "SmallDataset",
+        "LargeDataset",
+        "StorageUsage"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onClick:"
+      ]
+    },
+    {
+      "file": "src/components/SimpleEditor/SimpleEditor.stories.tsx",
+      "title": "Components/Editors/SimpleEditor",
+      "stories": [
+        "Default",
+        "WithInitialContent",
+        "EmptyEditor",
+        "DocumentEditor",
+        "WithImageHandler",
+        "FormattingShowcase",
+        "MinimalSetup",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": true,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onChange:",
+        "onSave:",
+        "onCancel:",
+        "onInsertImage:"
+      ]
+    },
+    {
+      "file": "src/components/DualPaneExplorer/DualPaneExplorer.stories.tsx",
+      "title": "Components/DataVisualization/DualPaneExplorer",
+      "stories": [
+        "Default",
+        "DocumentLibrary",
+        "CodeExplorer",
+        "WithSelectedFile",
+        "WithSelectedPackageJson",
+        "WideLeftPane",
+        "NarrowLeftPane",
+        "WithoutMetadata",
+        "CustomTitle",
+        "WithClickHandler"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": true,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onNodeSelect:"
+      ]
+    },
+    {
+      "file": "src/components/TreeNavigation/TreeNavigation.stories.tsx",
+      "title": "Components/Navigation/TreeNavigation",
+      "stories": [
+        "Default",
+        "WithDocuments",
+        "DeepNesting",
+        "NoFilter",
+        "WithSelection"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/Kanban/Kanban.stories.tsx",
+      "title": "Components/Advanced/Kanban",
+      "stories": [
+        "Default",
+        "WithDragAndDrop",
+        "DevelopmentWorkflow",
+        "TableView",
+        "PriorityTracking",
+        "EmptyBoard"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/MillerColumns/MillerColumns.stories.tsx",
+      "title": "Components/Advanced/MillerColumns",
+      "stories": [
+        "Default",
+        "OrganizationChart",
+        "ProductCatalog",
+        "WideColumns",
+        "NarrowColumns",
+        "WithoutIcons",
+        "TallView"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onData:",
+        "onChart:"
+      ]
+    },
+    {
+      "file": "src/components/BackToTop/BackToTop.stories.tsx",
+      "title": "Components/Utilities/BackToTop",
+      "stories": [
+        "Default",
+        "WithInstructions",
+        "LongArticle",
+        "MultipleScrollableAreas",
+        "ProductCatalog"
+      ],
+      "hasArgTypes": false,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/ErrorBoundary/ErrorBoundary.stories.tsx",
+      "title": "Components/Utilities/ErrorBoundary",
+      "stories": [
+        "Default",
+        "ComponentLevel",
+        "SectionLevel",
+        "PageLevel",
+        "CustomFallback",
+        "WithErrorHandler",
+        "AutoResetOnKeyChange",
+        "MultipleErrorBoundaries",
+        "NestedErrorBoundaries",
+        "AsyncError",
+        "FormValidationError",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": true,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onError:",
+        "onLevel:"
+      ]
+    },
+    {
+      "file": "src/styles/ODLTheme.stories.tsx",
+      "title": "Design System/ODL Theme",
+      "stories": [
+        "ColorPalette",
+        "Typography",
+        "Spacing",
+        "BorderRadius",
+        "Shadows",
+        "Transitions",
+        "ZIndex",
+        "Breakpoints",
+        "ComponentPresets",
+        "CompleteReference"
+      ],
+      "hasArgTypes": false,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/AdvancedTable/AdvancedTable.stories.tsx",
+      "title": "Components/DataDisplay/AdvancedTable",
+      "stories": [
+        "Default",
+        "WithSelection",
+        "WithBulkActions",
+        "ProjectsTable",
+        "CompactTable",
+        "WithoutPagination",
+        "CustomExport",
+        "ClickableRows",
+        "MinimalFeatures",
+        "AllFeaturesEnabled",
+        "ResizableColumns",
+        "Playground"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": true,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/templates/ODLPageTemplates.stories.tsx",
+      "title": "Templates/ODL Page Templates",
+      "stories": [
+        "Dashboard",
+        "TablePage",
+        "FormPage",
+        "DetailPage",
+        "CardsGrid",
+        "AppShell",
+        "AllTemplates"
+      ],
+      "hasArgTypes": false,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/FileUpload/FileUpload.stories.tsx",
+      "title": "Components/FileUpload",
+      "stories": [
+        "Default",
+        "DropzoneSmall",
+        "DropzoneLarge",
+        "Compact",
+        "CompactInDrawer",
+        "Button",
+        "ButtonMultiple",
+        "PictureCard",
+        "PictureCardSingle",
+        "WithAIAnalysis",
+        "CompactWithAI",
+        "WithError",
+        "Disabled",
+        "CompactDisabled",
+        "WithProgress",
+        "AllVariants"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onText:",
+        "onMultiple:",
+        "onAnalyze:",
+        "onUpload:"
+      ]
+    },
+    {
+      "file": "src/components/UserAvatar/UserAvatar.stories.tsx",
+      "title": "Components/UserAvatar",
+      "stories": [
+        "Default",
+        "Small",
+        "Large",
+        "WithoutPopup",
+        "WithAvatar",
+        "MultipleUsers"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/Popover/Popover.stories.tsx",
+      "title": "Components/Overlays/Popover",
+      "stories": [
+        "BottomStart",
+        "TopCenter",
+        "LeftAlign",
+        "RightAlign",
+        "WithIconTrigger",
+        "WithList",
+        "WithForm",
+        "UserProfile",
+        "RichContent",
+        "ColorPicker"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": true,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": true,
+      "hasContentProp": true,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onTrigger:"
+      ]
+    },
+    {
+      "file": "src/components/Card/Card.stories.tsx",
+      "title": "Components/Layout/Card",
+      "stories": [
+        "Default",
+        "Hoverable",
+        "Clickable",
+        "NoBorder",
+        "SmallPadding",
+        "CardGrid"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onClick:"
+      ]
+    },
+    {
+      "file": "src/components/YellowFolder/YellowFolder.stories.tsx",
+      "title": "Components/Display/YellowFolder",
+      "stories": [
+        "Default",
+        "Small",
+        "Large",
+        "ExtraLarge",
+        "Sizes",
+        "InContext"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/AlertPanel/AlertPanel.stories.tsx",
+      "title": "Planning Scheme Update",
+      "stories": [
+        "Default",
+        "AllUnread",
+        "AllRead",
+        "Empty",
+        "SingleAlert",
+        "MixedAlertTypes"
+      ],
+      "hasArgTypes": false,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/BreadcrumbGrid/BreadcrumbGrid.stories.tsx",
+      "title": "Components/Navigation/BreadcrumbGrid",
+      "stories": [
+        "Default",
+        "CompactView",
+        "WithCallbacks",
+        "EmptyFolder",
+        "FilesOnly",
+        "WithStatusAndPriority"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onNavigate:",
+        "onItemClick:"
+      ]
+    },
+    {
+      "file": "src/components/ColumnSelectionTree/ColumnSelectionTree.stories.tsx",
+      "title": "Components/Data/ColumnSelectionTree",
+      "stories": [
+        "Default",
+        "NoneSelected",
+        "AllSelected",
+        "WithoutIcons",
+        "SingleGroup",
+        "AllExpanded"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": true,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": []
+    },
+    {
+      "file": "src/components/PageTemplate/PageTemplate.stories.tsx",
+      "title": "Components/Layout/PageTemplate",
+      "stories": [
+        "Default",
+        "WithLeftNavigation",
+        "MinimalHeader",
+        "WithSubtitle",
+        "WithAlerts",
+        "CustomColors",
+        "LongBreadcrumbs"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": true,
+      "callbackProps": [
+        "onAlertRead:",
+        "onBreadcrumbNavigate:"
+      ]
+    },
+    {
+      "file": "src/components/PageManager/PageManager.stories.tsx",
+      "title": "Components/Layout/PageManager",
+      "stories": [
+        "DashboardLayout",
+        "TableLayout",
+        "TwoColumnLayout",
+        "SingleColumnLayout",
+        "CustomContent",
+        "WithBrandColor",
+        "MinimalSetup"
+      ],
+      "hasArgTypes": true,
+      "hasMappingControl": false,
+      "hasControlFalse": false,
+      "hasRenderFunction": false,
+      "hasTriggerProp": false,
+      "hasContentProp": false,
+      "hasChildrenProp": false,
+      "callbackProps": [
+        "onName:",
+        "onLayoutChange:",
+        "onNavigate:"
+      ]
+    }
+  ]
+}

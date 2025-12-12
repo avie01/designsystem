@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TableRowData, SortConfig } from '../../types/common';
 import Icon from '../Icon/Icon';
 import ODLTheme from '../../styles/ODLTheme';
+import styles from './Table.module.css';
 
 // Self-contained utility function to replace clsx
 const classNames = (...classes: (string | boolean | undefined | null)[]): string => {
@@ -246,15 +247,15 @@ function Table<T extends TableRowData>({
   );
 
   return (
-    <div className="overflow-hidden border border-odl-border" style={{ borderRadius: '0 0 8px 8px' }}>
+    <div className={`overflow-hidden border border-odl-border ${styles.tableContainer}`}>
       {headerActions && (
         <div className="px-3 py-3 bg-white border-b border-odl-border">
           {headerActions}
         </div>
       )}
       {children}
-      <div style={{ overflowX: 'auto' }}>
-        <table className={classNames(tableStyles)} style={{ width: '100%', tableLayout: 'auto' }} aria-label={ariaLabel}>
+      <div className={styles.scrollContainer}>
+        <table className={classNames(tableStyles, styles.table)} aria-label={ariaLabel}>
           <colgroup>
             {selectable && <col style={{ width: '50px' }} />}
             {columns.map((column) => (
@@ -283,35 +284,18 @@ function Table<T extends TableRowData>({
                   scope="col"
                   className={classNames(
                     'text-left text-sm font-semibold text-odl-text-secondary',
-                    column.alignRight && 'text-right'
+                    column.alignRight && 'text-right',
+                    styles.headerCell
                   )}
-                  style={{
-                    padding: 0,
-                    position: 'relative'
-                  }}
                 >
-                  <div
-                    style={{
-                      resize: 'horizontal',
-                      overflow: 'hidden',
-                      minWidth: '100px',
-                      width: '100%',
-                      padding: '12px 24px',
-                      display: 'flex',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div 
+                  <div className={styles.headerCellContent}>
+                    <div
                       className={classNames(
                         "flex items-center gap-1",
-                        column.sortable && 'cursor-pointer hover:bg-odl-background'
+                        column.sortable && 'cursor-pointer hover:bg-odl-background',
+                        styles.sortableLabel
                       )}
                       onClick={column.sortable ? () => handleSort(column.key) : undefined}
-                      style={{
-                        padding: '2px 4px',
-                        borderRadius: '4px',
-                        whiteSpace: 'nowrap'
-                      }}
                     >
                       <span>{column.label || column.header}</span>
                       {column.sortable && sortConfig?.key === column.key && (

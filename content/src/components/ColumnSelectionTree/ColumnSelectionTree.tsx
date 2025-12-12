@@ -98,6 +98,7 @@ const ColumnSelectionTree: React.FC<ColumnSelectionTreeProps> = ({
               type="checkbox"
               checked={isSelected}
               onChange={() => handleColumnToggle(column.key)}
+              aria-label={`Select ${column.header} column`}
               className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <span className="flex-1 text-left">{column.header}</span>

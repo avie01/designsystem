@@ -5,12 +5,12 @@ import { EditorContent, useEditor, useEditorState } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
-// import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import ODLTheme from '../../styles/ODLTheme';
+import styles from './SimpleEditor.module.css';
 
 const extensions = [
-  TextStyleKit, 
+  TextStyleKit,
   StarterKit.configure({
     heading: {
       levels: [1, 2, 3, 4, 5, 6]
@@ -22,99 +22,47 @@ const extensions = [
   Underline
 ];
 
-
 function MenuBar({ editor, onCancel, onInsertImage }: { editor: Editor; onSave: () => void; onCancel: () => void; onInsertImage?: () => void }) {
-  // Icon button style helper
-  const getIconButtonStyle = (isActive: boolean, isDisabled: boolean = false) => ({
-    background: isActive ? ODLTheme.colors.primaryLight : 'transparent',
-    border: 'none',
-    padding: '6px',
-    cursor: isDisabled ? 'not-allowed' : 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: ODLTheme.borders.radius.sm,
-    color: isActive ? ODLTheme.colors.primary : ODLTheme.colors.text.primary,
-    transition: 'all 0.2s ease',
-    opacity: isDisabled ? 0.4 : 1
-  });
-  
-  // Read the current editor's state, and re-render the component when it changes
   const editorState = useEditorState({
     editor,
-    selector: ctx => {
-      return {
-        isBold: ctx.editor.isActive('bold') ?? false,
-        canBold: ctx.editor.can().chain().toggleBold().run() ?? false,
-        isItalic: ctx.editor.isActive('italic') ?? false,
-        canItalic: ctx.editor.can().chain().toggleItalic().run() ?? false,
-        isUnderline: ctx.editor.isActive('underline') ?? false,
-        canUnderline: ctx.editor.can().chain().toggleUnderline().run() ?? false,
-        isStrike: ctx.editor.isActive('strike') ?? false,
-        canStrike: ctx.editor.can().chain().toggleStrike().run() ?? false,
-        isCode: ctx.editor.isActive('code') ?? false,
-        canCode: ctx.editor.can().chain().toggleCode().run() ?? false,
-        canClearMarks: ctx.editor.can().chain().unsetAllMarks().run() ?? false,
-        isParagraph: ctx.editor.isActive('paragraph') ?? false,
-        isHeading1: ctx.editor.isActive('heading', { level: 1 }) ?? false,
-        isHeading2: ctx.editor.isActive('heading', { level: 2 }) ?? false,
-        isHeading3: ctx.editor.isActive('heading', { level: 3 }) ?? false,
-        isHeading4: ctx.editor.isActive('heading', { level: 4 }) ?? false,
-        isHeading5: ctx.editor.isActive('heading', { level: 5 }) ?? false,
-        isHeading6: ctx.editor.isActive('heading', { level: 6 }) ?? false,
-        isBulletList: ctx.editor.isActive('bulletList') ?? false,
-        isOrderedList: ctx.editor.isActive('orderedList') ?? false,
-        isCodeBlock: ctx.editor.isActive('codeBlock') ?? false,
-        isBlockquote: ctx.editor.isActive('blockquote') ?? false,
-        canUndo: ctx.editor.can().chain().undo().run() ?? false,
-        canRedo: ctx.editor.can().chain().redo().run() ?? false,
-      }
-    },
+    selector: ctx => ({
+      isBold: ctx.editor.isActive('bold') ?? false,
+      canBold: ctx.editor.can().chain().toggleBold().run() ?? false,
+      isItalic: ctx.editor.isActive('italic') ?? false,
+      canItalic: ctx.editor.can().chain().toggleItalic().run() ?? false,
+      isUnderline: ctx.editor.isActive('underline') ?? false,
+      canUnderline: ctx.editor.can().chain().toggleUnderline().run() ?? false,
+      isStrike: ctx.editor.isActive('strike') ?? false,
+      canStrike: ctx.editor.can().chain().toggleStrike().run() ?? false,
+      isCode: ctx.editor.isActive('code') ?? false,
+      canCode: ctx.editor.can().chain().toggleCode().run() ?? false,
+      canClearMarks: ctx.editor.can().chain().unsetAllMarks().run() ?? false,
+      isParagraph: ctx.editor.isActive('paragraph') ?? false,
+      isHeading1: ctx.editor.isActive('heading', { level: 1 }) ?? false,
+      isHeading2: ctx.editor.isActive('heading', { level: 2 }) ?? false,
+      isHeading3: ctx.editor.isActive('heading', { level: 3 }) ?? false,
+      isHeading4: ctx.editor.isActive('heading', { level: 4 }) ?? false,
+      isHeading5: ctx.editor.isActive('heading', { level: 5 }) ?? false,
+      isHeading6: ctx.editor.isActive('heading', { level: 6 }) ?? false,
+      isBulletList: ctx.editor.isActive('bulletList') ?? false,
+      isOrderedList: ctx.editor.isActive('orderedList') ?? false,
+      isCodeBlock: ctx.editor.isActive('codeBlock') ?? false,
+      isBlockquote: ctx.editor.isActive('blockquote') ?? false,
+      canUndo: ctx.editor.can().chain().undo().run() ?? false,
+      canRedo: ctx.editor.can().chain().redo().run() ?? false,
+    }),
   });
 
+  const getButtonClass = (isActive: boolean) =>
+    `${styles.iconButton} ${isActive ? styles.iconButtonActive : ''}`;
 
   return (
-    <div style={{
-      backgroundColor: ODLTheme.colors.white,
-      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
-      width: '100%',
-      position: 'sticky',
-      top: '-30px',
-      zIndex: 100
-    }}>
-      {/* Header with title and close button */}
-      <div style={{
-          padding: `${ODLTheme.spacing[3]} ${ODLTheme.spacing[4]}`,
-          borderBottom: `1px solid ${ODLTheme.colors.border}`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}
-      >
-        <h2 style={{ 
-          fontSize: ODLTheme.typography.fontSize.lg, 
-          fontWeight: ODLTheme.typography.fontWeight.semibold,
-          margin: 0,
-          color: ODLTheme.colors.text.primary
-        }}>
-          Formatting Tools
-        </h2>
+    <div className={styles.menuBar}>
+      <div className={styles.menuHeader}>
+        <h2 className={styles.menuTitle}>Formatting Tools</h2>
         <button
           onClick={onCancel}
-          style={{
-            background: 'none',
-            border: 'none',
-            padding: ODLTheme.spacing[1],
-            cursor: 'pointer',
-            color: ODLTheme.colors.text.secondary,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: ODLTheme.borders.radius.sm,
-            transition: 'background-color 0.2s ease'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = ODLTheme.colors.surface}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          className={styles.closeButton}
           aria-label="Close formatting tools"
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
@@ -122,217 +70,169 @@ function MenuBar({ editor, onCancel, onInsertImage }: { editor: Editor; onSave: 
           </svg>
         </button>
       </div>
-      
-      {/* Toolbar content - all in one line */}
-      <div style={{
-        display: 'flex',
-        gap: '4px',
-        padding: `${ODLTheme.spacing[2]} ${ODLTheme.spacing[3]}`,
-        alignItems: 'center',
-        overflowX: 'auto',
-        whiteSpace: 'nowrap'
-      }}>
-      {/* Text formatting */}
-      <button
-        style={getIconButtonStyle(editorState.isBold, !editorState.canBold)}
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        disabled={!editorState.canBold}
-        aria-label="Bold"
-        aria-pressed={editorState.isBold}
-        onMouseEnter={(e) => !editorState.isBold && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isBold && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="text-bold" size={18} />
-      </button>
-      <button
-        style={getIconButtonStyle(editorState.isItalic, !editorState.canItalic)}
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        disabled={!editorState.canItalic}
-        aria-label="Italic"
-        aria-pressed={editorState.isItalic}
-        onMouseEnter={(e) => !editorState.isItalic && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isItalic && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="text-italic" size={18} />
-      </button>
-      <button
-        style={getIconButtonStyle(editorState.isUnderline, !editorState.canUnderline)}
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-        disabled={!editorState.canUnderline}
-        aria-label="Underline"
-        aria-pressed={editorState.isUnderline}
-        onMouseEnter={(e) => !editorState.isUnderline && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isUnderline && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="text-underline" size={18} />
-      </button>
-      <button
-        style={getIconButtonStyle(editorState.isStrike, !editorState.canStrike)}
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-        disabled={!editorState.canStrike}
-        aria-label="Strikethrough"
-        aria-pressed={editorState.isStrike}
-        onMouseEnter={(e) => !editorState.isStrike && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isStrike && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="text-strikethrough" size={18} />
-      </button>
-      <button
-        style={getIconButtonStyle(editorState.isCode, !editorState.canCode)}
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        disabled={!editorState.canCode}
-        aria-label="Inline code"
-        aria-pressed={editorState.isCode}
-        onMouseEnter={(e) => !editorState.isCode && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isCode && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="code" size={18} />
-      </button>
 
-      <div style={{ width: '1px', height: '20px', backgroundColor: ODLTheme.colors.border, margin: '0 4px' }} />
+      <div className={styles.toolbar}>
+        <button
+          className={getButtonClass(editorState.isBold)}
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          disabled={!editorState.canBold}
+          aria-label="Bold"
+          aria-pressed={editorState.isBold}
+        >
+          <Icon name="text-bold" size={18} />
+        </button>
+        <button
+          className={getButtonClass(editorState.isItalic)}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          disabled={!editorState.canItalic}
+          aria-label="Italic"
+          aria-pressed={editorState.isItalic}
+        >
+          <Icon name="text-italic" size={18} />
+        </button>
+        <button
+          className={getButtonClass(editorState.isUnderline)}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          disabled={!editorState.canUnderline}
+          aria-label="Underline"
+          aria-pressed={editorState.isUnderline}
+        >
+          <Icon name="text-underline" size={18} />
+        </button>
+        <button
+          className={getButtonClass(editorState.isStrike)}
+          onClick={() => editor.chain().focus().toggleStrike().run()}
+          disabled={!editorState.canStrike}
+          aria-label="Strikethrough"
+          aria-pressed={editorState.isStrike}
+        >
+          <Icon name="text-strikethrough" size={18} />
+        </button>
+        <button
+          className={getButtonClass(editorState.isCode)}
+          onClick={() => editor.chain().focus().toggleCode().run()}
+          disabled={!editorState.canCode}
+          aria-label="Inline code"
+          aria-pressed={editorState.isCode}
+        >
+          <Icon name="code" size={18} />
+        </button>
 
-      {/* Headings */}
-      <button
-        style={getIconButtonStyle(editorState.isParagraph, false)}
-        onClick={() => editor.chain().focus().setParagraph().run()}
-        aria-label="Paragraph"
-        aria-pressed={editorState.isParagraph}
-        onMouseEnter={(e) => !editorState.isParagraph && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isParagraph && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <span style={{ fontSize: '14px', fontWeight: 600 }}>P</span>
-      </button>
-      <button
-        style={getIconButtonStyle(editorState.isHeading1, false)}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        aria-label="Heading 1"
-        aria-pressed={editorState.isHeading1}
-        onMouseEnter={(e) => !editorState.isHeading1 && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isHeading1 && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <span style={{ fontSize: '14px', fontWeight: 600 }}>H1</span>
-      </button>
-      <button
-        style={getIconButtonStyle(editorState.isHeading2, false)}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        aria-label="Heading 2"
-        aria-pressed={editorState.isHeading2}
-        onMouseEnter={(e) => !editorState.isHeading2 && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isHeading2 && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <span style={{ fontSize: '14px', fontWeight: 600 }}>H2</span>
-      </button>
-      <button
-        style={getIconButtonStyle(editorState.isHeading3, false)}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        aria-label="Heading 3"
-        aria-pressed={editorState.isHeading3}
-        onMouseEnter={(e) => !editorState.isHeading3 && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isHeading3 && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <span style={{ fontSize: '14px', fontWeight: 600 }}>H3</span>
-      </button>
+        <div className={styles.divider} />
 
-      <div style={{ width: '1px', height: '20px', backgroundColor: ODLTheme.colors.border, margin: '0 4px' }} />
+        <button
+          className={getButtonClass(editorState.isParagraph)}
+          onClick={() => editor.chain().focus().setParagraph().run()}
+          aria-label="Paragraph"
+          aria-pressed={editorState.isParagraph}
+        >
+          <span className={styles.headingLabel}>P</span>
+        </button>
+        <button
+          className={getButtonClass(editorState.isHeading1)}
+          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          aria-label="Heading 1"
+          aria-pressed={editorState.isHeading1}
+        >
+          <span className={styles.headingLabel}>H1</span>
+        </button>
+        <button
+          className={getButtonClass(editorState.isHeading2)}
+          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          aria-label="Heading 2"
+          aria-pressed={editorState.isHeading2}
+        >
+          <span className={styles.headingLabel}>H2</span>
+        </button>
+        <button
+          className={getButtonClass(editorState.isHeading3)}
+          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          aria-label="Heading 3"
+          aria-pressed={editorState.isHeading3}
+        >
+          <span className={styles.headingLabel}>H3</span>
+        </button>
 
-      {/* Lists and blocks */}
-      <button
-        style={getIconButtonStyle(editorState.isBulletList, false)}
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        aria-label="Bullet list"
-        aria-pressed={editorState.isBulletList}
-        onMouseEnter={(e) => !editorState.isBulletList && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isBulletList && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="list-bulleted" size={18} />
-      </button>
-      <button
-        style={getIconButtonStyle(editorState.isOrderedList, false)}
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        aria-label="Ordered list"
-        aria-pressed={editorState.isOrderedList}
-        onMouseEnter={(e) => !editorState.isOrderedList && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => !editorState.isOrderedList && (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="list-numbered" size={18} />
-      </button>
+        <div className={styles.divider} />
 
-      <div style={{ width: '1px', height: '20px', backgroundColor: ODLTheme.colors.border, margin: '0 4px' }} />
+        <button
+          className={getButtonClass(editorState.isBulletList)}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          aria-label="Bullet list"
+          aria-pressed={editorState.isBulletList}
+        >
+          <Icon name="list-bulleted" size={18} />
+        </button>
+        <button
+          className={getButtonClass(editorState.isOrderedList)}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          aria-label="Ordered list"
+          aria-pressed={editorState.isOrderedList}
+        >
+          <Icon name="list-numbered" size={18} />
+        </button>
 
-      {/* Insert elements */}
-      <button
-        type="button"
-        style={getIconButtonStyle(false, false)}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          alert('Table insertion not yet implemented');
-        }}
-        aria-label="Insert table"
-        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="table" size={18} />
-      </button>
-      <button
-        style={getIconButtonStyle(false, false)}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('Image button clicked in SimpleEditor');
-          console.log('onInsertImage callback exists:', !!onInsertImage);
-          if (onInsertImage) {
-            console.log('Calling onInsertImage callback');
-            onInsertImage();
-          } else {
-            alert('Image insertion not yet implemented');
-          }
-        }}
-        aria-label="Insert image"
-        type="button"
-        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="image" size={18} />
-      </button>
-      <button
-        type="button"
-        style={getIconButtonStyle(false, false)}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          alert('Graph insertion not yet implemented');
-        }}
-        aria-label="Insert graph"
-        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="chart-line" size={18} />
-      </button>
+        <div className={styles.divider} />
 
-      <div style={{ width: '1px', height: '20px', backgroundColor: ODLTheme.colors.border, margin: '0 4px' }} />
+        <button
+          type="button"
+          className={styles.iconButton}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            alert('Table insertion not yet implemented');
+          }}
+          aria-label="Insert table"
+        >
+          <Icon name="table" size={18} />
+        </button>
+        <button
+          className={styles.iconButton}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (onInsertImage) {
+              onInsertImage();
+            } else {
+              alert('Image insertion not yet implemented');
+            }
+          }}
+          aria-label="Insert image"
+          type="button"
+        >
+          <Icon name="image" size={18} />
+        </button>
+        <button
+          type="button"
+          className={styles.iconButton}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            alert('Graph insertion not yet implemented');
+          }}
+          aria-label="Insert graph"
+        >
+          <Icon name="chart-line" size={18} />
+        </button>
 
-      {/* History */}
-      <button
-        style={getIconButtonStyle(false, !editorState.canUndo)}
-        onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editorState.canUndo}
-        aria-label="Undo"
-        onMouseEnter={(e) => editorState.canUndo && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="undo" size={18} />
-      </button>
-      <button
-        style={getIconButtonStyle(false, !editorState.canRedo)}
-        onClick={() => editor.chain().focus().redo().run()}
-        disabled={!editorState.canRedo}
-        aria-label="Redo"
-        onMouseEnter={(e) => editorState.canRedo && (e.currentTarget.style.backgroundColor = ODLTheme.colors.surface)}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-      >
-        <Icon name="redo" size={18} />
-      </button>
+        <div className={styles.divider} />
+
+        <button
+          className={styles.iconButton}
+          onClick={() => editor.chain().focus().undo().run()}
+          disabled={!editorState.canUndo}
+          aria-label="Undo"
+        >
+          <Icon name="undo" size={18} />
+        </button>
+        <button
+          className={styles.iconButton}
+          onClick={() => editor.chain().focus().redo().run()}
+          disabled={!editorState.canRedo}
+          aria-label="Redo"
+        >
+          <Icon name="redo" size={18} />
+        </button>
       </div>
     </div>
   );
@@ -356,7 +256,7 @@ const SimpleEditor: React.FC<SimpleEditorProps> = ({
   onInsertImage
 }) => {
   const editorRef = React.useRef<HTMLDivElement>(null);
-  
+
   const editor = useEditor({
     extensions,
     content,
@@ -386,7 +286,6 @@ const SimpleEditor: React.FC<SimpleEditorProps> = ({
     }
   }, [content, editor]);
 
-  // Handle click outside to save
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (editorRef.current && !editorRef.current.contains(event.target as Node)) {
@@ -394,10 +293,8 @@ const SimpleEditor: React.FC<SimpleEditorProps> = ({
       }
     };
 
-    // Add event listener
     document.addEventListener('mousedown', handleClickOutside);
-    
-    // Cleanup
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -415,35 +312,15 @@ const SimpleEditor: React.FC<SimpleEditorProps> = ({
   }
 
   return (
-    <div style={{ 
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      position: 'relative'
-    }}>
+    <div className={styles.editorContainer}>
       <MenuBar editor={editor} onSave={onSave} onCancel={onCancel} onInsertImage={onInsertImage} />
-      <div 
+      <div
         ref={editorRef}
         onKeyDown={handleKeyDown}
-        style={{
-          border: `2px solid ${ODLTheme.colors.primary}`,
-          borderRadius: ODLTheme.borders.radius.base,
-          backgroundColor: ODLTheme.colors.white,
-          overflow: 'auto',
-          minHeight: '200px',
-          flex: 1,
-          marginTop: ODLTheme.spacing[2]
-        }}
+        className={styles.editorWrapper}
       >
         <EditorContent editor={editor} />
-        <div style={{
-          padding: `${ODLTheme.spacing[1]} ${ODLTheme.spacing[3]}`,
-          fontSize: ODLTheme.typography.fontSize.xs,
-          color: ODLTheme.colors.text.secondary,
-          backgroundColor: ODLTheme.colors.surface,
-          borderTop: `1px solid ${ODLTheme.colors.border}`
-        }}>
+        <div className={styles.editorFooter}>
           Click outside to save • Esc to cancel
         </div>
       </div>

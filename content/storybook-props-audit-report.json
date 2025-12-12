@@ -1,0 +1,149 @@
+{
+  "timestamp": "2025-12-12T04:41:42.483Z",
+  "summary": {
+    "totalComponents": 18,
+    "totalProps": 21,
+    "issuesFound": 10,
+    "properlyConfigured": 11
+  },
+  "issues": [
+    {
+      "component": "Accordion",
+      "file": "src/components/Accordion/Accordion.stories.tsx",
+      "severity": "HIGH",
+      "prop": "content",
+      "issue": "No argTypes configuration found for 'content' and no render function detected",
+      "recommendation": "Add argTypes with 'control: false' or use render function for stories"
+    },
+    {
+      "component": "Accordion",
+      "file": "src/components/Accordion/Accordion.stories.tsx",
+      "severity": "HIGH",
+      "prop": "children",
+      "issue": "No argTypes configuration found for 'children' and no render function detected",
+      "recommendation": "Add argTypes with 'control: false' or use render function for stories"
+    },
+    {
+      "component": "Stepper",
+      "file": "src/components/Stepper/Stepper.stories.tsx",
+      "severity": "HIGH",
+      "prop": "content",
+      "issue": "No argTypes configuration found for 'content' and no render function detected",
+      "recommendation": "Add argTypes with 'control: false' or use render function for stories"
+    },
+    {
+      "component": "AlertBanner",
+      "file": "src/components/AlertBanner/AlertBanner.stories.tsx",
+      "severity": "HIGH",
+      "prop": "children",
+      "issue": "ArgTypes for 'children' exists but has no 'control: false' or 'mapping'",
+      "recommendation": "Add 'control: false' to disable the control, or add 'mapping' with presets",
+      "argTypesConfig": "children: {\n      control: 'text',\n      description: 'Alert message content',\n      table: {\n        type: { summary: 'React.ReactNode' }..."
+    },
+    {
+      "component": "DualPaneExplorer",
+      "file": "src/components/DualPaneExplorer/DualPaneExplorer.stories.tsx",
+      "severity": "HIGH",
+      "prop": "content",
+      "issue": "No argTypes configuration found for 'content' and no render function detected",
+      "recommendation": "Add argTypes with 'control: false' or use render function for stories"
+    },
+    {
+      "component": "DualPaneExplorer",
+      "file": "src/components/DualPaneExplorer/DualPaneExplorer.stories.tsx",
+      "severity": "HIGH",
+      "prop": "children",
+      "issue": "No argTypes configuration found for 'children' and no render function detected",
+      "recommendation": "Add argTypes with 'control: false' or use render function for stories"
+    },
+    {
+      "component": "TreeNavigation",
+      "file": "src/components/TreeNavigation/TreeNavigation.stories.tsx",
+      "severity": "HIGH",
+      "prop": "children",
+      "issue": "No argTypes configuration found for 'children' and no render function detected",
+      "recommendation": "Add argTypes with 'control: false' or use render function for stories"
+    },
+    {
+      "component": "MillerColumns",
+      "file": "src/components/MillerColumns/MillerColumns.stories.tsx",
+      "severity": "HIGH",
+      "prop": "children",
+      "issue": "No argTypes configuration found for 'children' and no render function detected",
+      "recommendation": "Add argTypes with 'control: false' or use render function for stories"
+    },
+    {
+      "component": "BreadcrumbGrid",
+      "file": "src/components/BreadcrumbGrid/BreadcrumbGrid.stories.tsx",
+      "severity": "HIGH",
+      "prop": "children",
+      "issue": "No argTypes configuration found for 'children' and no render function detected",
+      "recommendation": "Add argTypes with 'control: false' or use render function for stories"
+    },
+    {
+      "component": "PageTemplate",
+      "file": "src/components/PageTemplate/PageTemplate.stories.tsx",
+      "severity": "HIGH",
+      "prop": "children",
+      "issue": "No argTypes configuration found for 'children' and no render function detected",
+      "recommendation": "Add argTypes with 'control: false' or use render function for stories"
+    }
+  ],
+  "goodComponents": [
+    {
+      "component": "Tabs",
+      "prop": "content",
+      "solution": "Using render function (stories define component inline)"
+    },
+    {
+      "component": "SimpleTabs",
+      "prop": "content",
+      "solution": "Using render function (stories define component inline)"
+    },
+    {
+      "component": "List",
+      "prop": "children",
+      "solution": "Using render function (stories define component inline)"
+    },
+    {
+      "component": "CollapsibleCard",
+      "prop": "children",
+      "solution": "Using render function (stories define component inline)"
+    },
+    {
+      "component": "Modal",
+      "prop": "children",
+      "solution": "Control disabled (control: false)"
+    },
+    {
+      "component": "Button",
+      "prop": "children",
+      "solution": "Using render function (stories define component inline)"
+    },
+    {
+      "component": "SimpleEditor",
+      "prop": "content",
+      "solution": "Using render function"
+    },
+    {
+      "component": "ErrorBoundary",
+      "prop": "children",
+      "solution": "Control disabled (control: false)"
+    },
+    {
+      "component": "Popover",
+      "prop": "trigger",
+      "solution": "Using mapping presets (triggerPresets)"
+    },
+    {
+      "component": "Popover",
+      "prop": "content",
+      "solution": "Using mapping presets (contentPresets)"
+    },
+    {
+      "component": "Card",
+      "prop": "children",
+      "solution": "Using render function (stories define component inline)"
+    }
+  ]
+}

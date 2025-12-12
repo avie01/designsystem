@@ -1,6 +1,14 @@
 import React, { useEffect, useRef } from 'react';
-import { Alert } from '../PageManager/PageManagerContext';
 import styles from './AlertPanel.module.css';
+
+export interface Alert {
+  id: string;
+  type: 'info' | 'success' | 'warning' | 'error';
+  title: string;
+  message: string;
+  timestamp: Date;
+  read: boolean;
+}
 
 interface AlertPanelProps {
   alerts: Alert[];

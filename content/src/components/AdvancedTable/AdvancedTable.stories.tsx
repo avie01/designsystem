@@ -235,7 +235,7 @@ const employeeColumns: TableColumn<Employee>[] = [
         <div style={{
           width: '32px',
           height: '32px',
-          backgroundColor: '#3b82f6',
+          backgroundColor: '#1d4ed8',
           borderRadius: '50%',
           display: 'flex',
           alignItems: 'center',
@@ -691,7 +691,7 @@ export const ResizableColumns: Story = {
             <div style={{
               width: '32px',
               height: '32px',
-              backgroundColor: '#3b82f6',
+              backgroundColor: '#1d4ed8',
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',

@@ -9,6 +9,10 @@ const meta: Meta<typeof Accordion> = {
   },
   tags: ['autodocs'],
   argTypes: {
+    items: {
+      control: false,
+      description: 'Array of accordion items with title, content, and optional children',
+    },
     allowMultiple: {
       control: 'boolean',
       description: 'Allow multiple items to be open simultaneously',

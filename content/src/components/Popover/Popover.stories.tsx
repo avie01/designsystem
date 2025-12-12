@@ -1,8 +1,58 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
 import Popover from './Popover';
 import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import { ODLTheme } from '../../styles/ODLTheme';
+
+// Trigger presets for interactive controls
+const triggerPresets: Record<string, React.ReactNode> = {
+  'Primary Button': <Button variant="primary">Open Popover</Button>,
+  'Secondary Button': <Button variant="secondary">Click Me</Button>,
+  'Icon Button': (
+    <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px' }}>
+      <Icon name="help" size={24} color={ODLTheme.colors.primary} />
+    </button>
+  ),
+  'Text Link': <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: ODLTheme.colors.primary, textDecoration: 'underline' }}>More Info</button>,
+};
+
+// Content presets for interactive controls
+const contentPresets: Record<string, React.ReactNode> = {
+  'Simple Text': (
+    <div style={{ padding: '16px', minWidth: '200px' }}>
+      <p style={{ margin: 0, fontSize: '14px' }}>Simple popover content.</p>
+    </div>
+  ),
+  'With Title': (
+    <div style={{ padding: '16px', minWidth: '250px' }}>
+      <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>Popover Title</h3>
+      <p style={{ margin: 0, color: ODLTheme.colors.text.secondary, fontSize: '14px' }}>
+        This is a popover with a title and description.
+      </p>
+    </div>
+  ),
+  'Menu List': (
+    <div style={{ padding: '8px 0', minWidth: '180px' }}>
+      {['Edit', 'Duplicate', 'Delete'].map((item) => (
+        <div key={item} style={{ padding: '8px 16px', cursor: 'pointer', fontSize: '14px' }}>{item}</div>
+      ))}
+    </div>
+  ),
+  'Rich Content': (
+    <div style={{ padding: '16px', width: '280px' }}>
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
+        <Icon name="information" size={24} color={ODLTheme.colors.primary} />
+        <div>
+          <h4 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: 600 }}>Feature Info</h4>
+          <p style={{ margin: 0, fontSize: '13px', color: ODLTheme.colors.text.secondary }}>Learn more about this feature.</p>
+        </div>
+      </div>
+      <Button variant="primary" size="sm">Learn More</Button>
+    </div>
+  ),
+};
 
 const meta: Meta<typeof Popover> = {
   title: 'Components/Overlays/Popover',
@@ -12,6 +62,18 @@ const meta: Meta<typeof Popover> = {
   },
   tags: ['autodocs'],
   argTypes: {
+    trigger: {
+      control: 'select',
+      options: Object.keys(triggerPresets),
+      mapping: triggerPresets,
+      description: 'The element that triggers the popover',
+    },
+    content: {
+      control: 'select',
+      options: Object.keys(contentPresets),
+      mapping: contentPresets,
+      description: 'Content to display inside the popover',
+    },
     position: {
       control: 'select',
       options: ['top', 'bottom', 'left', 'right'],
@@ -30,17 +92,8 @@ type Story = StoryObj<typeof meta>;
 
 export const BottomStart: Story = {
   args: {
-    trigger: <Button variant="primary">Open Popover</Button>,
-    content: (
-      <div style={{ padding: '16px', minWidth: '250px' }}>
-        <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>
-          Popover Title
-        </h3>
-        <p style={{ margin: 0, color: ODLTheme.colors.text.secondary, fontSize: '14px' }}>
-          This is a popover with some content. You can put any React component here.
-        </p>
-      </div>
-    ),
+    trigger: 'Primary Button' as unknown as React.ReactElement,
+    content: 'With Title' as unknown as React.ReactNode,
     position: 'bottom',
     align: 'start',
   },
@@ -63,7 +116,7 @@ export const TopCenter: Story = {
 
 export const LeftAlign: Story = {
   args: {
-    trigger: <Button variant="outlined">Left Popover</Button>,
+    trigger: <Button variant="secondary">Left Popover</Button>,
     content: (
       <div style={{ padding: '16px', minWidth: '220px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
@@ -84,7 +137,7 @@ export const LeftAlign: Story = {
 
 export const RightAlign: Story = {
   args: {
-    trigger: <Button variant="outlined">Right Popover</Button>,
+    trigger: <Button variant="secondary">Right Popover</Button>,
     content: (
       <div style={{ padding: '16px', minWidth: '220px' }}>
         <p style={{ margin: 0, fontSize: '14px' }}>
@@ -309,7 +362,7 @@ export const UserProfile: Story = {
 
 export const RichContent: Story = {
   args: {
-    trigger: <Button variant="outlined">Show Details</Button>,
+    trigger: <Button variant="secondary">Show Details</Button>,
     content: (
       <div style={{ padding: '16px', width: '320px' }}>
         <div style={{ display: 'flex', alignItems: 'start', gap: '12px', marginBottom: '12px' }}>
@@ -335,7 +388,7 @@ export const RichContent: Story = {
           We've just released a new feature that makes it easier to collaborate with your team. Check out the details below.
         </p>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <Button variant="primary" size="sm" style={{ flex: 1 }}>
+          <Button variant="primary" size="sm">
             Learn More
           </Button>
           <Button variant="secondary" size="sm">
@@ -349,63 +402,69 @@ export const RichContent: Story = {
   },
 };
 
-export const ColorPicker: Story = {
-  args: {
-    trigger: (
-      <button
-        style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '6px',
-          border: `2px solid ${ODLTheme.colors.grey300}`,
-          background: ODLTheme.colors.primary,
-          cursor: 'pointer',
-          transition: 'all 0.2s',
-        }}
-      />
-    ),
-    content: (
-      <div style={{ padding: '12px' }}>
-        <div style={{ marginBottom: '8px', fontSize: '13px', fontWeight: 600 }}>
-          Choose Color
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '6px' }}>
-          {[
-            ODLTheme.colors.primary,
-            ODLTheme.colors.success,
-            ODLTheme.colors.warning,
-            ODLTheme.colors.error,
-            ODLTheme.colors.grey500,
-            '#9b59b6',
-            '#e74c3c',
-            '#f39c12',
-            '#2ecc71',
-            '#3498db',
-          ].map((color) => (
-            <button
-              key={color}
-              style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '4px',
-                border: `2px solid ${ODLTheme.colors.grey300}`,
-                background: color,
-                cursor: 'pointer',
-                transition: 'transform 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
-              onClick={() => console.log(`Selected color: ${color}`)}
-            />
-          ))}
-        </div>
+const ColorPickerContent = () => {
+  const [color, setColor] = useState('#3560C1');
+  return (
+    <div style={{ padding: '12px', width: '280px' }}>
+      <HexColorPicker color={color} onChange={setColor} style={{ width: '100%', height: '180px' }} />
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginTop: '12px',
+        paddingTop: '12px',
+        borderTop: `1px solid ${ODLTheme.colors.grey200}`,
+      }}>
+        <div
+          style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '6px',
+            background: color,
+            border: `1px solid ${ODLTheme.colors.grey300}`,
+            flexShrink: 0,
+          }}
+        />
+        <input
+          type="text"
+          value={color}
+          onChange={(e) => setColor(e.target.value)}
+          style={{
+            flex: 1,
+            padding: '8px 10px',
+            border: `1px solid ${ODLTheme.colors.grey300}`,
+            borderRadius: '6px',
+            fontSize: '13px',
+            fontFamily: 'monospace',
+            textTransform: 'uppercase',
+          }}
+        />
       </div>
-    ),
-    position: 'bottom',
-    align: 'start',
-  },
+    </div>
+  );
+};
+
+const ColorPickerTrigger = ({ color }: { color: string }) => (
+  <button
+    style={{
+      width: '36px',
+      height: '36px',
+      borderRadius: '6px',
+      border: `2px solid ${ODLTheme.colors.grey300}`,
+      background: color,
+      cursor: 'pointer',
+      transition: 'all 0.2s',
+    }}
+  />
+);
+
+export const ColorPicker: Story = {
+  render: () => (
+    <Popover
+      trigger={<ColorPickerTrigger color="#3560C1" />}
+      content={<ColorPickerContent />}
+      position="bottom"
+      align="start"
+    />
+  ),
 };

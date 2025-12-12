@@ -162,7 +162,6 @@ function AdvancedTable<T extends TableRowData>({
   const [resizingColumn, setResizingColumn] = useState<string | null>(null);
   const [resizeStartX, setResizeStartX] = useState(0);
   const [resizeStartWidth, setResizeStartWidth] = useState(0);
-  const tableRef = React.useRef<HTMLTableElement>(null);
 
   const getKey = (item: T, index: number) => {
     if (getRowKey) return getRowKey(item);
@@ -497,10 +496,11 @@ function AdvancedTable<T extends TableRowData>({
             <div className="flex items-center space-x-3">
               {showSearch && (
                 <div className="relative">
-                  <Icon name="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+                  <Icon name="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" aria-hidden="true" />
                   <input
                     type="text"
                     placeholder="Search..."
+                    aria-label="Search table"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10 pr-4 py-2 bg-gray-100 border-0 border-b-2 border-gray-300 rounded-none focus:outline-none focus:border-blue-500 focus:bg-white hover:bg-white hover:border-gray-400 transition-all duration-200 text-sm"
@@ -560,6 +560,7 @@ function AdvancedTable<T extends TableRowData>({
                     type="checkbox"
                     checked={selectedRows.size === data.length && data.length > 0}
                     onChange={(e) => handleSelectAll(e.target.checked)}
+                    aria-label="Select all rows"
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                 </th>
@@ -645,6 +646,7 @@ function AdvancedTable<T extends TableRowData>({
                         checked={isSelected}
                         onChange={(e) => handleRowSelect(item, e.target.checked)}
                         onClick={(e) => e.stopPropagation()}
+                        aria-label={`Select row ${startIndex + index + 1}`}
                         className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                       />
                     </td>
@@ -698,6 +700,7 @@ function AdvancedTable<T extends TableRowData>({
               <select
                 value={internalItemsPerPage}
                 onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+                aria-label="Items per page"
                 style={{
                   ...ODLTheme.formStyles.select,
                   paddingRight: '32px',

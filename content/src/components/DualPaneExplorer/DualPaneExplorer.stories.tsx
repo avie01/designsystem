@@ -16,7 +16,7 @@ const meta: Meta<typeof DualPaneExplorer> = {
   argTypes: {
     data: {
       description: 'Array of explorer nodes with hierarchical structure',
-      control: 'object',
+      control: false,
     },
     defaultSelectedId: {
       description: 'ID of the initially selected node',
@@ -36,6 +36,7 @@ const meta: Meta<typeof DualPaneExplorer> = {
     },
     onNodeSelect: {
       description: 'Callback fired when a node is selected',
+      control: false,
     },
   },
 };

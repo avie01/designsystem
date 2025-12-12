@@ -10,6 +10,10 @@ const meta: Meta<typeof Stepper> = {
   },
   tags: ['autodocs'],
   argTypes: {
+    steps: {
+      control: false,
+      description: 'Array of step objects with title, description, status, and optional content',
+    },
     orientation: {
       control: 'select',
       options: ['horizontal', 'vertical'],
@@ -35,6 +39,10 @@ const meta: Meta<typeof Stepper> = {
     expandedContent: {
       control: 'boolean',
       description: 'Show expanded content for current step',
+    },
+    onStepClick: {
+      control: false,
+      description: 'Callback when a step is clicked',
     },
   },
 };

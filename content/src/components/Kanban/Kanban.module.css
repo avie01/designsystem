@@ -1,0 +1,339 @@
+.kanbanBoard {
+  background: var(--odl-white, #ffffff);
+  border: 1px solid var(--odl-border, #e5e7eb);
+  border-radius: var(--odl-border-radius-lg, 12px);
+  padding: var(--odl-spacing-4, 16px);
+  box-shadow: var(--odl-shadow-sm, 0 1px 2px rgba(0,0,0,0.05));
+}
+
+.columnHeaders {
+  display: grid;
+  gap: 1px;
+  background: var(--odl-border, #e5e7eb);
+  border-radius: var(--odl-border-radius-md, 8px);
+  margin-bottom: var(--odl-spacing-4, 16px);
+}
+
+.columnHeader {
+  background: var(--odl-surface, #f9fafb);
+  padding: var(--odl-spacing-3, 12px);
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-2, 8px);
+}
+
+.columnHeader:first-child {
+  border-top-left-radius: var(--odl-border-radius-md, 8px);
+  border-bottom-left-radius: var(--odl-border-radius-md, 8px);
+}
+
+.columnHeader:last-child {
+  border-top-right-radius: var(--odl-border-radius-md, 8px);
+  border-bottom-right-radius: var(--odl-border-radius-md, 8px);
+}
+
+.columnTitle {
+  font-size: var(--odl-font-size-sm, 14px);
+  font-weight: 600;
+  color: var(--odl-text-primary, #111827);
+  margin: 0;
+  flex: 1;
+}
+
+.columnCount {
+  color: var(--odl-white, #ffffff);
+  padding: var(--odl-spacing-1, 4px) var(--odl-spacing-2, 8px);
+  border-radius: var(--odl-border-radius-full, 9999px);
+  font-size: var(--odl-font-size-xs, 12px);
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+}
+
+.columnContent {
+  display: grid;
+  gap: 1px;
+  background: var(--odl-border, #e5e7eb);
+  border-radius: var(--odl-border-radius-md, 8px);
+  min-height: 400px;
+}
+
+.column {
+  background: var(--odl-white, #ffffff);
+  padding: var(--odl-spacing-3, 12px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 200px;
+}
+
+.column:first-child {
+  border-top-left-radius: var(--odl-border-radius-md, 8px);
+  border-bottom-left-radius: var(--odl-border-radius-md, 8px);
+}
+
+.column:last-child {
+  border-top-right-radius: var(--odl-border-radius-md, 8px);
+  border-bottom-right-radius: var(--odl-border-radius-md, 8px);
+}
+
+.columnDragOver {
+  background: var(--odl-primary-light, #EBF5FF);
+  transform: scale(1.02);
+  box-shadow: inset 0 0 0 2px var(--odl-primary, #0F62FE);
+}
+
+.taskCard {
+  background: var(--odl-white, #ffffff);
+  border: 1px solid var(--odl-border, #e5e7eb);
+  border-radius: var(--odl-border-radius-md, 8px);
+  padding: var(--odl-spacing-3, 12px);
+  margin-bottom: var(--odl-spacing-2, 8px);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--odl-shadow-sm, 0 1px 2px rgba(0,0,0,0.05));
+}
+
+.taskCard:hover {
+  box-shadow: var(--odl-shadow-md, 0 4px 6px rgba(0,0,0,0.1));
+  transform: translateY(-2px);
+}
+
+.taskCardDragging {
+  transform: rotate(2deg) scale(1.02);
+  opacity: 0.8;
+  z-index: 1000;
+  box-shadow: var(--odl-shadow-lg, 0 10px 15px rgba(0,0,0,0.1));
+}
+
+.taskCardDraggable {
+  cursor: grab;
+}
+
+.taskCardDraggable:active {
+  cursor: grabbing;
+}
+
+.priorityIndicator {
+  height: 3px;
+  margin: calc(-1 * var(--odl-spacing-3, 12px)) calc(-1 * var(--odl-spacing-3, 12px)) var(--odl-spacing-2, 8px) calc(-1 * var(--odl-spacing-3, 12px));
+  border-radius: var(--odl-border-radius-md, 8px) var(--odl-border-radius-md, 8px) 0 0;
+}
+
+.taskHeader {
+  margin-bottom: var(--odl-spacing-2, 8px);
+}
+
+.taskTitle {
+  font-size: var(--odl-font-size-sm, 14px);
+  font-weight: 500;
+  color: var(--odl-text-primary, #111827);
+  margin: 0;
+}
+
+.taskDescription {
+  font-size: var(--odl-font-size-xs, 12px);
+  color: var(--odl-text-secondary, #6b7280);
+  margin: 0;
+  margin-top: var(--odl-spacing-1, 4px);
+}
+
+.tagsContainer {
+  display: flex;
+  gap: var(--odl-spacing-1, 4px);
+  flex-wrap: wrap;
+  margin-bottom: var(--odl-spacing-2, 8px);
+}
+
+.tag {
+  font-size: var(--odl-font-size-xs, 12px);
+  background: var(--odl-primary-light, #EBF5FF);
+  color: var(--odl-primary, #0F62FE);
+  padding: 0 var(--odl-spacing-2, 8px);
+  border-radius: var(--odl-border-radius-sm, 4px);
+}
+
+.tagOverflow {
+  font-size: var(--odl-font-size-xs, 12px);
+  color: var(--odl-text-tertiary, #9ca3af);
+}
+
+.progressBar {
+  background: var(--odl-surface, #f9fafb);
+  height: 4px;
+  border-radius: var(--odl-border-radius-sm, 4px);
+  margin-bottom: var(--odl-spacing-2, 8px);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.taskFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--odl-font-size-xs, 12px);
+}
+
+.assignee {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-1, 4px);
+}
+
+.assigneeAvatar {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--odl-border-radius-full, 9999px);
+  background: var(--odl-primary, #0F62FE);
+  color: var(--odl-white, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--odl-font-size-xs, 12px);
+  font-weight: 600;
+}
+
+.assigneeName {
+  color: var(--odl-text-secondary, #6b7280);
+}
+
+.dueDate {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-1, 4px);
+}
+
+.dueDateText {
+  color: var(--odl-text-tertiary, #9ca3af);
+}
+
+.dueDateOverdue {
+  color: var(--odl-error, #DA1E28);
+}
+
+.blockerIndicator {
+  margin-top: var(--odl-spacing-2, 8px);
+  padding: var(--odl-spacing-2, 8px);
+  background: var(--odl-error-light, #FEE2E2);
+  border-radius: var(--odl-border-radius-sm, 4px);
+  font-size: var(--odl-font-size-xs, 12px);
+  color: var(--odl-error, #DA1E28);
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-1, 4px);
+}
+
+.dropZone {
+  border: 2px dashed var(--odl-primary, #0F62FE);
+  border-radius: var(--odl-border-radius-md, 8px);
+  padding: var(--odl-spacing-6, 24px);
+  text-align: center;
+  color: var(--odl-primary, #0F62FE);
+  font-size: var(--odl-font-size-sm, 14px);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Table view styles */
+.tableTaskTitle {
+  font-size: var(--odl-font-size-sm, 14px);
+  font-weight: 500;
+  color: var(--odl-text-primary, #111827);
+  margin-bottom: var(--odl-spacing-1, 4px);
+}
+
+.tableTaskDescription {
+  font-size: var(--odl-font-size-xs, 12px);
+  color: var(--odl-text-secondary, #6b7280);
+}
+
+.tableStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-1, 4px);
+}
+
+.tableStatusLabel {
+  font-size: var(--odl-font-size-xs, 12px);
+  font-weight: 500;
+}
+
+.tablePriority {
+  font-size: var(--odl-font-size-xs, 12px);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.tableAssignee {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-1, 4px);
+}
+
+.tableAssigneeAvatar {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--odl-border-radius-full, 9999px);
+  background: var(--odl-primary, #0F62FE);
+  color: var(--odl-white, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--odl-font-size-xs, 12px);
+  font-weight: 600;
+}
+
+.tableAssigneeName {
+  font-size: var(--odl-font-size-xs, 12px);
+  color: var(--odl-text-secondary, #6b7280);
+}
+
+.tableProgress {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-2, 8px);
+}
+
+.tableProgressBar {
+  background: var(--odl-surface, #f9fafb);
+  height: 4px;
+  border-radius: var(--odl-border-radius-sm, 4px);
+  width: 40px;
+  overflow: hidden;
+}
+
+.tableProgressText {
+  font-size: var(--odl-font-size-xs, 12px);
+  color: var(--odl-text-secondary, #6b7280);
+  min-width: 30px;
+}
+
+.tableDueDate {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-1, 4px);
+}
+
+.tableDueDateText {
+  font-size: var(--odl-font-size-xs, 12px);
+}
+
+.tableTags {
+  display: flex;
+  gap: var(--odl-spacing-1, 4px);
+  flex-wrap: wrap;
+}
+
+.tableTag {
+  font-size: var(--odl-font-size-xs, 12px);
+  background: var(--odl-primary-light, #EBF5FF);
+  color: var(--odl-primary, #0F62FE);
+  padding: 0 var(--odl-spacing-1, 4px);
+  border-radius: var(--odl-border-radius-sm, 4px);
+}

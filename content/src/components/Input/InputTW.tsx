@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useId } from 'react';
 import { cn } from '../../utils/classNames';
 import Icon from '../Icon/Icon';
 
@@ -69,13 +69,15 @@ const Input: React.FC<InputProps> = ({
   rightIcon,
   className,
   name,
-  id,
+  id: providedId,
   rows = 4,
   fullWidth = false,
   maxLength,
   pattern,
   autoComplete,
 }) => {
+  const generatedId = useId();
+  const id = providedId || generatedId;
   const [_isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);

@@ -10,6 +10,17 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => {
+      if (typeof document !== 'undefined') {
+        const errorDisplay = document.querySelector('.sb-errordisplay');
+        if (errorDisplay && !errorDisplay.getAttribute('aria-hidden')) {
+          errorDisplay.setAttribute('aria-hidden', 'true');
+        }
+      }
+      return Story();
+    },
+  ],
 };
 
 export default preview;

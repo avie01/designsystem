@@ -1,0 +1,238 @@
+=== HIGH RISK COMPONENTS AUDIT ===
+
+Components to check in Storybook:
+
+1. Accordion
+   URL: http://localhost:6006/?path=/docs/components-layout-accordion--docs
+   Props to check:
+     - content (should have dropdown or render function, not code)
+     - children (should be disabled or have render function, not code)
+
+2. Stepper
+   URL: http://localhost:6006/?path=/docs/components-forms-stepper--docs
+   Props to check:
+     - content (should have dropdown or render function, not code)
+
+3. AlertBanner
+   URL: http://localhost:6006/?path=/docs/components-alertbanner--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+4. DualPaneExplorer
+   URL: http://localhost:6006/?path=/docs/components-datavisualization-dualpaneexplorer--docs
+   Props to check:
+     - content (should have dropdown or render function, not code)
+     - children (should be disabled or have render function, not code)
+
+5. TreeNavigation
+   URL: http://localhost:6006/?path=/docs/components-navigation-treenavigation--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+6. MillerColumns
+   URL: http://localhost:6006/?path=/docs/components-advanced-millercolumns--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+7. BreadcrumbGrid
+   URL: http://localhost:6006/?path=/docs/components-navigation-breadcrumbgrid--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+8. PageTemplate
+   URL: http://localhost:6006/?path=/docs/components-layout-pagetemplate--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+9. Tabs
+   URL: http://localhost:6006/?path=/docs/components-navigation-tabs--docs
+   Props to check:
+     - content (should have dropdown or render function, not code)
+
+10. SimpleTabs
+   URL: http://localhost:6006/?path=/docs/components-navigation-simpletabs--docs
+   Props to check:
+     - content (should have dropdown or render function, not code)
+
+11. List
+   URL: http://localhost:6006/?path=/docs/components-datadisplay-list--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+12. CollapsibleCard
+   URL: http://localhost:6006/?path=/docs/components-cards-collapsiblecard--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+13. Modal
+   URL: http://localhost:6006/?path=/docs/components-modal--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+14. Button
+   URL: http://localhost:6006/?path=/docs/components-button--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+15. SimpleEditor
+   URL: http://localhost:6006/?path=/docs/components-editors-simpleeditor--docs
+   Props to check:
+     - content (should have dropdown or render function, not code)
+
+16. ErrorBoundary
+   URL: http://localhost:6006/?path=/docs/components-utilities-errorboundary--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+17. Popover
+   URL: http://localhost:6006/?path=/docs/components-overlays-popover--docs
+   Props to check:
+     - trigger (should have dropdown or render function, not code)
+     - content (should have dropdown or render function, not code)
+
+18. Card
+   URL: http://localhost:6006/?path=/docs/components-layout-card--docs
+   Props to check:
+     - children (should be disabled or have render function, not code)
+
+
+=== WHAT TO LOOK FOR ===
+In the Controls table:
+  ✅ GOOD: Dropdown with options (mapping works)
+  ✅ GOOD: No control / disabled (using render function)
+  ❌ BAD: Shows [object Object]
+  ❌ BAD: Shows () => {} or function code
+  ❌ BAD: Shows "ReactReactElement" with editable field
+
+=== CHECKLIST JSON ===
+[
+  {
+    "component": "Accordion",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-layout-accordion--docs",
+    "propsToCheck": [
+      "content",
+      "children"
+    ]
+  },
+  {
+    "component": "Stepper",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-forms-stepper--docs",
+    "propsToCheck": [
+      "content"
+    ]
+  },
+  {
+    "component": "AlertBanner",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-alertbanner--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  },
+  {
+    "component": "DualPaneExplorer",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-datavisualization-dualpaneexplorer--docs",
+    "propsToCheck": [
+      "content",
+      "children"
+    ]
+  },
+  {
+    "component": "TreeNavigation",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-navigation-treenavigation--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  },
+  {
+    "component": "MillerColumns",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-advanced-millercolumns--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  },
+  {
+    "component": "BreadcrumbGrid",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-navigation-breadcrumbgrid--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  },
+  {
+    "component": "PageTemplate",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-layout-pagetemplate--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  },
+  {
+    "component": "Tabs",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-navigation-tabs--docs",
+    "propsToCheck": [
+      "content"
+    ]
+  },
+  {
+    "component": "SimpleTabs",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-navigation-simpletabs--docs",
+    "propsToCheck": [
+      "content"
+    ]
+  },
+  {
+    "component": "List",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-datadisplay-list--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  },
+  {
+    "component": "CollapsibleCard",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-cards-collapsiblecard--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  },
+  {
+    "component": "Modal",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-modal--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  },
+  {
+    "component": "Button",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-button--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  },
+  {
+    "component": "SimpleEditor",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-editors-simpleeditor--docs",
+    "propsToCheck": [
+      "content"
+    ]
+  },
+  {
+    "component": "ErrorBoundary",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-utilities-errorboundary--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  },
+  {
+    "component": "Popover",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-overlays-popover--docs",
+    "propsToCheck": [
+      "trigger",
+      "content"
+    ]
+  },
+  {
+    "component": "Card",
+    "docsUrl": "http://localhost:6006/?path=/docs/components-layout-card--docs",
+    "propsToCheck": [
+      "children"
+    ]
+  }
+]

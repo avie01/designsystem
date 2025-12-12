@@ -28,7 +28,7 @@
   --chip-warning-light: #FFF1C7;        /* ODLColors.warningLight */
   --chip-success: #24A148;              /* ODLColors.success - 4.56:1 contrast */
   --chip-success-light: #DEFBE6;        /* ODLColors.successLight */
-  --chip-info: #0F62FE;                 /* ODLColors.info - 4.61:1 contrast */
+  --chip-info: #0958D9;                 /* ODLColors.info - 4.75:1 contrast (WCAG AA) */
   --chip-info-light: #E8F4FD;           /* ODLColors.infoLight */
   
   /* Extended Color Variants - WCAG AA Compliant */

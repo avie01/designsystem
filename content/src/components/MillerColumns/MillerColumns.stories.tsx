@@ -15,7 +15,7 @@ const meta: Meta<typeof MillerColumns> = {
   tags: ['autodocs'],
   argTypes: {
     data: {
-      control: 'object',
+      control: false,
       description: 'Root level nodes to display'
     },
     maxColumns: {
@@ -33,6 +33,10 @@ const meta: Meta<typeof MillerColumns> = {
     showIcons: {
       control: 'boolean',
       description: 'Whether to show folder/file icons'
+    },
+    onNodeSelect: {
+      control: false,
+      description: 'Callback when a node is selected'
     }
   }
 };

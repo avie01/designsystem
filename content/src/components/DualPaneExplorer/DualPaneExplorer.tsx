@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import ODLTheme from '../../styles/ODLTheme';
 import Icon from '../Icon/Icon';
 import TreeNavigation, { TreeNode } from '../TreeNavigation/TreeNavigation';
+import styles from './DualPaneExplorer.module.css';
 
 export interface ExplorerNode extends TreeNode {
   content?: React.ReactNode;
@@ -69,13 +69,13 @@ const DualPaneExplorer: React.FC<DualPaneExplorerProps> = ({
   React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing) return;
-      
+
       const container = document.getElementById('dual-pane-container');
       if (!container) return;
-      
+
       const containerRect = container.getBoundingClientRect();
       const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
-      
+
       if (newWidth >= 20 && newWidth <= 60) {
         setLeftPaneWidth(newWidth);
       }
@@ -99,7 +99,7 @@ const DualPaneExplorer: React.FC<DualPaneExplorerProps> = ({
   const getFileIcon = (node: ExplorerNode): string => {
     if (node.icon) return node.icon;
     if (node.type === 'folder') return 'folder';
-    
+
     const ext = node.label.split('.').pop()?.toLowerCase();
     switch (ext) {
       case 'md': return 'document-blank';
@@ -119,32 +119,27 @@ const DualPaneExplorer: React.FC<DualPaneExplorerProps> = ({
     }
   };
 
+  const containerClasses = [
+    styles.container,
+    isResizing ? styles.containerResizing : '',
+    className
+  ].filter(Boolean).join(' ');
+
+  const resizerClasses = [
+    styles.resizer,
+    isResizing ? styles.resizerActive : ''
+  ].filter(Boolean).join(' ');
+
   return (
     <div
       id="dual-pane-container"
-      className={className}
-      style={{
-        display: 'flex',
-        height: '600px',
-        background: ODLTheme.colors.grey100,
-        borderRadius: '8px',
-        border: `1px solid ${ODLTheme.colors.grey200}`,
-        overflow: 'hidden',
-        position: 'relative',
-        userSelect: isResizing ? 'none' : 'auto',
-        ...style
-      }}
+      className={containerClasses}
+      style={style}
     >
       {/* Left Pane - Tree Navigation */}
       <div
-        style={{
-          width: `${leftPaneWidth}%`,
-          minWidth: '200px',
-          background: ODLTheme.colors.grey50,
-          borderRight: `1px solid ${ODLTheme.colors.grey200}`,
-          overflowY: 'auto',
-          overflowX: 'hidden'
-        }}
+        className={styles.leftPane}
+        style={{ width: `${leftPaneWidth}%` }}
       >
         <TreeNavigation
           title={treeTitle}
@@ -158,93 +153,36 @@ const DualPaneExplorer: React.FC<DualPaneExplorerProps> = ({
 
       {/* Resizer */}
       <div
+        className={resizerClasses}
         onMouseDown={handleMouseDown}
-        style={{
-          width: '4px',
-          background: isResizing ? ODLTheme.colors.primary : ODLTheme.colors.grey200,
-          cursor: 'col-resize',
-          transition: 'background 0.2s ease',
-          position: 'relative',
-          zIndex: 10
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = ODLTheme.colors.grey300;
-        }}
-        onMouseLeave={(e) => {
-          if (!isResizing) {
-            e.currentTarget.style.background = ODLTheme.colors.grey200;
-          }
-        }}
       />
 
       {/* Right Pane - Detail View */}
-      <div
-        style={{
-          flex: 1,
-          background: 'white',
-          overflowY: 'auto',
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
+      <div className={styles.rightPane}>
         {selectedNode ? (
           <>
             {/* Header */}
-            <div
-              style={{
-                padding: '20px 24px',
-                borderBottom: `1px solid ${ODLTheme.colors.grey200}`,
-                background: 'white'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <div className={styles.header}>
+              <div className={styles.headerTitle}>
                 <Icon
                   name={getFileIcon(selectedNode)}
                   size={24}
-                  color={selectedNode.type === 'folder' ? '#FF9800' : ODLTheme.colors.grey500}
+                  color={selectedNode.type === 'folder' ? '#FF9800' : '#6f6f6f'}
                 />
-                <h2
-                  style={{
-                    margin: 0,
-                    fontSize: '20px',
-                    fontWeight: 600,
-                    color: ODLTheme.colors.text.primary
-                  }}
-                >
+                <h2 className={styles.title}>
                   {selectedNode.label}
                 </h2>
               </div>
 
               {/* Metadata */}
               {showMetadata && selectedNode.metadata && (
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-                    gap: '12px',
-                    marginTop: '16px'
-                  }}
-                >
+                <div className={styles.metadataGrid}>
                   {Object.entries(selectedNode.metadata).map(([key, value]) => (
                     <div key={key}>
-                      <div
-                        style={{
-                          fontSize: '11px',
-                          color: ODLTheme.colors.textLight,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px',
-                          marginBottom: '4px'
-                        }}
-                      >
+                      <div className={styles.metadataLabel}>
                         {key.replace(/_/g, ' ')}
                       </div>
-                      <div
-                        style={{
-                          fontSize: ODLTheme.typography.fontSize.sm,
-                          color: ODLTheme.colors.text.primary,
-                          fontWeight: 500
-                        }}
-                      >
+                      <div className={styles.metadataValue}>
                         {value}
                       </div>
                     </div>
@@ -254,29 +192,23 @@ const DualPaneExplorer: React.FC<DualPaneExplorerProps> = ({
             </div>
 
             {/* Content */}
-            <div style={{ padding: '24px', flex: 1 }}>
+            <div className={styles.contentArea}>
               {selectedNode.content ? (
                 selectedNode.content
               ) : (
-                <div
-                  style={{
-                    color: ODLTheme.colors.textLight,
-                    fontSize: ODLTheme.typography.fontSize.base,
-                    lineHeight: 1.6
-                  }}
-                >
+                <div className={styles.defaultContent}>
                   {selectedNode.type === 'folder' ? (
                     <div>
                       <p>This folder contains {selectedNode.children?.length || 0} items.</p>
                       {selectedNode.children && selectedNode.children.length > 0 && (
-                        <ul style={{ marginTop: '16px', paddingLeft: '20px' }}>
+                        <ul className={styles.childrenList}>
                           {selectedNode.children.map((child: any) => (
-                            <li key={child.id} style={{ marginBottom: '8px' }}>
+                            <li key={child.id} className={styles.childItem}>
                               <Icon
                                 name={getFileIcon(child)}
                                 size={14}
-                                color={child.type === 'folder' ? '#FF9800' : ODLTheme.colors.grey400}
-                                style={{ marginRight: '8px', verticalAlign: 'middle' }}
+                                color={child.type === 'folder' ? '#FF9800' : '#a8a8a8'}
+                                className={styles.childIcon}
                               />
                               {child.label}
                             </li>
@@ -292,18 +224,9 @@ const DualPaneExplorer: React.FC<DualPaneExplorerProps> = ({
             </div>
           </>
         ) : (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-              color: ODLTheme.colors.textLight
-            }}
-          >
-            <Icon name="document-blank" size={48} color={ODLTheme.colors.grey300} />
-            <p style={{ marginTop: '16px', fontSize: ODLTheme.typography.fontSize.base }}>
+          <div className={styles.emptyState}>
+            <Icon name="document-blank" size={48} color="#c6c6c6" />
+            <p className={styles.emptyText}>
               Select an item to view details
             </p>
           </div>

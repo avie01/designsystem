@@ -19,7 +19,7 @@ const meta: Meta<typeof TreeNavigation> = {
       description: 'Header title for the tree navigation'
     },
     nodes: {
-      control: 'object',
+      control: false,
       description: 'Array of tree nodes to display'
     },
     selectedNodeId: {
@@ -27,7 +27,7 @@ const meta: Meta<typeof TreeNavigation> = {
       description: 'ID of the currently selected node'
     },
     expandedNodeIds: {
-      control: 'object',
+      control: false,
       description: 'Array of node IDs that should be expanded by default'
     },
     showFilter: {
@@ -37,6 +37,10 @@ const meta: Meta<typeof TreeNavigation> = {
     hideScrollbar: {
       control: 'boolean',
       description: 'Whether to hide the scrollbar'
+    },
+    onNodeSelect: {
+      control: false,
+      description: 'Callback when a node is selected'
     }
   }
 };

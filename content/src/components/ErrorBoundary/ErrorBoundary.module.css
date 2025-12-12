@@ -76,13 +76,14 @@
 }
 
 .retryButton {
-  padding: var(--odl-spacing-2) var(--odl-spacing-4);
-  background-color: var(--odl-error);
-  color: var(--odl-text-inverse);
+  padding: var(--odl-spacing-2, 8px) var(--odl-spacing-4, 16px);
+  background-color: var(--odl-error, #DA1E28);
+  color: var(--odl-text-inverse, #FFFFFF);
   border: none;
-  border-radius: var(--odl-border-radius-lg);
+  border-radius: var(--odl-border-radius-lg, 8px);
+  font-weight: 500;
   cursor: pointer;
-  transition: var(--odl-transition-normal);
+  transition: var(--odl-transition-normal, 0.2s ease);
 }
 
 .retryButton:hover {

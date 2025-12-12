@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ODLTheme from '../../styles/ODLTheme';
 import Icon from '../Icon/Icon';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
+import styles from './BreadcrumbGrid.module.css';
 
 export interface GridItem {
   id: string;
@@ -43,14 +44,12 @@ const BreadcrumbGrid: React.FC<BreadcrumbGridProps> = ({
   const [currentPath, setCurrentPath] = useState<GridItem[]>([
     { id: 'root', label: 'Home', type: 'folder' }
   ]);
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-  // Get current folder contents
   const getCurrentItems = (): GridItem[] => {
     if (currentPath.length === 1) {
       return data;
     }
-    
+
     let current = data;
     for (let i = 1; i < currentPath.length; i++) {
       const folder = current.find(item => item.id === currentPath[i].id);
@@ -81,17 +80,15 @@ const BreadcrumbGrid: React.FC<BreadcrumbGridProps> = ({
 
   const currentItems = getCurrentItems();
 
-  // Convert path to breadcrumb items - all except last should be clickable
   const breadcrumbItems = currentPath.map((item, index) => ({
     label: item.label,
-    path: index < currentPath.length - 1 ? index.toString() : undefined // Only add path for non-current items
+    path: index < currentPath.length - 1 ? index.toString() : undefined
   }));
 
-  // Use Carbon icons for all file types
   const getFileIcon = (item: GridItem): string => {
     if (item.icon) return item.icon;
     if (item.type === 'folder') return 'folder';
-    
+
     const ext = item.label.split('.').pop()?.toLowerCase();
     switch (ext) {
       case 'doc':
@@ -146,7 +143,7 @@ const BreadcrumbGrid: React.FC<BreadcrumbGridProps> = ({
 
   const getIconColor = (item: GridItem): string => {
     if (item.type === 'folder') return '#FF9800';
-    
+
     const ext = item.label.split('.').pop()?.toLowerCase();
     switch (ext) {
       case 'pdf': return '#DC2626';
@@ -171,30 +168,42 @@ const BreadcrumbGrid: React.FC<BreadcrumbGridProps> = ({
     }
   };
 
+  const getStatusClass = (status: string): string => {
+    switch (status) {
+      case 'approved': return styles.statusApproved;
+      case 'review': return styles.statusReview;
+      case 'draft': return styles.statusDraft;
+      case 'archived': return styles.statusArchived;
+      default: return '';
+    }
+  };
+
+  const getPriorityClass = (priority: string): string => {
+    switch (priority) {
+      case 'urgent': return styles.priorityUrgent;
+      case 'high': return styles.priorityHigh;
+      case 'medium': return styles.priorityMedium;
+      default: return '';
+    }
+  };
+
   return (
     <div
-      className={className}
-      style={{
-        background: 'white',
-        borderRadius: '8px',
-        border: `1px solid ${ODLTheme.colors.grey200}`,
-        padding: '20px',
-        ...style
-      }}
+      className={`${styles.container} ${className}`}
+      style={style}
     >
-      {/* Breadcrumb Navigation with folder info */}
-      <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-          <Breadcrumb 
-            items={breadcrumbItems} 
+      <div className={styles.breadcrumbSection}>
+        <div className={styles.breadcrumbRow}>
+          <Breadcrumb
+            items={breadcrumbItems}
             onNavigate={(path) => handleBreadcrumbClick(parseInt(path))}
           />
-          <div style={{ display: 'flex', gap: '16px', fontSize: ODLTheme.typography.fontSize.sm, color: ODLTheme.colors.textLight }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <div className={styles.stats}>
+            <span className={styles.statItem}>
               <Icon name="folder" size={14} color={ODLTheme.colors.grey400} />
               {currentItems.filter(i => i.type === 'folder').length} folders
             </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span className={styles.statItem}>
               <Icon name="document" size={14} color={ODLTheme.colors.grey400} />
               {currentItems.filter(i => i.type === 'file').length} files
             </span>
@@ -202,187 +211,72 @@ const BreadcrumbGrid: React.FC<BreadcrumbGridProps> = ({
         </div>
       </div>
 
-      {/* Grid View */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(6, 1fr)',
-          gap: '16px',
-          minHeight: '300px'
-        }}
-      >
+      <div className={styles.grid}>
         {currentItems.map((item) => {
-          const isHovered = hoveredItem === item.id;
-          
+          const gridItemClass = [
+            styles.gridItem,
+            showDetails ? styles.gridItemDetailed : styles.gridItemCompact
+          ].join(' ');
+
+          const labelClass = [
+            styles.itemLabel,
+            item.type === 'folder' ? styles.itemLabelFolder : ''
+          ].filter(Boolean).join(' ');
+
           return (
             <div
               key={item.id}
               onClick={() => handleItemClick(item)}
-              onMouseEnter={() => setHoveredItem(item.id)}
-              onMouseLeave={() => setHoveredItem(null)}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: showDetails ? '24px 20px' : '20px 16px',
-                border: '1px solid #d1d1d1',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                backgroundColor: isHovered ? '#f8f9fa' : 'white',
-                transform: isHovered ? 'translateY(-2px)' : 'none',
-                boxShadow: isHovered 
-                  ? '0 4px 12px rgba(0, 0, 0, 0.1)' 
-                  : '0 1px 3px rgba(0, 0, 0, 0.08)',
-                minHeight: showDetails ? '200px' : '160px',
-                position: 'relative'
-              }}
+              className={gridItemClass}
             >
-              {/* Use Carbon icons for all file types */}
               <Icon
                 name={getFileIcon(item)}
                 size={showDetails ? 40 : 32}
                 color={getIconColor(item)}
               />
-              <span
-                style={{
-                  marginTop: '12px',
-                  fontSize: ODLTheme.typography.fontSize.sm,
-                  color: ODLTheme.colors.text.primary,
-                  textAlign: 'center',
-                  wordBreak: 'break-word',
-                  lineHeight: 1.3,
-                  fontWeight: item.type === 'folder' ? 500 : 400,
-                  maxWidth: '100%',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical'
-                }}
-              >
+              <span className={labelClass}>
                 {item.label}
               </span>
-              
-              {/* Status Badge */}
+
               {item.status && (
-                <span
-                  style={{
-                    marginTop: '8px',
-                    padding: '2px 8px',
-                    borderRadius: '12px',
-                    fontSize: '10px',
-                    fontWeight: 500,
-                    background: 
-                      item.status === 'approved' ? '#DCFCE7' :
-                      item.status === 'review' ? '#FEF3C7' :
-                      item.status === 'draft' ? '#E0E7FF' :
-                      '#F3F4F6',
-                    color:
-                      item.status === 'approved' ? '#166534' :
-                      item.status === 'review' ? '#92400E' :
-                      item.status === 'draft' ? '#312E81' :
-                      '#6B7280'
-                  }}
-                >
+                <span className={`${styles.statusBadge} ${getStatusClass(item.status)}`}>
                   {item.status}
                 </span>
               )}
 
-              {/* Priority Indicator */}
               {item.priority && item.priority !== 'low' && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '8px',
-                    right: '8px',
-                    width: '8px',
-                    height: '8px',
-                    borderRadius: '50%',
-                    background: 
-                      item.priority === 'urgent' ? '#DC2626' :
-                      item.priority === 'high' ? '#F59E0B' :
-                      '#3B82F6'
-                  }}
-                />
+                <div className={`${styles.priorityIndicator} ${getPriorityClass(item.priority)}`} />
               )}
 
               {showDetails && (
-                <div style={{ 
-                  marginTop: '8px', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  gap: '2px',
-                  width: '100%'
-                }}>
-                  {/* File count for folders */}
+                <div className={styles.detailsContainer}>
                   {item.type === 'folder' && item.fileCount !== undefined && (
-                    <span
-                      style={{
-                        fontSize: '11px',
-                        color: ODLTheme.colors.textLight,
-                        textAlign: 'center'
-                      }}
-                    >
+                    <span className={styles.detailText}>
                       {item.fileCount} items
                     </span>
                   )}
-                  
-                  {/* Size for files */}
+
                   {item.size && (
-                    <span
-                      style={{
-                        fontSize: '11px',
-                        color: ODLTheme.colors.textLight,
-                        textAlign: 'center'
-                      }}
-                    >
+                    <span className={styles.detailText}>
                       {item.size}
                     </span>
                   )}
-                  
-                  {/* Modified date */}
+
                   {item.modified && (
-                    <span
-                      style={{
-                        fontSize: '11px',
-                        color: ODLTheme.colors.textLight,
-                        textAlign: 'center'
-                      }}
-                    >
+                    <span className={styles.detailText}>
                       {item.modified}
                     </span>
                   )}
-                  
-                  {/* Owner */}
+
                   {item.owner && (
-                    <span
-                      style={{
-                        fontSize: '10px',
-                        color: ODLTheme.colors.primary,
-                        textAlign: 'center',
-                        fontWeight: 500
-                      }}
-                    >
+                    <span className={styles.ownerText}>
                       {item.owner}
                     </span>
                   )}
-                  
-                  {/* Shared indicator - only show if shared with others */}
+
                   {item.sharedWith !== undefined && item.sharedWith > 0 && (
-                    <span
-                      style={{
-                        fontSize: '10px',
-                        color: '#10B981',
-                        textAlign: 'center',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '2px'
-                      }}
-                    >
-                      <Icon name="user-multiple" size={10} color="#10B981" />
+                    <span className={styles.sharedText}>
+                      <Icon name="user-multiple" size={10} color="#047857" />
                       {item.sharedWith}
                     </span>
                   )}
@@ -393,20 +287,10 @@ const BreadcrumbGrid: React.FC<BreadcrumbGridProps> = ({
         })}
       </div>
 
-      {/* Empty State */}
       {currentItems.length === 0 && (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '60px 20px',
-            color: ODLTheme.colors.textLight
-          }}
-        >
+        <div className={styles.emptyState}>
           <Icon name="folder-open" size={48} color={ODLTheme.colors.grey300} />
-          <p style={{ marginTop: '16px', fontSize: ODLTheme.typography.fontSize.base }}>
+          <p className={styles.emptyText}>
             This folder is empty
           </p>
         </div>

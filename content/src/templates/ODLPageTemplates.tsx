@@ -33,7 +33,7 @@ interface AppShellWrapperProps {
   pageTitle?: string;
   pageSubtitle?: string;
   showBreadcrumb?: boolean;
-  breadcrumbItems?: Array<{ label: string; href?: string }>;
+  breadcrumbItems?: Array<{ label: string; path?: string }>;
 }
 
 export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
@@ -72,7 +72,7 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
   };
 
   const defaultBreadcrumb = [
-    { label: 'Home', href: '/' },
+    { label: 'Home', path: '/' },
     { label: getActiveLabel() },
   ];
 
@@ -318,16 +318,17 @@ const DashboardContent: React.FC = () => {
         }}>
           Recent Activity
         </h3>
-        <Cards
-          items={recentActivity.map(item => ({
-            id: item.id,
-            title: item.title,
-            subtitle: item.description,
-            metadata: item.time,
-          }))}
-          layout="list"
-          onCardClick={(item) => console.log('Activity clicked:', item)}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {recentActivity.map(item => (
+            <Cards
+              key={item.id}
+              variant="outlined"
+              title={item.title}
+              subtitle={item.description}
+              footer={<span style={{ fontSize: '12px', color: '#6b7280' }}>{item.time}</span>}
+            />
+          ))}
+        </div>
       </div>
     </>
   );
@@ -343,7 +344,7 @@ export const ODLDashboardTemplate: React.FC = () => {
       pageTitle="Dashboard"
       pageSubtitle="Welcome back! Here's what's happening with your projects."
       breadcrumbItems={[
-        { label: 'Home', href: '/' },
+        { label: 'Home', path: '/' },
         { label: 'Dashboard' },
       ]}
     >
@@ -384,7 +385,7 @@ export const ODLDashboardStandalone: React.FC = () => {
       <div style={{ marginBottom: ODLTheme.spacing[6] }}>
         <Breadcrumb
           items={[
-            { label: 'Home', href: '/' },
+            { label: 'Home', path: '/' },
             { label: 'Dashboard' },
           ]}
         />
@@ -515,16 +516,17 @@ export const ODLDashboardStandalone: React.FC = () => {
         }}>
           Recent Activity
         </h3>
-        <Cards
-          items={recentActivity.map(item => ({
-            id: item.id,
-            title: item.title,
-            subtitle: item.description,
-            metadata: item.time,
-          }))}
-          layout="list"
-          onCardClick={(item) => console.log('Activity clicked:', item)}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {recentActivity.map(item => (
+            <Cards
+              key={item.id}
+              variant="outlined"
+              title={item.title}
+              subtitle={item.description}
+              footer={<span style={{ fontSize: '12px', color: '#6b7280' }}>{item.time}</span>}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -534,6 +536,7 @@ export const ODLDashboardStandalone: React.FC = () => {
 // TABLE LIST TEMPLATE
 // ============================================
 interface Employee {
+  [key: string]: string | number;
   id: string;
   name: string;
   email: string;
@@ -626,10 +629,11 @@ const TableContent: React.FC = () => {
       {selectedRows.length > 0 && (
         <div style={{ marginBottom: ODLTheme.spacing[4] }}>
           <AlertBanner
-            type="info"
-            message={`${selectedRows.length} employee(s) selected`}
+            variant="info"
             dismissible
-          />
+          >
+            {`${selectedRows.length} employee(s) selected`}
+          </AlertBanner>
         </div>
       )}
 
@@ -665,8 +669,8 @@ export const ODLTablePageTemplate: React.FC = () => {
       pageTitle="Employee Directory"
       pageSubtitle="Manage your team members and their permissions"
       breadcrumbItems={[
-        { label: 'Home', href: '/' },
-        { label: 'Team', href: '/team' },
+        { label: 'Home', path: '/' },
+        { label: 'Team', path: '/team' },
         { label: 'Employees' },
       ]}
     >
@@ -825,8 +829,8 @@ export const ODLFormPageTemplate: React.FC = () => {
       pageTitle="Add New Employee"
       pageSubtitle="Fill out the form below to add a new team member"
       breadcrumbItems={[
-        { label: 'Home', href: '/' },
-        { label: 'Team', href: '/team' },
+        { label: 'Home', path: '/' },
+        { label: 'Team', path: '/team' },
         { label: 'Add Employee' },
       ]}
     >
@@ -890,9 +894,9 @@ const DetailContent: React.FC = () => {
           <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Active Tasks</h3>
           <Accordion
             items={[
-              { title: 'Design homepage mockups', content: 'Create wireframes and high-fidelity mockups for the new homepage layout.' },
-              { title: 'Implement responsive navigation', content: 'Build mobile-first responsive navigation component.' },
-              { title: 'Setup CI/CD pipeline', content: 'Configure automated testing and deployment workflows.' },
+              { id: 'task-1', title: 'Design homepage mockups', content: 'Create wireframes and high-fidelity mockups for the new homepage layout.' },
+              { id: 'task-2', title: 'Implement responsive navigation', content: 'Build mobile-first responsive navigation component.' },
+              { id: 'task-3', title: 'Setup CI/CD pipeline', content: 'Configure automated testing and deployment workflows.' },
             ]}
           />
         </div>
@@ -1046,8 +1050,8 @@ export const ODLDetailPageTemplate: React.FC = () => {
       pageTitle="Website Redesign"
       pageSubtitle="Complete redesign of the company website with modern UI/UX principles"
       breadcrumbItems={[
-        { label: 'Home', href: '/' },
-        { label: 'Projects', href: '/projects' },
+        { label: 'Home', path: '/' },
+        { label: 'Projects', path: '/projects' },
         { label: 'Website Redesign' },
       ]}
     >
@@ -1167,7 +1171,7 @@ export const ODLCardsGridTemplate: React.FC = () => {
       pageTitle="Projects"
       pageSubtitle="6 projects total"
       breadcrumbItems={[
-        { label: 'Home', href: '/' },
+        { label: 'Home', path: '/' },
         { label: 'Projects' },
       ]}
     >
@@ -1247,7 +1251,7 @@ export const ODLAppShellTemplate: React.FC = () => {
         }}>
           <Breadcrumb
             items={[
-              { label: 'Home', href: '/' },
+              { label: 'Home', path: '/' },
               { label: getActiveLabel() },
             ]}
           />

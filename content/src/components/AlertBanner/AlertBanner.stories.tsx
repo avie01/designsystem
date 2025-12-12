@@ -27,7 +27,7 @@ const meta: Meta<typeof AlertBanner> = {
       },
     },
     children: {
-      control: 'text',
+      control: false,
       description: 'Alert message content',
       table: {
         type: { summary: 'React.ReactNode' },

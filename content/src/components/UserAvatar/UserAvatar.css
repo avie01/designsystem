@@ -109,6 +109,8 @@
   cursor: pointer;
   transition: var(--user-avatar-transition-transform), var(--user-avatar-transition-color);
   box-sizing: border-box;
+  flex-shrink: 0;
+  aspect-ratio: 1;
 }
 
 /* Clickable avatar styles */
@@ -158,6 +160,8 @@
 .user-avatar--sm {
   width: var(--user-avatar-spacing-6);
   height: var(--user-avatar-spacing-6);
+  min-width: var(--user-avatar-spacing-6);
+  min-height: var(--user-avatar-spacing-6);
   font-size: var(--user-avatar-font-size-xs);
 }
 
@@ -170,6 +174,8 @@
 .user-avatar--md {
   width: var(--user-avatar-spacing-8);
   height: var(--user-avatar-spacing-8);
+  min-width: var(--user-avatar-spacing-8);
+  min-height: var(--user-avatar-spacing-8);
   font-size: var(--user-avatar-font-size-sm);
 }
 
@@ -181,6 +187,8 @@
 .user-avatar--lg {
   width: var(--user-avatar-spacing-10);
   height: var(--user-avatar-spacing-10);
+  min-width: var(--user-avatar-spacing-10);
+  min-height: var(--user-avatar-spacing-10);
   font-size: var(--user-avatar-font-size-base);
 }
 

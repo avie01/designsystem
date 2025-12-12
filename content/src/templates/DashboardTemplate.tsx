@@ -201,7 +201,7 @@ const DataTable: React.FC<DataTableProps> = ({ columns, data, onRowClick }) => {
   );
 };
 
-// Main Dashboard Template - designed to be used as customContent in PageManager
+// Main Dashboard Template - standalone dashboard layout with metrics and activity
 const DashboardTemplate: React.FC = () => {
 
   // Sample data
