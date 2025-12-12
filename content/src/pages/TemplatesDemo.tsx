@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Breadcrumb from '../components/Breadcrumb/Breadcrumb';
-import Cards from '../components/Cards/Cards';
+// import Cards from '../components/Cards/Cards';
 import Chip from '../components/Chip/Chip';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
@@ -11,8 +11,19 @@ import NavigationRail from '../components/NavigationRail/NavigationRail';
 import ODLTheme from '../styles/ODLTheme';
 import styles from './TableDemo.module.css';
 
+// Import MUI templates from PageTemplates
+import {
+  BasicPageTemplate,
+  DashboardTemplate,
+  TableListTemplate,
+  TwoColumnTemplate,
+  FormPageTemplate,
+  CardsGridTemplate
+} from '../templates/PageTemplates';
+
 const TemplatesDemo: React.FC = () => {
   const [showCode, setShowCode] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('basic');
 
   const getCodeExample = () => {
     return `// Basic Page Template with Navigation Rails
@@ -150,7 +161,6 @@ export default MyPage;`;
               showCollapseToggle={true}
               onCollapseToggle={setIsLeftCollapsed}
               showTooltips={true}
-              style={{ height: '100%' }}
             />
           </div>
 
@@ -170,9 +180,9 @@ export default MyPage;`;
               ]}
               onNavigate={(path) => console.log('Navigate to:', path)}
             />
-            <h1 style={{ 
-              fontSize: ODLTheme.typography.fontSize.xl2, 
-              fontWeight: ODLTheme.typography.fontWeight.semibold, 
+            <h1 style={{
+              fontSize: ODLTheme.typography.fontSize['2xl'],
+              fontWeight: ODLTheme.typography.fontWeight.semibold,
               color: ODLTheme.colors.text.primary, 
               margin: `${ODLTheme.spacing[4]} 0 ${ODLTheme.spacing[2]} 0` 
             }}>
@@ -391,7 +401,6 @@ export default MyPage;`;
               showCollapseToggle={true}
               onCollapseToggle={setIsRightCollapsed}
               showTooltips={true}
-              style={{ height: '100%' }}
             />
           </div>
         </div>
@@ -510,6 +519,81 @@ export default MyPage;`;
               <li>✓ Ready to use</li>
             </ul>
           </div>
+        </div>
+      </div>
+
+      {/* MUI Templates Section */}
+      <div className={styles.tableSection} style={{ marginTop: '3rem' }}>
+        <div className={styles.sectionHeader}>
+          <h2>MUI Template Showcase</h2>
+          <p>Page templates built with Material-UI components and ODL theming</p>
+        </div>
+
+        {/* Template Selector */}
+        <div style={{
+          display: 'flex',
+          gap: '12px',
+          marginBottom: '24px',
+          flexWrap: 'wrap'
+        }}>
+          <Button
+            variant={selectedTemplate === 'basic' ? 'primary' : 'secondary'}
+            size="small"
+            onClick={() => setSelectedTemplate('basic')}
+          >
+            Basic Page
+          </Button>
+          <Button
+            variant={selectedTemplate === 'dashboard' ? 'primary' : 'secondary'}
+            size="small"
+            onClick={() => setSelectedTemplate('dashboard')}
+          >
+            Dashboard
+          </Button>
+          <Button
+            variant={selectedTemplate === 'table' ? 'primary' : 'secondary'}
+            size="small"
+            onClick={() => setSelectedTemplate('table')}
+          >
+            Table List
+          </Button>
+          <Button
+            variant={selectedTemplate === 'twoColumn' ? 'primary' : 'secondary'}
+            size="small"
+            onClick={() => setSelectedTemplate('twoColumn')}
+          >
+            Two Column
+          </Button>
+          <Button
+            variant={selectedTemplate === 'form' ? 'primary' : 'secondary'}
+            size="small"
+            onClick={() => setSelectedTemplate('form')}
+          >
+            Form Page
+          </Button>
+          <Button
+            variant={selectedTemplate === 'cards' ? 'primary' : 'secondary'}
+            size="small"
+            onClick={() => setSelectedTemplate('cards')}
+          >
+            Cards Grid
+          </Button>
+        </div>
+
+        {/* Template Display Area */}
+        <div style={{
+          padding: '2rem',
+          background: 'white',
+          borderRadius: '12px',
+          border: `1px solid ${ODLTheme.colors.border}`,
+          minHeight: '600px'
+        }}>
+          {selectedTemplate === 'basic' && <BasicPageTemplate />}
+          {selectedTemplate === 'dashboard' && <DashboardTemplate />}
+          {selectedTemplate === 'table' && <TableListTemplate />}
+          {selectedTemplate === 'twoColumn' && <TwoColumnTemplate />}
+          {selectedTemplate === 'form' && <FormPageTemplate />}
+          {selectedTemplate === 'cards' && <CardsGridTemplate />}
         </div>
       </div>
 

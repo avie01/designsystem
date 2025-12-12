@@ -46,3 +46,6 @@ auto-commit.log
 *.original
 *.optimized
 *.disabled
+*storybook.log
+storybook-static
+.vercel

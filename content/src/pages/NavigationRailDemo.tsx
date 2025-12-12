@@ -4,21 +4,279 @@ import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
 import Icon from '../components/Icon/Icon';
 import Button from '../components/Button/Button';
+import { ODLThemeProvider } from '../theme/ODLThemeProvider';
+import {
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Collapse,
+  Tooltip,
+  // IconButton,
+  Box,
+  Divider
+} from '@mui/material';
 import ODLTheme from '../styles/ODLTheme';
 import styles from './TableDemo.module.css';
 
 // Using ODL Button component instead of custom implementation
 
+// MUI Navigation Rail Component
+interface MUINavigationRailProps {
+  currentPath: string;
+  onNavigate: (path: string) => void;
+  menuItems: any[];
+  collapsed?: boolean;
+  position?: 'left' | 'right';
+  showTooltips?: boolean;
+  showCollapseToggle?: boolean;
+  onCollapseToggle?: (collapsed: boolean) => void;
+  showHelpIcon?: boolean;
+  onHelpClick?: () => void;
+}
+
+const MUINavigationRail: React.FC<MUINavigationRailProps> = ({
+  currentPath,
+  onNavigate,
+  menuItems,
+  collapsed = false,
+  position = 'left',
+  showTooltips = true,
+  showCollapseToggle = false,
+  onCollapseToggle,
+  showHelpIcon = false,
+  onHelpClick
+}) => {
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+  const handleItemClick = (item: any) => {
+    if (item.children && item.children.length > 0) {
+      const newExpanded = new Set(expandedItems);
+      if (newExpanded.has(item.id)) {
+        newExpanded.delete(item.id);
+      } else {
+        newExpanded.add(item.id);
+      }
+      setExpandedItems(newExpanded);
+    } else {
+      onNavigate(item.path);
+    }
+  };
+
+  const renderMenuItem = (item: any, isChild = false) => {
+    const isActive = currentPath === item.path || item.children?.some((child: any) => currentPath === child.path);
+    const isExpanded = expandedItems.has(item.id);
+    const hasChildren = item.children && item.children.length > 0;
+
+    const menuItem = (
+      <ListItemButton
+        key={item.id}
+        selected={isActive}
+        onClick={() => handleItemClick(item)}
+        disabled={item.disabled}
+        sx={{
+          minHeight: 48,
+          px: collapsed && !isChild ? 1.5 : 2,
+          py: 1,
+          justifyContent: collapsed && !isChild ? 'center' : 'initial',
+          position: 'relative',
+          '&.Mui-selected': {
+            backgroundColor: '#e0f3fe',
+            '&:hover': {
+              backgroundColor: '#d1ecfe'
+            },
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: 4,
+              backgroundColor: ODLTheme.colors.primary
+            }
+          },
+          '&:hover': {
+            backgroundColor: '#f8fafc'
+          }
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 0,
+            mr: collapsed && !isChild ? 0 : 2,
+            justifyContent: 'center',
+            color: isActive ? ODLTheme.colors.primary : ODLTheme.colors.text.secondary
+          }}
+        >
+          <Icon name={item.iconName} size={isChild ? 16 : 20} />
+        </ListItemIcon>
+        {(!collapsed || isChild) && (
+          <ListItemText
+            primary={item.label}
+            sx={{
+              '& .MuiListItemText-primary': {
+                fontSize: '14px',
+                fontWeight: isActive ? 600 : 400,
+                color: isActive ? ODLTheme.colors.primary : ODLTheme.colors.text.primary
+              }
+            }}
+          />
+        )}
+        {(!collapsed || isChild) && hasChildren && (
+          <Icon name={isExpanded ? 'chevron-down' : 'chevron-right'} size={16} />
+        )}
+      </ListItemButton>
+    );
+
+    if (collapsed && !isChild && showTooltips) {
+      return (
+        <Tooltip key={item.id} title={item.label} placement={position === 'left' ? 'right' : 'left'}>
+          {menuItem}
+        </Tooltip>
+      );
+    }
+
+    return menuItem;
+  };
+
+  return (
+    <Drawer
+      variant="permanent"
+      anchor={position}
+      sx={{
+        width: collapsed ? 64 : 240,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: collapsed ? 64 : 240,
+          boxSizing: 'border-box',
+          border: 'none',
+          backgroundColor: ODLTheme.colors.background,
+          transition: 'width 0.3s ease',
+          position: 'relative'
+        }
+      }}
+    >
+      <Box sx={{ overflow: 'auto', height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <List sx={{ flexGrow: 1, py: 1 }}>
+          {menuItems.map((item) => (
+            <React.Fragment key={item.id}>
+              {renderMenuItem(item)}
+              {!collapsed && item.children && expandedItems.has(item.id) && (
+                <Collapse in={expandedItems.has(item.id)} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {item.children.map((child: any) => (
+                      <Box key={child.id} sx={{ pl: 2 }}>
+                        {renderMenuItem(child, true)}
+                      </Box>
+                    ))}
+                  </List>
+                </Collapse>
+              )}
+            </React.Fragment>
+          ))}
+        </List>
+
+        {/* Bottom controls */}
+        <Box sx={{ mt: 'auto' }}>
+          {showCollapseToggle && (
+            <>
+              <Divider />
+              <List>
+                <Tooltip title={collapsed ? "Expand menu" : "Collapse menu"} placement={position === 'left' ? 'right' : 'left'}>
+                  <ListItemButton
+                    onClick={() => onCollapseToggle && onCollapseToggle(!collapsed)}
+                    sx={{
+                      minHeight: 48,
+                      px: collapsed ? 1.5 : 2,
+                      justifyContent: collapsed ? 'center' : 'initial'
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: collapsed ? 0 : 2,
+                        justifyContent: 'center',
+                        color: ODLTheme.colors.text.secondary
+                      }}
+                    >
+                      <Icon
+                        name={collapsed ? "chevron-right" : "chevron-left"}
+                        size={20}
+                        style={{
+                          transform: position === 'right' ? 'rotate(180deg)' : 'none',
+                        }}
+                      />
+                    </ListItemIcon>
+                    {!collapsed && (
+                      <ListItemText
+                        primary="Collapse"
+                        sx={{
+                          '& .MuiListItemText-primary': {
+                            fontSize: '14px',
+                            color: ODLTheme.colors.text.primary
+                          }
+                        }}
+                      />
+                    )}
+                  </ListItemButton>
+                </Tooltip>
+              </List>
+            </>
+          )}
+
+          {showHelpIcon && (
+            <List>
+              <Tooltip title="Help & Support" placement={position === 'left' ? 'right' : 'left'}>
+                <ListItemButton
+                  onClick={onHelpClick}
+                  sx={{
+                    minHeight: 48,
+                    px: collapsed ? 1.5 : 2,
+                    justifyContent: collapsed ? 'center' : 'initial'
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: collapsed ? 0 : 2,
+                      justifyContent: 'center',
+                      color: ODLTheme.colors.text.secondary
+                    }}
+                  >
+                    <Icon name="help" size={20} />
+                  </ListItemIcon>
+                  {!collapsed && (
+                    <ListItemText
+                      primary="Help"
+                      sx={{
+                        '& .MuiListItemText-primary': {
+                          fontSize: '14px',
+                          color: ODLTheme.colors.text.primary
+                        }
+                      }}
+                    />
+                  )}
+                </ListItemButton>
+              </Tooltip>
+            </List>
+          )}
+        </Box>
+      </Box>
+    </Drawer>
+  );
+};
+
 const NavigationRailDemo: React.FC = () => {
-  const [selectedDemo, setSelectedDemo] = useState<'basic' | 'collapsed' | 'themes' | 'custom' | 'states' | 'integration'>('basic');
+  const [selectedDemo, setSelectedDemo] = useState<'basic' | 'integration'>('basic');
   const [showCode, setShowCode] = useState(false);
   const [currentPath, setCurrentPath] = useState('/dashboard');
   const [rightPath, setRightPath] = useState('/edit');
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isRightCollapsed, setIsRightCollapsed] = useState(false);
-  const [railPosition, setRailPosition] = useState<'left' | 'right'>('left');
-  const [showTooltips, setShowTooltips] = useState(true);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [_railPosition, _setRailPosition] = useState<'left' | 'right'>('left');
+  const [_showTooltips, _setShowTooltips] = useState(true);
+  const [_theme, _setTheme] = useState<'light' | 'dark'>('light');
 
   // Sample menu items matching the collapsed nav rail design
   const defaultMenuItems = [
@@ -150,23 +408,24 @@ const NavigationRailDemo: React.FC = () => {
     },
   ];
 
-  const buildMenuItems = [
-    { id: 'projects', iconName: 'folder', label: 'Projects', path: '/projects' },
-    { id: 'planning', iconName: 'document-tasks', label: 'Planning', path: '/planning' },
-    { id: 'building', iconName: 'home', label: 'Building', path: '/building' },
-    { id: 'inspections', iconName: 'view', label: 'Inspections', path: '/inspections' },
-    { id: 'compliance', iconName: 'checkmark-filled', label: 'Compliance', path: '/compliance' },
-    { id: 'reports', iconName: 'chart-bar', label: 'Reports', path: '/reports' },
-  ];
+  // Example menu items (reference only)
+  // const __buildMenuItems = [
+  //   { id: 'projects', iconName: 'folder', label: 'Projects', path: '/projects' },
+  //   { id: 'planning', iconName: 'document-tasks', label: 'Planning', path: '/planning' },
+  //   { id: 'building', iconName: 'home', label: 'Building', path: '/building' },
+  //   { id: 'inspections', iconName: 'view', label: 'Inspections', path: '/inspections' },
+  //   { id: 'compliance', iconName: 'checkmark-filled', label: 'Compliance', path: '/compliance' },
+  //   { id: 'reports', iconName: 'chart-bar', label: 'Reports', path: '/reports' },
+  // ];
 
-  const menuWithStates = [
-    { id: 'active', iconName: 'checkmark-filled', label: 'Active Item', path: '/active' },
-    { id: 'normal', iconName: 'document', label: 'Normal Item', path: '/normal' },
-    { id: 'disabled', iconName: 'locked', label: 'Disabled Item', path: '/disabled', disabled: true },
-    { id: 'alerts', iconName: 'notification', label: 'Alerts', path: '/alerts' },
-    { id: 'warning', iconName: 'warning', label: 'Warning', path: '/warning' },
-    { id: 'archive', iconName: 'archive', label: 'Archive', path: '/archive', disabled: true },
-  ];
+  // const __menuWithStates = [
+  //   { id: 'active', iconName: 'checkmark-filled', label: 'Active Item', path: '/active' },
+  //   { id: 'normal', iconName: 'document', label: 'Normal Item', path: '/normal' },
+  //   { id: 'disabled', iconName: 'locked', label: 'Disabled Item', path: '/disabled', disabled: true },
+  //   { id: 'alerts', iconName: 'notification', label: 'Alerts', path: '/alerts' },
+  //   { id: 'warning', iconName: 'warning', label: 'Warning', path: '/warning' },
+  //   { id: 'archive', iconName: 'archive', label: 'Archive', path: '/archive', disabled: true },
+  // ];
 
   const getCodeExample = (demo: string) => {
     const examples: Record<string, string> = {
@@ -246,7 +505,7 @@ const [isCollapsed, setIsCollapsed] = useState(false);
 />
 
 // Build-specific menu items
-const buildMenuItems = [
+const __buildMenuItems = [
   { id: 'projects', iconName: 'folder', label: 'Projects', path: '/projects' },
   { id: 'planning', iconName: 'document-tasks', label: 'Planning', path: '/planning' },
   { id: 'building', iconName: 'home', label: 'Building', path: '/building' },
@@ -314,6 +573,7 @@ const App = () => {
   };
 
   return (
+    <ODLThemeProvider enableMui={true}>
     <div className={styles.tableDemo}>
       {/* Breadcrumb Navigation */}
       <DemoBreadcrumb componentName="Navigation Rail Component" />
@@ -341,12 +601,8 @@ const App = () => {
       <div className={styles.demoSelector}>
         <div className={styles.demoTabs}>
           {[
-            { key: 'basic', label: 'Basic', icon: '🧭' },
-            { key: 'collapsed', label: 'Collapsible', icon: '↔️' },
-            { key: 'themes', label: 'Themes', icon: '🎨' },
-            { key: 'custom', label: 'Custom', icon: '⚙️' },
-            { key: 'states', label: 'States', icon: '🚦' },
-            { key: 'integration', label: 'Integration', icon: '🔧' }
+            { key: 'basic', label: 'Basic Navigation', icon: '🧭' },
+            { key: 'integration', label: 'Full Integration', icon: '🔧' }
           ].map(demo => (
             <button
               key={demo.key}
@@ -370,6 +626,256 @@ const App = () => {
               <h2>Basic Navigation Rail</h2>
               <p>Dual navigation rails - primary navigation on the left and contextual tools on the right</p>
             </div>
+
+            {/* ODL vs MUI Navigation Rail Comparison */}
+            <div style={{
+              marginBottom: '48px',
+              padding: '24px',
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+            }}>
+              <h2 style={{
+                fontSize: '24px',
+                fontWeight: 600,
+                marginBottom: '24px',
+                color: '#111827',
+              }}>
+                Navigation Rail Component Comparison
+              </h2>
+              <p style={{ marginBottom: '32px', color: '#6b7280' }}>
+                ODL NavigationRail vs MUI Drawer with List - both with collapsible functionality and tooltips
+              </p>
+
+              {/* ODL NavigationRail */}
+              <div style={{ marginBottom: '32px' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '16px',
+                  gap: '8px',
+                }}>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: 500,
+                    color: '#374151',
+                    margin: 0,
+                  }}>
+                    ODL Navigation Rail
+                  </h3>
+                  <span style={{
+                    padding: '2px 8px',
+                    borderRadius: '4px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    backgroundColor: '#3560C1',
+                    color: 'white',
+                  }}>
+                    ODL
+                  </span>
+                </div>
+                <div style={{ height: 400, width: '100%', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white', display: 'flex' }}>
+                  <NavigationRail
+                    currentPath={currentPath}
+                    menuItems={defaultMenuItems.slice(0, 5)}
+                    collapsed={isCollapsed}
+                    position="left"
+                    onNavigate={setCurrentPath}
+                    showTooltips={isCollapsed}
+                    showCollapseToggle={true}
+                    onCollapseToggle={setIsCollapsed}
+                    showHelpIcon={true}
+                    onHelpClick={() => alert('ODL Help clicked!')}
+                  />
+                  <div style={{ flex: 1, padding: '20px', backgroundColor: '#f9fafb' }}>
+                    <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#374151' }}>
+                      ODL Content Area
+                    </h4>
+                    <p style={{ marginTop: '8px', fontSize: '14px', color: '#6b7280' }}>
+                      Current: {defaultMenuItems.find(item => item.path === currentPath)?.label}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* MUI Drawer */}
+              <div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '16px',
+                  gap: '8px',
+                }}>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: 500,
+                    color: '#374151',
+                    margin: 0,
+                  }}>
+                    MUI Drawer with ODL Theme
+                  </h3>
+                  <span style={{
+                    padding: '2px 8px',
+                    borderRadius: '4px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    backgroundColor: '#8B5CF6',
+                    color: 'white',
+                  }}>
+                    MUI
+                  </span>
+                </div>
+                <div style={{ height: 400, width: '100%', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white', display: 'flex', position: 'relative' }}>
+                  <MUINavigationRail
+                    currentPath={currentPath}
+                    menuItems={defaultMenuItems.slice(0, 5)}
+                    collapsed={isCollapsed}
+                    position="left"
+                    onNavigate={setCurrentPath}
+                    showTooltips={isCollapsed}
+                    showCollapseToggle={true}
+                    onCollapseToggle={setIsCollapsed}
+                    showHelpIcon={true}
+                    onHelpClick={() => alert('MUI Help clicked!')}
+                  />
+                  <div style={{ flex: 1, padding: '20px', backgroundColor: '#f9fafb' }}>
+                    <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#374151' }}>
+                      MUI Content Area
+                    </h4>
+                    <p style={{ marginTop: '8px', fontSize: '14px', color: '#6b7280' }}>
+                      Current: {defaultMenuItems.find(item => item.path === currentPath)?.label}
+                    </p>
+                    <div style={{ marginTop: '16px', padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #e5e7eb' }}>
+                      <p style={{ fontSize: '12px', color: '#6b7280', margin: 0 }}>
+                        <strong>Toggle:</strong> Click the collapse button to see tooltip functionality
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right-side Rails Comparison */}
+              <div style={{ marginTop: '48px' }}>
+                <h2 style={{
+                  fontSize: '20px',
+                  fontWeight: 600,
+                  marginBottom: '24px',
+                  color: '#111827',
+                }}>
+                  Right-side Navigation Rails (Contextual Tools)
+                </h2>
+                <p style={{ marginBottom: '32px', color: '#6b7280' }}>
+                  Comparison of ODL and MUI right-positioned navigation rails with expandable menu sections
+                </p>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
+                  {/* ODL Right Rail */}
+                  <div>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginBottom: '16px',
+                      gap: '8px',
+                    }}>
+                      <h3 style={{
+                        fontSize: '18px',
+                        fontWeight: 500,
+                        color: '#374151',
+                        margin: 0,
+                      }}>
+                        ODL Right Rail
+                      </h3>
+                      <span style={{
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        backgroundColor: '#3560C1',
+                        color: 'white',
+                      }}>
+                        ODL
+                      </span>
+                    </div>
+                    <div style={{ height: 450, border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white', display: 'flex' }}>
+                      <div style={{ flex: 1, padding: '20px', backgroundColor: '#f9fafb' }}>
+                        <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#374151' }}>
+                          Content Area
+                        </h4>
+                        <p style={{ marginTop: '8px', fontSize: '14px', color: '#6b7280' }}>
+                          Right rail provides contextual tools for content editing
+                        </p>
+                      </div>
+                      <NavigationRail
+                        currentPath={rightPath}
+                        menuItems={contextualMenuItems.slice(0, 4)}
+                        collapsed={isRightCollapsed}
+                        position="right"
+                        onNavigate={setRightPath}
+                        showTooltips={isRightCollapsed}
+                        showCollapseToggle={true}
+                        onCollapseToggle={setIsRightCollapsed}
+                        showHelpIcon={false}
+                      />
+                    </div>
+                  </div>
+
+                  {/* MUI Right Rail */}
+                  <div>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginBottom: '16px',
+                      gap: '8px',
+                    }}>
+                      <h3 style={{
+                        fontSize: '18px',
+                        fontWeight: 500,
+                        color: '#374151',
+                        margin: 0,
+                      }}>
+                        MUI Right Drawer
+                      </h3>
+                      <span style={{
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        backgroundColor: '#8B5CF6',
+                        color: 'white',
+                      }}>
+                        MUI
+                      </span>
+                    </div>
+                    <div style={{ height: 450, border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white', display: 'flex', position: 'relative' }}>
+                      <div style={{ flex: 1, padding: '20px', backgroundColor: '#f9fafb' }}>
+                        <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#374151' }}>
+                          Content Area
+                        </h4>
+                        <p style={{ marginTop: '8px', fontSize: '14px', color: '#6b7280' }}>
+                          Right drawer with expandable sections for tools
+                        </p>
+                        <div style={{ marginTop: '16px' }}>
+                          <Button size="small" variant="secondary" onClick={() => setIsRightCollapsed(!isRightCollapsed)}>
+                            {isRightCollapsed ? 'Expand Right' : 'Collapse Right'}
+                          </Button>
+                        </div>
+                      </div>
+                      <MUINavigationRail
+                        currentPath={rightPath}
+                        menuItems={contextualMenuItems.slice(0, 4)}
+                        collapsed={isRightCollapsed}
+                        position="right"
+                        onNavigate={setRightPath}
+                        showTooltips={isRightCollapsed}
+                        showCollapseToggle={true}
+                        onCollapseToggle={setIsRightCollapsed}
+                        showHelpIcon={false}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div style={{ background: 'white', borderRadius: `0 0 ${ODLTheme.spacing[3]} ${ODLTheme.spacing[3]}`, height: '1080px', overflow: 'hidden' }}>
               <div style={{ display: 'flex', height: '100%' }}>
                 {/* Left Navigation Rail - Primary Navigation */}
@@ -544,202 +1050,197 @@ const App = () => {
           </div>
         )}
 
-        {selectedDemo === 'collapsed' && (
-          <div className={styles.tableSection}>
-            <div className={styles.sectionHeader}>
-              <h2>Collapsible Navigation Rail</h2>
-              <p>Toggle between expanded and collapsed states</p>
-            </div>
-            <div style={{ padding: '2rem', background: 'white', borderRadius: `0 0 ${ODLTheme.borders.radius.lg} ${ODLTheme.borders.radius.lg}`, minHeight: '400px' }}>
-              <div style={{ marginBottom: '1rem' }}>
-                <Button onClick={() => setIsCollapsed(!isCollapsed)}>
-                  {isCollapsed ? 'Expand Navigation' : 'Collapse Navigation'}
-                </Button>
-                <span style={{ marginLeft: ODLTheme.spacing[4], color: ODLTheme.colors.text.tertiary }}>
-                  State: {isCollapsed ? 'Collapsed (Icons Only)' : 'Expanded (Icons + Labels)'}
-                </span>
-              </div>
-              <div style={{ display: 'flex', gap: '2rem', height: '400px' }}>
-                <div style={{ 
-                  borderRight: `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.border}` 
-                }}>
-                  <NavigationRail
-                    currentPath={currentPath}
-                    menuItems={defaultMenuItems}
-                    collapsed={isCollapsed}
-                    onNavigate={setCurrentPath}
-                    showTooltips={isCollapsed}
-                    showHelpIcon={true}
-                    showCollapseToggle={true}
-                    onCollapseToggle={setIsCollapsed}
-                    onHelpClick={() => alert('Help & Support')}
-                  />
-                </div>
-                <div style={{ flex: 1, padding: '1rem' }}>
-                  <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Collapsible Features</h3>
-                  <div style={{ padding: ODLTheme.spacing[4], background: ODLTheme.colors.surface, borderRadius: ODLTheme.spacing[2] }}>
-                    <p>When collapsed:</p>
-                    <ul style={{ marginTop: '0.5rem', marginLeft: '1.5rem' }}>
-                      <li>• Shows only icons</li>
-                      <li>• Tooltips appear on hover</li>
-                      <li>• Maintains active state</li>
-                      <li>• Smooth width transition</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {selectedDemo === 'themes' && (
-          <div className={styles.tableSection}>
-            <div className={styles.sectionHeader}>
-              <h2>Theme Variants</h2>
-              <p>Light and dark themes matching the ODL design system</p>
-            </div>
-            <div style={{ padding: '2rem', background: 'white', borderRadius: `0 0 ${ODLTheme.borders.radius.lg} ${ODLTheme.borders.radius.lg}`, minHeight: '500px' }}>
-              <div style={{ marginBottom: '1rem' }}>
-                <Button 
-                  variant={theme === 'light' ? 'primary' : 'secondary'}
-                  onClick={() => setTheme('light')}
-                >
-                  Light Theme
-                </Button>
-                <Button 
-                  variant={theme === 'dark' ? 'primary' : 'secondary'}
-                  onClick={() => setTheme('dark')}
-                  style={{ marginLeft: '0.5rem' }}
-                >
-                  Dark Theme
-                </Button>
-                <Button 
-                  variant="secondary"
-                  onClick={() => setIsCollapsed(!isCollapsed)}
-                  style={{ marginLeft: '1rem' }}
-                >
-                  {isCollapsed ? 'Expand' : 'Collapse'}
-                </Button>
-              </div>
-              
-              <div style={{ display: 'flex', gap: '2rem' }}>
-                {/* Light Theme Demo */}
-                <div style={{ flex: 1 }}>
-                  <h3 style={{ marginBottom: '0.5rem', fontSize: '1rem', fontWeight: 600 }}>Light Theme</h3>
-                  <div style={{ display: 'flex', height: '400px', border: `1px solid ${ODLTheme.colors.border}`, borderRadius: ODLTheme.spacing[2], overflow: 'hidden' }}>
-                    <NavigationRail
-                      currentPath="/documents"
-                      menuItems={defaultMenuItems}
-                      collapsed={isCollapsed}
-                      theme="light"
-                      showHelpIcon={true}
-                      showCollapseToggle={true}
-                      onCollapseToggle={setIsCollapsed}
-                      onNavigate={setCurrentPath}
-                      onHelpClick={() => console.log('Help clicked')}
-                    />
-                    <div style={{ flex: 1, padding: ODLTheme.spacing[4], background: ODLTheme.colors.background }}>
-                      <p style={{ color: ODLTheme.colors.text.secondary, fontSize: ODLTheme.typography.fontSize.base }}>Light theme content area</p>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Dark Theme Demo */}
-                <div style={{ flex: 1 }}>
-                  <h3 style={{ marginBottom: '0.5rem', fontSize: '1rem', fontWeight: 600 }}>Dark Theme (Matching Design)</h3>
-                  <div style={{ display: 'flex', height: '400px', border: `1px solid ${ODLTheme.colors.border}`, borderRadius: ODLTheme.spacing[2], overflow: 'hidden', background: ODLTheme.colors.text.primary }}>
-                    <NavigationRail
-                      currentPath="/documents"
-                      menuItems={defaultMenuItems}
-                      collapsed={isCollapsed}
-                      theme="dark"
-                      showHelpIcon={true}
-                      showCollapseToggle={true}
-                      onCollapseToggle={setIsCollapsed}
-                      onNavigate={setCurrentPath}
-                      onHelpClick={() => console.log('Help clicked')}
-                    />
-                    <div style={{ flex: 1, padding: '1rem' }}>
-                      <p style={{ color: ODLTheme.colors.text.inverse, fontSize: ODLTheme.typography.fontSize.base }}>Dark theme content area</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {selectedDemo === 'custom' && (
-          <div className={styles.tableSection}>
-            <div className={styles.sectionHeader}>
-              <h2>Product-Specific Navigation</h2>
-              <p>Customized navigation for different ODL products</p>
-            </div>
-            <div style={{ padding: '2rem', background: 'white', borderRadius: `0 0 ${ODLTheme.borders.radius.lg} ${ODLTheme.borders.radius.lg}`, minHeight: '400px' }}>
-              <div style={{ marginBottom: '2rem' }}>
-                <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Build Product Navigation</h3>
-                <div style={{ display: 'flex', gap: '2rem', height: '350px' }}>
-                  <div style={{ width: '240px', borderRight: `1px solid ${ODLTheme.colors.border}`, background: ODLTheme.colors.surface }}>
-                    <NavigationRail
-                      currentPath="/projects"
-                      menuItems={buildMenuItems}
-                      showCollapseToggle={true}
-                      collapsed={isCollapsed}
-                      onCollapseToggle={setIsCollapsed}
-                      onNavigate={setCurrentPath}
-                    />
-                  </div>
-                  <div style={{ flex: 1, padding: '1rem' }}>
-                    <p style={{ color: ODLTheme.colors.text.tertiary }}>
-                      Custom menu items specific to Build product workflow
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {selectedDemo === 'states' && (
-          <div className={styles.tableSection}>
-            <div className={styles.sectionHeader}>
-              <h2>Navigation Item States</h2>
-              <p>Different states for navigation items</p>
-            </div>
-            <div style={{ padding: '2rem', background: 'white', borderRadius: `0 0 ${ODLTheme.borders.radius.lg} ${ODLTheme.borders.radius.lg}`, minHeight: '400px' }}>
-              <div style={{ display: 'flex', gap: '2rem', height: '400px' }}>
-                <div style={{ width: '240px', borderRight: `1px solid ${ODLTheme.colors.border}` }}>
-                  <NavigationRail
-                    currentPath="/active"
-                    menuItems={menuWithStates}
-                    onNavigate={setCurrentPath}
-                  />
-                </div>
-                <div style={{ flex: 1, padding: '1rem' }}>
-                  <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Item States</h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <div style={{ padding: ODLTheme.spacing[4], background: `${ODLTheme.colors.primary}10`, borderRadius: ODLTheme.spacing[2] }}>
-                      <strong>Active State:</strong> Blue background with left border indicator
-                    </div>
-                    <div style={{ padding: ODLTheme.spacing[4], background: ODLTheme.colors.surface, borderRadius: ODLTheme.spacing[2] }}>
-                      <strong>Normal State:</strong> Default appearance, clickable
-                    </div>
-                    <div style={{ padding: ODLTheme.spacing[4], background: ODLTheme.colors.background, borderRadius: ODLTheme.spacing[2], opacity: 0.6 }}>
-                      <strong>Disabled State:</strong> Reduced opacity, not clickable
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
         {selectedDemo === 'integration' && (
           <div className={styles.tableSection}>
             <div className={styles.sectionHeader}>
               <h2>Full Page Integration</h2>
               <p>Complete layout example with dual navigation rails (left and right)</p>
             </div>
+
+            {/* ODL vs MUI Dual Rails Comparison */}
+            <div style={{
+              marginBottom: '48px',
+              padding: '24px',
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+            }}>
+              <h2 style={{
+                fontSize: '24px',
+                fontWeight: 600,
+                marginBottom: '24px',
+                color: '#111827',
+              }}>
+                Dual Navigation Rails Comparison
+              </h2>
+              <p style={{ marginBottom: '32px', color: '#6b7280' }}>
+                ODL NavigationRails vs MUI Drawers - both showing left (primary navigation) and right (contextual tools)
+              </p>
+
+              {/* ODL Dual Rails */}
+              <div style={{ marginBottom: '32px' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '16px',
+                  gap: '8px',
+                }}>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: 500,
+                    color: '#374151',
+                    margin: 0,
+                  }}>
+                    ODL Dual Navigation Rails
+                  </h3>
+                  <span style={{
+                    padding: '2px 8px',
+                    borderRadius: '4px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    backgroundColor: '#3560C1',
+                    color: 'white',
+                  }}>
+                    ODL
+                  </span>
+                </div>
+                <div style={{ height: 500, width: '100%', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white', display: 'flex' }}>
+                  {/* Left Navigation Rail - Primary */}
+                  <NavigationRail
+                    currentPath={currentPath}
+                    menuItems={defaultMenuItems.slice(0, 4)}
+                    collapsed={isCollapsed}
+                    position="left"
+                    onNavigate={setCurrentPath}
+                    showTooltips={isCollapsed}
+                    showCollapseToggle={true}
+                    onCollapseToggle={setIsCollapsed}
+                    showHelpIcon={true}
+                    onHelpClick={() => alert('ODL Help')}
+                  />
+
+                  {/* Main Content */}
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{
+                      height: '60px',
+                      borderBottom: '1px solid #e5e7eb',
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '0 24px',
+                      backgroundColor: 'white'
+                    }}>
+                      <h4 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: '#374151' }}>
+                        ODL Dual Rails Layout
+                      </h4>
+                    </div>
+                    <div style={{ flex: 1, padding: '24px', backgroundColor: '#f9fafb' }}>
+                      <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+                        Left: Primary navigation • Right: Contextual tools
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Right Navigation Rail - Contextual */}
+                  <NavigationRail
+                    currentPath={rightPath}
+                    menuItems={contextualMenuItems.slice(0, 3)}
+                    collapsed={isRightCollapsed}
+                    position="right"
+                    onNavigate={setRightPath}
+                    showTooltips={isRightCollapsed}
+                    showCollapseToggle={true}
+                    onCollapseToggle={setIsRightCollapsed}
+                    showHelpIcon={false}
+                  />
+                </div>
+              </div>
+
+              {/* MUI Dual Rails */}
+              <div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '16px',
+                  gap: '8px',
+                }}>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: 500,
+                    color: '#374151',
+                    margin: 0,
+                  }}>
+                    MUI Dual Drawer Navigation
+                  </h3>
+                  <span style={{
+                    padding: '2px 8px',
+                    borderRadius: '4px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    backgroundColor: '#8B5CF6',
+                    color: 'white',
+                  }}>
+                    MUI
+                  </span>
+                </div>
+                <div style={{ height: 500, width: '100%', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white', display: 'flex', position: 'relative' }}>
+                  {/* Left MUI Drawer - Primary */}
+                  <MUINavigationRail
+                    currentPath={currentPath}
+                    menuItems={defaultMenuItems.slice(0, 4)}
+                    collapsed={isCollapsed}
+                    position="left"
+                    onNavigate={setCurrentPath}
+                    showTooltips={isCollapsed}
+                    showCollapseToggle={true}
+                    onCollapseToggle={setIsCollapsed}
+                    showHelpIcon={true}
+                    onHelpClick={() => alert('MUI Help')}
+                  />
+
+                  {/* Main Content */}
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{
+                      height: '60px',
+                      borderBottom: '1px solid #e5e7eb',
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '0 24px',
+                      backgroundColor: 'white'
+                    }}>
+                      <h4 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: '#374151' }}>
+                        MUI Dual Drawers Layout
+                      </h4>
+                    </div>
+                    <div style={{ flex: 1, padding: '24px', backgroundColor: '#f9fafb' }}>
+                      <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+                        Left: Primary navigation • Right: Contextual tools
+                      </p>
+                      <div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
+                        <Button size="small" variant="secondary" onClick={() => setIsCollapsed(!isCollapsed)}>
+                          Toggle Left
+                        </Button>
+                        <Button size="small" variant="secondary" onClick={() => setIsRightCollapsed(!isRightCollapsed)}>
+                          Toggle Right
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right MUI Drawer - Contextual */}
+                  <MUINavigationRail
+                    currentPath={rightPath}
+                    menuItems={contextualMenuItems.slice(0, 3)}
+                    collapsed={isRightCollapsed}
+                    position="right"
+                    onNavigate={setRightPath}
+                    showTooltips={isRightCollapsed}
+                    showCollapseToggle={true}
+                    onCollapseToggle={setIsRightCollapsed}
+                    showHelpIcon={false}
+                  />
+                </div>
+              </div>
+            </div>
+
             <div style={{ background: 'white', borderRadius: `0 0 ${ODLTheme.borders.radius.lg} ${ODLTheme.borders.radius.lg}`, height: '500px', overflow: 'hidden' }}>
               <div style={{ display: 'flex', height: '100%' }}>
                 {/* Left Navigation Rail - Primary Navigation */}
@@ -927,6 +1428,7 @@ const App = () => {
       {/* Back to Top */}
       <BackToTop />
     </div>
+    </ODLThemeProvider>
   );
 };
 

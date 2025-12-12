@@ -3,9 +3,13 @@ import Button from '../components/Button/Button';
 import Icon from '../components/Icon/Icon';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
+import DemoComparison from '../components/DemoComparison/DemoComparison';
+import { Button as MUIButton } from '../components-mui/Button';
+import { ODLThemeProvider } from '../theme/ODLThemeProvider';
 import styles from './TableDemo.module.css';
 
 const ButtonDemo: React.FC = () => {
+  const [showComparison, _setShowComparison] = useState(true);
   const [selectedDemo, setSelectedDemo] = useState<'variants' | 'sizes' | 'states' | 'icons' | 'groups' | 'interactive'>('variants');
   const [showCode, setShowCode] = useState(false);
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
@@ -70,6 +74,7 @@ const ButtonDemo: React.FC = () => {
   };
 
   return (
+    <ODLThemeProvider enableMui={true}>
     <div className={styles.tableDemo}>
       {/* Breadcrumb Navigation */}
       <DemoBreadcrumb componentName="Button Component" />
@@ -127,6 +132,33 @@ const ButtonDemo: React.FC = () => {
               <h2>Button Variants</h2>
               <p>Different button styles for various use cases and hierarchy levels</p>
             </div>
+
+            {/* ODL vs MUI Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Button Variant Comparison"
+                description="Side-by-side comparison of ODL and MUI button variants"
+                odlExample={
+                  <>
+                    <Button variant="primary">Primary Button</Button>
+                    <Button variant="secondary">Secondary Button</Button>
+                    <Button variant="tertiary">Tertiary Button</Button>
+                    <Button variant="ghost">Ghost Button</Button>
+                    <Button variant="destructive">Destructive</Button>
+                  </>
+                }
+                muiExample={
+                  <>
+                    <MUIButton variant="primary">Primary Button</MUIButton>
+                    <MUIButton variant="secondary">Secondary Button</MUIButton>
+                    <MUIButton variant="tertiary">Tertiary Button</MUIButton>
+                    <MUIButton variant="ghost">Ghost Button</MUIButton>
+                    <MUIButton variant="destructive">Destructive</MUIButton>
+                  </>
+                }
+              />
+            )}
+
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
                 <Button variant="primary">Primary Button</Button>
@@ -171,6 +203,30 @@ const ButtonDemo: React.FC = () => {
               <h2>Button Sizes</h2>
               <p>Multiple size options to fit different contexts and layouts</p>
             </div>
+
+            {/* ODL vs MUI Size Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Button Size Comparison"
+                description="Size variations in ODL and MUI buttons"
+                odlExample={
+                  <>
+                    <Button variant="primary" size="xs">Extra Small</Button>
+                    <Button variant="primary" size="small">Small Button</Button>
+                    <Button variant="primary" size="medium">Medium Button</Button>
+                    <Button variant="primary" size="large">Large Button</Button>
+                  </>
+                }
+                muiExample={
+                  <>
+                    <MUIButton variant="primary" size="small">Small Button</MUIButton>
+                    <MUIButton variant="primary" size="medium">Medium Button</MUIButton>
+                    <MUIButton variant="primary" size="large">Large Button</MUIButton>
+                  </>
+                }
+              />
+            )}
+
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 {['primary', 'secondary'].map(variant => (
@@ -203,6 +259,28 @@ const ButtonDemo: React.FC = () => {
               <h2>Button States</h2>
               <p>Different states to provide feedback and control user interactions</p>
             </div>
+
+            {/* ODL vs MUI States Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Button States Comparison"
+                description="Loading and disabled states in ODL and MUI"
+                odlExample={
+                  <>
+                    <Button variant="primary">Normal Button</Button>
+                    <Button variant="primary" disabled>Disabled Button</Button>
+                    <Button variant="primary" loading>Loading Button</Button>
+                  </>
+                }
+                muiExample={
+                  <>
+                    <MUIButton variant="primary">Normal Button</MUIButton>
+                    <MUIButton variant="primary" disabled>Disabled Button</MUIButton>
+                    <MUIButton variant="primary" loading>Loading Button</MUIButton>
+                  </>
+                }
+              />
+            )}
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
                 <div>
@@ -669,11 +747,12 @@ const ButtonDemo: React.FC = () => {
       {/* Back to Top Button */}
       <BackToTop />
     </div>
+    </ODLThemeProvider>
   );
 
   // Helper function to generate code examples
   function getCodeExample(demo: string): string {
-    const examples = {
+    const examples: Record<string, string> = {
       variants: `// Button Variants
 <Button variant="primary">Primary Button</Button>
 <Button variant="secondary">Secondary Button</Button>
@@ -730,7 +809,7 @@ const ButtonDemo: React.FC = () => {
   size="${buttonSettings.size}"
   disabled={${buttonSettings.disabled}}
   loading={${buttonSettings.loading}}
-  onClick={handleClick}
+  onClick={() => console.log('clicked')}
 >
   Custom Button
 </Button>`

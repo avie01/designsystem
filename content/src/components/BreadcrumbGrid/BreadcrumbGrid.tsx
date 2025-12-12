@@ -35,7 +35,7 @@ const BreadcrumbGrid: React.FC<BreadcrumbGridProps> = ({
   data,
   onNavigate,
   onItemClick,
-  gridColumns = 6,
+  gridColumns: _gridColumns = 6,
   showDetails = true,
   className = '',
   style
@@ -249,7 +249,7 @@ const BreadcrumbGrid: React.FC<BreadcrumbGridProps> = ({
                 style={{
                   marginTop: '12px',
                   fontSize: ODLTheme.typography.fontSize.sm,
-                  color: ODLTheme.colors.text,
+                  color: ODLTheme.colors.text.primary,
                   textAlign: 'center',
                   wordBreak: 'break-word',
                   lineHeight: 1.3,

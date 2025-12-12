@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { cn } from '../../utils/classNames';
 import Icon from '../Icon/Icon';
 
@@ -76,7 +76,7 @@ const Input: React.FC<InputProps> = ({
   pattern,
   autoComplete,
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
+  const [_isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
@@ -119,27 +119,20 @@ const Input: React.FC<InputProps> = ({
     
     // Size styles
     sizeStyles[size].input,
-    
+
     // Icon padding
     leftIcon && 'pl-10',
     rightIcon && 'pr-10',
     type === 'password' && 'pr-10',
-    
+
     // State styles
-    error ? [
-      'border-odl-error text-odl-error',
-      'focus:border-odl-error focus:ring-odl-error-light',
-    ] : [
-      'border-odl-border text-odl-text-primary',
-      'focus:border-odl-primary focus:ring-odl-primary-light',
-      'hover:border-odl-primary',
-    ],
-    
+    error ? 'border-odl-error text-odl-error focus:border-odl-error focus:ring-odl-error-light'
+          : 'border-odl-border text-odl-text-primary focus:border-odl-primary focus:ring-odl-primary-light',
+    'hover:border-odl-primary',
+
     // Disabled styles
-    disabled && [
-      'bg-odl-surface cursor-not-allowed opacity-60',
-      'hover:border-odl-border',
-    ],
+    disabled && 'bg-odl-surface cursor-not-allowed opacity-60',
+    disabled && 'hover:border-odl-border',
     
     // Full width
     fullWidth && 'w-full',

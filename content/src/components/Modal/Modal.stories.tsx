@@ -20,7 +20,6 @@ const meta: Meta<typeof Modal> = {
       },
     },
     onClose: {
-      action: 'closed',
       description: 'Callback when modal is closed',
       table: {
         type: { summary: '() => void' },
@@ -96,7 +95,7 @@ export const Confirmation: Story = {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           title="Confirm Deletion"
-          size="sm"
+          size="small"
         >
           <p>Are you sure you want to delete this item?</p>
           <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
@@ -125,7 +124,7 @@ export const LargeContent: Story = {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           title="Application Details"
-          size="lg"
+          size="large"
         >
           <h3>Application Information</h3>
           <p>Application ID: APP-2024-001</p>

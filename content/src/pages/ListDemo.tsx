@@ -3,15 +3,234 @@ import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
 import Button from '../components/Button/Button';
 import List, { ListItem } from '../components/List/List';
+import DemoComparison from '../components/DemoComparison/DemoComparison';
+import { ODLThemeProvider } from '../theme/ODLThemeProvider';
+import {
+  List as MUIList,
+  ListItem as MUIListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon,
+  Collapse,
+  Checkbox,
+  Box
+} from '@mui/material';
+import ODLTheme from '../styles/ODLTheme';
+import Icon from '../components/Icon/Icon';
 import styles from './TableDemo.module.css';
 
 type DemoType = 'basic' | 'hierarchical' | 'multiselect' | 'interactive' | 'sizes' | 'emoji';
 type ListSize = 'sm' | 'md' | 'lg';
 
+// MUI List Component with ODL Styling
+interface MUIListProps {
+  items: ListItem[];
+  size?: 'sm' | 'md' | 'lg';
+  hierarchical?: boolean;
+  multiSelect?: boolean;
+  onItemClick?: (item: ListItem) => void;
+  onSelectionChange?: (selectedItems: ListItem[]) => void;
+  showExpandIcons?: boolean;
+}
+
+const MUIListComponent: React.FC<MUIListProps> = ({
+  items,
+  size = 'md',
+  hierarchical = false,
+  multiSelect = false,
+  onItemClick,
+  onSelectionChange,
+  showExpandIcons = false
+}) => {
+  const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
+  const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
+
+  const getSizeStyles = () => {
+    switch (size) {
+      case 'sm': return {
+        padding: '4px 8px',
+        minHeight: '22px',
+        fontSize: '12px',
+        iconMargin: '4px'
+      };
+      case 'lg': return {
+        padding: '16px 16px 16px 8px',
+        minHeight: '51px',
+        fontSize: '16px',
+        iconMargin: '12px'
+      };
+      default: return {
+        padding: '12px 12px 12px 8px',
+        minHeight: '41px',
+        fontSize: '14px',
+        iconMargin: '8px'
+      };
+    }
+  };
+
+  const sizeStyles = getSizeStyles();
+
+  const handleToggle = (itemId: string) => {
+    setExpanded(prev => ({ ...prev, [itemId]: !prev[itemId] }));
+  };
+
+  const handleSelect = (item: ListItem) => {
+    if (multiSelect) {
+      setSelected(prev => {
+        const newSelected = { ...prev, [item.id]: !prev[item.id] };
+        const selectedItems = items.filter(i => newSelected[i.id]);
+        onSelectionChange?.(selectedItems);
+        return newSelected;
+      });
+    } else {
+      onItemClick?.(item);
+    }
+  };
+
+  const renderIcon = (iconName: string | React.ReactNode) => {
+    if (typeof iconName === 'string') {
+      if (iconName.match(/^[\u{1F000}-\u{1F9FF}]$/u) || iconName.startsWith('�')) {
+        return <span style={{ fontSize: sizeStyles.fontSize }}>{iconName}</span>;
+      }
+      return <Icon name={iconName} size={parseInt(sizeStyles.fontSize)} />;
+    }
+    return iconName;
+  };
+
+  const renderListItem = (item: ListItem, level = 0) => {
+    const hasChildren = hierarchical && item.children && item.children.length > 0;
+    const isExpanded = expanded[item.id];
+    const isSelected = item.selected || selected[item.id];
+    const paddingLeft = level * 20 + 8;
+
+    return (
+      <React.Fragment key={item.id}>
+        <MUIListItem
+          disablePadding
+          sx={{
+            borderBottom: '1px solid #E0E0E0',
+            '&:last-child': {
+              borderBottom: 'none'
+            }
+          }}
+        >
+          <ListItemButton
+            disabled={item.disabled}
+            onClick={() => !item.disabled && handleSelect(item)}
+            sx={{
+              padding: sizeStyles.padding,
+              paddingLeft: `${paddingLeft}px`,
+              minHeight: sizeStyles.minHeight,
+              backgroundColor: isSelected ? '#E0F3FE' : 'transparent',
+              '&:hover': {
+                backgroundColor: isSelected ? '#2A4FA3' : '#E0F3FE',
+                color: isSelected ? '#FFFFFF' : '#161616'
+              },
+              '&.Mui-disabled': {
+                color: '#C6C6C6'
+              },
+              fontFamily: ODLTheme.typography.fontFamily.sans,
+              fontSize: sizeStyles.fontSize,
+              color: item.disabled ? '#C6C6C6' : '#161616'
+            }}
+          >
+            {multiSelect && (
+              <Checkbox
+                checked={isSelected}
+                disabled={item.disabled}
+                size="small"
+                sx={{
+                  color: '#525252',
+                  '&.Mui-checked': {
+                    color: '#3560C1'
+                  },
+                  marginRight: sizeStyles.iconMargin
+                }}
+              />
+            )}
+
+            {item.icon && (
+              <ListItemIcon
+                sx={{
+                  minWidth: 'auto',
+                  marginRight: sizeStyles.iconMargin,
+                  color: isSelected ? '#3560C1' : '#525252'
+                }}
+              >
+                {renderIcon(item.icon)}
+              </ListItemIcon>
+            )}
+
+            <ListItemText
+              primary={item.label}
+              secondary={size === 'lg' ? item.caption : undefined}
+              primaryTypographyProps={{
+                fontSize: sizeStyles.fontSize,
+                fontFamily: ODLTheme.typography.fontFamily.sans,
+                color: 'inherit',
+                noWrap: true
+              }}
+              secondaryTypographyProps={{
+                fontSize: '12px',
+                fontFamily: ODLTheme.typography.fontFamily.sans,
+                color: '#525252',
+                noWrap: true
+              }}
+            />
+
+            {hasChildren && showExpandIcons && (
+              <Box
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleToggle(item.id);
+                }}
+                sx={{
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: '#525252',
+                  '&:hover': {
+                    color: '#3560C1'
+                  }
+                }}
+              >
+                <Icon
+                  name={isExpanded ? "chevron-up" : "chevron-down"}
+                  size={parseInt(sizeStyles.fontSize)}
+                />
+              </Box>
+            )}
+          </ListItemButton>
+        </MUIListItem>
+
+        {hasChildren && hierarchical && (
+          <Collapse in={isExpanded || !showExpandIcons}>
+            {item.children!.map(child => renderListItem(child, level + 1))}
+          </Collapse>
+        )}
+      </React.Fragment>
+    );
+  };
+
+  return (
+    <MUIList
+      sx={{
+        backgroundColor: '#FFFFFF',
+        border: '1px solid #E0E0E0',
+        borderRadius: '4px',
+        overflow: 'hidden',
+        padding: 0
+      }}
+    >
+      {items.map(item => renderListItem(item))}
+    </MUIList>
+  );
+};
+
 const ListDemo: React.FC = () => {
   const [showCode, setShowCode] = useState(false);
   const [selectedDemo, setSelectedDemo] = useState<DemoType>('basic');
-  const [selectedSize, setSelectedSize] = useState<ListSize>('md');
+  const [showComparison, setShowComparison] = useState(true);
 
   // Sample data for different demo types
   const basicItems: ListItem[] = [
@@ -346,6 +565,13 @@ const items = [
             </p>
           </div>
           <div className={styles.headerActions}>
+            <Button
+              variant={showComparison ? 'primary' : 'secondary'}
+              size="small"
+              onClick={() => setShowComparison(!showComparison)}
+            >
+              {showComparison ? 'Hide MUI' : 'Show MUI'}
+            </Button>
             <button
               className={showCode ? styles.primaryButton : styles.secondaryButton}
               onClick={() => setShowCode(!showCode)}
@@ -383,34 +609,103 @@ const items = [
             <p>{demos.find(d => d.key === selectedDemo)?.desc}</p>
           </div>
           <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
-            {selectedDemo === 'sizes' ? (
-              <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                {(['sm', 'md', 'lg'] as ListSize[]).map(size => (
-                  <div key={size} style={{ minWidth: '300px', maxWidth: '400px' }}>
-                    <h4 style={{ textAlign: 'center', marginBottom: '1rem', textTransform: 'capitalize' }}>
-                      {size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} Size
-                    </h4>
-                    <List
-                      items={getCurrentItems()}
-                      size={size}
-                      onItemClick={handleItemClick}
-                      onSelectionChange={handleSelectionChange}
+            {showComparison ? (
+              selectedDemo === 'sizes' ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+                  {(['sm', 'md', 'lg'] as ListSize[]).map(size => (
+                    <DemoComparison
+                      key={size}
+                      title={`${size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} Size List`}
+                      description={`List component in ${size === 'sm' ? 'small' : size === 'md' ? 'medium' : 'large'} size${size === 'lg' ? ' with captions' : ''}`}
+                      odlExample={
+                        <div style={{ width: '100%' }}>
+                          <List
+                            items={getCurrentItems()}
+                            size={size}
+                            onItemClick={handleItemClick}
+                            onSelectionChange={handleSelectionChange}
+                          />
+                        </div>
+                      }
+                      muiExample={
+                        <ODLThemeProvider enableMui={true}>
+                          <div style={{ width: '100%' }}>
+                            <MUIListComponent
+                              items={getCurrentItems()}
+                              size={size}
+                              onItemClick={handleItemClick}
+                              onSelectionChange={handleSelectionChange}
+                            />
+                          </div>
+                        </ODLThemeProvider>
+                      }
                     />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-                <List
-                  items={getCurrentItems()}
-                  size={selectedDemo === 'sizes' ? selectedSize : 'md'}
-                  hierarchical={selectedDemo === 'hierarchical'}
-                  multiSelect={selectedDemo === 'multiselect'}
-                  onItemClick={handleItemClick}
-                  onSelectionChange={handleSelectionChange}
-                  showExpandIcons={selectedDemo === 'hierarchical'}
+                  ))}
+                </div>
+              ) : (
+                <DemoComparison
+                  title={`${demos.find(d => d.key === selectedDemo)?.label} Demo`}
+                  description={demos.find(d => d.key === selectedDemo)?.desc || ''}
+                  odlExample={
+                    <div style={{ width: '100%' }}>
+                      <List
+                        items={getCurrentItems()}
+                        size={'md'}
+                        hierarchical={selectedDemo === 'hierarchical'}
+                        multiSelect={selectedDemo === 'multiselect'}
+                        onItemClick={handleItemClick}
+                        onSelectionChange={handleSelectionChange}
+                        showExpandIcons={selectedDemo === 'hierarchical'}
+                      />
+                    </div>
+                  }
+                  muiExample={
+                    <ODLThemeProvider enableMui={true}>
+                      <div style={{ width: '100%' }}>
+                        <MUIListComponent
+                          items={getCurrentItems()}
+                          size={'md'}
+                          hierarchical={selectedDemo === 'hierarchical'}
+                          multiSelect={selectedDemo === 'multiselect'}
+                          onItemClick={handleItemClick}
+                          onSelectionChange={handleSelectionChange}
+                          showExpandIcons={selectedDemo === 'hierarchical'}
+                        />
+                      </div>
+                    </ODLThemeProvider>
+                  }
                 />
-              </div>
+              )
+            ) : (
+              selectedDemo === 'sizes' ? (
+                <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  {(['sm', 'md', 'lg'] as ListSize[]).map(size => (
+                    <div key={size} style={{ minWidth: '300px', maxWidth: '400px' }}>
+                      <h4 style={{ textAlign: 'center', marginBottom: '1rem', textTransform: 'capitalize' }}>
+                        {size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} Size
+                      </h4>
+                      <List
+                        items={getCurrentItems()}
+                        size={size}
+                        onItemClick={handleItemClick}
+                        onSelectionChange={handleSelectionChange}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+                  <List
+                    items={getCurrentItems()}
+                    size={'md'}
+                    hierarchical={selectedDemo === 'hierarchical'}
+                    multiSelect={selectedDemo === 'multiselect'}
+                    onItemClick={handleItemClick}
+                    onSelectionChange={handleSelectionChange}
+                    showExpandIcons={selectedDemo === 'hierarchical'}
+                  />
+                </div>
+              )
             )}
           </div>
         </div>

@@ -154,10 +154,12 @@ export class ComplianceService {
     // Check for duplicate items
     const contentSet = new Set<string>();
     checklist.items.forEach((item, index) => {
-      if (contentSet.has(item.content)) {
-        warnings.push(`Item ${index + 1}: Duplicate content detected`);
+      if (item.content) {
+        if (contentSet.has(item.content)) {
+          warnings.push(`Item ${index + 1}: Duplicate content detected`);
+        }
+        contentSet.add(item.content);
       }
-      contentSet.add(item.content);
     });
     
     return {
@@ -247,13 +249,15 @@ export class ComplianceService {
         );
         
       case 'date':
-        return sortedItems.sort((a, b) => 
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        
+        return sortedItems.sort((a, b) => {
+          const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return bTime - aTime;
+        });
+
       case 'order':
       default:
-        return sortedItems.sort((a, b) => a.order - b.order);
+        return sortedItems.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     }
   }
   
@@ -265,8 +269,8 @@ export class ComplianceService {
     const risk = this.calculateRiskScore(checklist.items);
     
     let summary = `Compliance Checklist: ${checklist.title}\n`;
-    summary += `Created: ${new Date(checklist.createdAt).toLocaleDateString()}\n`;
-    summary += `Last Updated: ${new Date(checklist.updatedAt).toLocaleDateString()}\n\n`;
+    summary += `Created: ${checklist.createdAt ? new Date(checklist.createdAt).toLocaleDateString() : 'N/A'}\n`;
+    summary += `Last Updated: ${checklist.updatedAt ? new Date(checklist.updatedAt).toLocaleDateString() : 'N/A'}\n\n`;
     
     summary += `Total Items: ${stats.total}\n`;
     summary += `Compliance Rate: ${stats.complianceRate}%\n`;
@@ -295,7 +299,7 @@ export class ComplianceService {
     const headers = ['ID', 'Content', 'Status', 'Category', 'Document', 'Section', 'Notes', 'Created By', 'Created At'];
     const rows = checklist.items.map(item => [
       item.id,
-      `"${item.content.replace(/"/g, '""')}"`,
+      `"${(item.content || '').replace(/"/g, '""')}"`,
       item.status,
       item.sourceRef?.category || '',
       item.sourceRef?.document || '',

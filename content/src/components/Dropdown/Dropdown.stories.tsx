@@ -95,7 +95,6 @@ const meta: Meta<typeof Dropdown> = {
       },
     },
     onChange: {
-      action: 'changed',
       description: 'Change event handler',
       table: {
         type: { summary: '(value: string) => void' },

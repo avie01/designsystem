@@ -119,7 +119,7 @@
 }
 
 .dropdown-placeholder {
-  color: var(--odl-text-tertiary);
+  color: #707070; /* Darker gray for WCAG AA compliance (4.5:1 contrast) */
 }
 
 .custom-dropdown:hover:not(.custom-dropdown--disabled) {

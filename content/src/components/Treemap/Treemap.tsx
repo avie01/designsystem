@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import ODLTheme from '../../styles/ODLTheme';
+// import ODLTheme from '../../styles/ODLTheme';
 
 export interface TreemapNode {
   id: string;
@@ -106,7 +106,7 @@ const Treemap: React.FC<TreemapProps> = ({
     let currentY = y;
     const isHorizontal = width > height;
 
-    nodes.forEach((node, index) => {
+    nodes.forEach((node, _index) => {
       const ratio = node.value / totalValue;
       
       if (isHorizontal) {

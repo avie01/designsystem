@@ -1,0 +1,97 @@
+/* Popover - ODL Compliant CSS Module */
+
+.trigger {
+  width: 100%;
+}
+
+.popover {
+  position: fixed;
+  z-index: 50;
+  background-color: var(--odl-background-primary);
+  border-radius: var(--odl-border-radius-base);
+  box-shadow: var(--odl-shadow-xl);
+  border: 1px solid var(--odl-info);
+  padding: var(--odl-spacing-4);
+  width: 320px;
+}
+
+.closeButton {
+  position: absolute;
+  top: var(--odl-spacing-2);
+  right: var(--odl-spacing-2);
+  color: var(--odl-text-disabled);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: var(--odl-transition-normal);
+  padding: var(--odl-spacing-1);
+  border-radius: var(--odl-border-radius-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  color: var(--odl-text-secondary);
+}
+
+.closeButton:focus {
+  outline: var(--odl-focus-border-width) solid var(--odl-focus-border-color);
+  outline-offset: var(--odl-focus-outline-offset);
+}
+
+/* Position variants */
+.popover--top {
+  /* Additional styles for top positioning can be added here if needed */
+}
+
+.popover--bottom {
+  /* Additional styles for bottom positioning can be added here if needed */
+}
+
+.popover--left {
+  /* Additional styles for left positioning can be added here if needed */
+}
+
+.popover--right {
+  /* Additional styles for right positioning can be added here if needed */
+}
+
+/* Alignment variants */
+.popover--align-start {
+  /* Additional styles for start alignment can be added here if needed */
+}
+
+.popover--align-center {
+  /* Additional styles for center alignment can be added here if needed */
+}
+
+.popover--align-end {
+  /* Additional styles for end alignment can be added here if needed */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .popover {
+    width: calc(100vw - var(--odl-spacing-8));
+    max-width: 320px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .popover {
+    border-width: 2px;
+  }
+
+  .closeButton:focus {
+    outline-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .closeButton {
+    transition: none;
+  }
+}

@@ -123,10 +123,10 @@ const AdvancedTableExample: React.FC = () => {
       header: 'Department',
       sortable: true,
       render: (item) => (
-        <Chip 
-          label={item.department} 
-          variant="info" 
-          size="small" 
+        <Chip
+          label={item.department}
+          variant="info"
+          size="sm"
         />
       )
     },
@@ -141,10 +141,10 @@ const AdvancedTableExample: React.FC = () => {
       header: 'Status',
       sortable: true,
       render: (item) => (
-        <Chip 
-          label={item.status} 
-          variant={item.status === 'active' ? 'success' : item.status === 'pending' ? 'warning' : 'error'} 
-          size="small" 
+        <Chip
+          label={item.status}
+          variant={item.status === 'active' ? 'success' : item.status === 'pending' ? 'warning' : 'error'}
+          size="sm"
         />
       )
     },

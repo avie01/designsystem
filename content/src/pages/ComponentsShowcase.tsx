@@ -227,6 +227,30 @@ const ComponentsShowcase: React.FC = () => {
 
   return (
     <div className={styles.tableDemo}>
+      {/* Skip Link for Accessibility */}
+      <a
+        href="#main-content"
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          top: '10px',
+          zIndex: 999,
+          padding: '8px 16px',
+          background: '#3560C1',
+          color: 'white',
+          textDecoration: 'none',
+          borderRadius: '4px'
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.left = '10px';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.left = '-9999px';
+        }}
+      >
+        Skip to main content
+      </a>
+
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.headerContent}>
@@ -240,6 +264,7 @@ const ComponentsShowcase: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search components..."
+                aria-label="Search components"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:bg-white/30 focus:border-white/50 transition-all"
@@ -282,7 +307,7 @@ const ComponentsShowcase: React.FC = () => {
       </div>
 
       {/* Components Grid */}
-      <div className={styles.demoContent}>
+      <main id="main-content" className={styles.demoContent} role="main" aria-label="Component showcase grid">
         {Object.entries(groupedComponents).map(([category, categoryComponents]) => (
           <div key={category} className="mb-8">
             <div className="flex items-center gap-3 mb-4">
@@ -341,7 +366,7 @@ const ComponentsShowcase: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+      </main>
     </div>
   );
 };

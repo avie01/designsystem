@@ -306,7 +306,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
 
 // Main List Management Template
 interface ListManagementTemplateProps {
-  productVariant?: 'build' | 'connect' | 'keystone' | 'nexus' | 'regworks' | '3sixty' | 'custom';
+  productVariant?: 'build' | 'connect' | 'keystone' | 'nexus' | 'regworks' | '3sixty' | 'keyplan' | 'redact' | 'trapeze';
   title?: string;
   entityName?: string;
 }
@@ -362,12 +362,11 @@ const ListManagementTemplate: React.FC<ListManagementTemplateProps> = ({
 
   return (
     <div className="list-management-template">
-      <Header 
+      <Header
         variant={productVariant}
         user={{ name: 'Scott Marshall', initials: 'SM' }}
         hasSearch={true}
         searchPlaceholder={`Search ${entityName}...`}
-        backgroundColor="var(--odl-white)"
       />
       
       <main className="list-management-template__content">
@@ -378,7 +377,7 @@ const ListManagementTemplate: React.FC<ListManagementTemplateProps> = ({
             <h1 className="list-management-template__title">{title}</h1>
             <Button
               variant="primary"
-              size="default"
+              size="md"
               onClick={() => console.log('Add new')}
               aria-label={`Add new ${entityName.slice(0, -1)}`}
             >
@@ -404,7 +403,6 @@ const ListManagementTemplate: React.FC<ListManagementTemplateProps> = ({
               ]}
               value={statusFilter}
               onChange={setStatusFilter}
-              style={{ minWidth: '150px' }}
             />
           </div>
           <div className="list-management-template__right-actions">
@@ -444,7 +442,7 @@ const ListManagementTemplate: React.FC<ListManagementTemplateProps> = ({
                 Edit Selected
               </Button>
               <Button
-                variant="danger"
+                variant="destructive"
                 size="small"
                 onClick={handleBulkDelete}
                 aria-label={`Delete ${selectedItems.length} selected ${entityName}`}

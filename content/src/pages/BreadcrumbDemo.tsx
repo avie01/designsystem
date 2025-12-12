@@ -3,11 +3,90 @@ import Breadcrumb from '../components/Breadcrumb/Breadcrumb';
 import Icon from '../components/Icon/Icon';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
+import DemoComparison from '../components/DemoComparison/DemoComparison';
+import { ODLThemeProvider } from '../theme/ODLThemeProvider';
+import { Breadcrumbs, Link, Typography, Box } from '@mui/material';
+import ODLTheme from '../styles/ODLTheme';
 import styles from './TableDemo.module.css';
+
+// MUI Breadcrumb Component with ODL Styling
+interface MUIBreadcrumbProps {
+  items: { label: string; path?: string; icon?: string }[];
+  onNavigate?: (path: string) => void;
+}
+
+const MUIBreadcrumb: React.FC<MUIBreadcrumbProps> = ({ items, onNavigate }) => {
+  const handleClick = (path: string, event: React.MouseEvent) => {
+    event.preventDefault();
+    if (onNavigate) {
+      onNavigate(path);
+    }
+  };
+
+  return (
+    <Breadcrumbs
+      separator={<Icon name="chevron-right" size={16} color={ODLTheme.colors.text.secondary} />}
+      sx={{
+        '& .MuiBreadcrumbs-separator': {
+          marginLeft: '8px',
+          marginRight: '8px'
+        }
+      }}
+    >
+      {items.map((item, index) => (
+        index < items.length - 1 ? (
+          <Link
+            key={item.path}
+            component="button"
+            variant="body2"
+            color="inherit"
+            onClick={(event) => item.path && handleClick(item.path, event)}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              color: ODLTheme.colors.text.secondary,
+              textDecoration: 'none',
+              fontSize: '0.875rem',
+              fontWeight: 400,
+              border: 'none',
+              background: 'none',
+              cursor: 'pointer',
+              '&:hover': {
+                color: ODLTheme.colors.primary,
+                textDecoration: 'underline'
+              }
+            }}
+          >
+            {item.icon && <Icon name={item.icon} size={14} />}
+            {item.label}
+          </Link>
+        ) : (
+          <Typography
+            key={index}
+            color="text.primary"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              fontSize: '0.875rem',
+              fontWeight: 500,
+              color: ODLTheme.colors.text.primary
+            }}
+          >
+            {item.icon && <Icon name={item.icon} size={14} />}
+            {item.label}
+          </Typography>
+        )
+      ))}
+    </Breadcrumbs>
+  );
+};
 
 const BreadcrumbDemo: React.FC = () => {
   const [selectedDemo, setSelectedDemo] = useState<'basic' | 'icons' | 'interactive' | 'variations' | 'responsive'>('basic');
   const [showCode, setShowCode] = useState(false);
+  const [showComparison, setShowComparison] = useState(true);
   const [currentPath, setCurrentPath] = useState('/dashboard/products/electronics');
 
   const handleNavigation = (path: string) => {
@@ -16,7 +95,8 @@ const BreadcrumbDemo: React.FC = () => {
   };
 
   return (
-    <div className={styles.tableDemo}>
+    <ODLThemeProvider enableMui={true}>
+      <div className={styles.tableDemo}>
       {/* Breadcrumb Navigation */}
       <DemoBreadcrumb componentName="Breadcrumb Component" />
       
@@ -28,6 +108,12 @@ const BreadcrumbDemo: React.FC = () => {
             <p>Hierarchical navigation showing users their current location within the application</p>
           </div>
           <div className={styles.headerActions}>
+            <button
+              className={showComparison ? styles.primaryButton : styles.secondaryButton}
+              onClick={() => setShowComparison(!showComparison)}
+            >
+              {showComparison ? 'Hide Comparison' : 'Show Comparison'}
+            </button>
             <button
               className={showCode ? styles.primaryButton : styles.secondaryButton}
               onClick={() => setShowCode(!showCode)}
@@ -63,6 +149,7 @@ const BreadcrumbDemo: React.FC = () => {
         </div>
       </div>
 
+
       {/* Demo Content */}
       <div className={styles.demoContent}>
         {selectedDemo === 'basic' && (
@@ -71,6 +158,40 @@ const BreadcrumbDemo: React.FC = () => {
               <h2>Basic Breadcrumbs</h2>
               <p>Simple breadcrumb navigation patterns for different use cases</p>
             </div>
+
+            {/* ODL vs MUI Breadcrumb Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Breadcrumb Component Comparison"
+                description="ODL Breadcrumb vs MUI Breadcrumbs with ODL Styling"
+                odlExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <Breadcrumb
+                      items={[
+                        { label: 'Home', path: '/' },
+                        { label: 'Products', path: '/products' },
+                        { label: 'Electronics', path: '/products/electronics' },
+                        { label: 'Laptops' }
+                      ]}
+                      onNavigate={handleNavigation}
+                    />
+                  </div>
+                }
+                muiExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <MUIBreadcrumb
+                      items={[
+                        { label: 'Home', path: '/' },
+                        { label: 'Products', path: '/products' },
+                        { label: 'Electronics', path: '/products/electronics' },
+                        { label: 'Laptops' }
+                      ]}
+                      onNavigate={handleNavigation}
+                    />
+                  </div>
+                }
+              />
+            )}
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 <div>
@@ -140,6 +261,44 @@ const BreadcrumbDemo: React.FC = () => {
               <h2>Breadcrumbs with Icons</h2>
               <p>Enhanced breadcrumbs with icon indicators for better visual hierarchy</p>
             </div>
+
+            {/* ODL vs MUI Breadcrumb with Icons Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Breadcrumb with Icons Comparison"
+                description="ODL Breadcrumb vs MUI Breadcrumbs with Icon Support"
+                odlExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <Icon name="home" size={16} color="#6b7280" />
+                      <Breadcrumb
+                        items={[
+                          { label: 'Dashboard', path: '/dashboard' },
+                          { label: 'Analytics', path: '/dashboard/analytics' },
+                          { label: 'Reports' }
+                        ]}
+                        onNavigate={handleNavigation}
+                      />
+                    </div>
+                  </div>
+                }
+                muiExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <Icon name="home" size={16} color="#6b7280" />
+                      <MUIBreadcrumb
+                        items={[
+                          { label: 'Dashboard', path: '/dashboard' },
+                          { label: 'Analytics', path: '/dashboard/analytics' },
+                          { label: 'Reports' }
+                        ]}
+                        onNavigate={handleNavigation}
+                      />
+                    </div>
+                  </div>
+                }
+              />
+            )}
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 <div>
@@ -205,6 +364,44 @@ const BreadcrumbDemo: React.FC = () => {
               </div>
             </div>
           </div>
+        )}
+
+        {/* ODL vs MUI Breadcrumb with Icons Comparison */}
+        {selectedDemo === 'icons' && showComparison && (
+          <DemoComparison
+            title="Breadcrumb with Icons Comparison"
+            description="ODL Breadcrumb vs MUI Breadcrumbs with Icon Support"
+            odlExample={
+              <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Icon name="home" size={16} color="#6b7280" />
+                  <Breadcrumb
+                    items={[
+                      { label: 'Dashboard', path: '/dashboard' },
+                      { label: 'Analytics', path: '/dashboard/analytics' },
+                      { label: 'Reports' }
+                    ]}
+                    onNavigate={handleNavigation}
+                  />
+                </div>
+              </div>
+            }
+            muiExample={
+              <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Icon name="home" size={16} color="#6b7280" />
+                  <MUIBreadcrumb
+                    items={[
+                      { label: 'Dashboard', path: '/dashboard' },
+                      { label: 'Analytics', path: '/dashboard/analytics' },
+                      { label: 'Reports' }
+                    ]}
+                    onNavigate={handleNavigation}
+                  />
+                </div>
+              </div>
+            }
+          />
         )}
 
         {selectedDemo === 'interactive' && (
@@ -305,6 +502,106 @@ const BreadcrumbDemo: React.FC = () => {
               <h2>Breadcrumb Variations</h2>
               <p>Different styles and configurations for various use cases</p>
             </div>
+
+            {/* ODL vs MUI Breadcrumb Variations Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Breadcrumb Variations Comparison"
+                description="ODL Custom Styles vs MUI Breadcrumbs with Various Separators"
+                odlExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}>
+                        <a href="#" style={{ color: '#3b82f6', textDecoration: 'none' }}>Home</a>
+                        <span style={{ color: '#9ca3af' }}>/</span>
+                        <a href="#" style={{ color: '#3b82f6', textDecoration: 'none' }}>Products</a>
+                        <span style={{ color: '#9ca3af' }}>/</span>
+                        <span style={{ color: '#374151', fontWeight: 500 }}>Laptops</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ padding: '0.25rem 0.75rem', background: '#e5e7eb', borderRadius: '9999px', fontSize: '0.875rem' }}>
+                          Home
+                        </span>
+                        <Icon name="chevron-right" size={12} color="#9ca3af" />
+                        <span style={{ padding: '0.25rem 0.75rem', background: '#3b82f6', color: 'white', borderRadius: '9999px', fontSize: '0.875rem' }}>
+                          Current
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                }
+                muiExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      <Breadcrumbs
+                        separator="/"
+                        sx={{
+                          '& .MuiBreadcrumbs-separator': {
+                            color: '#9ca3af',
+                            marginLeft: '0.75rem',
+                            marginRight: '0.75rem'
+                          }
+                        }}
+                      >
+                        <Link
+                          component="button"
+                          onClick={() => {}}
+                          sx={{
+                            color: '#3b82f6',
+                            textDecoration: 'none',
+                            fontSize: '0.875rem',
+                            border: 'none',
+                            background: 'none',
+                            cursor: 'pointer',
+                            '&:hover': { textDecoration: 'underline' }
+                          }}
+                        >
+                          Home
+                        </Link>
+                        <Link
+                          component="button"
+                          onClick={() => {}}
+                          sx={{
+                            color: '#3b82f6',
+                            textDecoration: 'none',
+                            fontSize: '0.875rem',
+                            border: 'none',
+                            background: 'none',
+                            cursor: 'pointer',
+                            '&:hover': { textDecoration: 'underline' }
+                          }}
+                        >
+                          Products
+                        </Link>
+                        <Typography sx={{ color: '#374151', fontWeight: 500, fontSize: '0.875rem' }}>
+                          Laptops
+                        </Typography>
+                      </Breadcrumbs>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Box sx={{
+                          padding: '0.25rem 0.75rem',
+                          background: '#e5e7eb',
+                          borderRadius: '9999px',
+                          fontSize: '0.875rem'
+                        }}>
+                          Home
+                        </Box>
+                        <Icon name="chevron-right" size={12} color="#9ca3af" />
+                        <Box sx={{
+                          padding: '0.25rem 0.75rem',
+                          background: '#3b82f6',
+                          color: 'white',
+                          borderRadius: '9999px',
+                          fontSize: '0.875rem'
+                        }}>
+                          Current
+                        </Box>
+                      </div>
+                    </div>
+                  </div>
+                }
+              />
+            )}
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 <div>
@@ -378,6 +675,106 @@ const BreadcrumbDemo: React.FC = () => {
               </div>
             </div>
           </div>
+        )}
+
+        {/* ODL vs MUI Breadcrumb Variations Comparison */}
+        {selectedDemo === 'variations' && showComparison && (
+          <DemoComparison
+            title="Breadcrumb Variations Comparison"
+            description="ODL Custom Styles vs MUI Breadcrumbs with Various Separators"
+            odlExample={
+              <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}>
+                    <a href="#" style={{ color: '#3b82f6', textDecoration: 'none' }}>Home</a>
+                    <span style={{ color: '#9ca3af' }}>/</span>
+                    <a href="#" style={{ color: '#3b82f6', textDecoration: 'none' }}>Products</a>
+                    <span style={{ color: '#9ca3af' }}>/</span>
+                    <span style={{ color: '#374151', fontWeight: 500 }}>Laptops</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ padding: '0.25rem 0.75rem', background: '#e5e7eb', borderRadius: '9999px', fontSize: '0.875rem' }}>
+                      Home
+                    </span>
+                    <Icon name="chevron-right" size={12} color="#9ca3af" />
+                    <span style={{ padding: '0.25rem 0.75rem', background: '#3b82f6', color: 'white', borderRadius: '9999px', fontSize: '0.875rem' }}>
+                      Current
+                    </span>
+                  </div>
+                </div>
+              </div>
+            }
+            muiExample={
+              <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <Breadcrumbs
+                    separator="/"
+                    sx={{
+                      '& .MuiBreadcrumbs-separator': {
+                        color: '#9ca3af',
+                        marginLeft: '0.75rem',
+                        marginRight: '0.75rem'
+                      }
+                    }}
+                  >
+                    <Link
+                      component="button"
+                      onClick={() => {}}
+                      sx={{
+                        color: '#3b82f6',
+                        textDecoration: 'none',
+                        fontSize: '0.875rem',
+                        border: 'none',
+                        background: 'none',
+                        cursor: 'pointer',
+                        '&:hover': { textDecoration: 'underline' }
+                      }}
+                    >
+                      Home
+                    </Link>
+                    <Link
+                      component="button"
+                      onClick={() => {}}
+                      sx={{
+                        color: '#3b82f6',
+                        textDecoration: 'none',
+                        fontSize: '0.875rem',
+                        border: 'none',
+                        background: 'none',
+                        cursor: 'pointer',
+                        '&:hover': { textDecoration: 'underline' }
+                      }}
+                    >
+                      Products
+                    </Link>
+                    <Typography sx={{ color: '#374151', fontWeight: 500, fontSize: '0.875rem' }}>
+                      Laptops
+                    </Typography>
+                  </Breadcrumbs>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Box sx={{
+                      padding: '0.25rem 0.75rem',
+                      background: '#e5e7eb',
+                      borderRadius: '9999px',
+                      fontSize: '0.875rem'
+                    }}>
+                      Home
+                    </Box>
+                    <Icon name="chevron-right" size={12} color="#9ca3af" />
+                    <Box sx={{
+                      padding: '0.25rem 0.75rem',
+                      background: '#3b82f6',
+                      color: 'white',
+                      borderRadius: '9999px',
+                      fontSize: '0.875rem'
+                    }}>
+                      Current
+                    </Box>
+                  </div>
+                </div>
+              </div>
+            }
+          />
         )}
 
         {selectedDemo === 'responsive' && (
@@ -567,7 +964,8 @@ const BreadcrumbDemo: React.FC = () => {
       
       {/* Back to Top Button */}
       <BackToTop />
-    </div>
+      </div>
+    </ODLThemeProvider>
   );
 
   // Helper function to generate code examples

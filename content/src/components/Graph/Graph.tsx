@@ -79,12 +79,14 @@ const Graph: React.FC<GraphProps> = ({
   dataKeys = [],
   xAxisKey = 'name',
   yAxisLabel = '',
-  xAxisLabel = '',
+  xAxisLabel: _xAxisLabel = '',
   stacked = false,
   curved = true,
   gradient = false,
   className = ''
 }) => {
+  // Convert height to number for comparisons
+  const numericHeight = typeof height === 'number' ? height : parseInt(String(height)) || 400;
   // Custom tooltip styling
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -122,7 +124,7 @@ const Graph: React.FC<GraphProps> = ({
 
   // Axis styling - smaller font for compact charts
   const axisStyle = {
-    fontSize: height < 150 ? '10px' : ODLTheme.typography.fontSize.sm,
+    fontSize: numericHeight < 150 ? '10px' : ODLTheme.typography.fontSize.sm,
     fill: ODLTheme.colors.text.secondary
   };
 
@@ -143,9 +145,9 @@ const Graph: React.FC<GraphProps> = ({
 
   // Responsive margins based on chart height
   const getChartMargins = () => {
-    if (height < 60) {
+    if (numericHeight < 60) {
       return { top: 0, right: 0, left: 0, bottom: 0 };
-    } else if (height < 150) {
+    } else if (numericHeight < 150) {
       return { top: 5, right: 5, left: 5, bottom: 5 };
     } else {
       return { top: 5, right: 30, left: 20, bottom: 5 };
@@ -161,20 +163,20 @@ const Graph: React.FC<GraphProps> = ({
         return (
           <ResponsiveContainer width={width} height={height}>
             <LineChart data={data} margin={margins}>
-              {showGrid && height >= 100 && <CartesianGrid {...gridStyle} />}
-              {height >= 60 && <XAxis dataKey={xAxisKey} tick={axisStyle} hide={height < 60} />}
-              {height >= 60 && <YAxis tick={axisStyle} hide={height < 60} label={height >= 150 ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined} />}
+              {showGrid && numericHeight >= 100 && <CartesianGrid {...gridStyle} />}
+              {numericHeight >= 60 && <XAxis dataKey={xAxisKey} tick={axisStyle} hide={numericHeight < 60} />}
+              {numericHeight >= 60 && <YAxis tick={axisStyle} hide={numericHeight < 60} label={numericHeight >= 150 ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined} />}
               {showTooltip && <Tooltip content={<CustomTooltip />} />}
-              {showLegend && height >= 150 && <Legend wrapperStyle={legendStyle} />}
+              {showLegend && numericHeight >= 150 && <Legend wrapperStyle={legendStyle} />}
               {dataKeys.map((key, index) => (
                 <Line
                   key={key}
                   type={curved ? 'monotone' : 'linear'}
                   dataKey={key}
                   stroke={colors[index % colors.length]}
-                  strokeWidth={height < 100 ? 1.5 : 2}
-                  dot={height < 100 ? false : { r: 4 }}
-                  activeDot={height < 100 ? false : { r: 6 }}
+                  strokeWidth={numericHeight < 100 ? 1.5 : 2}
+                  dot={numericHeight < 100 ? false : { r: 4 }}
+                  activeDot={numericHeight < 100 ? false : { r: 6 }}
                   animationDuration={animationDuration}
                 />
               ))}
@@ -196,11 +198,11 @@ const Graph: React.FC<GraphProps> = ({
                   ))}
                 </defs>
               )}
-              {showGrid && height >= 100 && <CartesianGrid {...gridStyle} />}
-              {height >= 60 && <XAxis dataKey={xAxisKey} tick={axisStyle} hide={height < 60} />}
-              {height >= 60 && <YAxis tick={axisStyle} hide={height < 60} label={height >= 150 ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined} />}
+              {showGrid && numericHeight >= 100 && <CartesianGrid {...gridStyle} />}
+              {numericHeight >= 60 && <XAxis dataKey={xAxisKey} tick={axisStyle} hide={numericHeight < 60} />}
+              {numericHeight >= 60 && <YAxis tick={axisStyle} hide={numericHeight < 60} label={numericHeight >= 150 ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined} />}
               {showTooltip && <Tooltip content={<CustomTooltip />} />}
-              {showLegend && height >= 150 && <Legend wrapperStyle={legendStyle} />}
+              {showLegend && numericHeight >= 150 && <Legend wrapperStyle={legendStyle} />}
               {dataKeys.map((key, index) => (
                 <Area
                   key={key}
@@ -208,7 +210,7 @@ const Graph: React.FC<GraphProps> = ({
                   dataKey={key}
                   stackId={stacked ? '1' : undefined}
                   stroke={colors[index % colors.length]}
-                  strokeWidth={height < 100 ? 1 : 2}
+                  strokeWidth={numericHeight < 100 ? 1 : 2}
                   fill={gradient ? `url(#gradient-${key})` : colors[index % colors.length]}
                   fillOpacity={gradient ? 1 : 0.6}
                   animationDuration={animationDuration}
@@ -222,11 +224,11 @@ const Graph: React.FC<GraphProps> = ({
         return (
           <ResponsiveContainer width={width} height={height}>
             <BarChart data={data} margin={margins}>
-              {showGrid && height >= 100 && <CartesianGrid {...gridStyle} />}
-              {height >= 60 && <XAxis dataKey={xAxisKey} tick={axisStyle} hide={height < 60} />}
-              {height >= 60 && <YAxis tick={axisStyle} hide={height < 60} label={height >= 150 ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined} />}
+              {showGrid && numericHeight >= 100 && <CartesianGrid {...gridStyle} />}
+              {numericHeight >= 60 && <XAxis dataKey={xAxisKey} tick={axisStyle} hide={numericHeight < 60} />}
+              {numericHeight >= 60 && <YAxis tick={axisStyle} hide={numericHeight < 60} label={numericHeight >= 150 ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined} />}
               {showTooltip && <Tooltip content={<CustomTooltip />} />}
-              {showLegend && height >= 150 && <Legend wrapperStyle={legendStyle} />}
+              {showLegend && numericHeight >= 150 && <Legend wrapperStyle={legendStyle} />}
               {dataKeys.map((key, index) => (
                 <Bar
                   key={key}
@@ -234,7 +236,7 @@ const Graph: React.FC<GraphProps> = ({
                   stackId={stacked ? '1' : undefined}
                   fill={colors[index % colors.length]}
                   animationDuration={animationDuration}
-                  radius={height < 100 ? [2, 2, 0, 0] : [4, 4, 0, 0]}
+                  radius={numericHeight < 100 ? [2, 2, 0, 0] : [4, 4, 0, 0]}
                 />
               ))}
             </BarChart>
@@ -244,24 +246,24 @@ const Graph: React.FC<GraphProps> = ({
       case 'pie':
         return (
           <ResponsiveContainer width={width} height={height}>
-            <PieChart margin={height < 150 ? { top: 0, right: 0, bottom: 0, left: 0 } : { top: 5, right: 5, bottom: 5, left: 5 }}>
+            <PieChart margin={numericHeight < 150 ? { top: 0, right: 0, bottom: 0, left: 0 } : { top: 5, right: 5, bottom: 5, left: 5 }}>
               <Pie
                 data={data}
-                cx={height < 150 && showLegend ? "35%" : "50%"}
+                cx={numericHeight < 150 && showLegend ? "35%" : "50%"}
                 cy="50%"
                 labelLine={false}
-                label={height >= 150 && !showLegend ? ({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%` : false}
-                outerRadius={height < 150 ? '85%' : 80}
+                label={numericHeight >= 150 && !showLegend ? ({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%` : false}
+                outerRadius={numericHeight < 150 ? '85%' : 80}
                 fill="#8884d8"
                 dataKey={dataKeys[0] || 'value'}
                 animationDuration={animationDuration}
               >
-                {data.map((entry, index) => (
+                {data.map((_entry, index) => (
                   <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                 ))}
               </Pie>
               {showTooltip && <Tooltip content={<CustomTooltip />} />}
-              {showLegend && height < 150 && (
+              {showLegend && numericHeight < 150 && (
                 <Legend 
                   layout="vertical" 
                   align="right" 
@@ -273,7 +275,7 @@ const Graph: React.FC<GraphProps> = ({
                   }}
                 />
               )}
-              {showLegend && height >= 150 && (
+              {showLegend && numericHeight >= 150 && (
                 <Legend 
                   wrapperStyle={legendStyle}
                 />
@@ -322,9 +324,9 @@ const Graph: React.FC<GraphProps> = ({
         return (
           <ResponsiveContainer width={width} height={height}>
             <ScatterChart margin={margins}>
-              {showGrid && height >= 100 && <CartesianGrid {...gridStyle} />}
-              {height >= 60 && <XAxis type="number" dataKey={dataKeys[0]} tick={axisStyle} name={dataKeys[0]} hide={height < 60} />}
-              {height >= 60 && <YAxis type="number" dataKey={dataKeys[1]} tick={axisStyle} name={dataKeys[1]} hide={height < 60} />}
+              {showGrid && numericHeight >= 100 && <CartesianGrid {...gridStyle} />}
+              {numericHeight >= 60 && <XAxis type="number" dataKey={dataKeys[0]} tick={axisStyle} name={dataKeys[0]} hide={numericHeight < 60} />}
+              {numericHeight >= 60 && <YAxis type="number" dataKey={dataKeys[1]} tick={axisStyle} name={dataKeys[1]} hide={numericHeight < 60} />}
               {showTooltip && <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />}
               <Scatter name="Data" data={data} fill={colors[0]} animationDuration={animationDuration} />
             </ScatterChart>
@@ -357,26 +359,24 @@ const Graph: React.FC<GraphProps> = ({
         return (
           <ResponsiveContainer width={width} height={height}>
             <RadialBarChart 
-              cx={height < 150 && showLegend ? "35%" : "50%"} 
+              cx={numericHeight < 150 && showLegend ? "35%" : "50%"} 
               cy="50%" 
-              innerRadius={height < 150 ? "15%" : "20%"} 
-              outerRadius={height < 150 ? "85%" : "90%"} 
+              innerRadius={numericHeight < 150 ? "15%" : "20%"} 
+              outerRadius={numericHeight < 150 ? "85%" : "90%"} 
               data={data}
-              margin={height < 150 ? { top: 0, right: 0, bottom: 0, left: 0 } : { top: 20, right: 20, bottom: 20, left: 20 }}
+              margin={numericHeight < 150 ? { top: 0, right: 0, bottom: 0, left: 0 } : { top: 20, right: 20, bottom: 20, left: 20 }}
             >
               <RadialBar
-                minAngle={15}
-                label={height >= 150 && !showLegend ? { position: 'insideStart', fill: '#fff', fontSize: 12 } : false}
+                label={numericHeight >= 150 && !showLegend ? { position: 'insideStart', fill: '#fff', fontSize: 12 } : false}
                 background={{ fill: ODLTheme.colors.background }}
-                clockWise
                 dataKey={dataKeys[0] || 'value'}
                 animationDuration={animationDuration}
               >
-                {data.map((entry, index) => (
+                {data.map((_entry, index) => (
                   <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                 ))}
               </RadialBar>
-              {showLegend && height < 150 && (
+              {showLegend && numericHeight < 150 && (
                 <Legend 
                   layout="vertical" 
                   align="right" 
@@ -388,7 +388,7 @@ const Graph: React.FC<GraphProps> = ({
                   }}
                 />
               )}
-              {showLegend && height >= 150 && (
+              {showLegend && numericHeight >= 150 && (
                 <Legend 
                   iconSize={18} 
                   layout="horizontal" 

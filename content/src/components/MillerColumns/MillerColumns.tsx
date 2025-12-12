@@ -97,12 +97,12 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  backgroundColor: isSelected 
-                    ? ODLTheme.colors.primary 
-                    : isHovered 
+                  backgroundColor: isSelected
+                    ? ODLTheme.colors.primary
+                    : isHovered
                       ? ODLTheme.colors.grey50
                       : 'transparent',
-                  color: isSelected ? 'white' : ODLTheme.colors.text,
+                  color: isSelected ? 'white' : ODLTheme.colors.text.primary,
                   transition: 'all 0.15s ease',
                   borderBottom: `1px solid ${ODLTheme.colors.grey100}`,
                   fontSize: ODLTheme.typography.fontSize.base

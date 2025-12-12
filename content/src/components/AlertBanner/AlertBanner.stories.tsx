@@ -50,7 +50,6 @@ const meta: Meta<typeof AlertBanner> = {
       },
     },
     onDismiss: {
-      action: 'dismissed',
       description: 'Callback when alert is dismissed',
       table: {
         type: { summary: '() => void' },

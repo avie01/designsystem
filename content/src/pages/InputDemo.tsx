@@ -4,9 +4,13 @@ import Icon from '../components/Icon/Icon';
 import Button from '../components/Button/Button';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
+import DemoComparison from '../components/DemoComparison/DemoComparison';
+import { Input as MUIInput } from '../components-mui/Input';
+import { ODLThemeProvider } from '../theme/ODLThemeProvider';
 import styles from './TableDemo.module.css';
 
 const InputDemo: React.FC = () => {
+  const [showComparison, _setShowComparison] = useState(true);
   const [selectedDemo, setSelectedDemo] = useState<'basic' | 'validation' | 'icons' | 'sizes' | 'states' | 'textarea' | 'interactive'>('basic');
   const [showCode, setShowCode] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -236,7 +240,96 @@ const InputDemo: React.FC = () => {
     );
   };
 
+  // Helper function to generate code examples
+  const getCodeExample = (demo: string): string => {
+    const examples = {
+      basic: `// Basic Input Types
+<Input
+  type="text"
+  label="Text Input"
+  placeholder="Enter text"
+  helperText="Standard text input field"
+/>
+
+<Input
+  type="search"
+  placeholder="Search..."
+  icon={<Icon name="search" size={16} />}
+/>
+
+// The input has these styles:
+// border-radius: 0
+// background: #f5f5f5
+// border-bottom: 2px solid grey`,
+
+      validation: `// Input with Validation
+<Input
+  type="email"
+  label="Email Address"
+  value={email}
+  onChange={(value) => setEmail(value)}
+  error={!email.includes('@')}
+  errorMessage="Please enter a valid email"
+  required
+/>
+
+<Input
+  type="password"
+  label="Password"
+  value={password}
+  onChange={(value) => setPassword(value)}
+  error={password.length < 8}
+  errorMessage="Must be at least 8 characters"
+/>`,
+
+      icons: `// Inputs with Icons
+<Input
+  type="search"
+  placeholder="Search..."
+  icon={<Icon name="search" size={16} />}
+/>
+
+<Input
+  type="text"
+  label="Verified"
+  placeholder="Enter text"
+  iconRight={<Icon name="checkmark-filled" size={16} color="#10b981" />}
+/>`,
+
+      sizes: `// Input Sizes
+<Input type="text" size="sm" placeholder="Small input" />
+<Input type="text" size="md" placeholder="Medium input" />
+<Input type="text" size="lg" placeholder="Large input" />`,
+
+      states: `// Input States
+<Input type="text" placeholder="Normal" />
+<Input type="text" placeholder="Disabled" disabled />
+<Input type="text" value="Read-only" readOnly />
+<Input type="text" value="With error" error errorMessage="Error message" />`,
+
+      interactive: `// Form Example
+const [email, setEmail] = useState('');
+const [error, setError] = useState(false);
+
+<Input
+  type="email"
+  label="Email"
+  value={email}
+  onChange={(value) => {
+    setEmail(value);
+    setError(value !== '' && !value.includes('@'));
+  }}
+  error={error}
+  errorMessage={error ? "Invalid email" : undefined}
+  required
+/>`
+    };
+
+    return examples[demo as keyof typeof examples] || examples.basic;
+  };
+
   return (
+    <ODLThemeProvider enableMui={true}>
     <div className={styles.tableDemo}>
       {/* Breadcrumb Navigation */}
       <DemoBreadcrumb componentName="Input Component" />
@@ -295,6 +388,57 @@ const InputDemo: React.FC = () => {
               <h2>Basic Input Types</h2>
               <p>Different input types for various data entry needs</p>
             </div>
+
+            {/* ODL vs MUI Input Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Input Component Comparison"
+                description="ODL Input vs MUI TextField with ODL styling"
+                odlExample={
+                  <>
+                    <Input
+                      label="Text Input"
+                      placeholder="Enter text..."
+                      value={formValues.name}
+                      onChange={(e: any) => setFormValues({...formValues, name: e.target.value})}
+                    />
+                    <Input
+                      label="Required Input"
+                      placeholder="This field is required"
+                      required
+                    />
+                    <Input
+                      label="Error Input"
+                      placeholder="Enter valid email"
+                      error
+                      helperText="Please enter a valid email address"
+                    />
+                  </>
+                }
+                muiExample={
+                  <>
+                    <MUIInput
+                      label="Text Input"
+                      placeholder="Enter text..."
+                      value={formValues.name}
+                      onChange={(e) => setFormValues({...formValues, name: e.target.value})}
+                    />
+                    <MUIInput
+                      label="Required Input"
+                      placeholder="This field is required"
+                      required
+                    />
+                    <MUIInput
+                      label="Error Input"
+                      placeholder="Enter valid email"
+                      error
+                      helperText="Please enter a valid email address"
+                    />
+                  </>
+                }
+              />
+            )}
+
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                 <div>
@@ -913,7 +1057,10 @@ const InputDemo: React.FC = () => {
                           phone: '',
                           search: '',
                           url: '',
-                          number: ''
+                          number: '',
+                          bio: '',
+                          description: '',
+                          notes: ''
                         });
                         setErrors({ email: false, password: false, url: false });
                       }}
@@ -1040,95 +1187,9 @@ const InputDemo: React.FC = () => {
       {/* Back to Top Button */}
       <BackToTop />
     </div>
+    </ODLThemeProvider>
   );
 
-  // Helper function to generate code examples
-  function getCodeExample(demo: string): string {
-    const examples = {
-      basic: `// Basic Input Types
-<Input
-  type="text"
-  label="Text Input"
-  placeholder="Enter text"
-  helperText="Standard text input field"
-/>
-
-<Input
-  type="search"
-  placeholder="Search..."
-  icon={<Icon name="search" size={16} />}
-/>
-
-// The input has these styles:
-// border-radius: 0
-// background: #f5f5f5
-// border-bottom: 2px solid grey`,
-      
-      validation: `// Input with Validation
-<Input
-  type="email"
-  label="Email Address"
-  value={email}
-  onChange={(value) => setEmail(value)}
-  error={!email.includes('@')}
-  errorMessage="Please enter a valid email"
-  required
-/>
-
-<Input
-  type="password"
-  label="Password"
-  value={password}
-  onChange={(value) => setPassword(value)}
-  error={password.length < 8}
-  errorMessage="Must be at least 8 characters"
-/>`,
-      
-      icons: `// Inputs with Icons
-<Input
-  type="search"
-  placeholder="Search..."
-  icon={<Icon name="search" size={16} />}
-/>
-
-<Input
-  type="text"
-  label="Verified"
-  placeholder="Enter text"
-  iconRight={<Icon name="checkmark-filled" size={16} color="#10b981" />}
-/>`,
-      
-      sizes: `// Input Sizes
-<Input type="text" size="sm" placeholder="Small input" />
-<Input type="text" size="md" placeholder="Medium input" />
-<Input type="text" size="lg" placeholder="Large input" />`,
-      
-      states: `// Input States
-<Input type="text" placeholder="Normal" />
-<Input type="text" placeholder="Disabled" disabled />
-<Input type="text" value="Read-only" readOnly />
-<Input type="text" value="With error" error errorMessage="Error message" />`,
-      
-      interactive: `// Form Example
-const [email, setEmail] = useState('');
-const [error, setError] = useState(false);
-
-<Input
-  type="email"
-  label="Email"
-  value={email}
-  onChange={(value) => {
-    setEmail(value);
-    setError(value !== '' && !value.includes('@'));
-  }}
-  error={error}
-  errorMessage={error ? "Invalid email" : undefined}
-  required
-/>`
-    };
-    
-    return examples[demo as keyof typeof examples] || examples.basic;
-  }
 };
 
 export default InputDemo;

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ApplicationDetailCard Pa11y Test</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      #root {
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      h1 {
+        margin-bottom: 2rem;
+        color: #333;
+      }
+
+      .card-wrapper {
+        margin-bottom: 2rem;
+      }
+
+      h2 {
+        margin-bottom: 1rem;
+        color: #555;
+        font-size: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import React from 'react';
+      import ReactDOM from 'react-dom/client';
+      import ApplicationDetailCard from '../src/components/ApplicationDetailCard/ApplicationDetailCard.tsx';
+
+      const TestComponent = () => {
+        return React.createElement('div', { className: 'container' },
+          React.createElement('h1', null, 'ApplicationDetailCard Accessibility Test'),
+
+          // Test Case 1: Basic card with all fields
+          React.createElement('div', { className: 'card-wrapper' },
+            React.createElement('h2', null, 'Test Case 1: Complete Application Details'),
+            React.createElement(ApplicationDetailCard, {
+              siteAddress: '123 Main Street, Sydney NSW 2000',
+              reference: 'DA-2024-001',
+              applicant: 'John Smith Development Pty Ltd',
+              owner: 'Property Holdings LLC',
+              contact: 'John Smith - 0400 123 456',
+              description: 'Proposed residential development with 24 units',
+              approver: 'Senior Planning Officer - Jane Doe'
+            })
+          ),
+
+          // Test Case 2: Card with minimal information
+          React.createElement('div', { className: 'card-wrapper' },
+            React.createElement('h2', null, 'Test Case 2: Minimal Application Details'),
+            React.createElement(ApplicationDetailCard, {
+              siteAddress: '456 Park Avenue',
+              reference: 'DA-2024-002',
+              applicant: 'ABC Corp',
+              owner: 'ABC Corp',
+              contact: 'N/A',
+              description: 'Minor alterations',
+              approver: 'Pending'
+            })
+          ),
+
+          // Test Case 3: Card with long text content
+          React.createElement('div', { className: 'card-wrapper' },
+            React.createElement('h2', null, 'Test Case 3: Long Content Application'),
+            React.createElement(ApplicationDetailCard, {
+              siteAddress: '789 Harbor View Drive, Apartment 15B, North Sydney NSW 2060, Australia',
+              reference: 'DA-2024-003-MOD-01-REV-02',
+              applicant: 'International Development Consortium Pty Ltd & Partners',
+              owner: 'Multiple Owners - Strata Plan 12345',
+              contact: 'Jane Smith (Project Manager) - jane.smith@idc.com.au - 02 9999 8888',
+              description: 'Major mixed-use development comprising residential towers (200 units), commercial spaces (5000 sqm), underground parking (300 spaces), public plaza, and associated landscaping works',
+              approver: 'Development Assessment Panel - Multiple Officers Required'
+            })
+          ),
+
+          // Test Case 4: Card with special characters
+          React.createElement('div', { className: 'card-wrapper' },
+            React.createElement('h2', null, 'Test Case 4: Special Characters & Symbols'),
+            React.createElement(ApplicationDetailCard, {
+              siteAddress: '10-12 O\'Malley Street & Cross Lane',
+              reference: 'DA/2024/004#1',
+              applicant: 'Smith & Jones Pty Ltd (ACN: 123 456 789)',
+              owner: 'Trust Account #54321',
+              contact: 'admin@smith-jones.com.au',
+              description: 'Café/Restaurant < 100m²',
+              approver: 'TBA'
+            })
+          )
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(TestComponent));
+    </script>
+  </body>
+</html>

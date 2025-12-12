@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 
 const ComponentsShowcase: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = React.useState<string>('all');
@@ -14,7 +13,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'data',
       status: 'stable',
       path: '/table-demo.html',
-      icon: '📊' // Table/List icon
+      icon: '📊', // Table/List icon
+      hasMuiEquivalent: true
     },
     // Navigation Components
     {
@@ -24,7 +24,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'navigation',
       status: 'stable',
       path: '/header-demo.html',
-      icon: '🎯' // Header icon
+      icon: '🎯', // Header icon
+      hasMuiEquivalent: true // AppBar + Toolbar
     },
     {
       id: 'navigation-rail',
@@ -33,7 +34,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'navigation',
       status: 'stable',
       path: '/navigation-rail-demo.html',
-      icon: '🧭' // Navigation icon
+      icon: '🧭', // Navigation icon
+      hasMuiEquivalent: true // Drawer permanent variant
     },
     {
       id: 'breadcrumb',
@@ -42,7 +44,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'navigation',
       status: 'stable',
       path: '/breadcrumb-demo.html',
-      icon: '🔗' // Link/Chain icon
+      icon: '🔗', // Link/Chain icon
+      hasMuiEquivalent: true // Breadcrumbs
     },
     {
       id: 'tabs',
@@ -51,7 +54,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'navigation',
       status: 'stable',
       path: '/tabs-demo.html',
-      icon: '📑' // Folder/Tab icon
+      icon: '📑', // Folder/Tab icon
+      hasMuiEquivalent: true // Tabs
     },
     {
       id: 'tree-navigation',
@@ -60,7 +64,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'navigation',
       status: 'stable',
       path: '/tree-navigation-demo.html',
-      icon: '🌳' // Tree icon
+      icon: '🌳', // Tree icon
+      hasMuiEquivalent: true // TreeView
     },
     // Input Components
     {
@@ -70,7 +75,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'input',
       status: 'stable',
       path: '/button-demo.html',
-      icon: '🔘' // Button icon
+      icon: '🔘', // Button icon
+      hasMuiEquivalent: true // Button
     },
     {
       id: 'input',
@@ -79,7 +85,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'input',
       status: 'stable',
       path: '/input-demo.html',
-      icon: '✏️' // Edit icon
+      icon: '✏️', // Edit icon
+      hasMuiEquivalent: true // TextField
     },
     {
       id: 'dropdown',
@@ -88,7 +95,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'input',
       status: 'stable',
       path: '/dropdown-demo.html',
-      icon: '📝' // List dropdown
+      icon: '📝', // List dropdown
+      hasMuiEquivalent: true // Select or Autocomplete
     },
     {
       id: 'list',
@@ -97,7 +105,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'display',
       status: 'stable',
       path: '/list-demo.html',
-      icon: '📋' // List icon
+      icon: '📋', // List icon
+      hasMuiEquivalent: true // List
     },
     // Display Components
     {
@@ -107,7 +116,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'display',
       status: 'stable',
       path: '/cards-demo.html',
-      icon: '🗂️' // Document/Card icon
+      icon: '🗂️', // Document/Card icon
+      hasMuiEquivalent: true // Card
     },
     {
       id: 'chip',
@@ -116,7 +126,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'display',
       status: 'stable',
       path: '/chip-demo.html',
-      icon: '🏷️' // Tag icon
+      icon: '🏷️', // Tag icon
+      hasMuiEquivalent: true // Chip
     },
     {
       id: 'user-avatar',
@@ -125,7 +136,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'display',
       status: 'stable',
       path: '/user-avatar-demo.html',
-      icon: '👤' // User icon
+      icon: '👤', // User icon
+      hasMuiEquivalent: true // Avatar
     },
     // Feedback Components
     {
@@ -135,7 +147,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'feedback',
       status: 'stable',
       path: '/modal-demo.html',
-      icon: '💬' // Chat/Dialog icon
+      icon: '💬', // Chat/Dialog icon
+      hasMuiEquivalent: true // Dialog
     },
     {
       id: 'alert-banner',
@@ -144,7 +157,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'feedback',
       status: 'stable',
       path: '/alert-banner-demo.html',
-      icon: '🔔' // Notification icon
+      icon: '🔔', // Notification icon
+      hasMuiEquivalent: true // Alert
     },
     {
       id: 'drawer',
@@ -153,7 +167,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'feedback',
       status: 'stable',
       path: '/drawer-demo.html',
-      icon: '📤' // Drawer/Panel icon
+      icon: '📤', // Drawer/Panel icon
+      hasMuiEquivalent: true // Drawer
     },
     // Navigation Components
     {
@@ -163,7 +178,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'navigation',
       status: 'stable',
       path: '/stepper-demo.html',
-      icon: '📍' // Steps/Progress icon
+      icon: '📍', // Steps/Progress icon
+      hasMuiEquivalent: true // Stepper
     },
     // Data Components
     {
@@ -173,7 +189,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'data',
       status: 'stable',
       path: '/graph-demo.html',
-      icon: '📈' // Graph icon
+      icon: '📈', // Graph icon
+      hasMuiEquivalent: false // Keep ODL - no MUI charts
     },
     {
       id: 'kanban',
@@ -182,7 +199,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'data',
       status: 'stable',
       path: '/kanban-demo.html',
-      icon: '📋' // Board/Task icon
+      icon: '📋', // Board/Task icon
+      hasMuiEquivalent: false // Keep ODL - complex drag-drop
     },
     // Layout Components
     {
@@ -192,7 +210,8 @@ const ComponentsShowcase: React.FC = () => {
       category: 'layout',
       status: 'stable',
       path: '/templates-demo.html',
-      icon: '📐' // Template/Layout icon
+      icon: '📐', // Template/Layout icon
+      hasMuiEquivalent: true // Container + Grid
     },
     {
       id: 'hierarchy-visualizations',
@@ -201,7 +220,27 @@ const ComponentsShowcase: React.FC = () => {
       category: 'data',
       status: 'stable',
       path: '/hierarchy-visualizations-demo.html',
-      icon: '🗺️' // Map/Hierarchy icon
+      icon: '🗺️', // Map/Hierarchy icon
+      hasMuiEquivalent: false // Keep ODL - complex visualizations
+    },
+    // MUI Integration
+    {
+      id: 'mui-comparison',
+      name: 'ODL vs MUI Comparison',
+      description: 'Side-by-side comparison of ODL components and MUI components with ODL theming applied',
+      category: 'comparison',
+      status: 'experimental',
+      path: '/mui-comparison.html',
+      icon: '🔄' // Comparison icon
+    },
+    {
+      id: 'mui-cards',
+      name: 'MUI Cards Collection',
+      description: '10+ card variations built with MUI and ODL theming - stats, user profiles, pricing, notifications, and more',
+      category: 'comparison',
+      status: 'experimental',
+      path: '/cards-showcase.html',
+      icon: '🎴' // Cards icon
     },
   ];
 
@@ -213,6 +252,7 @@ const ComponentsShowcase: React.FC = () => {
     display: { label: 'Display', color: '#10b981' },
     feedback: { label: 'Feedback', color: '#ef4444' },
     layout: { label: 'Layout', color: '#3b82f6' },
+    comparison: { label: 'Comparison', color: '#8B5CF6' },
   };
 
   const filteredComponents = components.filter(component => {
@@ -224,6 +264,29 @@ const ComponentsShowcase: React.FC = () => {
 
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)' }}>
+      {/* Skip Link for Accessibility */}
+      <a
+        href="#main-content"
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          top: '10px',
+          zIndex: 999,
+          padding: '8px 16px',
+          background: '#3560C1',
+          color: 'white',
+          textDecoration: 'none',
+          borderRadius: '4px'
+        }}
+        onFocus={(e) => {
+          (e.currentTarget as HTMLElement).style.left = '10px';
+        }}
+        onBlur={(e) => {
+          (e.currentTarget as HTMLElement).style.left = '-9999px';
+        }}
+      >
+        Skip to main content
+      </a>
       {/* Header */}
       <div style={{ 
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -242,6 +305,7 @@ const ComponentsShowcase: React.FC = () => {
             <input
               type="text"
               placeholder="Search components..."
+              aria-label="Search components"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
@@ -287,7 +351,7 @@ const ComponentsShowcase: React.FC = () => {
       </div>
 
       {/* Components Grid */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem' }}>
+      <main id="main-content" style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem' }} role="main" aria-label="Component showcase grid">
         <div style={{ 
           display: 'grid', 
           gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
@@ -354,14 +418,32 @@ const ComponentsShowcase: React.FC = () => {
                 }}>
                   {component.icon}
                 </div>
-                <h3 style={{ 
-                  fontSize: '1.125rem', 
-                  fontWeight: 600, 
-                  color: '#111827',
-                  margin: 0
-                }}>
-                  {component.name}
-                </h3>
+                <div style={{ flex: 1 }}>
+                  <h3 style={{
+                    fontSize: '1.125rem',
+                    fontWeight: 600,
+                    color: '#111827',
+                    margin: 0,
+                    display: 'inline-block'
+                  }}>
+                    {component.name}
+                  </h3>
+                  {component.hasMuiEquivalent && (
+                    <span style={{
+                      marginLeft: '0.5rem',
+                      padding: '0.125rem 0.5rem',
+                      borderRadius: '9999px',
+                      fontSize: '0.65rem',
+                      fontWeight: 600,
+                      background: '#8B5CF6',
+                      color: 'white',
+                      display: 'inline-block',
+                      verticalAlign: 'middle'
+                    }}>
+                      MUI
+                    </span>
+                  )}
+                </div>
               </div>
               <p style={{ 
                 fontSize: '0.875rem', 
@@ -381,13 +463,9 @@ const ComponentsShowcase: React.FC = () => {
             </p>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 };
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <ComponentsShowcase />
-  </React.StrictMode>
-);
+export default ComponentsShowcase;

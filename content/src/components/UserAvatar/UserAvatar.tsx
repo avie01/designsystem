@@ -57,7 +57,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   onKeyDown,
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [_isFocused, setIsFocused] = useState(false);
 
   // Color palette mapped to ODL chart colors
   const avatarColorVariants = [
@@ -93,10 +93,10 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
       onClick?.();
     }
     if (e.key === 'Escape') {
-      e.currentTarget.blur();
+      (e.currentTarget as HTMLElement).blur();
       setShowTooltip(false);
     }
-    
+
     onKeyDown?.(e);
   };
 

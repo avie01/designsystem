@@ -296,35 +296,37 @@ export function applyTheme(themeName: 'default' | 'dark' | 'highContrastLight' |
 
 // Initialize theme on load
 export function initializeTheme() {
-  const savedTheme = localStorage.getItem('odl-selected-theme') as keyof typeof themes;
-  
+  const savedTheme = localStorage.getItem('odl-selected-theme');
+
   // Check for system preference
   const prefersHighContrast = window.matchMedia('(prefers-contrast: high)').matches;
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  
-  let themeToApply: keyof typeof themes = 'default';
-  
-  if (savedTheme && themes[savedTheme]) {
+
+  type ThemeName = 'default' | 'dark' | 'highContrastLight' | 'highContrastDark';
+  let themeToApply: ThemeName = 'default';
+
+  if (savedTheme && (savedTheme === 'default' || savedTheme === 'dark' || savedTheme === 'highContrastLight' || savedTheme === 'highContrastDark')) {
     themeToApply = savedTheme;
   } else if (prefersHighContrast) {
     themeToApply = prefersDark ? 'highContrastDark' : 'highContrastLight';
   }
-  
+
   applyTheme(themeToApply);
 }
 
 // React hook for theme management
 export function useODLTheme() {
-  const [currentTheme, setCurrentTheme] = React.useState<keyof typeof themes>('default');
-  
+  type ThemeName = 'default' | 'dark' | 'highContrastLight' | 'highContrastDark';
+  const [currentTheme, setCurrentTheme] = React.useState<ThemeName>('default');
+
   React.useEffect(() => {
-    const savedTheme = localStorage.getItem('odl-selected-theme') as keyof typeof themes;
-    if (savedTheme && themes[savedTheme]) {
+    const savedTheme = localStorage.getItem('odl-selected-theme');
+    if (savedTheme && (savedTheme === 'default' || savedTheme === 'dark' || savedTheme === 'highContrastLight' || savedTheme === 'highContrastDark')) {
       setCurrentTheme(savedTheme);
     }
   }, []);
-  
-  const changeTheme = (themeName: keyof typeof themes) => {
+
+  const changeTheme = (themeName: ThemeName) => {
     applyTheme(themeName);
     setCurrentTheme(themeName);
   };
@@ -332,7 +334,7 @@ export function useODLTheme() {
   return {
     currentTheme,
     changeTheme,
-    themes: Object.keys(themes) as Array<keyof typeof themes>,
+    themes: ['default', 'dark', 'highContrastLight', 'highContrastDark'] as ThemeName[],
     themeData: themes[currentTheme],
   };
 }
@@ -407,15 +409,16 @@ export function getComponentStyles(component: string, theme?: keyof typeof theme
 
 // Simple integration component
 export const ThemeSwitcher: React.FC = () => {
+  type ThemeName = 'default' | 'dark' | 'highContrastLight' | 'highContrastDark';
   const { currentTheme, changeTheme, themes: themeList } = useODLTheme();
-  
+
   return (
     <div className="odl-theme-switcher">
       <label htmlFor="theme-select">Theme:</label>
-      <select 
+      <select
         id="theme-select"
-        value={currentTheme} 
-        onChange={(e) => changeTheme(e.target.value as keyof typeof themes)}
+        value={currentTheme}
+        onChange={(e) => changeTheme(e.target.value as ThemeName)}
         className="odl-input"
       >
         {themeList.map(themeName => (

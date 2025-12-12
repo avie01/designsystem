@@ -4,6 +4,13 @@ import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
 import Icon from '../components/Icon/Icon';
 import styles from './TableDemo.module.css';
+import {
+  Chip as MUIChip,
+  Stack,
+  Box
+} from '@mui/material';
+import DemoComparison from '../components/DemoComparison/DemoComparison';
+import ODLThemeProvider from '../theme/ODLThemeProvider';
 
 // Self-contained Button component for the demo
 const Button: React.FC<{
@@ -62,11 +69,125 @@ const Button: React.FC<{
 };
 
 const ChipDemo: React.FC = () => {
-  const [selectedDemo, setSelectedDemo] = useState<'colors' | 'icons' | 'interactive' | 'status' | 'tags' | 'custom'>('colors');
+  const [selectedDemo, setSelectedDemo] = useState<'colors' | 'icons' | 'interactive' | 'status' | 'tags' | 'custom' | 'comparison'>('colors');
   const [showCode, setShowCode] = useState(false);
+  const [showComparison, _setShowComparison] = useState(true);
   const [selectedChips, setSelectedChips] = useState<string[]>([]);
   const [tags, setTags] = useState(['React', 'TypeScript', 'JavaScript', 'CSS', 'HTML']);
   const [newTag, setNewTag] = useState('');
+
+  // ODL-styled MUI chip colors to match exactly
+  const getODLChipStyles = (variant: string, size?: string) => {
+    const baseStyles = {
+      fontSize: size === 'small' ? '12px' : size === 'large' ? '16px' : '14px',
+      height: size === 'small' ? '24px' : size === 'large' ? '32px' : '28px',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+      fontWeight: 400,
+      borderRadius: '4px',
+      border: 'none',
+      '& .MuiChip-label': {
+        padding: size === 'small' ? '0 8px' : '0 12px',
+      },
+      '& .MuiChip-deleteIcon': {
+        fontSize: '16px',
+        width: '16px',
+        height: '16px',
+        margin: '0 4px 0 -4px',
+        opacity: 0.7,
+        '&:hover': {
+          opacity: 1,
+        }
+      },
+      '& .MuiChip-icon': {
+        margin: '0 -4px 0 8px',
+      }
+    };
+
+    const colorStyles = {
+      blue: {
+        backgroundColor: '#E0F3FE',
+        color: '#3560C1',
+        '& .MuiChip-deleteIcon': {
+          ...baseStyles['& .MuiChip-deleteIcon'],
+          color: '#3560C1',
+        }
+      },
+      lightGreen: {
+        backgroundColor: '#DEFBE6',
+        color: '#31622C',
+        '& .MuiChip-deleteIcon': {
+          ...baseStyles['& .MuiChip-deleteIcon'],
+          color: '#31622C',
+        }
+      },
+      orange: {
+        backgroundColor: '#FCEEDA',
+        color: '#C93713',
+        '& .MuiChip-deleteIcon': {
+          ...baseStyles['& .MuiChip-deleteIcon'],
+          color: '#C93713',
+        }
+      },
+      yellow: {
+        backgroundColor: '#FFF1C7',
+        color: '#161616',
+        '& .MuiChip-deleteIcon': {
+          ...baseStyles['& .MuiChip-deleteIcon'],
+          color: '#161616',
+        }
+      },
+      red: {
+        backgroundColor: '#FFD7D9',
+        color: '#DA1E28',
+        '& .MuiChip-deleteIcon': {
+          ...baseStyles['& .MuiChip-deleteIcon'],
+          color: '#DA1E28',
+        }
+      },
+      purple: {
+        backgroundColor: '#F0E5FF',
+        color: '#6929C4',
+        '& .MuiChip-deleteIcon': {
+          ...baseStyles['& .MuiChip-deleteIcon'],
+          color: '#6929C4',
+        }
+      },
+      teal: {
+        backgroundColor: '#D9FBFB',
+        color: '#005D5D',
+        '& .MuiChip-deleteIcon': {
+          ...baseStyles['& .MuiChip-deleteIcon'],
+          color: '#005D5D',
+        }
+      },
+      grey: {
+        backgroundColor: '#F4F4F4',
+        color: '#161616',
+        '& .MuiChip-deleteIcon': {
+          ...baseStyles['& .MuiChip-deleteIcon'],
+          color: '#161616',
+        }
+      },
+      darkGreen: {
+        backgroundColor: '#1B4721',
+        color: '#FFFFFF',
+        '& .MuiChip-deleteIcon': {
+          ...baseStyles['& .MuiChip-deleteIcon'],
+          color: '#FFFFFF',
+        }
+      },
+      burgundy: {
+        backgroundColor: '#750E13',
+        color: '#FFFFFF',
+        '& .MuiChip-deleteIcon': {
+          ...baseStyles['& .MuiChip-deleteIcon'],
+          color: '#FFFFFF',
+        }
+      },
+    };
+
+    return { ...baseStyles, ...(colorStyles[variant as keyof typeof colorStyles] || colorStyles.blue) };
+  };
 
   const handleChipClick = (chipId: string) => {
     setSelectedChips(prev => 
@@ -248,7 +369,8 @@ const [tags, setTags] = useState(['React', 'TypeScript']);
             { key: 'interactive', label: 'Interactive', desc: 'Clickable chips', icon: '👆' },
             { key: 'status', label: 'Status', desc: 'Status indicators', icon: '🚦' },
             { key: 'tags', label: 'Tags', desc: 'Tag management', icon: '🏷️' },
-            { key: 'custom', label: 'Custom', desc: 'Advanced examples', icon: '✨' }
+            { key: 'custom', label: 'Custom', desc: 'Advanced examples', icon: '✨' },
+            { key: 'comparison', label: 'MUI Comparison', desc: 'ODL vs Material UI', icon: '⚖️' }
           ].map(demo => (
             <button
               key={demo.key}
@@ -270,61 +392,128 @@ const [tags, setTags] = useState(['React', 'TypeScript']);
         {selectedDemo === 'colors' && (
           <div className={styles.tableSection}>
             <div className={styles.sectionHeader}>
-              <h2>ODL Chip Colors</h2>
-              <p>Complete color palette based on ODL design specifications</p>
+              <h2>Chip Color Variants</h2>
+              <p>Complete color palette comparison between ODL and Material UI</p>
             </div>
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
-              <div style={{ marginBottom: '2rem' }}>
-                <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Light Colors</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-                  <Chip label="Blue" variant="blue" />
-                  <Chip label="Light Green" variant="lightGreen" />
-                  <Chip label="Orange" variant="orange" />
-                  <Chip label="Yellow" variant="yellow" />
-                  <Chip label="Purple" variant="purple" />
-                  <Chip label="Teal" variant="teal" />
-                  <Chip label="Red" variant="red" />
-                  <Chip label="Grey" variant="grey" />
-                  <Chip label="White" variant="white" />
-                </div>
-              </div>
+              {/* ODL vs MUI Chip Comparison */}
+              {showComparison && (
+                <DemoComparison
+                  title="Color Variants"
+                  description="ODL custom colors vs MUI semantic colors"
+                  odlExample={
+                    <div style={{ padding: '1rem' }}>
+                      <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Light Colors</h3>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                        <Chip label="Blue" variant="blue" />
+                        <Chip label="Light Green" variant="lightGreen" />
+                        <Chip label="Orange" variant="orange" />
+                        <Chip label="Yellow" variant="yellow" />
+                        <Chip label="Purple" variant="purple" />
+                        <Chip label="Teal" variant="teal" />
+                        <Chip label="Red" variant="red" />
+                        <Chip label="Grey" variant="grey" />
+                        <Chip label="White" variant="white" />
+                      </div>
+                      <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Dark Colors</h3>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                        <Chip label="Dark Green" variant="darkGreen" />
+                        <Chip label="Burgundy" variant="burgundy" />
+                      </div>
+                    </div>
+                  }
+                  muiExample={
+                    <ODLThemeProvider enableMui={true}>
+                      <Box sx={{ padding: '1rem' }}>
+                        <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Semantic Colors</h3>
+                        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, marginBottom: '1.5rem' }}>
+                          <MUIChip label="Default" sx={getODLChipStyles('grey')} />
+                          <MUIChip label="Primary" sx={getODLChipStyles('blue')} />
+                          <MUIChip label="Secondary" sx={getODLChipStyles('purple')} />
+                          <MUIChip label="Success" sx={getODLChipStyles('lightGreen')} />
+                          <MUIChip label="Warning" sx={getODLChipStyles('yellow')} />
+                          <MUIChip label="Error" sx={getODLChipStyles('red')} />
+                          <MUIChip label="Info" sx={getODLChipStyles('teal')} />
+                        </Stack>
+                        <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Outlined Variants</h3>
+                        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                          <MUIChip label="Primary" variant="outlined" sx={{ ...getODLChipStyles('blue'), backgroundColor: 'white', border: '1px solid #3560C1' }} />
+                          <MUIChip label="Secondary" variant="outlined" sx={{ ...getODLChipStyles('purple'), backgroundColor: 'white', border: '1px solid #6929C4' }} />
+                          <MUIChip label="Success" variant="outlined" sx={{ ...getODLChipStyles('lightGreen'), backgroundColor: 'white', border: '1px solid #31622C', color: '#31622C' }} />
+                          <MUIChip label="Warning" variant="outlined" sx={{ ...getODLChipStyles('yellow'), backgroundColor: 'white', border: '1px solid #F1C21B', color: '#161616' }} />
+                        </Stack>
+                      </Box>
+                    </ODLThemeProvider>
+                  }
+                />
+              )}
 
-              <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '2rem', marginBottom: '2rem' }}>
-                <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Size Variants</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
-                  <Chip label="Small" variant="blue" size="sm" />
-                  <Chip label="Medium" variant="blue" size="md" />
-                  <Chip label="Large" variant="blue" size="lg" />
-                </div>
-              </div>
-              
-              <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '2rem', marginBottom: '2rem' }}>
-                <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Dark Colors</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-                  <Chip label="Dark Green" variant="darkGreen" />
-                  <Chip label="Burgundy" variant="burgundy" />
-                </div>
-              </div>
 
-              <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '2rem' }}>
-                <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>States</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
-                    <span style={{ fontSize: '14px', color: '#6b7280', minWidth: '80px' }}>Normal:</span>
-                    <Chip label="Active" variant="blue" />
-                    <Chip label="Clickable" variant="blue" clickable onClick={() => console.log('Clicked!')} />
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
-                    <span style={{ fontSize: '14px', color: '#6b7280', minWidth: '80px' }}>Disabled:</span>
-                    <Chip label="Disabled" variant="blue" disabled />
-                    <Chip label="Disabled Clickable" variant="blue" clickable disabled onClick={() => console.log('Should not click')} />
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
-                    <span style={{ fontSize: '14px', color: '#6b7280', minWidth: '80px' }}>Error:</span>
-                    <Chip label="Error State" variant="red" error />
-                    <Chip label="Error Clickable" variant="red" error clickable onClick={() => console.log('Error clicked')} />
-                  </div>
-                </div>
+              <div style={{ marginTop: '2rem' }}>
+                <DemoComparison
+                  title="Size & State Variants"
+                  description="Different sizes and interactive states"
+                  odlExample={
+                    <div style={{ padding: '1rem' }}>
+                      <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Size Variants</h3>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                        <Chip label="Small" variant="blue" size="sm" />
+                        <Chip label="Medium" variant="blue" size="md" />
+                        <Chip label="Large" variant="blue" size="lg" />
+                      </div>
+
+                      <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>States</h3>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
+                          <span style={{ fontSize: '14px', color: '#6b7280', minWidth: '80px' }}>Normal:</span>
+                          <Chip label="Active" variant="blue" />
+                          <Chip label="Clickable" variant="blue" clickable onClick={() => console.log('Clicked!')} />
+                        </div>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
+                          <span style={{ fontSize: '14px', color: '#6b7280', minWidth: '80px' }}>Disabled:</span>
+                          <Chip label="Disabled" variant="blue" disabled />
+                          <Chip label="Disabled Clickable" variant="blue" clickable disabled onClick={() => console.log('Should not click')} />
+                        </div>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
+                          <span style={{ fontSize: '14px', color: '#6b7280', minWidth: '80px' }}>Error:</span>
+                          <Chip label="Error State" variant="red" error />
+                          <Chip label="Error Clickable" variant="red" error clickable onClick={() => console.log('Error clicked')} />
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  muiExample={
+                    <ODLThemeProvider enableMui={true}>
+                      <Box sx={{ padding: '1rem' }}>
+                        <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Size Variants</h3>
+                        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, marginBottom: '1.5rem' }}>
+                          <MUIChip label="Small" sx={getODLChipStyles('blue', 'small')} size="small" />
+                          <MUIChip label="Medium" sx={getODLChipStyles('blue')} size="medium" />
+                          <MUIChip label="Large" sx={getODLChipStyles('blue', 'large')} />
+                        </Stack>
+
+                        <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>States</h3>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <span style={{ fontSize: '14px', color: '#6b7280', minWidth: '80px' }}>Normal:</span>
+                            <MUIChip label="Active" sx={getODLChipStyles('blue')} />
+                            <MUIChip label="Clickable" sx={{ ...getODLChipStyles('blue'), cursor: 'pointer', '&:hover': { backgroundColor: '#3560C1', color: 'white' } }} onClick={() => console.log('Clicked!')} />
+                          </Box>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <span style={{ fontSize: '14px', color: '#6b7280', minWidth: '80px' }}>Disabled:</span>
+                            <MUIChip label="Disabled" disabled />
+                            <MUIChip label="Disabled Clickable" disabled onClick={() => console.log('Should not click')} />
+                          </Box>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <span style={{ fontSize: '14px', color: '#6b7280', minWidth: '80px' }}>Deletable:</span>
+                            <MUIChip label="Can Delete" sx={getODLChipStyles('red')} onDelete={() => console.log('Deleted')} />
+                            <MUIChip label="With Icon" sx={getODLChipStyles('lightGreen')} onDelete={() => console.log('Deleted')} deleteIcon={<Icon name="close" size={16} />} />
+                          </Box>
+                        </Box>
+                      </Box>
+                    </ODLThemeProvider>
+                  }
+                />
               </div>
             </div>
           </div>
@@ -334,39 +523,90 @@ const [tags, setTags] = useState(['React', 'TypeScript']);
           <div className={styles.tableSection}>
             <div className={styles.sectionHeader}>
               <h2>Chips with Icons</h2>
-              <p>Carbon Design System icons integrated with chips</p>
+              <p>Icon integration comparison between ODL and Material UI</p>
             </div>
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
-              <div style={{ marginBottom: '2rem' }}>
-                <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Document Icons</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-                  <Chip label="Report.pdf" variant="blue" showDocumentIcon />
-                  <Chip label="Spreadsheet.xlsx" variant="lightGreen" showDocumentIcon />
-                  <Chip label="Presentation.pptx" variant="orange" showDocumentIcon />
-                  <Chip label="Archive.zip" variant="grey" showDocumentIcon />
-                </div>
-              </div>
+              {showComparison && (
+                <>
+                  <DemoComparison
+                    title="Icon Variants"
+                    description="Different ways to add icons to chips"
+                    odlExample={
+                      <div style={{ padding: '1rem' }}>
+                        <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Document Icons</h3>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                          <Chip label="Report.pdf" variant="blue" showDocumentIcon />
+                          <Chip label="Spreadsheet.xlsx" variant="lightGreen" showDocumentIcon />
+                          <Chip label="Presentation.pptx" variant="orange" showDocumentIcon />
+                          <Chip label="Archive.zip" variant="grey" showDocumentIcon />
+                        </div>
 
-              <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '2rem', marginBottom: '2rem' }}>
-                <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Info Icons</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-                  <Chip label="Important" variant="red" showInfoIcon />
-                  <Chip label="Warning" variant="yellow" showInfoIcon />
-                  <Chip label="Notice" variant="blue" showInfoIcon />
-                </div>
-              </div>
+                        <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Custom Icons</h3>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                          <Chip label="Approved" variant="lightGreen" iconName="checkmark" />
+                          <Chip label="Rejected" variant="red" iconName="close" />
+                          <Chip label="In Progress" variant="yellow" iconName="time" />
+                          <Chip label="Locked" variant="grey" iconName="locked" />
+                          <Chip label="Favorite" variant="purple" iconName="star" />
+                          <Chip label="Settings" variant="teal" iconName="settings" />
+                        </div>
+                      </div>
+                    }
+                    muiExample={
+                      <ODLThemeProvider enableMui={true}>
+                        <Box sx={{ padding: '1rem' }}>
+                          <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>With Avatars</h3>
+                          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, marginBottom: '1.5rem' }}>
+                            <MUIChip label="User Profile" icon={<Icon name="user" size={16} color="#3560C1" />} sx={getODLChipStyles('blue')} />
+                            <MUIChip label="Admin" icon={<Icon name="user-admin" size={16} color="#DA1E28" />} sx={getODLChipStyles('red')} />
+                            <MUIChip label="Guest" icon={<Icon name="user" size={16} color="#161616" />} sx={getODLChipStyles('grey')} />
+                            <MUIChip label="Team Lead" icon={<Icon name="group" size={16} color="#31622C" />} sx={getODLChipStyles('lightGreen')} />
+                          </Stack>
 
-              <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '2rem' }}>
-                <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>Custom Icons</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-                  <Chip label="Approved" variant="lightGreen" iconName="checkmark" />
-                  <Chip label="Rejected" variant="red" iconName="close" />
-                  <Chip label="In Progress" variant="yellow" iconName="time" />
-                  <Chip label="Locked" variant="grey" iconName="locked" />
-                  <Chip label="Favorite" variant="purple" iconName="star" />
-                  <Chip label="Settings" variant="teal" iconName="settings" />
-                </div>
-              </div>
+                          <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>With Icons</h3>
+                          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                            <MUIChip label="Approved" icon={<Icon name="checkmark" size={16} color="#31622C" />} sx={getODLChipStyles('lightGreen')} />
+                            <MUIChip label="Rejected" icon={<Icon name="close" size={16} color="#DA1E28" />} sx={getODLChipStyles('red')} />
+                            <MUIChip label="In Progress" icon={<Icon name="time" size={16} color="#161616" />} sx={getODLChipStyles('yellow')} />
+                            <MUIChip label="Locked" icon={<Icon name="locked" size={16} color="#161616" />} sx={getODLChipStyles('grey')} />
+                            <MUIChip label="Favorite" icon={<Icon name="star" size={16} color="#6929C4" />} sx={getODLChipStyles('purple')} />
+                            <MUIChip label="Settings" icon={<Icon name="settings" size={16} color="#005D5D" />} sx={getODLChipStyles('teal')} />
+                          </Stack>
+                        </Box>
+                      </ODLThemeProvider>
+                    }
+                  />
+
+                  <div style={{ marginTop: '2rem' }}>
+                    <DemoComparison
+                      title="Info & Action Icons"
+                      description="Chips with informational and action icons"
+                      odlExample={
+                        <div style={{ padding: '1rem' }}>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                            <Chip label="Important" variant="red" showInfoIcon />
+                            <Chip label="Warning" variant="yellow" showInfoIcon />
+                            <Chip label="Notice" variant="blue" showInfoIcon />
+                            <Chip label="Help" variant="purple" showInfoIcon />
+                          </div>
+                        </div>
+                      }
+                      muiExample={
+                        <ODLThemeProvider enableMui={true}>
+                          <Box sx={{ padding: '1rem' }}>
+                            <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                              <MUIChip label="Delete Item" onDelete={() => {}} sx={getODLChipStyles('red')} />
+                              <MUIChip label="Remove Tag" onDelete={() => {}} sx={getODLChipStyles('yellow')} />
+                              <MUIChip label="Clear Filter" onDelete={() => {}} sx={getODLChipStyles('blue')} />
+                              <MUIChip label="Reset" onDelete={() => {}} deleteIcon={<Icon name="restart" size={16} />} sx={getODLChipStyles('grey')} />
+                            </Stack>
+                          </Box>
+                        </ODLThemeProvider>
+                      }
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}
@@ -568,6 +808,192 @@ const [tags, setTags] = useState(['React', 'TypeScript']);
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* MUI Comparison Section */}
+        {selectedDemo === 'comparison' && (
+          <div className={styles.tableSection}>
+            <div className={styles.sectionHeader}>
+              <h2>ODL vs Material UI Chips</h2>
+              <p>Side-by-side comparison of ODL and Material UI chip components</p>
+            </div>
+            <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
+
+              {showComparison ? (
+                <>
+                  <DemoComparison
+                    title="Basic Chips"
+                    description="Standard chip variants and colors"
+                    odlExample={
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', padding: '1rem' }}>
+                        <Chip label="Default" variant="grey" />
+                        <Chip label="Primary" variant="blue" />
+                        <Chip label="Success" variant="lightGreen" />
+                        <Chip label="Warning" variant="yellow" />
+                        <Chip label="Error" variant="red" />
+                        <Chip label="Info" variant="teal" />
+                      </div>
+                    }
+                    muiExample={
+                      <ODLThemeProvider enableMui={true}>
+                        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, padding: '1rem' }}>
+                          <MUIChip label="Default" sx={getODLChipStyles('grey')} />
+                          <MUIChip label="Primary" sx={getODLChipStyles('blue')} />
+                          <MUIChip label="Success" sx={getODLChipStyles('lightGreen')} />
+                          <MUIChip label="Warning" sx={getODLChipStyles('yellow')} />
+                          <MUIChip label="Error" sx={getODLChipStyles('red')} />
+                          <MUIChip label="Info" sx={getODLChipStyles('teal')} />
+                        </Stack>
+                      </ODLThemeProvider>
+                    }
+                  />
+
+                  <div style={{ marginTop: '2rem' }}>
+                    <DemoComparison
+                      title="Interactive Chips"
+                      description="Clickable and deletable chips"
+                      odlExample={
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', padding: '1rem' }}>
+                          <Chip label="Clickable" variant="blue" clickable onClick={() => console.log('Clicked ODL')} />
+                          <Chip label="With Icon" variant="lightGreen" iconName="checkmark" />
+                          <Chip label="Disabled" variant="grey" disabled />
+                          <Chip label="With Info" variant="orange" showInfoIcon />
+                        </div>
+                      }
+                      muiExample={
+                        <ODLThemeProvider enableMui={true}>
+                          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, padding: '1rem' }}>
+                            <MUIChip label="Clickable" sx={{ ...getODLChipStyles('blue'), cursor: 'pointer', '&:hover': { backgroundColor: '#3560C1', color: 'white' } }} onClick={() => console.log('Clicked MUI')} />
+                            <MUIChip label="Deletable" sx={getODLChipStyles('lightGreen')} onDelete={() => console.log('Deleted')} />
+                            <MUIChip label="Disabled" disabled />
+                            <MUIChip
+                              label="With Icon"
+                              icon={<Icon name="information" size={16} color="#005D5D" />}
+                              sx={getODLChipStyles('teal')}
+                            />
+                          </Stack>
+                        </ODLThemeProvider>
+                      }
+                    />
+                  </div>
+
+                  <div style={{ marginTop: '2rem' }}>
+                    <DemoComparison
+                      title="Size Variants"
+                      description="Different chip sizes for various use cases"
+                      odlExample={
+                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem', padding: '1rem' }}>
+                          <Chip label="Small" variant="blue" size="sm" />
+                          <Chip label="Medium" variant="blue" size="md" />
+                          <Chip label="Large" variant="blue" size="lg" />
+                        </div>
+                      }
+                      muiExample={
+                        <ODLThemeProvider enableMui={true}>
+                          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, padding: '1rem' }}>
+                            <MUIChip label="Small" sx={getODLChipStyles('blue', 'small')} size="small" />
+                            <MUIChip label="Medium" sx={getODLChipStyles('blue')} size="medium" />
+                            <MUIChip
+                              label="Large"
+                              sx={getODLChipStyles('blue', 'large')}
+                            />
+                          </Stack>
+                        </ODLThemeProvider>
+                      }
+                    />
+                  </div>
+
+                  <div style={{ marginTop: '2rem' }}>
+                    <DemoComparison
+                      title="Outlined Variants"
+                      description="Outlined chip styles"
+                      odlExample={
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', padding: '1rem' }}>
+                          <Chip label="Outlined Blue" variant="white" style={{ border: '1px solid #3B82F6', color: '#3B82F6' }} />
+                          <Chip label="Outlined Green" variant="white" style={{ border: '1px solid #10B981', color: '#10B981' }} />
+                          <Chip label="Outlined Orange" variant="white" style={{ border: '1px solid #F59E0B', color: '#F59E0B' }} />
+                        </div>
+                      }
+                      muiExample={
+                        <ODLThemeProvider enableMui={true}>
+                          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, padding: '1rem' }}>
+                            <MUIChip label="Outlined Default" variant="outlined" sx={{ ...getODLChipStyles('grey'), backgroundColor: 'white', border: '1px solid #E0E0E0' }} />
+                            <MUIChip label="Outlined Primary" variant="outlined" sx={{ ...getODLChipStyles('blue'), backgroundColor: 'white', border: '1px solid #3560C1' }} />
+                            <MUIChip label="Outlined Success" variant="outlined" sx={{ ...getODLChipStyles('lightGreen'), backgroundColor: 'white', border: '1px solid #31622C', color: '#31622C' }} />
+                          </Stack>
+                        </ODLThemeProvider>
+                      }
+                    />
+                  </div>
+
+                  <div style={{ marginTop: '2rem' }}>
+                    <DemoComparison
+                      title="Complex Examples"
+                      description="Advanced chip configurations"
+                      odlExample={
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                            <Chip label="React" variant="blue" iconName="logo-react" />
+                            <Chip label="Vue" variant="lightGreen" iconName="logo-vue" />
+                            <Chip label="Angular" variant="red" iconName="logo-angular" />
+                          </div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                            <Chip label="Users: 1.2K" variant="purple" iconName="user" />
+                            <Chip label="Revenue: $45K" variant="lightGreen" iconName="currency" />
+                            <Chip label="Growth: +12%" variant="teal" iconName="trending-up" />
+                          </div>
+                        </div>
+                      }
+                      muiExample={
+                        <ODLThemeProvider enableMui={true}>
+                          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '1rem' }}>
+                            <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                              <MUIChip
+                                label="React"
+                                icon={<Icon name="logo-react" size={16} color="#3560C1" />}
+                                sx={getODLChipStyles('blue')}
+                              />
+                              <MUIChip
+                                label="Vue"
+                                icon={<Icon name="logo-vue" size={16} color="#31622C" />}
+                                sx={getODLChipStyles('lightGreen')}
+                              />
+                              <MUIChip
+                                label="Angular"
+                                icon={<Icon name="logo-angular" size={16} color="#DA1E28" />}
+                                sx={getODLChipStyles('red')}
+                              />
+                            </Stack>
+                            <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                              <MUIChip
+                                label="Users: 1.2K"
+                                icon={<Icon name="user" size={16} color="#6929C4" />}
+                                sx={getODLChipStyles('purple')}
+                              />
+                              <MUIChip
+                                label="Revenue: $45K"
+                                icon={<Icon name="currency" size={16} color="#31622C" />}
+                                sx={getODLChipStyles('lightGreen')}
+                              />
+                              <MUIChip
+                                label="Growth: +12%"
+                                icon={<Icon name="trending-up" size={16} color="#005D5D" />}
+                                sx={getODLChipStyles('teal')}
+                              />
+                            </Stack>
+                          </Box>
+                        </ODLThemeProvider>
+                      }
+                    />
+                  </div>
+                </>
+              ) : (
+                <div style={{ textAlign: 'center', padding: '2rem' }}>
+                  <p>Toggle comparison view to see MUI examples</p>
+                </div>
+              )}
             </div>
           </div>
         )}

@@ -21,7 +21,7 @@ export const useTextSelection = () => {
     };
   }, []);
 
-  const handleSelection = useCallback((event: React.MouseEvent) => {
+  const handleSelection = useCallback((_event: React.MouseEvent) => {
     const selection = window.getSelection();
     if (!selection || selection.isCollapsed) return;
 
@@ -30,27 +30,20 @@ export const useTextSelection = () => {
 
     const range = selection.getRangeAt(0);
     const startElement = range.startContainer.parentElement;
-    const endElement = range.endContainer.parentElement;
-    
+
     // Get more context for better selection display
     const startBlockElement = startElement?.closest('[data-block-id]');
-    const endBlockElement = endElement?.closest('[data-block-id]');
     
     const newSelection: Selection = {
       id: `sel-${Date.now()}-${Math.random()}`,
       text,
       startLine: parseInt(startElement?.dataset.lineNumber || '0'),
-      endLine: parseInt(endElement?.dataset.lineNumber || '0'),
+      endLine: parseInt(startElement?.dataset.lineNumber || '0'),
       sectionId: startElement?.closest('[data-section-id]')?.getAttribute('data-section-id') || '',
       blocks: [],
       timestamp: Date.now(),
       // Add context for better preview
-      startBlockId: startBlockElement?.getAttribute('data-block-id') || '',
-      endBlockId: endBlockElement?.getAttribute('data-block-id') || '',
-      range: {
-        startOffset: range.startOffset,
-        endOffset: range.endOffset
-      }
+      startBlockId: startBlockElement?.getAttribute('data-block-id') || ''
     };
 
     if (isShiftPressed) {
@@ -79,7 +72,7 @@ export const useTextSelection = () => {
       startLine: Math.min(...sorted.map(s => s.startLine)),
       endLine: Math.max(...sorted.map(s => s.endLine)),
       sectionId: sorted[0].sectionId,
-      blocks: sorted.flatMap(s => s.blocks),
+      blocks: sorted.flatMap(s => s.blocks || []),
       timestamp: Date.now()
     };
   }, [selections]);
@@ -92,7 +85,7 @@ export const useTextSelection = () => {
     setSelections(prev => prev.filter(s => s.id !== selectionId));
   }, []);
 
-  const handleBlockSelection = useCallback((block: ContentBlock, sectionId: string, isSelected: boolean, isMultiSelect: boolean, isShiftSelect: boolean, allBlocks?: ContentBlock[]) => {
+  const handleBlockSelection = useCallback((block: ContentBlock, sectionId: string, _isSelected: boolean, _isMultiSelect: boolean, isShiftSelect: boolean, allBlocks?: ContentBlock[]) => {
     const newSelection: Selection = {
       id: `block-${block.id}-${Date.now()}`,
       text: block.text,
@@ -101,8 +94,7 @@ export const useTextSelection = () => {
       sectionId: sectionId,
       blocks: [block],
       timestamp: Date.now(),
-      startBlockId: block.id,
-      endBlockId: block.id
+      startBlockId: block.id
     };
 
     setSelections(prev => {
@@ -132,8 +124,7 @@ export const useTextSelection = () => {
                 sectionId: sectionId,
                 blocks: [rangeBlock],
                 timestamp: Date.now(),
-                startBlockId: rangeBlock.id,
-                endBlockId: rangeBlock.id
+                startBlockId: rangeBlock.id
               });
             }
           }

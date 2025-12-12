@@ -112,7 +112,6 @@ const meta: Meta<typeof Input> = {
       },
     },
     onChange: {
-      action: 'changed',
       description: 'Change event handler',
       table: {
         type: { summary: '(value: string) => void' },

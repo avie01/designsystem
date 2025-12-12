@@ -47,7 +47,6 @@ const List: React.FC<ListProps> = ({
   onItemClick,
   onSelectionChange,
   className = '',
-  renderItem,
   showExpandIcons = true,
 }) => {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());

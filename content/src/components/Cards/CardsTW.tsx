@@ -55,7 +55,7 @@ const Cards: React.FC<CardsProps> = ({
   );
 
   // Variant-specific styles
-  const variantStyles = {
+  const variantStyles: Record<NonNullable<typeof variant>, string> = {
     default: 'shadow-sm border border-odl-border',
     elevated: 'shadow-lg',
     outlined: 'border-2 border-odl-border',
@@ -157,8 +157,8 @@ const Cards: React.FC<CardsProps> = ({
     <div
       className={cn(
         baseStyles,
-        variantStyles[variant],
-        variant !== 'stat' && 'p-6',
+        variantStyles[variant as keyof typeof variantStyles],
+        (variant === 'default' || variant === 'elevated' || variant === 'outlined' || variant === 'image') && 'p-6',
         className
       )}
       onClick={onClick}

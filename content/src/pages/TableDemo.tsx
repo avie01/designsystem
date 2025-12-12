@@ -7,6 +7,9 @@ import Chip from '../components/Chip/Chip';
 import Input from '../components/Input/Input';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
+import { ODLThemeProvider } from '../theme/ODLThemeProvider';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { Box, Chip as MUIChip } from '@mui/material';
 import { TableRowData } from '../types/common';
 import ODLTheme from '../styles/ODLTheme';
 import styles from './TableDemo.module.css';
@@ -45,6 +48,7 @@ const formatDate = (dateString: string): string => {
 };
 
 const TableDemo: React.FC = () => {
+  const [showComparison, _setShowComparison] = useState(true);
   const [selectedDemo, setSelectedDemo] = useState<'basic' | 'advanced' | 'products' | 'interactive' | 'performance'>('basic');
   const [showCode, setShowCode] = useState(false);
   const [tableSettings, setTableSettings] = useState({
@@ -61,6 +65,84 @@ const TableDemo: React.FC = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const columnMenuRef = useRef<HTMLDivElement>(null);
+
+  // MUI DataGrid columns for basic table
+  const muiBasicColumns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Name', width: 180, resizable: true },
+    { field: 'email', headerName: 'Email', width: 220, resizable: true },
+    { field: 'role', headerName: 'Role', width: 150, resizable: true },
+    { field: 'department', headerName: 'Department', width: 140, resizable: true },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 120,
+      renderCell: (params: GridRenderCellParams) => (
+        <MUIChip
+          label={params.value}
+          size="small"
+          sx={{
+            fontSize: '12px',
+            fontWeight: 500,
+            height: '24px',
+            backgroundColor: params.value === 'Active' ? '#d4f4dd' :
+                           params.value === 'Pending' ? '#fff3cd' : '#f8d7da',
+            color: params.value === 'Active' ? '#1e7e34' :
+                   params.value === 'Pending' ? '#856404' : '#721c24',
+            '& .MuiChip-label': {
+              px: 1.5,
+              fontSize: '12px',
+              fontWeight: 500
+            }
+          }}
+        />
+      )
+    },
+    { field: 'joinDate', headerName: 'Join Date', width: 130, resizable: true },
+    {
+      field: 'salary',
+      headerName: 'Salary',
+      width: 120,
+      resizable: true,
+      valueFormatter: (params: any) => `$${params?.toLocaleString() || 0}`
+    }
+  ];
+
+  // MUI DataGrid columns for products table
+  const muiProductColumns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'product', headerName: 'Product Name', width: 200, resizable: true },
+    { field: 'category', headerName: 'Category', width: 120, resizable: true },
+    {
+      field: 'price',
+      headerName: 'Price',
+      width: 100,
+      resizable: true,
+      valueFormatter: (params: any) => `$${params?.toFixed(2) || '0.00'}`
+    },
+    {
+      field: 'stock',
+      headerName: 'Stock',
+      width: 120,
+      resizable: true,
+      renderCell: (params: GridRenderCellParams) => (
+        <Box sx={{
+          color: params.value < 50 ? '#d32f2f' : '#2e7d32',
+          fontWeight: params.value < 50 ? 600 : 400
+        }}>
+          {params.value} units
+        </Box>
+      )
+    },
+    {
+      field: 'rating',
+      headerName: 'Rating',
+      width: 100,
+      resizable: true,
+      valueFormatter: (params: any) => `⭐ ${params || 0}/5`
+    },
+    { field: 'lastRestocked', headerName: 'Last Restocked', width: 140, resizable: true }
+  ];
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -510,6 +592,7 @@ const TableDemo: React.FC = () => {
   ];
 
   return (
+    <ODLThemeProvider enableMui={true}>
     <div className={styles.tableDemo}>
       {/* Breadcrumb Navigation */}
       <DemoBreadcrumb componentName="Table Component" />
@@ -756,6 +839,139 @@ const TableDemo: React.FC = () => {
               <h2>Basic Table with Core Features</h2>
               <p>Demonstrates essential table functionality including sorting, pagination, and row selection</p>
             </div>
+
+            {/* ODL vs MUI Table Comparison - Stacked Vertically */}
+            {showComparison && (
+              <div style={{
+                marginBottom: '48px',
+                padding: '24px',
+                backgroundColor: '#f9fafb',
+                borderRadius: '8px',
+              }}>
+                <h2 style={{
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  marginBottom: '24px',
+                  color: '#111827',
+                }}>
+                  Table Component Comparison
+                </h2>
+                <p style={{ marginBottom: '32px', color: '#6b7280' }}>
+                  ODL Table vs MUI DataGrid with ODL styling - both with column resizing
+                </p>
+
+                {/* ODL Table */}
+                <div style={{ marginBottom: '32px' }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      margin: 0,
+                    }}>
+                      ODL Table
+                    </h3>
+                    <span style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      backgroundColor: '#3560C1',
+                      color: 'white',
+                    }}>
+                      ODL
+                    </span>
+                  </div>
+                  <div style={{ height: 400, width: '100%', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white' }}>
+                    <Table
+                      data={filteredBasicTableData.slice(0, 5)}
+                      columns={basicColumns.filter(col => !hiddenColumns.has(col.key))}
+                      pageSize={5}
+                      paginated={tableSettings.paginated}
+                      selectable={tableSettings.selectable}
+                      striped={tableSettings.striped}
+                      hoverable={tableSettings.hoverable}
+                      compact={tableSettings.compact}
+                      bordered={tableSettings.bordered}
+                    />
+                  </div>
+                </div>
+
+                {/* MUI DataGrid */}
+                <div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      margin: 0,
+                    }}>
+                      MUI DataGrid with ODL Theme
+                    </h3>
+                    <span style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      backgroundColor: '#8B5CF6',
+                      color: 'white',
+                    }}>
+                      MUI
+                    </span>
+                  </div>
+                  <div style={{ height: 400, width: '100%' }}>
+                    <DataGrid
+                      rows={filteredBasicTableData}
+                      columns={muiBasicColumns}
+                      pageSizeOptions={[5, 10, 20]}
+                      initialState={{
+                        pagination: { paginationModel: { pageSize: 5 } },
+                      }}
+                      checkboxSelection
+                      disableRowSelectionOnClick
+                      sx={{
+                        backgroundColor: 'white',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '8px',
+                        '& .MuiDataGrid-cell': {
+                          borderBottom: '1px solid #f0f0f0',
+                          fontSize: '14px',
+                          color: '#374151'
+                        },
+                        '& .MuiDataGrid-columnHeader': {
+                          backgroundColor: '#f9fafb',
+                          borderBottom: '2px solid #e0e0e0',
+                          fontSize: '14px',
+                          fontWeight: 600,
+                          color: '#111827'
+                        },
+                        '& .MuiDataGrid-row:hover': {
+                          backgroundColor: '#f8fafc'
+                        },
+                        '& .MuiDataGrid-row.Mui-selected': {
+                          backgroundColor: '#e0f3fe'
+                        },
+                        '& .MuiDataGrid-footerContainer': {
+                          backgroundColor: '#f9fafb',
+                          borderTop: '1px solid #e0e0e0'
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className={styles.tableContainer}>
               <Table
                 data={filteredBasicTableData}
@@ -947,7 +1163,6 @@ const TableDemo: React.FC = () => {
                       value={searchTerm}
                       onChange={setSearchTerm}
                       size="sm"
-                      autoFocus
                       className="hover"
                     />
                   </div>
@@ -963,6 +1178,135 @@ const TableDemo: React.FC = () => {
               <h2>Product Inventory Management</h2>
               <p>Showcases custom formatting, conditional styling, and business data presentation</p>
             </div>
+
+            {/* ODL vs MUI Product Table Comparison - Stacked Vertically */}
+            {showComparison && (
+              <div style={{
+                marginBottom: '48px',
+                padding: '24px',
+                backgroundColor: '#f9fafb',
+                borderRadius: '8px',
+              }}>
+                <h2 style={{
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  marginBottom: '24px',
+                  color: '#111827',
+                }}>
+                  Product Table Component Comparison
+                </h2>
+                <p style={{ marginBottom: '32px', color: '#6b7280' }}>
+                  ODL Table vs MUI DataGrid for product inventory - with custom formatting and conditional styling
+                </p>
+
+                {/* ODL Product Table */}
+                <div style={{ marginBottom: '32px' }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      margin: 0,
+                    }}>
+                      ODL Product Table
+                    </h3>
+                    <span style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      backgroundColor: '#3560C1',
+                      color: 'white',
+                    }}>
+                      ODL
+                    </span>
+                  </div>
+                  <div style={{ height: 400, width: '100%', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white' }}>
+                    <Table
+                      data={productData.slice(0, 5)}
+                      columns={productColumns}
+                      pageSize={5}
+                      paginated={true}
+                      selectable={true}
+                      striped={true}
+                      hoverable={true}
+                    />
+                  </div>
+                </div>
+
+                {/* MUI Product DataGrid */}
+                <div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      margin: 0,
+                    }}>
+                      MUI Product DataGrid with ODL Theme
+                    </h3>
+                    <span style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      backgroundColor: '#8B5CF6',
+                      color: 'white',
+                    }}>
+                      MUI
+                    </span>
+                  </div>
+                  <div style={{ height: 400, width: '100%' }}>
+                    <DataGrid
+                      rows={productData}
+                      columns={muiProductColumns}
+                      pageSizeOptions={[5, 10, 20]}
+                      initialState={{ pagination: { paginationModel: { pageSize: 5 } }}}
+                      checkboxSelection
+                      disableRowSelectionOnClick
+                      sx={{
+                        backgroundColor: 'white',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '8px',
+                        '& .MuiDataGrid-cell': {
+                          borderBottom: '1px solid #f0f0f0',
+                          fontSize: '14px',
+                          color: '#374151'
+                        },
+                        '& .MuiDataGrid-columnHeader': {
+                          backgroundColor: '#f9fafb',
+                          borderBottom: '2px solid #e0e0e0',
+                          fontSize: '14px',
+                          fontWeight: 600,
+                          color: '#111827'
+                        },
+                        '& .MuiDataGrid-row:hover': {
+                          backgroundColor: '#f8fafc'
+                        },
+                        '& .MuiDataGrid-row.Mui-selected': {
+                          backgroundColor: '#e0f3fe'
+                        },
+                        '& .MuiDataGrid-footerContainer': {
+                          backgroundColor: '#f9fafb',
+                          borderTop: '1px solid #e0e0e0'
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className={styles.tableContainer}>
               <Table
                 data={productData}
@@ -1055,6 +1399,139 @@ const TableDemo: React.FC = () => {
               <h2>Advanced Table with Full Feature Set</h2>
               <p>Complete feature demonstration including search, filters, column controls, and export functionality</p>
             </div>
+
+            {/* ODL vs MUI Advanced Table Comparison - Stacked Vertically */}
+            {showComparison && (
+              <div style={{
+                marginBottom: '48px',
+                padding: '24px',
+                backgroundColor: '#f9fafb',
+                borderRadius: '8px',
+              }}>
+                <h2 style={{
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  marginBottom: '24px',
+                  color: '#111827',
+                }}>
+                  Advanced Table Component Comparison
+                </h2>
+                <p style={{ marginBottom: '32px', color: '#6b7280' }}>
+                  ODL AdvancedTable vs MUI DataGrid with full feature set - search, filters, and advanced controls
+                </p>
+
+                {/* ODL Advanced Table */}
+                <div style={{ marginBottom: '32px' }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      margin: 0,
+                    }}>
+                      ODL Advanced Table with Full Controls
+                    </h3>
+                    <span style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      backgroundColor: '#3560C1',
+                      color: 'white',
+                    }}>
+                      ODL
+                    </span>
+                  </div>
+                  <div style={{ height: 500, width: '100%', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white' }}>
+                    <Table
+                      data={basicTableData.slice(0, 8)}
+                      columns={basicColumns}
+                      pageSize={8}
+                      paginated={true}
+                      selectable={true}
+                      striped={true}
+                      hoverable={true}
+                      title="Advanced Demo - ODL Table"
+                    />
+                  </div>
+                </div>
+
+                {/* MUI Advanced DataGrid */}
+                <div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      margin: 0,
+                    }}>
+                      MUI Advanced DataGrid with ODL Theme
+                    </h3>
+                    <span style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      backgroundColor: '#8B5CF6',
+                      color: 'white',
+                    }}>
+                      MUI
+                    </span>
+                  </div>
+                  <div style={{ height: 500, width: '100%' }}>
+                    <DataGrid
+                      rows={basicTableData}
+                      columns={muiBasicColumns}
+                      pageSizeOptions={[8, 16, 24]}
+                      initialState={{ pagination: { paginationModel: { pageSize: 8 } }}}
+                      checkboxSelection
+                      disableRowSelectionOnClick
+                      sx={{
+                        backgroundColor: 'white',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '8px',
+                        '& .MuiDataGrid-cell': {
+                          borderBottom: '1px solid #f0f0f0',
+                          fontSize: '14px',
+                          color: '#374151'
+                        },
+                        '& .MuiDataGrid-columnHeader': {
+                          backgroundColor: '#f9fafb',
+                          borderBottom: '2px solid #e0e0e0',
+                          fontSize: '14px',
+                          fontWeight: 600,
+                          color: '#111827'
+                        },
+                        '& .MuiDataGrid-row:hover': {
+                          backgroundColor: '#f8fafc'
+                        },
+                        '& .MuiDataGrid-row.Mui-selected': {
+                          backgroundColor: '#e0f3fe'
+                        },
+                        '& .MuiDataGrid-row:nth-of-type(even)': {
+                          backgroundColor: '#f9fafb'
+                        },
+                        '& .MuiDataGrid-footerContainer': {
+                          backgroundColor: '#f9fafb',
+                          borderTop: '1px solid #e0e0e0'
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className={styles.tableContainer}>
               <AdvancedTable
                 data={basicTableData}
@@ -1108,6 +1585,143 @@ const TableDemo: React.FC = () => {
               <h2>Interactive Configuration Demo</h2>
               <p>Experiment with different table settings and see changes in real-time</p>
             </div>
+
+            {/* ODL vs MUI Interactive Table Comparison - Stacked Vertically */}
+            {showComparison && (
+              <div style={{
+                marginBottom: '48px',
+                padding: '24px',
+                backgroundColor: '#f9fafb',
+                borderRadius: '8px',
+              }}>
+                <h2 style={{
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  marginBottom: '24px',
+                  color: '#111827',
+                }}>
+                  Interactive Table Component Comparison
+                </h2>
+                <p style={{ marginBottom: '32px', color: '#6b7280' }}>
+                  ODL Table vs MUI DataGrid with configurable options - both respond to the settings above
+                </p>
+
+                {/* ODL Interactive Table */}
+                <div style={{ marginBottom: '32px' }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      margin: 0,
+                    }}>
+                      ODL Interactive Table
+                    </h3>
+                    <span style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      backgroundColor: '#3560C1',
+                      color: 'white',
+                    }}>
+                      ODL
+                    </span>
+                  </div>
+                  <div style={{ height: 400, width: '100%', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white' }}>
+                    <Table
+                      data={basicTableData.slice(0, 6)}
+                      columns={basicColumns}
+                      pageSize={6}
+                      paginated={tableSettings.paginated}
+                      selectable={tableSettings.selectable}
+                      striped={tableSettings.striped}
+                      hoverable={tableSettings.hoverable}
+                      compact={tableSettings.compact}
+                      bordered={tableSettings.bordered}
+                    />
+                  </div>
+                </div>
+
+                {/* MUI Interactive DataGrid */}
+                <div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      margin: 0,
+                    }}>
+                      MUI Interactive DataGrid with ODL Theme
+                    </h3>
+                    <span style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      backgroundColor: '#8B5CF6',
+                      color: 'white',
+                    }}>
+                      MUI
+                    </span>
+                  </div>
+                  <div style={{ height: 400, width: '100%' }}>
+                    <DataGrid
+                      rows={basicTableData}
+                      columns={muiBasicColumns}
+                      pageSizeOptions={[6, 12, 18]}
+                      initialState={{ pagination: { paginationModel: { pageSize: 6 } }}}
+                      checkboxSelection={tableSettings.selectable}
+                      disableRowSelectionOnClick
+                      sx={{
+                        backgroundColor: 'white',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '8px',
+                        '& .MuiDataGrid-cell': {
+                          borderBottom: tableSettings.bordered ? '1px solid #e0e0e0' : '1px solid #f0f0f0',
+                          fontSize: '14px',
+                          color: '#374151',
+                          padding: tableSettings.compact ? '4px 8px' : '8px 16px'
+                        },
+                        '& .MuiDataGrid-columnHeader': {
+                          backgroundColor: '#f9fafb',
+                          borderBottom: '2px solid #e0e0e0',
+                          fontSize: '14px',
+                          fontWeight: 600,
+                          color: '#111827',
+                          padding: tableSettings.compact ? '4px 8px' : '8px 16px'
+                        },
+                        '& .MuiDataGrid-row:hover': {
+                          backgroundColor: tableSettings.hoverable ? '#f8fafc' : 'transparent'
+                        },
+                        '& .MuiDataGrid-row.Mui-selected': {
+                          backgroundColor: '#e0f3fe'
+                        },
+                        '& .MuiDataGrid-row:nth-of-type(even)': {
+                          backgroundColor: tableSettings.striped ? '#f9fafb' : 'transparent'
+                        },
+                        '& .MuiDataGrid-footerContainer': {
+                          backgroundColor: '#f9fafb',
+                          borderTop: '1px solid #e0e0e0',
+                          display: tableSettings.paginated ? 'flex' : 'none'
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className={styles.tableContainer}>
               <Table
                 data={basicTableData}
@@ -1222,6 +1836,136 @@ const TableDemo: React.FC = () => {
                 </span>
               </div>
             </div>
+
+            {/* ODL vs MUI Performance Table Comparison - Stacked Vertically */}
+            {showComparison && (
+              <div style={{
+                marginBottom: '48px',
+                padding: '24px',
+                backgroundColor: '#f9fafb',
+                borderRadius: '8px',
+              }}>
+                <h2 style={{
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  marginBottom: '24px',
+                  color: '#111827',
+                }}>
+                  Performance Table Component Comparison
+                </h2>
+                <p style={{ marginBottom: '32px', color: '#6b7280' }}>
+                  ODL AdvancedTable vs MUI DataGrid with large datasets - both handling {performanceData.length.toLocaleString()} rows
+                </p>
+
+                {/* ODL Performance Table */}
+                <div style={{ marginBottom: '32px' }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      margin: 0,
+                    }}>
+                      ODL Advanced Table (First 100 rows)
+                    </h3>
+                    <span style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      backgroundColor: '#3560C1',
+                      color: 'white',
+                    }}>
+                      ODL
+                    </span>
+                  </div>
+                  <div style={{ height: 400, width: '100%', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white' }}>
+                    <Table
+                      data={performanceData.slice(0, 100)}
+                      columns={basicColumns}
+                      pageSize={25}
+                      paginated={true}
+                      selectable={true}
+                      striped={true}
+                      hoverable={true}
+                      title="Performance Demo - Limited View"
+                    />
+                  </div>
+                </div>
+
+                {/* MUI Performance DataGrid */}
+                <div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      margin: 0,
+                    }}>
+                      MUI DataGrid with ODL Theme (All {performanceData.length.toLocaleString()} rows)
+                    </h3>
+                    <span style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      backgroundColor: '#8B5CF6',
+                      color: 'white',
+                    }}>
+                      MUI
+                    </span>
+                  </div>
+                  <div style={{ height: 400, width: '100%' }}>
+                    <DataGrid
+                      rows={performanceData}
+                      columns={muiBasicColumns}
+                      pageSizeOptions={[25, 50, 100]}
+                      initialState={{ pagination: { paginationModel: { pageSize: 25 } }}}
+                      checkboxSelection
+                      disableRowSelectionOnClick
+                      sx={{
+                        backgroundColor: 'white',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '8px',
+                        '& .MuiDataGrid-cell': {
+                          borderBottom: '1px solid #f0f0f0',
+                          fontSize: '14px',
+                          color: '#374151'
+                        },
+                        '& .MuiDataGrid-columnHeader': {
+                          backgroundColor: '#f9fafb',
+                          borderBottom: '2px solid #e0e0e0',
+                          fontSize: '14px',
+                          fontWeight: 600,
+                          color: '#111827'
+                        },
+                        '& .MuiDataGrid-row:hover': {
+                          backgroundColor: '#f8fafc'
+                        },
+                        '& .MuiDataGrid-row.Mui-selected': {
+                          backgroundColor: '#e0f3fe'
+                        },
+                        '& .MuiDataGrid-footerContainer': {
+                          backgroundColor: '#f9fafb',
+                          borderTop: '1px solid #e0e0e0'
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className={styles.tableContainer}>
               <AdvancedTable
                 data={performanceData}
@@ -1274,7 +2018,7 @@ const TableDemo: React.FC = () => {
           <div className={styles.codePanel}>
             <h3>Code Example</h3>
             <pre className={styles.codeBlock}>
-              <code>{getCodeExample(selectedDemo)}</code>
+              <code>{`// Code example for ${selectedDemo}`}</code>
             </pre>
           </div>
         )}
@@ -1360,98 +2104,9 @@ const TableDemo: React.FC = () => {
       {/* Back to Top Button */}
       <BackToTop />
     </div>
+    </ODLThemeProvider>
   );
 
-  // Helper function to generate code examples
-  function getCodeExample(demo: string): string {
-    const examples = {
-      basic: `<Table
-  data={employeeData}
-  columns={[
-    { key: 'name', label: 'Name', sortable: true },
-    { key: 'email', label: 'Email', sortable: true },
-    { key: 'role', label: 'Role', sortable: true },
-    { key: 'status', label: 'Status', render: (value) => (
-      <span className={\`status-\${value.toLowerCase()}\`}>
-        {value}
-      </span>
-    )}
-  ]}
-  pageSize={5}
-  paginated={true}
-  selectable={true}
-  onRowSelect={(selectedRows) => handleRowSelection(selectedRows)}
-/>`,
-      products: `<Table
-  data={productData}
-  columns={[
-    { key: 'product', label: 'Product Name', sortable: true },
-    { key: 'price', label: 'Price', render: (value) => \`$\${value.toFixed(2)}\` },
-    { key: 'stock', label: 'Stock', render: (value) => (
-      <span className={value < 50 ? 'low-stock' : 'in-stock'}>
-        {value} units
-      </span>
-    )}
-  ]}
-  pageSize={5}
-  striped={true}
-  hoverable={true}
-/>`,
-      advanced: `<AdvancedTable
-  data={employeeData}
-  columns={advancedColumns}
-  itemsPerPage={10}
-  paginated={true}
-  selectable={true}
-  showSearch={true}
-  showColumnToggle={true}
-  showExport={true}
-  showBulkActions={true}
-  bulkActions={[
-    {
-      label: 'Archive Selected',
-      action: (items) => handleArchive(items),
-      variant: 'secondary'
-    },
-    {
-      label: 'Send Email',
-      action: (items) => handleEmailSend(items),
-      variant: 'primary'
-    }
-  ]}
-  exportFormats={['csv', 'json']}
-  title="Employee Directory"
-  subtitle="Manage and export employee information"
-/>`,
-      interactive: `// Live configuration demo
-const [settings, setSettings] = useState({
-  paginated: true,
-  selectable: true,
-  striped: true,
-  hoverable: true,
-  compact: false
-});
-
-<Table
-  data={data}
-  columns={columns}
-  {...settings}
-  onRowSelect={(rows) => console.log(rows)}
-/>`,
-      performance: `<AdvancedTable
-  data={largeDataset} // 1000+ rows
-  columns={columns}
-  itemsPerPage={25}
-  paginated={true}
-  showSearch={true}
-  virtualScrolling={true} // For very large datasets
-  title="Large Dataset Demo"
-  subtitle="Efficiently handling 1000+ records"
-/>`
-    };
-    
-    return examples[demo as keyof typeof examples] || examples.basic;
-  }
 };
 
 export default TableDemo;

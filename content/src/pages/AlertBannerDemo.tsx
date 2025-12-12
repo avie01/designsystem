@@ -13,7 +13,7 @@ const AlertBannerDemo: React.FC = () => {
   const [showCode, setShowCode] = useState(false);
   
   // Alert states
-  const [basicAlerts, setBasicAlerts] = useState({
+  const [basicAlerts, _setBasicAlerts] = useState({
     info: true,
     success: true,
     warning: true,
@@ -136,7 +136,7 @@ const AlertBannerDemo: React.FC = () => {
   This is an informational message to keep users informed.
 </AlertBanner>
 
-<AlertBanner variant="success">
+<AlertBanner variant="info">
   Operation completed successfully!
 </AlertBanner>
 
@@ -158,7 +158,7 @@ const AlertBannerDemo: React.FC = () => {
 </AlertBanner>
 
 <AlertBanner
-  variant="success"
+  variant="info"
   dismissible
   title="Upload Complete"
 >
@@ -167,7 +167,7 @@ const AlertBannerDemo: React.FC = () => {
     
     'auto-dismiss': `// Auto-dismiss Alert Banners
 <AlertBanner
-  variant="success"
+  variant="info"
   autoDismiss={3000} // Dismiss after 3 seconds
   dismissible
 >
@@ -318,7 +318,7 @@ const removeAlert = (id) => {
                 </AlertBanner>
               )}
               {basicAlerts.success && (
-                <AlertBanner variant="success">
+                <AlertBanner variant="info">
                   Success! Your operation has been completed successfully without any issues.
                 </AlertBanner>
               )}
@@ -355,7 +355,7 @@ const removeAlert = (id) => {
               )}
               {dismissibleAlerts.success && (
                 <AlertBanner
-                  variant="success"
+                  variant="info"
                   dismissible
                   title="Upload Complete"
                   onDismiss={() => setDismissibleAlerts(prev => ({ ...prev, success: false }))}
@@ -412,13 +412,13 @@ const removeAlert = (id) => {
                 <Button variant="primary" onClick={() => triggerAutoDismiss('info')}>
                   Show Info (5s)
                 </Button>
-                <Button variant="success" onClick={() => triggerAutoDismiss('success')}>
+                <Button variant="primary" onClick={() => triggerAutoDismiss('success')}>
                   Show Success (3s)
                 </Button>
-                <Button variant="warning" onClick={() => triggerAutoDismiss('warning')}>
+                <Button variant="secondary" onClick={() => triggerAutoDismiss('warning')}>
                   Show Warning (4s)
                 </Button>
-                <Button variant="danger" onClick={() => triggerAutoDismiss('error')}>
+                <Button variant="destructive" onClick={() => triggerAutoDismiss('error')}>
                   Show Error (6s)
                 </Button>
               </div>
@@ -435,7 +435,7 @@ const removeAlert = (id) => {
               )}
               {autoDismissAlerts.success && (
                 <AlertBanner
-                  variant="success"
+                  variant="info"
                   autoDismiss={3000}
                   dismissible
                   onDismiss={() => handleAutoDismissComplete('success')}
@@ -497,11 +497,10 @@ const removeAlert = (id) => {
                 variant="error"
                 title="Connection Lost"
                 actions={
-                  <Chip 
-                    label="Retry Connection" 
-                    variant="error" 
-                    icon="restart"
-                    onClick={() => alert('Retrying connection...')} 
+                  <Chip
+                    label="Retry Connection"
+                    variant="error"
+                    onClick={() => alert('Retrying connection...')}
                   />
                 }
               >
@@ -533,10 +532,10 @@ const removeAlert = (id) => {
               </AlertBanner>
               
               <AlertBanner
-                variant="success"
+                variant="info"
                 title="Subscription Renewed"
                 actions={
-                  <Chip label="View Invoice" variant="success" onClick={() => alert('Viewing invoice...')} />
+                  <Chip label="View Invoice" variant="info" onClick={() => alert('Viewing invoice...')} />
                 }
               >
                 Your subscription has been successfully renewed for another year. Thank you for your continued support!
@@ -556,13 +555,13 @@ const removeAlert = (id) => {
                 <Button variant="primary" onClick={() => addStackedAlert('info')}>
                   Add Info Alert
                 </Button>
-                <Button variant="success" onClick={() => addStackedAlert('success')}>
+                <Button variant="primary" onClick={() => addStackedAlert('success')}>
                   Add Success Alert
                 </Button>
-                <Button variant="warning" onClick={() => addStackedAlert('warning')}>
+                <Button variant="secondary" onClick={() => addStackedAlert('warning')}>
                   Add Warning Alert
                 </Button>
-                <Button variant="danger" onClick={() => addStackedAlert('error')}>
+                <Button variant="destructive" onClick={() => addStackedAlert('error')}>
                   Add Error Alert
                 </Button>
                 {stackedAlerts.length > 0 && (

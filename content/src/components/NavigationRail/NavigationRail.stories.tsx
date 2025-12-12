@@ -80,21 +80,18 @@ const meta: Meta<typeof NavigationRail> = {
       },
     },
     onNavigate: {
-      action: 'navigated',
       description: 'Callback when navigation occurs',
       table: {
         type: { summary: '(path: string) => void' },
       },
     },
     onHelpClick: {
-      action: 'help clicked',
       description: 'Callback for help icon click',
       table: {
         type: { summary: '() => void' },
       },
     },
     onCollapseToggle: {
-      action: 'collapse toggled',
       description: 'Callback for collapse toggle',
       table: {
         type: { summary: '(collapsed: boolean) => void' },

@@ -106,7 +106,7 @@ const Accordion: React.FC<AccordionProps> = ({
               style={{
                 fontSize: level === 0 ? ODLTheme.typography.fontSize.base : ODLTheme.typography.fontSize.sm,
                 fontWeight: level === 0 ? 500 : 400,
-                color: variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.text
+                color: variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.text.primary
               }}
             >
               {item.title}

@@ -14,6 +14,7 @@ export const ODLColors = {
   primaryHover: '#2A4FA3',      // Darker blue for hover
   primaryLight: '#E0F3FE',      // Light blue background
   primaryDark: '#1E3A8A',       // Dark blue for emphasis
+  secondary: '#6B7280',         // Secondary gray color
   
   // Status Colors
   success: '#24A148',           // Green for success/positive
@@ -33,7 +34,16 @@ export const ODLColors = {
   surface: '#F4F4F4',
   surfaceHover: '#EBEBEB',          // Hover state for surface elements (inputs, etc.)
   border: '#E0E0E0',
-  
+
+  // Grey scale
+  grey50: '#F9FAFB',
+  grey100: '#F3F4F6',
+  grey200: '#E5E7EB',
+  grey300: '#D1D5DB',
+  grey400: '#9CA3AF',
+  grey500: '#6B7280',
+  grey600: '#4B5563',
+
   text: {
     primary: '#161616',         // Main text color
     secondary: '#525252',       // Secondary text
@@ -41,6 +51,9 @@ export const ODLColors = {
     disabled: '#C6C6C6',        // Disabled text
     inverse: '#FFFFFF',         // White text
   },
+
+  // Shorthand for text light (for backwards compatibility)
+  textLight: '#6B7280',
   
   // Chart Colors - Modern and vibrant palette for data visualization
   charts: {
@@ -356,8 +369,8 @@ export const getStatusBackground = (status: 'success' | 'error' | 'warning' | 'i
  */
 export const getWarningBackground = () => ODLColors.warningBackground;
 
-// Export everything as default for easy importing
-const ODLTheme = {
+// Export everything as both named and default for flexible importing
+export const ODLTheme = {
   colors: ODLColors,
   typography: ODLTypography,
   spacing: ODLSpacing,

@@ -999,7 +999,7 @@ const ODLStyleShowcase: React.FC = () => {
                   <Button variant="secondary">Secondary Button</Button>
                   <Button variant="tertiary">Tertiary Button</Button>
                   <Button variant="ghost">Ghost Button</Button>
-                  <Button variant="danger">Danger Button</Button>
+                  <Button variant="destructive">Danger Button</Button>
                 </div>
               </div>
 

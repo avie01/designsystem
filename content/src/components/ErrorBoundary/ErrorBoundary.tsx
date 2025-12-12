@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import styles from './ErrorBoundary.module.css';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -25,28 +26,28 @@ const DefaultErrorFallback: React.FC<{
   level?: 'page' | 'section' | 'component';
   message?: string;
 }> = ({ error, resetError, level = 'component', message }) => {
-  const getLevelStyles = () => {
+  const getLevelClass = () => {
     switch (level) {
       case 'page':
-        return 'min-h-screen';
+        return styles['errorContainer--page'];
       case 'section':
-        return 'min-h-[400px]';
+        return styles['errorContainer--section'];
       default:
-        return 'min-h-[200px]';
+        return styles['errorContainer--component'];
     }
   };
 
   return (
-    <div 
-      className={`flex flex-col items-center justify-center p-8 bg-red-50 border border-red-200 rounded-lg ${getLevelStyles()}`}
+    <div
+      className={`${styles.errorContainer} ${getLevelClass()}`}
       role="alert"
       aria-live="assertive"
     >
-      <div className="max-w-md text-center">
-        <svg 
-          className="w-16 h-16 mx-auto mb-4 text-red-500" 
-          fill="none" 
-          viewBox="0 0 24 24" 
+      <div className={styles.errorContent}>
+        <svg
+          className={styles.errorIcon}
+          fill="none"
+          viewBox="0 0 24 24"
           stroke="currentColor"
         >
           <path 
@@ -57,20 +58,20 @@ const DefaultErrorFallback: React.FC<{
           />
         </svg>
         
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">
+        <h2 className={styles.errorTitle}>
           {message || 'Something went wrong'}
         </h2>
         
-        <p className="text-gray-600 mb-4">
+        <p className={styles.errorMessage}>
           {error.message || 'An unexpected error occurred. Please try again.'}
         </p>
         
         {process.env.NODE_ENV === 'development' && (
-          <details className="mb-4 text-left">
-            <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
+          <details className={styles.errorDetails}>
+            <summary className={styles.errorSummary}>
               Error details
             </summary>
-            <pre className="mt-2 p-2 bg-gray-100 rounded text-xs overflow-auto max-h-40">
+            <pre className={styles.errorStack}>
               {error.stack}
             </pre>
           </details>
@@ -78,7 +79,7 @@ const DefaultErrorFallback: React.FC<{
         
         <button
           onClick={resetError}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          className={styles.retryButton}
           aria-label="Try again"
         >
           Try Again

@@ -80,7 +80,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
           <Chip
             label={item.classification}
             variant={getClassificationColor(item.classification) as any}
-            size="small"
+            size="sm"
           />
         );
       },

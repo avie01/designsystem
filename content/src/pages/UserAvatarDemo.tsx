@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Icon from '../components/Icon/Icon';
+// import Icon from '../components/Icon/Icon';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
 import UserAvatar from '../components/UserAvatar/UserAvatar';

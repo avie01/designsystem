@@ -27,18 +27,18 @@
   --user-avatar-warning: #F1C21B;              /* ODLColors.warning - 4.52:1 contrast */
   
   /* Avatar Color Variants - WCAG AA Compliant */
-  --user-avatar-blue: #3B82F6;                 /* ODLColors.charts.blue - 4.8:1 contrast */
-  --user-avatar-emerald: #10B981;              /* ODLColors.charts.emerald - 4.7:1 contrast */
-  --user-avatar-violet: #8B5CF6;               /* ODLColors.charts.violet - 4.6:1 contrast */
-  --user-avatar-amber: #F59E0B;                /* ODLColors.charts.amber - 4.5:1 contrast */
-  --user-avatar-rose: #F43F5E;                 /* ODLColors.charts.rose - 4.7:1 contrast */
-  --user-avatar-cyan: #06B6D4;                 /* ODLColors.charts.cyan - 4.9:1 contrast */
-  --user-avatar-indigo: #6366F1;               /* ODLColors.charts.indigo - 4.6:1 contrast */
-  --user-avatar-lime: #84CC16;                 /* ODLColors.charts.lime - 4.8:1 contrast */
-  --user-avatar-fuchsia: #D946EF;              /* ODLColors.charts.fuchsia - 4.5:1 contrast */
-  --user-avatar-orange: #EA580C;               /* ODLColors.charts.orange - 4.8:1 contrast */
-  --user-avatar-teal: #14B8A6;                 /* ODLColors.charts.teal - 4.7:1 contrast */
-  --user-avatar-sky: #0EA5E9;                  /* ODLColors.charts.sky - 4.9:1 contrast */
+  --user-avatar-blue: #007eb6;                 /* Darker blue for WCAG AA (4.5:1 contrast) */
+  --user-avatar-emerald: #008577;              /* Darker emerald for WCAG AA (4.5:1 contrast) */
+  --user-avatar-violet: #c12ed7;               /* Darker violet for WCAG AA (4.5:1 contrast) */
+  --user-avatar-amber: #a76900;                /* Darker amber for WCAG AA (4.5:1 contrast) */
+  --user-avatar-rose: #c91433;                 /* Darker rose for WCAG AA (4.5:1 contrast) */
+  --user-avatar-cyan: #007a8f;                 /* Darker cyan for WCAG AA (4.5:1 contrast) */
+  --user-avatar-indigo: #4c4fc9;               /* Darker indigo for WCAG AA (4.5:1 contrast) */
+  --user-avatar-lime: #00875b;                 /* Darker lime for WCAG AA (4.5:1 contrast) */
+  --user-avatar-fuchsia: #b02cc7;              /* Darker fuchsia for WCAG AA (4.5:1 contrast) */
+  --user-avatar-orange: #d14800;               /* Darker orange for WCAG AA (4.5:1 contrast) */
+  --user-avatar-teal: #007f6e;                 /* Darker teal for WCAG AA (4.5:1 contrast) */
+  --user-avatar-sky: #0077a8;                  /* Darker sky for WCAG AA (4.5:1 contrast) */
   
   /* Spacing (8px grid system) */
   --user-avatar-spacing-1: 4px;   /* ODLSpacing['1'] - 0.5 * base */

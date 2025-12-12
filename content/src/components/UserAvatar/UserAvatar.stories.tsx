@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import UserAvatar from './UserAvatar';
 
 const meta: Meta<typeof UserAvatar> = {
@@ -26,7 +25,7 @@ const meta: Meta<typeof UserAvatar> = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
     },
     showPopup: {
       control: { type: 'boolean' },
@@ -56,7 +55,7 @@ export const Small: Story = {
       department: 'Product',
       email: 'mike.chen@company.com',
     },
-    size: 'small',
+    size: 'sm',
   },
 };
 
@@ -68,7 +67,7 @@ export const Large: Story = {
       department: 'Design',
       email: 'emily.rodriguez@company.com',
     },
-    size: 'large',
+    size: 'lg',
   },
 };
 
@@ -106,7 +105,7 @@ export const MultipleUsers: Story = {
           department: 'Engineering',
           email: 'sarah.johnson@company.com',
         }}
-        size="small"
+        size="sm"
       />
       <UserAvatar
         user={{
@@ -115,7 +114,7 @@ export const MultipleUsers: Story = {
           department: 'Product',
           email: 'mike.chen@company.com',
         }}
-        size="small"
+        size="sm"
       />
       <UserAvatar
         user={{
@@ -124,7 +123,7 @@ export const MultipleUsers: Story = {
           department: 'Design',
           email: 'emily.rodriguez@company.com',
         }}
-        size="small"
+        size="sm"
       />
       <UserAvatar
         user={{
@@ -133,7 +132,7 @@ export const MultipleUsers: Story = {
           department: 'Security',
           email: 'david.kim@company.com',
         }}
-        size="small"
+        size="sm"
       />
     </div>
   ),

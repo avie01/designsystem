@@ -55,9 +55,9 @@ const ChartCard: React.FC<ChartCardProps> = ({
   const getTrendColor = () => {
     if (!change) return '#525252';
     switch (change.trend) {
-      case 'up': return '#24A148';
-      case 'down': return '#DA1E28';
-      case 'neutral': return '#8D8D8D';
+      case 'up': return '#198038'; // Darker green for WCAG AA (4.5:1 contrast)
+      case 'down': return '#A21920'; // Darker red for WCAG AA (4.5:1 contrast)
+      case 'neutral': return '#6F6F6F'; // Darker gray for WCAG AA (4.5:1 contrast)
       default: return '#525252';
     }
   };
@@ -90,7 +90,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
 
     if (type === 'line') {
       return (
-        <svg width="100%" height={height} style={{ display: 'block' }}>
+        <svg width="100%" height={height} style={{ display: 'block' }} role="presentation" aria-hidden="true">
           <polyline
             points={points}
             fill="none"
@@ -104,7 +104,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
     } else if (type === 'bar') {
       const barWidth = width / sparklineData.length;
       return (
-        <svg width="100%" height={height} style={{ display: 'block' }}>
+        <svg width="100%" height={height} style={{ display: 'block' }} role="presentation" aria-hidden="true">
           {sparklineData.map((val, i) => {
             const barHeight = ((val - min) / range) * height;
             const x = i * barWidth + barWidth * 0.1;
@@ -126,7 +126,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
     } else if (type === 'area') {
       const areaPoints = `0,${height} ${points} ${width},${height}`;
       return (
-        <svg width="100%" height={height} style={{ display: 'block' }}>
+        <svg width="100%" height={height} style={{ display: 'block' }} role="presentation" aria-hidden="true">
           <polygon
             points={areaPoints}
             fill={color}
@@ -185,9 +185,9 @@ const ChartCard: React.FC<ChartCardProps> = ({
             </h3>
           </div>
           {subtitle && (
-            <p style={{ 
-              fontSize: '12px', 
-              color: '#8D8D8D',
+            <p style={{
+              fontSize: '12px',
+              color: '#6F6F6F', // Darker gray for WCAG AA (4.5:1 contrast)
               margin: '4px 0 0 0',
             }}>
               {subtitle}
@@ -198,6 +198,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
         {/* Save Button */}
         <button
           onClick={handleSave}
+          aria-label={isSaved ? "Remove from saved charts" : "Save chart"}
           style={{
             background: 'transparent',
             border: 'none',
@@ -208,10 +209,11 @@ const ChartCard: React.FC<ChartCardProps> = ({
             justifyContent: 'center',
           }}
         >
-          <Icon 
-            name={isSaved ? "bookmark-filled" : "bookmark"} 
-            size={20} 
-            color={isSaved ? "#3560C1" : "#8D8D8D"}
+          <Icon
+            name={isSaved ? "bookmark-filled" : "bookmark"}
+            size={20}
+            color={isSaved ? "#3560C1" : "#6F6F6F"}
+            aria-hidden="true"
           />
         </button>
       </div>
@@ -243,7 +245,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
               borderRadius: '12px',
             }}>
               {getTrendIcon() && (
-                <Icon name={getTrendIcon()!} size={12} color={getTrendColor()} />
+                <Icon name={getTrendIcon()!} size={12} color={getTrendColor()} aria-hidden="true" />
               )}
               <span style={{ 
                 fontSize: '12px', 
@@ -253,9 +255,9 @@ const ChartCard: React.FC<ChartCardProps> = ({
                 {change.percentage > 0 ? '+' : ''}{change.percentage}%
               </span>
             </div>
-            <span style={{ 
-              fontSize: '12px', 
-              color: '#8D8D8D',
+            <span style={{
+              fontSize: '12px',
+              color: '#6F6F6F', // Darker gray for WCAG AA (4.5:1 contrast)
             }}>
               {change.value > 0 ? '+' : ''}{change.value} from {timeframe || 'last period'}
             </span>
@@ -265,11 +267,15 @@ const ChartCard: React.FC<ChartCardProps> = ({
 
       {/* Chart Area */}
       {(chart || sparklineData) && (
-        <div style={{ 
-          marginBottom: '16px',
-          minHeight: '60px',
-          position: 'relative',
-        }}>
+        <div
+          style={{
+            marginBottom: '16px',
+            minHeight: '60px',
+            position: 'relative',
+          }}
+          role="img"
+          aria-label={`Chart showing ${title} data trend`}
+        >
           {chart || renderSparkline()}
         </div>
       )}
@@ -315,16 +321,22 @@ const ChartCard: React.FC<ChartCardProps> = ({
               variant="secondary"
               size="small"
               onClick={actions.onExport}
-              icon={<Icon name="download" size={16} />}
-            />
+              aria-label="Export data"
+              icon={<Icon name="download" size={16} aria-hidden="true" />}
+            >
+              Export
+            </Button>
           )}
           {actions.onRefresh && (
             <Button
               variant="secondary"
               size="small"
               onClick={actions.onRefresh}
-              icon={<Icon name="renew" size={16} />}
-            />
+              aria-label="Refresh data"
+              icon={<Icon name="renew" size={16} aria-hidden="true" />}
+            >
+              Refresh
+            </Button>
           )}
         </div>
       )}

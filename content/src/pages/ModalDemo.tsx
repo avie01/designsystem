@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import Icon from '../components/Icon/Icon';
 import Button from '../components/Button/Button';
 import Input from '../components/Input/Input';
@@ -32,7 +32,6 @@ const Modal: React.FC<ModalProps> = ({
   showCloseButton = true,
   closeOnOverlayClick = true,
   footer,
-  variant = 'default',
   draggable = false,
   noOverlay = false,
   initialPosition = { x: window.innerWidth / 2 - 300, y: 100 }
@@ -98,12 +97,12 @@ const Modal: React.FC<ModalProps> = ({
     fullscreen: { width: '100vw', height: '100vh' }
   };
 
-  const variantColors = {
-    default: ODLTheme.colors.primary,
-    danger: ODLTheme.colors.error,
-    warning: ODLTheme.colors.warning,
-    success: ODLTheme.colors.success
-  };
+  // const __variantColors = {
+  //   default: ODLTheme.colors.primary,
+  //   danger: ODLTheme.colors.error,
+  //   warning: ODLTheme.colors.warning,
+  //   success: ODLTheme.colors.success
+  // };
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (closeOnOverlayClick && e.target === e.currentTarget) {
@@ -339,25 +338,43 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   cancelText = 'Cancel',
   variant = 'danger'
 }) => {
+  // const __variantConfig = {
+  //   danger: {
+  //     color: ODLTheme.colors.error,
+  //     icon: 'event-warning',
+  //     buttonVariant: 'primary'  // Changed to primary for all variants
+  //   },
+  //   warning: {
+  //     color: ODLTheme.colors.warning,
+  //     icon: 'warning',
+  //     buttonVariant: 'primary'  // Changed to primary for all variants
+  //   },
+  //   success: {
+  //     color: ODLTheme.colors.success,
+  //     icon: 'checkmark-filled',
+  //     buttonVariant: 'primary'  // Changed to primary for all variants
+  //   }
+  // };
+
   const variantConfig = {
     danger: {
       color: ODLTheme.colors.error,
-      icon: 'event-warning',
-      buttonVariant: 'primary'  // Changed to primary for all variants
+      icon: 'event-warning' as const,
+      buttonVariant: 'primary' as const
     },
     warning: {
       color: ODLTheme.colors.warning,
-      icon: 'warning',
-      buttonVariant: 'primary'  // Changed to primary for all variants
+      icon: 'warning' as const,
+      buttonVariant: 'primary' as const
     },
     success: {
       color: ODLTheme.colors.success,
-      icon: 'checkmark-filled',
-      buttonVariant: 'primary'  // Changed to primary for all variants
+      icon: 'checkmark-filled' as const,
+      buttonVariant: 'primary' as const
     }
   };
 
-  const config = variantConfig[variant];
+  const config = variantConfig[variant as keyof typeof variantConfig];
 
   return (
     <Modal
@@ -450,7 +467,7 @@ const ModalDemo: React.FC = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadedFiles, setUploadedFiles] = useState<Array<{name: string, size: string, status: 'uploading' | 'completed' | 'processing' | 'analyzed' | 'error'}>>([]);
   const [isDraggingFile, setIsDraggingFile] = useState(false);
-  const [aiProcessingIndex, setAiProcessingIndex] = useState(-1);
+  const [_aiProcessingIndex, setAiProcessingIndex] = useState(-1);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -1207,7 +1224,6 @@ const ModalDemo: React.FC = () => {
                           setHasScrolledToBottom(false);
                         }
                       }}
-                      title={!hasScrolledToBottom ? "Please read all terms to continue" : ""}
                     >
                       Accept Terms
                     </Button>

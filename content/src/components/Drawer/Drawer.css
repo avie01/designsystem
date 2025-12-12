@@ -22,29 +22,23 @@
 
 /* Position variants */
 .drawer--top {
-  top: 60px; /* Space for header */
+  top: 0;
   left: 0;
   right: 0;
   position: fixed;
-  border-bottom-left-radius: var(--odl-border-radius-lg);
-  border-bottom-right-radius: var(--odl-border-radius-lg);
-  border-top-left-radius: var(--odl-border-radius-lg);
-  border-top-right-radius: var(--odl-border-radius-lg);
-  border: var(--odl-border-width-thin) solid var(--odl-border);
-  animation: drawerSlideDown var(--odl-transition-slow) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  border-radius: 0;
+  border-bottom: var(--odl-border-width-thin) solid var(--odl-border);
+  animation: drawerSlideDown 300ms ease-out forwards;
 }
 
 .drawer--right {
-  top: 80px; /* Space for header */
+  top: 0;
   right: 0;
   bottom: 0;
   position: fixed;
-  border-top-left-radius: var(--odl-border-radius-lg);
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border: var(--odl-border-width-thin) solid var(--odl-border);
-  animation: drawerSlideLeft var(--odl-transition-slow) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  border-radius: 0;
+  border-left: var(--odl-border-width-thin) solid var(--odl-border);
+  animation: drawerSlideLeft 300ms ease-out forwards;
 }
 
 .drawer--bottom {
@@ -52,23 +46,19 @@
   left: 0;
   right: 0;
   position: fixed;
-  border-top-left-radius: var(--odl-border-radius-lg);
-  border-top-right-radius: var(--odl-border-radius-lg);
+  border-radius: 0;
   border-top: var(--odl-border-width-thin) solid var(--odl-border);
-  animation: drawerSlideUp var(--odl-transition-slow) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: drawerSlideUp 300ms ease-out forwards;
 }
 
 .drawer--left {
-  top: 80px; /* Space for header */
+  top: 0;
   left: 0;
   bottom: 0;
   position: fixed;
-  border-top-right-radius: var(--odl-border-radius-lg);
-  border-bottom-right-radius: 0;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border: var(--odl-border-width-thin) solid var(--odl-border);
-  animation: drawerSlideRight var(--odl-transition-slow) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  border-radius: 0;
+  border-right: var(--odl-border-width-thin) solid var(--odl-border);
+  animation: drawerSlideRight 300ms ease-out forwards;
 }
 
 /* Size variants */
@@ -123,9 +113,6 @@
   flex-shrink: 0;
   background-color: transparent;
   min-height: 48px; /* Ensure consistent header height */
-  /* Inherit border radius from parent */
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
 }
 
 .drawer__title {
@@ -181,6 +168,12 @@
 
 .drawer__content--no-title {
   padding: var(--drawer-padding, var(--odl-spacing-4));
+}
+
+.drawer__error-message {
+  color: var(--odl-error);
+  margin-bottom: var(--odl-spacing-3);
+  font-size: var(--odl-font-size-sm);
 }
 
 /* Footer section */

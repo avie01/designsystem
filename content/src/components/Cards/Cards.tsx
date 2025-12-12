@@ -66,8 +66,8 @@ const Cards: React.FC<CardsProps> = ({
   'aria-describedby': ariaDescribedBy,
   onKeyDown,
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [_isHovered, _setIsHovered] = useState(false);
+  const [_isFocused, _setIsFocused] = useState(false);
   
   // Generate component classes
   const componentClasses = classNames(
@@ -88,9 +88,9 @@ const Cards: React.FC<CardsProps> = ({
       onSelect?.(!selected);
     }
     if (e.key === 'Escape') {
-      e.currentTarget.blur();
+      (e.currentTarget as HTMLElement).blur();
     }
-    
+
     onKeyDown?.(e);
   };
 

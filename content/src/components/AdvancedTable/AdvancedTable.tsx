@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
@@ -19,6 +19,12 @@ export interface TableColumn<T> {
   filterable?: boolean;
   /** Width of the column */
   width?: string;
+  /** Minimum width of the column when resizing */
+  minWidth?: number;
+  /** Maximum width of the column when resizing */
+  maxWidth?: number;
+  /** Whether the column is resizable */
+  resizable?: boolean;
   /** Whether to align text to the right */
   alignRight?: boolean;
   /** Whether the column is visible by default */
@@ -93,6 +99,10 @@ export interface AdvancedTableProps<T extends TableRowData> {
   };
   /** Callback when filters change */
   onFiltersChange?: (filters: { [key: string]: string }) => void;
+  /** Enable column resizing globally */
+  resizableColumns?: boolean;
+  /** Callback when column widths change */
+  onColumnResize?: (columnKey: string, width: number) => void;
 }
 
 function AdvancedTable<T extends TableRowData>({
@@ -124,6 +134,8 @@ function AdvancedTable<T extends TableRowData>({
   exportFormats = ['csv', 'json'],
   onExport,
   filters = {},
+  resizableColumns = false,
+  onColumnResize,
 }: AdvancedTableProps<T>) {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
@@ -135,6 +147,22 @@ function AdvancedTable<T extends TableRowData>({
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     columns.filter(col => col.visible !== false).map(col => col.key)
   );
+
+  // Column resize state
+  const [columnWidths, setColumnWidths] = useState<{ [key: string]: number }>(() => {
+    const widths: { [key: string]: number } = {};
+    columns.forEach(col => {
+      if (col.width) {
+        const parsed = parseInt(col.width, 10);
+        widths[col.key] = isNaN(parsed) ? 150 : parsed;
+      }
+    });
+    return widths;
+  });
+  const [resizingColumn, setResizingColumn] = useState<string | null>(null);
+  const [resizeStartX, setResizeStartX] = useState(0);
+  const [resizeStartWidth, setResizeStartWidth] = useState(0);
+  const tableRef = React.useRef<HTMLTableElement>(null);
 
   const getKey = (item: T, index: number) => {
     if (getRowKey) return getRowKey(item);
@@ -221,6 +249,76 @@ function AdvancedTable<T extends TableRowData>({
       }
       return { key: columnKey, direction: 'asc' };
     });
+  };
+
+  // Column resize handlers
+  const handleResizeStart = (columnKey: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const column = columns.find(col => col.key === columnKey);
+    if (!column) return;
+
+    const currentWidth = columnWidths[columnKey] || 150;
+    setResizingColumn(columnKey);
+    setResizeStartX(e.clientX);
+    setResizeStartWidth(currentWidth);
+  };
+
+  const handleResizeMove = useCallback((e: MouseEvent) => {
+    if (!resizingColumn) return;
+
+    const column = columns.find(col => col.key === resizingColumn);
+    if (!column) return;
+
+    const diff = e.clientX - resizeStartX;
+    const newWidth = Math.max(
+      column.minWidth || 50,
+      Math.min(column.maxWidth || 800, resizeStartWidth + diff)
+    );
+
+    setColumnWidths(prev => ({
+      ...prev,
+      [resizingColumn]: newWidth
+    }));
+  }, [resizingColumn, resizeStartX, resizeStartWidth, columns]);
+
+  const handleResizeEnd = useCallback(() => {
+    if (resizingColumn && onColumnResize) {
+      onColumnResize(resizingColumn, columnWidths[resizingColumn] || 150);
+    }
+    setResizingColumn(null);
+  }, [resizingColumn, columnWidths, onColumnResize]);
+
+  // Add/remove mouse event listeners for resize
+  useEffect(() => {
+    if (resizingColumn) {
+      document.addEventListener('mousemove', handleResizeMove);
+      document.addEventListener('mouseup', handleResizeEnd);
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleResizeMove);
+      document.removeEventListener('mouseup', handleResizeEnd);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [resizingColumn, handleResizeMove, handleResizeEnd]);
+
+  // Check if a column is resizable
+  const isColumnResizable = (column: TableColumn<T>) => {
+    if (column.resizable !== undefined) return column.resizable;
+    return resizableColumns;
+  };
+
+  // Get column width style
+  const getColumnWidth = (column: TableColumn<T>) => {
+    if (columnWidths[column.key]) {
+      return `${columnWidths[column.key]}px`;
+    }
+    return column.width || 'auto';
   };
 
   // Filter and sort data
@@ -466,18 +564,25 @@ function AdvancedTable<T extends TableRowData>({
                   />
                 </th>
               )}
-              {visibleColumns.map((column) => (
+              {visibleColumns.map((column, colIndex) => (
                 <th
                   key={column.key}
                   className={clsx(
-                    'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap',
-                    column.alignRight && 'text-right',
-                    column.sortable && 'cursor-pointer hover:bg-gray-100',
-                    column.width && `w-${column.width}`
+                    'px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap relative',
+                    column.alignRight ? 'text-right' : 'text-left',
+                    column.sortable && 'cursor-pointer hover:bg-gray-100'
                   )}
+                  style={{
+                    width: getColumnWidth(column),
+                    minWidth: column.minWidth ? `${column.minWidth}px` : undefined,
+                    maxWidth: column.maxWidth ? `${column.maxWidth}px` : undefined,
+                  }}
                   onClick={() => column.sortable && handleSort(column.key)}
                 >
-                  <div className="flex items-center gap-1">
+                  <div className={clsx(
+                    'flex items-center gap-1',
+                    column.alignRight && 'justify-end'
+                  )}>
                     <span className="whitespace-nowrap">{column.label || column.header}</span>
                     {column.sortable && (
                       <span className="inline-block w-4">
@@ -490,6 +595,24 @@ function AdvancedTable<T extends TableRowData>({
                       </span>
                     )}
                   </div>
+                  {/* Resize handle */}
+                  {isColumnResizable(column) && colIndex < visibleColumns.length - 1 && (
+                    <div
+                      className={clsx(
+                        'absolute top-0 right-0 w-1 h-full cursor-col-resize group',
+                        resizingColumn === column.key ? 'bg-blue-500' : 'hover:bg-blue-400'
+                      )}
+                      style={{
+                        transform: 'translateX(50%)',
+                        zIndex: 10,
+                      }}
+                      onMouseDown={(e) => handleResizeStart(column.key, e)}
+                    >
+                      <div
+                        className="absolute inset-y-0 -left-1 -right-1 hover:bg-blue-400/20"
+                      />
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
@@ -534,6 +657,13 @@ function AdvancedTable<T extends TableRowData>({
                         column.alignRight && 'text-right',
                         compact ? 'py-2' : 'py-4'
                       )}
+                      style={{
+                        width: getColumnWidth(column),
+                        minWidth: column.minWidth ? `${column.minWidth}px` : undefined,
+                        maxWidth: column.maxWidth ? `${column.maxWidth}px` : undefined,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
                     >
                       {column.render ? column.render(item) : (item as any)[column.key]}
                     </td>

@@ -1,146 +1,18 @@
-# ODL Component Library
+# ODL Design System
 
-A comprehensive React component library for building government and enterprise applications with a consistent design system.
+A comprehensive, accessible React component library for building modern government and enterprise applications.
 
-## 🚀 Quick Start
+[![Storybook](https://img.shields.io/badge/Storybook-FF4785?logo=storybook&logoColor=white)](https://content-steamfrog2012s-projects.vercel.app)
+[![WCAG AA](https://img.shields.io/badge/WCAG-AA%20Compliant-green)](https://www.w3.org/WAI/WCAG21/quickref/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18+-61DAFB?logo=react)](https://reactjs.org/)
 
-```bash
-# Start the development server
-npm run dev
+## Live Demo
 
-# View component showcase (server will auto-select available port)
-# Default: http://localhost:3000/components-showcase.html
-# If 3000 is taken: http://localhost:3001/ or http://localhost:3002/
-```
+**Storybook:** [content-steamfrog2012s-projects.vercel.app](https://content-steamfrog2012s-projects.vercel.app)
 
-## 📚 Documentation
+## Quick Start
 
-- **[Component Registry](./ODL_COMPONENT_REGISTRY.md)** - Complete list of all components and their status
-- **[Style Guide](./src/styles/ODL_STYLE_GUIDE.md)** - ODL design system and theming guidelines
-- **[Use Case Patterns](./ODL_USE_CASE_PATTERNS.md)** - Common patterns for rapid development
-- **[Claude Instructions](./CLAUDE.md)** - AI assistant guidelines for this project
-
-## ✨ Features
-
-- **30+ Production-Ready Components** - Buttons, Tables, Cards, Graphs, Modals, and more
-- **9 Chart Types** - Powered by Recharts with responsive sizing
-- **Multiple Product Themes** - Build, Connect, Keystone, Nexus, Regworks, 3Sixty
-- **Accessibility First** - WCAG compliant with screen reader support
-- **TypeScript** - Full type safety and IntelliSense support
-- **Self-Contained** - No external CSS dependencies, all styles included
-- **Responsive** - Mobile-first design that works on all devices
-
-## 🎨 Component Demos
-
-Each component has a dedicated demo page showcasing all variants and features:
-
-| Component | Demo URL | Description |
-|-----------|----------|-------------|
-| **Graph** | `/graph-demo.html` | 9 chart types with animations |
-| **Table** | `/table-demo.html` | Advanced sorting, filtering, pagination |
-| **Cards** | `/cards-demo.html` | Multiple layouts and selection patterns |
-| **Modal** | `/modal-demo.html` | Various sizes and content types |
-| **Stepper** | `/stepper-demo.html` | Multi-step process with validation |
-| **Drawer** | `/drawer-demo.html` | Slide-out panels with tabs |
-| **Header** | `/header-demo.html` | Product-specific navigation headers |
-| **Tabs** | `/tabs-demo.html` | Icon support, compact variants |
-| **Dropdown** | `/dropdown-demo.html` | Search, multi-select, groups |
-| **Input** | `/input-demo.html` | Validation, calendar picker |
-| **Button** | `/button-demo.html` | All variants, sizes, states |
-| **Alert Banner** | `/alert-banner-demo.html` | Severity levels, dismissible |
-| **Breadcrumb** | `/breadcrumb-demo.html` | Navigation trails |
-
-## 🏗️ Full Application Examples
-
-- **Multipage Example** (`/multipage-example.html`) - Complete application with navigation rail
-- **Council Dashboard** (`/council-dashboard.html`) - Dashboard with tabs and data visualization
-- **Development Applications** (`/development-applications-dashboard.html`) - KPI cards and workflow management
-- **Internal Referrals** (`/internal-referrals.html`) - Referral management for council planners
-
-## 🎯 Key Components
-
-### Data Visualization (Graph)
-```tsx
-import Graph from '../components/Graph/Graph';
-
-<Graph
-  type="area"
-  data={[
-    { month: 'Jan', value: 145 },
-    { month: 'Feb', value: 162 }
-  ]}
-  dataKeys={['value']}
-  xAxisKey="month"
-  height={200}
-  animated={true}
-  gradient={true}
-/>
-```
-
-### Navigation
-```tsx
-<Header variant="build" user={currentUser} />
-<NavigationRail items={navItems} collapsed={false} />
-<Breadcrumb items={breadcrumbs} />
-```
-
-### Forms & Input
-```tsx
-<Stepper steps={['Details', 'Review', 'Submit']} currentStep={1} />
-<Input type="email" validation="email" required />
-<Dropdown options={options} searchable multiple />
-```
-
-### Data Display
-```tsx
-<Table columns={columns} data={data} sortable filterable />
-<Cards items={items} selectable onSelect={handleSelect} />
-<Chip label="Active" variant="green" />
-```
-
-## 🎨 Design System
-
-The ODL Theme provides consistent styling across all components:
-
-```tsx
-import ODLTheme from '../styles/ODLTheme';
-
-// Always use theme constants
-const styles = {
-  color: ODLTheme.colors.primary,
-  padding: ODLTheme.spacing[4],
-  fontSize: ODLTheme.typography.fontSize.base
-};
-```
-
-### Chart Colors
-Modern, vibrant colors optimized for data visualization:
-- Blue (#3B82F6), Emerald (#10B981), Violet (#8B5CF6)
-- Rose (#F43F5E), Amber (#F59E0B), Cyan (#06B6D4)
-
-## 🛠️ Development
-
-### Project Structure
-```
-/Build
-  /example           # HTML entry files, demo entries, and MultiPageExample
-    *.html          # HTML entry points for all demos
-    *Entry.tsx      # Entry components for demos
-    MultiPageExample.tsx  # Main multi-page application
-  /src
-    /components     # Reusable components
-    /pages         # Demo page components and full page examples
-    /styles        # ODL theme and design system
-    /hooks         # Custom React hooks
-    /types         # TypeScript definitions
-    /Images        # Logos and assets
-  vite.config.ts   # Vite configuration (root: 'example')
-  server.mjs       # Development server with auto-port selection
-```
-
-**Important:** All HTML files and their entry points are in the `/example` folder for proper Vite resolution.
-
-### Running Locally
 ```bash
 # Install dependencies
 npm install
@@ -148,56 +20,235 @@ npm install
 # Start development server
 npm run dev
 
+# Start Storybook
+npm run storybook
+
 # Build for production
 npm run build
+
+# Build Storybook
+npm run build-storybook
 ```
 
-### Creating New Components
-1. Create component in `/src/components/{ComponentName}/`
-2. Use ODLTheme for all styling
-3. Create demo page following the pattern
-4. Add to Component Registry
-5. Update documentation
+## Features
 
-## 📊 Recent Updates
+- **51 Production-Ready Components** - Buttons, Tables, Cards, Graphs, FileUpload, and more
+- **41 Storybook Stories** - Interactive documentation for all components
+- **WCAG AA Compliant** - Full accessibility support with keyboard navigation and screen readers
+- **TypeScript** - Complete type safety with exported types
+- **Design Tokens** - Consistent theming via ODLTheme system
+- **Zero External CSS** - Self-contained styles, no global CSS conflicts
+- **Responsive** - Mobile-first design for all screen sizes
 
-### v1.2.1 (Current)
-- ✅ Replaced all sparklines with interactive Graph components
-- ✅ Added 9 chart types with Recharts integration
-- ✅ Improved responsive sizing for compact displays
-- ✅ Enhanced status cards with embedded visualizations
+## Component Categories
+
+### Data Display
+| Component | Description | Storybook |
+|-----------|-------------|-----------|
+| Table | Sorting, filtering, pagination, selection | Yes |
+| AdvancedTable | Virtual scrolling, column resize, export | Yes |
+| Cards | Grid/list layouts, selection, actions | Yes |
+| Graph | 9 chart types (area, bar, line, pie, etc.) | Yes |
+| StatsCard | KPI display with trends | Yes |
+| StatsGrid | Dashboard metrics layout | Yes |
+| ChartCard | Cards with embedded visualizations | Yes |
+| Treemap | Hierarchical data visualization | Yes |
+| DocumentTreemap | Document structure visualization | Yes |
+
+### Navigation
+| Component | Description | Storybook |
+|-----------|-------------|-----------|
+| NavigationRail | Collapsible side navigation | Yes |
+| Breadcrumb | Navigation trail with overflow | Yes |
+| Tabs / SimpleTabs | Tab navigation with icons | Yes |
+| TreeNavigation | Hierarchical tree navigation | Yes |
+| MillerColumns | Finder-style column browser | Yes |
+| Header | Product-branded app headers | - |
+
+### Forms & Input
+| Component | Description | Storybook |
+|-----------|-------------|-----------|
+| Input | Text, email, password, textarea, date | Yes |
+| Dropdown | Single/multi-select, search, groups | Yes |
+| Button | Primary, secondary, ghost, destructive | Yes |
+| Chip | Tags with actions | Yes |
+| FileUpload | Drag-drop, progress, AI analysis ready | - |
+| Stepper | Multi-step form wizard | Yes |
+
+### Feedback & Overlay
+| Component | Description | Storybook |
+|-----------|-------------|-----------|
+| Modal | Dialog overlays with sizes | Yes |
+| Drawer | Slide-out panels | Yes |
+| Popover | Contextual popovers | Yes |
+| AlertBanner | Status messages | Yes |
+| AlertPanel | Inline alerts | - |
+
+### Layout
+| Component | Description | Storybook |
+|-----------|-------------|-----------|
+| Accordion | Expandable sections | Yes |
+| CollapsibleCard | Cards with expand/collapse | Yes |
+| DualPaneExplorer | Split-pane layout | Yes |
+| PageTemplate | Page layout wrapper | - |
+| Kanban | Drag-drop board | Yes |
+
+## Design System
+
+All components use the ODLTheme system for consistent styling:
+
+```tsx
+import { ODLTheme } from '@odl/design-system';
+
+// Colors
+ODLTheme.colors.primary      // #3560C1
+ODLTheme.colors.success      // #24A148
+ODLTheme.colors.error        // #DA1E28
+ODLTheme.colors.warning      // #B07C0C (WCAG AA compliant)
+
+// Spacing (4px increments)
+ODLTheme.spacing[1]  // 4px
+ODLTheme.spacing[2]  // 8px
+ODLTheme.spacing[4]  // 16px
+
+// Typography
+ODLTheme.typography.fontSize.sm    // 12px
+ODLTheme.typography.fontSize.base  // 14px
+ODLTheme.typography.fontSize.lg    // 18px
+```
+
+### CSS Variables
+
+Components also expose CSS custom properties:
+
+```css
+--odl-primary: #3560C1;
+--odl-success: #24A148;
+--odl-error: #DA1E28;
+--odl-spacing-1: 4px;
+--odl-spacing-2: 8px;
+--odl-font-size-sm: 12px;
+```
+
+## Accessibility
+
+All components are built with accessibility in mind:
+
+- **Keyboard Navigation** - Full keyboard support for all interactive elements
+- **Screen Reader Support** - Proper ARIA labels and live regions
+- **Focus Management** - Visible focus indicators meeting WCAG 2.1 AA
+- **Color Contrast** - All text meets 4.5:1 contrast ratio
+- **Touch Targets** - Minimum 44px touch targets on mobile
+
+### Testing
+
+```bash
+# Run accessibility tests
+npm run test:a11y
+```
+
+## Project Structure
+
+```
+content/
+├── src/
+│   ├── components/     # 51 React components
+│   ├── pages/          # Demo pages
+│   ├── styles/         # ODLTheme and global styles
+│   ├── hooks/          # Custom React hooks
+│   ├── templates/      # Page templates
+│   └── index.ts        # Main exports
+├── example/            # HTML entry points for demos
+├── .storybook/         # Storybook configuration
+└── package.json
+```
+
+## Usage
+
+### Installation
+
+```bash
+npm install @odl/design-system
+```
+
+### Import Components
+
+```tsx
+import { Button, Table, Modal, Graph } from '@odl/design-system';
+import '@odl/design-system/styles.css';
+
+function App() {
+  return (
+    <Button variant="primary" size="md">
+      Click me
+    </Button>
+  );
+}
+```
+
+### Import Theme
+
+```tsx
+import { ODLTheme, ODLColors } from '@odl/design-system';
+
+const customStyles = {
+  backgroundColor: ODLTheme.colors.primaryLight,
+  padding: ODLTheme.spacing[4],
+};
+```
+
+## Recent Updates
+
+### v1.3.0 (December 2024)
+- Added FileUpload component with drag-drop, progress tracking, and AI analysis support
+- Full WCAG AA accessibility compliance audit completed
+- Added 41 Storybook stories for interactive documentation
+- Deployed to Vercel for live preview
+- Fixed color contrast issues for warning states
+- Added keyboard navigation to all interactive components
 
 ### v1.2.0
-- Added Stepper component for multi-step workflows
-- Added Drawer component with document preview
-- Added AlertBanner with severity levels
-- Improved accessibility with panel controls
+- Added Stepper, Drawer, AlertBanner components
+- Added 9 chart types via Graph component
+- Improved responsive design across all components
 
 ### v1.1.0
 - Added comprehensive Table with sorting/filtering
 - Added Modal component with multiple sizes
 - Added SimpleTabs with icon support
-- Fixed dropdown and calendar z-index issues
 
-## 🤝 Contributing
+## Scripts
 
-1. Follow the ODL Style Guide for consistency
-2. Ensure components are self-contained
-3. Add proper TypeScript types
-4. Include demo page for new components
-5. Test accessibility with screen readers
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Vite dev server |
+| `npm run storybook` | Start Storybook on port 6006 |
+| `npm run build` | Build component library |
+| `npm run build-storybook` | Build static Storybook |
+| `npm run type-check` | Run TypeScript compiler |
+| `npm run lint` | Run ESLint |
+| `npm run test` | Run tests |
 
-## 📝 License
+## Browser Support
 
-Proprietary - Objective Corporation
+- Chrome (last 2 versions)
+- Firefox (last 2 versions)
+- Safari (last 2 versions)
+- Edge (last 2 versions)
 
-## 🆘 Support
+## Contributing
 
-For issues or questions:
-- Check the [Component Registry](./ODL_COMPONENT_REGISTRY.md)
-- Review [Use Case Patterns](./ODL_USE_CASE_PATTERNS.md)
-- Consult the [Style Guide](./src/styles/ODL_STYLE_GUIDE.md)
+1. Follow the ODL Style Guide
+2. Use ODLTheme for all styling (no hardcoded colors)
+3. Ensure WCAG AA accessibility compliance
+4. Add TypeScript types for all props
+5. Create Storybook stories for new components
+6. Test keyboard navigation and screen reader support
+
+## License
+
+MIT - Objective Corporation
 
 ---
 
-Built with ❤️ using React, TypeScript, and the ODL Design System
+Built with React, TypeScript, and the ODL Design System

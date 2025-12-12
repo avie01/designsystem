@@ -80,7 +80,7 @@ const StatusCard: React.FC<StatusCardProps> = ({
           background: 'linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%)',
           borderColor: ODLTheme.colors.grey200,
           iconColor: ODLTheme.colors.grey600,
-          metricColor: ODLTheme.colors.text
+          metricColor: ODLTheme.colors.text.primary
         };
     }
   };

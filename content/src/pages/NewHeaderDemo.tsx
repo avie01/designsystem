@@ -88,13 +88,7 @@ const NewHeaderDemo: React.FC = () => {
 
   return (
     <div style={{ padding: '24px', fontFamily: 'var(--odl-font-family-sans)' }}>
-      <DemoBreadcrumb 
-        items={[
-          { label: 'Components', path: '/' },
-          { label: 'Headers', path: '/headers' },
-          { label: 'Header', path: '/new-header-demo' }
-        ]} 
-      />
+      <DemoBreadcrumb componentName="Header" />
 
       <div style={{ marginBottom: '32px' }}>
         <h1 style={{ 
@@ -236,7 +230,7 @@ const NewHeaderDemo: React.FC = () => {
                 logo="/src/Images/logos/Product=Keystone-light theme.svg"
                 logoAlt="Keystone logo"
                 title="Keystone"
-                user={{ initials: "KS" }}
+                user={{ name: "K Smith", initials: "KS" }}
                 onLogoClick={handleLogoClick}
                 onNotificationClick={handleNotificationClick}
                 onSettingsClick={handleSettingsClick}
@@ -258,7 +252,7 @@ const NewHeaderDemo: React.FC = () => {
                 logo="/src/Images/logos/Product=Nexus-light theme.svg"
                 logoAlt="Nexus logo"
                 title="Nexus"
-                user={{ initials: "NX" }}
+                user={{ name: "N Xavier", initials: "NX" }}
                 onLogoClick={handleLogoClick}
                 onNotificationClick={handleNotificationClick}
                 onSettingsClick={handleSettingsClick}
@@ -280,7 +274,7 @@ const NewHeaderDemo: React.FC = () => {
                 logo="/src/Images/logos/Product=Regworks-light theme.svg"
                 logoAlt="Regworks logo"
                 title="Regworks"
-                user={{ initials: "RW" }}
+                user={{ name: "R Wilson", initials: "RW" }}
                 onLogoClick={handleLogoClick}
                 onNotificationClick={handleNotificationClick}
                 onSettingsClick={handleSettingsClick}
@@ -307,7 +301,7 @@ const NewHeaderDemo: React.FC = () => {
                 logo="/src/Images/logos/Product=3SIXTY-light theme.svg"
                 logoAlt="3SIXTY logo"
                 title="3SIXTY - Error"
-                user={{ initials: "ER" }}
+                user={{ name: "E Roberts", initials: "ER" }}
                 onLogoClick={handleLogoClick}
                 onNotificationClick={handleNotificationClick}
                 onSettingsClick={handleSettingsClick}
@@ -329,7 +323,7 @@ const NewHeaderDemo: React.FC = () => {
                 logo="/src/Images/logos/Product=Trapeze-light theme.svg"
                 logoAlt="Trapeze logo"
                 title="Trapeze - Disabled"
-                user={{ initials: "DS" }}
+                user={{ name: "D Smith", initials: "DS" }}
                 onLogoClick={handleLogoClick}
                 onNotificationClick={handleNotificationClick}
                 onSettingsClick={handleSettingsClick}

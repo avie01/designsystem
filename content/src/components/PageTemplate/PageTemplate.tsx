@@ -135,8 +135,6 @@ const PageTemplate: React.FC<PageTemplateProps> = React.memo(({
   showRightNavRail = false,
   leftNavRail,
   rightNavRail,
-  brandColor,
-  headerColor,
   navRailColor,
   backgroundColor,
   alerts,
@@ -152,9 +150,7 @@ const PageTemplate: React.FC<PageTemplateProps> = React.memo(({
       }}
     >
       {/* Header */}
-      <Header 
-        brandColor={brandColor}
-        backgroundColor={headerColor}
+      <Header
         user={user}
         alerts={alerts}
         onAlertRead={onAlertRead}

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import Icon from '../components/Icon/Icon';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
+import DemoComparison from '../components/DemoComparison/DemoComparison';
+import { ODLThemeProvider } from '../theme/ODLThemeProvider';
+import { Tabs, Tab, Box } from '@mui/material';
 import ODLTheme from '../styles/ODLTheme';
 import styles from './TableDemo.module.css';
 
@@ -136,9 +139,126 @@ const SimpleTabs: React.FC<SimpleTabsProps> = ({
   );
 };
 
+// MUI Tabs Component with ODL Styling
+interface MUITabsProps {
+  tabs: SimpleTabItem[];
+  activeTab?: string;
+  onTabChange?: (tabId: string) => void;
+  variant?: 'default' | 'compact';
+  showContent?: boolean;
+}
+
+const MUITabs: React.FC<MUITabsProps> = ({
+  tabs,
+  activeTab,
+  onTabChange,
+  variant = 'default',
+  showContent = true
+}) => {
+  const [internalActiveTab, setInternalActiveTab] = useState(activeTab || tabs[0]?.id || '');
+  const currentActiveTab = activeTab || internalActiveTab;
+  const currentIndex = tabs.findIndex(tab => tab.id === currentActiveTab);
+
+  const handleTabChange = (_event: React.SyntheticEvent, newIndex: number) => {
+    const newTabId = tabs[newIndex].id;
+    if (tabs[newIndex].disabled) return;
+
+    if (onTabChange) {
+      onTabChange(newTabId);
+    } else {
+      setInternalActiveTab(newTabId);
+    }
+  };
+
+  const activeTabData = tabs.find(tab => tab.id === currentActiveTab);
+
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Tabs
+        value={currentIndex === -1 ? 0 : currentIndex}
+        onChange={handleTabChange}
+        sx={{
+          borderBottom: '1px solid #E0E0E0',
+          minHeight: variant === 'compact' ? '36px' : '44px',
+          '& .MuiTabs-flexContainer': {
+            gap: 0
+          },
+          '& .MuiTab-root': {
+            textTransform: 'none',
+            minWidth: 0,
+            minHeight: variant === 'compact' ? '36px' : '44px',
+            padding: variant === 'compact' ? '8px 12px' : '12px 16px',
+            fontSize: variant === 'compact' ? '12px' : '14px',
+            fontWeight: 400,
+            color: '#6F6F6F',
+            border: 'none',
+            background: 'transparent',
+            borderRadius: 0,
+            position: 'relative',
+            transition: 'all 0.2s ease',
+            whiteSpace: 'nowrap',
+            flexShrink: 0,
+            '&.Mui-selected': {
+              color: '#0F62FE',
+              fontWeight: 500,
+              background: 'transparent',
+              borderBottom: '2px solid #0F62FE',
+              marginBottom: '-1px'
+            },
+            '&:hover:not(.Mui-selected):not(.Mui-disabled)': {
+              backgroundColor: '#F4F4F4',
+              color: '#6F6F6F'
+            },
+            '&.Mui-disabled': {
+              color: '#A8A8A8',
+              cursor: 'not-allowed',
+              opacity: 0.6
+            },
+            '&.Mui-disabled:hover': {
+              backgroundColor: 'transparent'
+            },
+            '&:focus-visible': {
+              outline: '2px solid #0F62FE',
+              outlineOffset: '2px'
+            }
+          },
+          '& .MuiTabs-indicator': {
+            display: 'none'
+          }
+        }}
+      >
+        {tabs.map((tab) => (
+          <Tab
+            key={tab.id}
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {tab.icon && tab.iconPosition !== 'right' && (
+                  <Icon name={tab.icon} size={16} />
+                )}
+                <span>{tab.label}</span>
+                {tab.icon && tab.iconPosition === 'right' && (
+                  <Icon name={tab.icon} size={16} />
+                )}
+              </Box>
+            }
+            disabled={tab.disabled}
+          />
+        ))}
+      </Tabs>
+
+      {showContent && activeTabData && activeTabData.content && (
+        <Box sx={{ mt: 0 }}>
+          {activeTabData.content}
+        </Box>
+      )}
+    </Box>
+  );
+};
+
 const TabsDemo: React.FC = () => {
   const [selectedDemo, setSelectedDemo] = useState<'basic' | 'variants' | 'states' | 'icons' | 'navigation' | 'interactive'>('basic');
   const [showCode, setShowCode] = useState(false);
+  const [showComparison, setShowComparison] = useState(true);
   
   // Demo state for interactive examples
   const [activeBasicTab, setActiveBasicTab] = useState('overview');
@@ -295,7 +415,8 @@ const TabsDemo: React.FC = () => {
   ];
 
   return (
-    <div className={styles.tableDemo}>
+    <ODLThemeProvider enableMui={true}>
+      <div className={styles.tableDemo}>
       {/* Breadcrumb Navigation */}
       <DemoBreadcrumb componentName="Tabs Component" />
       
@@ -307,6 +428,12 @@ const TabsDemo: React.FC = () => {
             <p>Interactive tab navigation with multiple variants and states</p>
           </div>
           <div className={styles.headerActions}>
+            <button
+              className={showComparison ? styles.primaryButton : styles.secondaryButton}
+              onClick={() => setShowComparison(!showComparison)}
+            >
+              {showComparison ? 'Hide Comparison' : 'Show Comparison'}
+            </button>
             <button
               className={showCode ? styles.primaryButton : styles.secondaryButton}
               onClick={() => setShowCode(!showCode)}
@@ -351,6 +478,40 @@ const TabsDemo: React.FC = () => {
               <h2>Basic Tabs</h2>
               <p>Standard tab implementation with content switching</p>
             </div>
+
+            {/* ODL vs MUI Tabs Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Tabs Component Comparison"
+                description="ODL SimpleTabs vs MUI Tabs with ODL Styling"
+                odlExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <SimpleTabs
+                      tabs={[
+                        { id: 'overview', label: 'Overview', content: <div style={{ padding: '1rem', color: ODLTheme.colors.text.secondary }}>Overview tab content with ODL styling.</div> },
+                        { id: 'details', label: 'Details', content: <div style={{ padding: '1rem', color: ODLTheme.colors.text.secondary }}>Details tab content.</div> },
+                        { id: 'settings', label: 'Settings', content: <div style={{ padding: '1rem', color: ODLTheme.colors.text.secondary }}>Settings tab content.</div> }
+                      ]}
+                      activeTab={activeBasicTab}
+                      onTabChange={setActiveBasicTab}
+                    />
+                  </div>
+                }
+                muiExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <MUITabs
+                      tabs={[
+                        { id: 'overview', label: 'Overview', content: <div style={{ padding: '1rem', color: ODLTheme.colors.text.secondary }}>Overview tab content with MUI styling.</div> },
+                        { id: 'details', label: 'Details', content: <div style={{ padding: '1rem', color: ODLTheme.colors.text.secondary }}>Details tab content.</div> },
+                        { id: 'settings', label: 'Settings', content: <div style={{ padding: '1rem', color: ODLTheme.colors.text.secondary }}>Settings tab content.</div> }
+                      ]}
+                      activeTab={activeBasicTab}
+                      onTabChange={setActiveBasicTab}
+                    />
+                  </div>
+                }
+              />
+            )}
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
               <div style={{ marginBottom: '2rem' }}>
                 <h3 style={{ marginBottom: '1rem', fontSize: '1rem', fontWeight: 600 }}>Default Tabs with Content</h3>
@@ -376,6 +537,72 @@ const TabsDemo: React.FC = () => {
               <h2>Tab Variants</h2>
               <p>Different sizes for various layout contexts</p>
             </div>
+
+            {/* ODL vs MUI Tab Variants Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Tab Variants Comparison"
+                description="ODL SimpleTabs vs MUI Tabs - Default and Compact Sizes"
+                odlExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                      <div>
+                        <h4 style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: ODLTheme.colors.text.primary }}>Default Size</h4>
+                        <SimpleTabs
+                          tabs={[
+                            { id: 'home', label: 'Home' },
+                            { id: 'about', label: 'About' },
+                            { id: 'contact', label: 'Contact' }
+                          ]}
+                          showContent={false}
+                        />
+                      </div>
+                      <div>
+                        <h4 style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: ODLTheme.colors.text.primary }}>Compact Size</h4>
+                        <SimpleTabs
+                          tabs={[
+                            { id: 'dashboard', label: 'Dashboard' },
+                            { id: 'analytics', label: 'Analytics' },
+                            { id: 'reports', label: 'Reports' }
+                          ]}
+                          variant="compact"
+                          showContent={false}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                }
+                muiExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                      <div>
+                        <h4 style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: ODLTheme.colors.text.primary }}>Default Size</h4>
+                        <MUITabs
+                          tabs={[
+                            { id: 'home', label: 'Home' },
+                            { id: 'about', label: 'About' },
+                            { id: 'contact', label: 'Contact' }
+                          ]}
+                          showContent={false}
+                        />
+                      </div>
+                      <div>
+                        <h4 style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: ODLTheme.colors.text.primary }}>Compact Size</h4>
+                        <MUITabs
+                          tabs={[
+                            { id: 'dashboard', label: 'Dashboard' },
+                            { id: 'analytics', label: 'Analytics' },
+                            { id: 'reports', label: 'Reports' }
+                          ]}
+                          variant="compact"
+                          showContent={false}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                }
+              />
+            )}
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                 <div>
@@ -499,6 +726,38 @@ const TabsDemo: React.FC = () => {
               <h2>Tabs with Icons</h2>
               <p>Tabs enhanced with Carbon Design System icons</p>
             </div>
+
+            {/* ODL vs MUI Tabs with Icons Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Tabs with Icons Comparison"
+                description="ODL SimpleTabs vs MUI Tabs with Carbon Icons"
+                odlExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <SimpleTabs
+                      tabs={[
+                        { id: 'home', label: 'Home', icon: 'home' },
+                        { id: 'analytics', label: 'Analytics', icon: 'analytics' },
+                        { id: 'settings', label: 'Settings', icon: 'settings', iconPosition: 'right' }
+                      ]}
+                      showContent={false}
+                    />
+                  </div>
+                }
+                muiExample={
+                  <div style={{ padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                    <MUITabs
+                      tabs={[
+                        { id: 'home', label: 'Home', icon: 'home' },
+                        { id: 'analytics', label: 'Analytics', icon: 'analytics' },
+                        { id: 'settings', label: 'Settings', icon: 'settings', iconPosition: 'right' }
+                      ]}
+                      showContent={false}
+                    />
+                  </div>
+                }
+              />
+            )}
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                 <div>
@@ -772,7 +1031,8 @@ const TabsDemo: React.FC = () => {
       
       {/* Back to Top Button */}
       <BackToTop />
-    </div>
+      </div>
+    </ODLThemeProvider>
   );
 
   // Helper function to generate code examples

@@ -88,7 +88,6 @@ function Table<T extends TableRowData>({
   currentPage = 1,
   onPageChange,
   onItemsPerPageChange,
-  title,
   headerActions,
   children,
 }: TableProps<T>) {

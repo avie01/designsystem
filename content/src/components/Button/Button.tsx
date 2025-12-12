@@ -57,8 +57,8 @@ const Button: React.FC<ButtonProps> = ({
   'aria-pressed': ariaPressed,
   'aria-expanded': ariaExpanded,
 }) => {
-  const [isPressed, setIsPressed] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [_isPressed, setIsPressed] = useState(false);
+  const [_isHovered, setIsHovered] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   // Normalize size prop

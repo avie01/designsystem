@@ -1,7 +1,108 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { action } from '@storybook/addon-actions';
 import Breadcrumb from './Breadcrumb';
+import { Chip as MUIChip } from '@mui/material';
+import {
+  CheckmarkFilled,
+  Time,
+  Timer,
+  UserAdmin,
+  Cloud,
+  PlayFilledAlt,
+  Version
+} from '@carbon/icons-react';
+
+// ODL styling function for MUI chips
+const getODLChipStyles = (variant: string = 'grey', size: string = 'sm') => {
+  const baseStyles = {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+    borderRadius: '4px',
+    fontWeight: 400,
+    transition: 'color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease',
+    border: 'none',
+    textTransform: 'none' as const,
+    cursor: 'default',
+  };
+
+  const sizeStyles = {
+    sm: {
+      minHeight: '24px',
+      fontSize: '12px',
+      '& .MuiChip-icon': {
+        fontSize: '14px',
+        marginLeft: '4px',
+        marginRight: '-2px',
+      },
+      '& .MuiChip-label': {
+        paddingLeft: '8px',
+        paddingRight: '8px',
+        paddingTop: '2px',
+        paddingBottom: '2px',
+      },
+    },
+  };
+
+  const variantStyles: { [key: string]: any } = {
+    blue: {
+      backgroundColor: '#E0F3FE',
+      color: '#3560C1',
+      '&:hover': {
+        backgroundColor: '#C8E6FA',
+      },
+    },
+    lightGreen: {
+      backgroundColor: '#DEFBE6',
+      color: '#31622C',
+      '&:hover': {
+        backgroundColor: '#C8F5D3',
+      },
+    },
+    purple: {
+      backgroundColor: '#F0E5FF',
+      color: '#6929C4',
+      '&:hover': {
+        backgroundColor: '#E5D4FF',
+      },
+    },
+    yellow: {
+      backgroundColor: '#FFF1C7',
+      color: '#8A6116',
+      '&:hover': {
+        backgroundColor: '#FFE8B3',
+      },
+    },
+    darkGreen: {
+      backgroundColor: '#1B4721',
+      color: '#FFFFFF',
+      '& .MuiChip-icon': {
+        color: '#FFFFFF',
+      },
+      '&:hover': {
+        backgroundColor: '#245A2C',
+      },
+    },
+    teal: {
+      backgroundColor: '#D9FBFB',
+      color: '#005D5D',
+      '&:hover': {
+        backgroundColor: '#C3F7F7',
+      },
+    },
+    orange: {
+      backgroundColor: '#FCEEDA',
+      color: '#C93713',
+      '&:hover': {
+        backgroundColor: '#FAE5C8',
+      },
+    },
+  };
+
+  return {
+    ...baseStyles,
+    ...sizeStyles[size as keyof typeof sizeStyles],
+    ...variantStyles[variant as keyof typeof variantStyles],
+  };
+};
 
 const meta: Meta<typeof Breadcrumb> = {
   title: 'Components/Breadcrumb',
@@ -16,19 +117,24 @@ const meta: Meta<typeof Breadcrumb> = {
   },
   tags: ['autodocs'],
   argTypes: {
+    // For complex arrays, it's better to not make them editable in controls
+    // Instead, provide different stories with various configurations
     items: {
-      control: 'object',
       description: 'Array of breadcrumb items with label, optional path, and optional icon',
       table: {
-        type: { 
+        type: {
           summary: 'BreadcrumbItem[]',
           detail: `interface BreadcrumbItem {
   label: string;
   path?: string;
   icon?: string;
-}`
+}
+
+// Items are predefined in each story
+// See different stories for various breadcrumb configurations`
         },
         category: 'Data',
+        disable: true,
       },
     },
     separator: {
@@ -50,8 +156,7 @@ const meta: Meta<typeof Breadcrumb> = {
     },
     onNavigate: {
       control: false,
-      action: 'navigated',
-      description: 'Callback function when a breadcrumb item with a path is clicked. Check the Actions tab to see navigation events.',
+      description: 'Callback function when a breadcrumb item with a path is clicked',
       table: {
         type: { summary: '(path: string) => void' },
         category: 'Events',
@@ -72,7 +177,7 @@ export const Default: Story = {
       { label: 'Electronics', path: '/products/electronics' },
       { label: 'Laptops' }, // Current page (no path)
     ],
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -83,7 +188,7 @@ export const Short: Story = {
       { label: 'Home', path: '/' },
       { label: 'Settings' },
     ],
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -99,7 +204,7 @@ export const LongTrail: Story = {
       { label: 'Reports', path: '/documents/projects/2024/q1/reports' },
       { label: 'Final Report' },
     ],
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -111,7 +216,7 @@ export const ApplicationContext: Story = {
       { label: 'Development', path: '/applications/development' },
       { label: 'DA/2024/1234' },
     ],
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -126,7 +231,7 @@ export const FileSystem: Story = {
       { label: 'Work', path: '/users/john/documents/work' },
       { label: 'Reports' },
     ],
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -138,7 +243,7 @@ export const Dashboard: Story = {
       { label: 'Analytics', path: '/dashboard/analytics' },
       { label: 'Performance Metrics' },
     ],
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -151,7 +256,7 @@ export const Settings: Story = {
       { label: 'Security', path: '/settings/account/security' },
       { label: 'Two-Factor Authentication' },
     ],
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -164,7 +269,7 @@ export const AllClickable: Story = {
       { label: 'Level 3', path: '/level3' },
       { label: 'Level 4', path: '/level4' },
     ],
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
   parameters: {
     docs: {
@@ -223,7 +328,7 @@ export const SlashSeparator: Story = {
       { label: 'Laptops' },
     ],
     separator: '/',
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -237,7 +342,7 @@ export const ArrowSeparator: Story = {
       { label: 'Complete' },
     ],
     separator: '→',
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -251,7 +356,7 @@ export const PipeSeparator: Story = {
       { label: 'Edit' },
     ],
     separator: '|',
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -264,7 +369,7 @@ export const DoubleChevronSeparator: Story = {
       { label: 'End' },
     ],
     separator: '»',
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
@@ -277,25 +382,154 @@ export const DotSeparator: Story = {
       { label: 'Item' },
     ],
     separator: '•',
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path) => console.log('Breadcrumb clicked:', path),
   },
 };
 
-// Playground for testing
+// Interactive Playground with appearance control
 export const Playground: Story = {
   args: {
     items: [
-      { label: 'First', path: '/first' },
-      { label: 'Second', path: '/second' },
-      { label: 'Third', path: '/third' },
-      { label: 'Current' },
+      { label: 'Dashboard', path: '/dashboard' },
+      { label: 'Projects', path: '/projects' },
+      { label: 'ODL Library', path: '/projects/odl' },
+      { label: 'Components' },
     ],
-    onNavigate: action('breadcrumb-clicked'),
+    onNavigate: (path: string) => console.log('Breadcrumb clicked:', path),
+    appearance: 'default',
+    chip1Label: 'Active',
+    chip1Variant: 'lightGreen',
+    chip1Icon: 'checkmark',
+    chip2Label: 'v2.1.0',
+    chip2Variant: 'blue',
+    chip2Icon: 'version',
+  } as any,
+  // Simplified render - just pass through the props
+  render: (args) => <Breadcrumb {...args} />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Use the controls to experiment with different breadcrumb appearances. Select an appearance style from the dropdown to see how breadcrumbs can be enhanced with chips for different contexts.',
+      },
+    },
+  },
+};
+
+// Story with Chips in breadcrumb
+export const WithChips: Story = {
+  render: () => {
+    const breadcrumbItems = [
+      { label: 'Dashboard', path: '/dashboard' },
+      { label: 'Projects', path: '/projects' },
+      { label: 'ODL Library', path: '/projects/odl' },
+      { label: 'Components' }
+    ];
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        {/* Basic breadcrumb with status chips */}
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Breadcrumb with Status Chips</h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <Breadcrumb
+              items={breadcrumbItems}
+              onNavigate={(path) => console.log('Breadcrumb clicked:', path)}
+            />
+            <MUIChip label="Active" sx={getODLChipStyles('lightGreen', 'sm')} icon={<CheckmarkFilled size={14} />} />
+            <MUIChip label="v2.1.0" sx={getODLChipStyles('blue', 'sm')} icon={<Version size={14} />} />
+          </div>
+        </div>
+
+        {/* Breadcrumb with inline chips */}
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Breadcrumb with Inline Chips</h4>
+          <Breadcrumb
+            items={[
+              { label: 'Home', path: '/' },
+              { label: 'Users', path: '/users' },
+              { label: 'John Doe', path: '/users/john' },
+            ]}
+            onNavigate={(path) => console.log('Breadcrumb clicked:', path)}
+            separator={
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: '#9ca3af' }}>/</span>
+                <MUIChip label="Admin" sx={getODLChipStyles('purple', 'sm')} icon={<UserAdmin size={14} />} />
+                <span style={{ color: '#9ca3af' }}>/</span>
+              </div>
+            }
+          />
+        </div>
+
+        {/* Breadcrumb with environment chips */}
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Environment Context with Chips</h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <MUIChip label="Production" sx={getODLChipStyles('darkGreen', 'sm')} icon={<Cloud size={14} />} />
+            <span style={{ color: '#9ca3af' }}>→</span>
+            <Breadcrumb
+              items={[
+                { label: 'AWS', path: '/aws' },
+                { label: 'us-east-1', path: '/aws/us-east-1' },
+                { label: 'Services', path: '/aws/us-east-1/services' },
+                { label: 'Lambda' }
+              ]}
+              onNavigate={(path) => console.log('Breadcrumb clicked:', path)}
+            />
+            <MUIChip label="23 Functions" sx={getODLChipStyles('grey', 'sm')} />
+          </div>
+        </div>
+
+        {/* File path with type chips */}
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>File Path with Type Indicators</h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Breadcrumb
+              items={[
+                { label: 'src', path: '/src' },
+                { label: 'components', path: '/src/components' },
+                { label: 'Breadcrumb', path: '/src/components/Breadcrumb' },
+                { label: 'Breadcrumb.tsx' }
+              ]}
+              onNavigate={(path) => console.log('Breadcrumb clicked:', path)}
+            />
+            <MUIChip label="TypeScript" sx={getODLChipStyles('blue', 'sm')} />
+            <MUIChip label="Modified" sx={getODLChipStyles('yellow', 'sm')} />
+          </div>
+        </div>
+
+        {/* Workflow status breadcrumb */}
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Workflow Status Breadcrumb</h4>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '12px',
+            background: '#f9fafb',
+            borderRadius: '8px',
+            gap: '16px'
+          }}>
+            <Breadcrumb
+              items={[
+                { label: 'Pipelines', path: '/pipelines' },
+                { label: 'Data Processing', path: '/pipelines/data' },
+                { label: 'ETL Job #1234' }
+              ]}
+              onNavigate={(path) => console.log('Breadcrumb clicked:', path)}
+            />
+            <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>
+              <MUIChip label="Running" sx={getODLChipStyles('blue', 'sm')} icon={<PlayFilledAlt size={14} />} />
+              <MUIChip label="3/5 Steps" sx={getODLChipStyles('grey', 'sm')} />
+              <MUIChip label="2m 34s" sx={getODLChipStyles('grey', 'sm')} icon={<Timer size={14} />} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Use the controls below to experiment with different breadcrumb configurations.',
+        story: 'Examples of breadcrumbs enhanced with Chip components to provide additional context like status, environment, file types, and workflow states. The chips can be placed inline, at the end, or as separators.',
       },
     },
   },

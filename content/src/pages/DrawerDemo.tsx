@@ -1055,7 +1055,7 @@ const DrawerDemo: React.FC = () => {
                   Large (600px)
                 </Button>
                 <Button 
-                  variant="success" 
+                  variant="primary" 
                   onClick={() => setSizeDrawers(prev => ({ ...prev, half: true }))}
                 >
                   Half Screen (50%)
@@ -1578,7 +1578,7 @@ const DrawerDemo: React.FC = () => {
                       Cancel
                     </Button>
                     <Button 
-                      variant="danger"
+                      variant="destructive"
                       size="small"
                       onClick={() => {
                         alert('Item deleted!');

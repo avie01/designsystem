@@ -1,0 +1,93 @@
+.comparison {
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.description {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.column {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header h3 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #374151;
+  margin: 0;
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+}
+
+.badge[data-type="odl"] {
+  background: #3560C1;
+}
+
+.badge[data-type="mui"] {
+  background: #8B5CF6;
+}
+
+.example {
+  padding: 2rem;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.code {
+  margin: 0;
+  padding: 1rem 1.5rem;
+  background: #1f2937;
+  color: #e5e7eb;
+  font-size: 0.875rem;
+  overflow-x: auto;
+  border-top: 1px solid #e5e7eb;
+}
+
+.code code {
+  font-family: 'Monaco', 'Courier New', monospace;
+}

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
-import ODLTheme from '../../styles/ODLTheme';
+// import ODLTheme from '../../styles/ODLTheme';
 import './Modal.css';
 
 export type ModalVariant = 'standard' | 'with-file' | 'with-summary';

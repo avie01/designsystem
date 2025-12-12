@@ -83,7 +83,6 @@ throughout your application. It features:
       },
     },
     onClick: {
-      action: 'clicked',
       description: 'Click handler for interactive icons',
       table: {
         type: { summary: '() => void' },

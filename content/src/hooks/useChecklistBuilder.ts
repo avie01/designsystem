@@ -4,15 +4,11 @@ import { ChecklistItem, ComplianceChecklist } from '../types/checklist.types';
 export const useChecklistBuilder = (bcNumber?: string) => {
   const [checklist, setChecklist] = useState<ComplianceChecklist>({
     id: `checklist-${Date.now()}`,
-    name: `Compliance Checklist - ${bcNumber || 'Draft'}`,
-    projectId: '',
-    bcNumber: bcNumber || '',
+    title: `Compliance Checklist - ${bcNumber || 'Draft'}`,
     items: [],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    status: 'draft',
-    owner: 'Current User',
-    department: 'Planning & Development'
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    status: 'draft'
   });
 
   useEffect(() => {
@@ -32,17 +28,17 @@ export const useChecklistBuilder = (bcNumber?: string) => {
     setChecklist(prev => ({
       ...prev,
       items: [...prev.items, { ...item, order: prev.items.length }],
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date()
     }));
   }, []);
 
   const updateItem = useCallback((itemId: string, updates: Partial<ChecklistItem>) => {
     setChecklist(prev => ({
       ...prev,
-      items: prev.items.map(item => 
+      items: prev.items.map(item =>
         item.id === itemId ? { ...item, ...updates } : item
       ),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date()
     }));
   }, []);
 
@@ -50,7 +46,7 @@ export const useChecklistBuilder = (bcNumber?: string) => {
     setChecklist(prev => ({
       ...prev,
       items: prev.items.filter(item => item.id !== itemId),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date()
     }));
   }, []);
 

@@ -208,7 +208,7 @@ const DualPaneExplorer: React.FC<DualPaneExplorerProps> = ({
                     margin: 0,
                     fontSize: '20px',
                     fontWeight: 600,
-                    color: ODLTheme.colors.text
+                    color: ODLTheme.colors.text.primary
                   }}
                 >
                   {selectedNode.label}
@@ -241,7 +241,7 @@ const DualPaneExplorer: React.FC<DualPaneExplorerProps> = ({
                       <div
                         style={{
                           fontSize: ODLTheme.typography.fontSize.sm,
-                          color: ODLTheme.colors.text,
+                          color: ODLTheme.colors.text.primary,
                           fontWeight: 500
                         }}
                       >

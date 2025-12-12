@@ -5,7 +5,7 @@ import { EditorContent, useEditor, useEditorState } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
-import Button from '../Button/Button';
+// import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import ODLTheme from '../../styles/ODLTheme';
 
@@ -23,7 +23,7 @@ const extensions = [
 ];
 
 
-function MenuBar({ editor, onSave, onCancel, onInsertImage }: { editor: Editor; onSave: () => void; onCancel: () => void; onInsertImage?: () => void }) {
+function MenuBar({ editor, onCancel, onInsertImage }: { editor: Editor; onSave: () => void; onCancel: () => void; onInsertImage?: () => void }) {
   // Icon button style helper
   const getIconButtonStyle = (isActive: boolean, isDisabled: boolean = false) => ({
     background: isActive ? ODLTheme.colors.primaryLight : 'transparent',
@@ -353,8 +353,6 @@ const SimpleEditor: React.FC<SimpleEditorProps> = ({
   onChange,
   onSave,
   onCancel,
-  placeholder = "Enter text...",
-  elementRef,
   onInsertImage
 }) => {
   const editorRef = React.useRef<HTMLDivElement>(null);

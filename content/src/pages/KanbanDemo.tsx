@@ -149,7 +149,7 @@ const KanbanDemo: React.FC = () => {
   }, []);
 
   // Task move handlers
-  const handleBasicTaskMove = (taskId: string, fromColumn: string, toColumn: string) => {
+  const handleBasicTaskMove = (taskId: string, _fromColumn: string, toColumn: string) => {
     setBasicTasks(prevTasks => 
       prevTasks.map(task => 
         task.id === taskId ? { ...task, status: toColumn } : task
@@ -157,7 +157,7 @@ const KanbanDemo: React.FC = () => {
     );
   };
 
-  const handleDevelopmentTaskMove = (taskId: string, fromColumn: string, toColumn: string) => {
+  const handleDevelopmentTaskMove = (taskId: string, _fromColumn: string, toColumn: string) => {
     setDevelopmentTasks(prevTasks => 
       prevTasks.map(task => 
         task.id === taskId ? { ...task, status: toColumn } : task
@@ -165,7 +165,7 @@ const KanbanDemo: React.FC = () => {
     );
   };
 
-  const handleCustomTaskMove = (taskId: string, fromColumn: string, toColumn: string) => {
+  const handleCustomTaskMove = (taskId: string, _fromColumn: string, toColumn: string) => {
     setCustomTasks(prevTasks => 
       prevTasks.map(task => 
         task.id === taskId ? { ...task, status: toColumn } : task
@@ -204,7 +204,7 @@ const [tasks, setTasks] = useState([
   }
 ]);
 
-const handleTaskMove = (taskId, fromColumn, toColumn) => {
+const handleTaskMove = (taskId, _fromColumn, toColumn) => {
   setTasks(prev => 
     prev.map(task => 
       task.id === taskId ? { ...task, status: toColumn } : task

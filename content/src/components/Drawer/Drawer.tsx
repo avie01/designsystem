@@ -240,15 +240,11 @@ const Drawer: React.FC<DrawerProps> = ({
         {/* Content */}
         <main className={title ? 'drawer__content' : 'drawer__content drawer__content--no-title'}>
           {typeof error === 'string' && (
-            <div 
+            <div
               id={errorId}
-              role="alert" 
-              aria-live="polite" 
-              style={{ 
-                color: 'var(--odl-error)', 
-                marginBottom: 'var(--odl-spacing-3)',
-                fontSize: 'var(--odl-font-size-sm)'
-              }}
+              role="alert"
+              aria-live="polite"
+              className="drawer__error-message"
             >
               {error}
             </div>

@@ -66,8 +66,8 @@ const iconComponentCache: Record<string, any> = {};
 // Create lazy-loaded icon component dynamically
 const createLazyIcon = (carbonExportName: string) => {
   if (!iconComponentCache[carbonExportName]) {
-    iconComponentCache[carbonExportName] = lazy(() => 
-      import('@carbon/icons-react').then(m => {
+    iconComponentCache[carbonExportName] = lazy(() =>
+      import('@carbon/icons-react').then((m: any) => {
         // Try to get the icon from the module
         const icon = m[carbonExportName];
         if (!icon) {

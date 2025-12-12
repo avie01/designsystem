@@ -5,11 +5,252 @@ import ChartCard from '../components/ChartCard/ChartCard';
 import Icon from '../components/Icon/Icon';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
+import Button from '../components/Button/Button';
+import DemoComparison from '../components/DemoComparison/DemoComparison';
+import { ODLThemeProvider } from '../theme/ODLThemeProvider';
+import {
+  Card as MUICard,
+  CardContent,
+  CardActions,
+  Checkbox,
+  IconButton,
+  Typography,
+  Chip,
+  Box
+} from '@mui/material';
+import ODLTheme from '../styles/ODLTheme';
+import YellowFolder from '../components/YellowFolder/YellowFolder';
 import styles from './TableDemo.module.css';
+
+// MUI Card Component with ODL Styling
+interface MUICardProps {
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  error?: boolean;
+  selected?: boolean;
+  title?: string;
+  subtitle?: string;
+  tag?: string;
+  showInfoIcon?: boolean;
+  showMenuIcon?: boolean;
+  onSelect?: (selected: boolean) => void;
+  onInfoClick?: () => void;
+  onMenuClick?: () => void;
+}
+
+const MUICardComponent: React.FC<MUICardProps> = ({
+  size = 'md',
+  disabled = false,
+  error = false,
+  selected = false,
+  title = "Title - h4 - Primary",
+  subtitle = "Body - body2 - Secondary",
+  tag = "fA7985",
+  showInfoIcon = true,
+  showMenuIcon = true,
+  onSelect,
+  onInfoClick,
+  onMenuClick,
+}) => {
+  const getSizeStyles = () => {
+    switch (size) {
+      case 'sm': return {
+        padding: '12px',
+        titleSize: '14px',
+        subtitleSize: '12px',
+        tagSize: '11px',
+        iconSize: 20,
+        minHeight: '64px'
+      };
+      case 'lg': return {
+        padding: '20px',
+        titleSize: '18px',
+        subtitleSize: '16px',
+        tagSize: '14px',
+        iconSize: 28,
+        minHeight: '96px'
+      };
+      default: return {
+        padding: '16px',
+        titleSize: '16px',
+        subtitleSize: '14px',
+        tagSize: '12px',
+        iconSize: 24,
+        minHeight: '80px'
+      };
+    }
+  };
+
+  const sizeStyles = getSizeStyles();
+
+  return (
+    <MUICard
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        padding: sizeStyles.padding,
+        minHeight: sizeStyles.minHeight,
+        backgroundColor: selected ? '#E0F3FE' : '#FFFFFF',
+        border: '1px solid #E0E0E0',
+        borderLeft: selected ? '4px solid #3560C1' : '1px solid #E0E0E0',
+        borderRadius: '0',
+        boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.5 : 1,
+        transition: 'all 0.2s ease',
+        boxSizing: 'border-box',
+        '&:hover': {
+          backgroundColor: disabled ? 'inherit' : (selected ? '#E0F3FE' : '#F4F4F4'),
+          boxShadow: disabled ? '0 1px 2px rgba(0,0,0,0.05)' : '0 4px 6px rgba(0,0,0,0.1)'
+        },
+        '&:focus-within': {
+          outline: '2px solid #3560C1',
+          outlineOffset: '2px'
+        }
+      }}
+      onClick={() => !disabled && onSelect?.(!selected)}
+    >
+      {/* Checkbox */}
+      <Box sx={{ marginRight: '12px' }}>
+        <Checkbox
+          checked={selected}
+          disabled={disabled}
+          onChange={(e) => onSelect?.(e.target.checked)}
+          onClick={(e) => e.stopPropagation()}
+          sx={{
+            color: '#525252',
+            '&.Mui-checked': {
+              color: '#3560C1'
+            },
+            '&.Mui-disabled': {
+              color: '#C6C6C6'
+            },
+            padding: '4px'
+          }}
+        />
+      </Box>
+
+      {/* Yellow Folder Icon */}
+      <Box sx={{ marginRight: '12px', display: 'flex', alignItems: 'center' }}>
+        <YellowFolder size={sizeStyles.iconSize} />
+      </Box>
+
+      {/* Text Content */}
+      <CardContent sx={{
+        flex: 1,
+        padding: '0!important',
+        minWidth: 0
+      }}>
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: sizeStyles.titleSize,
+            fontWeight: 500,
+            color: disabled ? '#C6C6C6' : (error ? '#DA1E28' : '#161616'),
+            fontFamily: ODLTheme.typography.fontFamily.sans,
+            lineHeight: 1.2,
+            marginBottom: '4px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          {title}
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: sizeStyles.subtitleSize,
+            color: disabled ? '#C6C6C6' : '#525252',
+            fontFamily: ODLTheme.typography.fontFamily.sans,
+            lineHeight: 1.5,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          {subtitle}
+        </Typography>
+      </CardContent>
+
+      {/* Tag */}
+      {tag && (
+        <Box sx={{ marginRight: '12px' }}>
+          <Chip
+            label={tag}
+            size="small"
+            sx={{
+              backgroundColor: '#F4F4F4',
+              color: '#525252',
+              fontSize: sizeStyles.tagSize,
+              fontFamily: ODLTheme.typography.fontFamily.sans,
+              height: 'auto',
+              padding: '2px 8px',
+              '& .MuiChip-label': {
+                padding: '2px 4px'
+              }
+            }}
+          />
+        </Box>
+      )}
+
+      {/* Action Icons */}
+      <CardActions sx={{ padding: 0, gap: '4px' }}>
+        {showInfoIcon && (
+          <IconButton
+            size="small"
+            disabled={disabled}
+            onClick={(e) => {
+              e.stopPropagation();
+              onInfoClick?.();
+            }}
+            sx={{
+              color: '#525252',
+              padding: '4px',
+              '&:hover': {
+                backgroundColor: 'rgba(0,0,0,0.05)'
+              },
+              '&.Mui-disabled': {
+                color: '#C6C6C6'
+              }
+            }}
+          >
+            <Icon name="information" size={16} />
+          </IconButton>
+        )}
+
+        {showMenuIcon && (
+          <IconButton
+            size="small"
+            disabled={disabled}
+            onClick={(e) => {
+              e.stopPropagation();
+              onMenuClick?.();
+            }}
+            sx={{
+              color: '#525252',
+              padding: '4px',
+              '&:hover': {
+                backgroundColor: 'rgba(0,0,0,0.05)'
+              },
+              '&.Mui-disabled': {
+                color: '#C6C6C6'
+              }
+            }}
+          >
+            <Icon name="overflow-menu-vertical" size={16} />
+          </IconButton>
+        )}
+      </CardActions>
+    </MUICard>
+  );
+};
 
 const CardsDemo: React.FC = () => {
   const [selectedDemo, setSelectedDemo] = useState<'basic' | 'interactive' | 'variations' | 'states' | 'realworld' | 'activity' | 'status'>('basic');
   const [showCode, setShowCode] = useState(false);
+  const [showComparison, setShowComparison] = useState(true);
   const [selectedCards, setSelectedCards] = useState<Set<number>>(new Set());
   const [basicSelectedCards, setBasicSelectedCards] = useState<Set<string>>(new Set());
 
@@ -212,6 +453,13 @@ const recentActivities = [
             <p>Horizontal card component with checkbox, folder icon, text content, tag, and action icons</p>
           </div>
           <div className={styles.headerActions}>
+            <Button
+              variant={showComparison ? 'primary' : 'secondary'}
+              size="small"
+              onClick={() => setShowComparison(!showComparison)}
+            >
+              {showComparison ? 'Hide MUI' : 'Show MUI'}
+            </Button>
             <button
               onClick={() => setShowCode(!showCode)}
               style={{
@@ -286,45 +534,235 @@ const recentActivities = [
               <p>Default card configurations with standard features</p>
             </div>
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px', overflow: 'visible' }}>
-            
-            <div style={{ marginTop: '32px' }}>
-              <h3 style={{ marginBottom: '16px' }}>Default Card</h3>
-              <div style={{ marginBottom: '24px' }}>
-                <Cards 
-                  selected={basicSelectedCards.has('default')}
-                  onSelect={(selected) => {
-                    const newSelected = new Set(basicSelectedCards);
-                    if (selected) {
-                      newSelected.add('default');
-                    } else {
-                      newSelected.delete('default');
-                    }
-                    setBasicSelectedCards(newSelected);
-                  }}
-                />
-              </div>
-            </div>
 
-            <div style={{ marginTop: '32px' }}>
-              <h3 style={{ marginBottom: '16px' }}>Card with Custom Content</h3>
-              <div style={{ marginBottom: '24px' }}>
-                <Cards
-                  title="Project Proposal.pdf"
-                  subtitle="Last modified 2 hours ago • 2.5 MB"
-                  tag="PDF"
-                  selected={basicSelectedCards.has('custom')}
-                  onSelect={(selected) => {
-                    const newSelected = new Set(basicSelectedCards);
-                    if (selected) {
-                      newSelected.add('custom');
-                    } else {
-                      newSelected.delete('custom');
-                    }
-                    setBasicSelectedCards(newSelected);
-                  }}
-                />
+            {showComparison ? (
+              <DemoComparison
+                title="Stacked Cards"
+                description="Multiple cards in a vertical stack layout"
+                odlExample={
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
+                    <Cards
+                      title="Project Proposal.pdf"
+                      subtitle="Last modified 2 hours ago • 2.5 MB"
+                      tag="PDF"
+                      selected={basicSelectedCards.has('card1')}
+                      onSelect={(selected) => {
+                        const newSelected = new Set(basicSelectedCards);
+                        if (selected) {
+                          newSelected.add('card1');
+                        } else {
+                          newSelected.delete('card1');
+                        }
+                        setBasicSelectedCards(newSelected);
+                      }}
+                      onInfoClick={() => alert('Info clicked for Project Proposal')}
+                      onMenuClick={() => alert('Menu clicked for Project Proposal')}
+                    />
+                    <Cards
+                      title="Financial Report Q4.xlsx"
+                      subtitle="Last modified yesterday • 854 KB"
+                      tag="XLSX"
+                      selected={basicSelectedCards.has('card2')}
+                      onSelect={(selected) => {
+                        const newSelected = new Set(basicSelectedCards);
+                        if (selected) {
+                          newSelected.add('card2');
+                        } else {
+                          newSelected.delete('card2');
+                        }
+                        setBasicSelectedCards(newSelected);
+                      }}
+                      onInfoClick={() => alert('Info clicked for Financial Report')}
+                      onMenuClick={() => alert('Menu clicked for Financial Report')}
+                    />
+                    <Cards
+                      title="Meeting Notes.docx"
+                      subtitle="Last modified 3 days ago • 125 KB"
+                      tag="DOCX"
+                      selected={basicSelectedCards.has('card3')}
+                      onSelect={(selected) => {
+                        const newSelected = new Set(basicSelectedCards);
+                        if (selected) {
+                          newSelected.add('card3');
+                        } else {
+                          newSelected.delete('card3');
+                        }
+                        setBasicSelectedCards(newSelected);
+                      }}
+                      onInfoClick={() => alert('Info clicked for Meeting Notes')}
+                      onMenuClick={() => alert('Menu clicked for Meeting Notes')}
+                    />
+                    <Cards
+                      title="Design Mockups.sketch"
+                      subtitle="Last modified 1 week ago • 45.2 MB"
+                      tag="SKETCH"
+                      selected={basicSelectedCards.has('card4')}
+                      onSelect={(selected) => {
+                        const newSelected = new Set(basicSelectedCards);
+                        if (selected) {
+                          newSelected.add('card4');
+                        } else {
+                          newSelected.delete('card4');
+                        }
+                        setBasicSelectedCards(newSelected);
+                      }}
+                      onInfoClick={() => alert('Info clicked for Design Mockups')}
+                      onMenuClick={() => alert('Menu clicked for Design Mockups')}
+                    />
+                    <Cards
+                      title="Marketing Strategy.pptx"
+                      subtitle="Last modified 2 weeks ago • 12.8 MB"
+                      tag="PPTX"
+                      selected={basicSelectedCards.has('card5')}
+                      onSelect={(selected) => {
+                        const newSelected = new Set(basicSelectedCards);
+                        if (selected) {
+                          newSelected.add('card5');
+                        } else {
+                          newSelected.delete('card5');
+                        }
+                        setBasicSelectedCards(newSelected);
+                      }}
+                      onInfoClick={() => alert('Info clicked for Marketing Strategy')}
+                      onMenuClick={() => alert('Menu clicked for Marketing Strategy')}
+                    />
+                  </div>
+                }
+                muiExample={
+                  <ODLThemeProvider enableMui={true}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
+                      <MUICardComponent
+                        title="Project Proposal.pdf"
+                        subtitle="Last modified 2 hours ago • 2.5 MB"
+                        tag="PDF"
+                        selected={basicSelectedCards.has('card1')}
+                        onSelect={(selected) => {
+                          const newSelected = new Set(basicSelectedCards);
+                          if (selected) {
+                            newSelected.add('card1');
+                          } else {
+                            newSelected.delete('card1');
+                          }
+                          setBasicSelectedCards(newSelected);
+                        }}
+                        onInfoClick={() => alert('Info clicked for Project Proposal')}
+                        onMenuClick={() => alert('Menu clicked for Project Proposal')}
+                      />
+                      <MUICardComponent
+                        title="Financial Report Q4.xlsx"
+                        subtitle="Last modified yesterday • 854 KB"
+                        tag="XLSX"
+                        selected={basicSelectedCards.has('card2')}
+                        onSelect={(selected) => {
+                          const newSelected = new Set(basicSelectedCards);
+                          if (selected) {
+                            newSelected.add('card2');
+                          } else {
+                            newSelected.delete('card2');
+                          }
+                          setBasicSelectedCards(newSelected);
+                        }}
+                        onInfoClick={() => alert('Info clicked for Financial Report')}
+                        onMenuClick={() => alert('Menu clicked for Financial Report')}
+                      />
+                      <MUICardComponent
+                        title="Meeting Notes.docx"
+                        subtitle="Last modified 3 days ago • 125 KB"
+                        tag="DOCX"
+                        selected={basicSelectedCards.has('card3')}
+                        onSelect={(selected) => {
+                          const newSelected = new Set(basicSelectedCards);
+                          if (selected) {
+                            newSelected.add('card3');
+                          } else {
+                            newSelected.delete('card3');
+                          }
+                          setBasicSelectedCards(newSelected);
+                        }}
+                        onInfoClick={() => alert('Info clicked for Meeting Notes')}
+                        onMenuClick={() => alert('Menu clicked for Meeting Notes')}
+                      />
+                      <MUICardComponent
+                        title="Design Mockups.sketch"
+                        subtitle="Last modified 1 week ago • 45.2 MB"
+                        tag="SKETCH"
+                        selected={basicSelectedCards.has('card4')}
+                        onSelect={(selected) => {
+                          const newSelected = new Set(basicSelectedCards);
+                          if (selected) {
+                            newSelected.add('card4');
+                          } else {
+                            newSelected.delete('card4');
+                          }
+                          setBasicSelectedCards(newSelected);
+                        }}
+                        onInfoClick={() => alert('Info clicked for Design Mockups')}
+                        onMenuClick={() => alert('Menu clicked for Design Mockups')}
+                      />
+                      <MUICardComponent
+                        title="Marketing Strategy.pptx"
+                        subtitle="Last modified 2 weeks ago • 12.8 MB"
+                        tag="PPTX"
+                        selected={basicSelectedCards.has('card5')}
+                        onSelect={(selected) => {
+                          const newSelected = new Set(basicSelectedCards);
+                          if (selected) {
+                            newSelected.add('card5');
+                          } else {
+                            newSelected.delete('card5');
+                          }
+                          setBasicSelectedCards(newSelected);
+                        }}
+                        onInfoClick={() => alert('Info clicked for Marketing Strategy')}
+                        onMenuClick={() => alert('Menu clicked for Marketing Strategy')}
+                      />
+                    </div>
+                  </ODLThemeProvider>
+                }
+              />
+
+            ) : (
+              <div>
+                <div style={{ marginTop: '32px' }}>
+                  <h3 style={{ marginBottom: '16px' }}>Default Card</h3>
+                  <div style={{ marginBottom: '24px' }}>
+                    <Cards
+                      selected={basicSelectedCards.has('default')}
+                      onSelect={(selected) => {
+                        const newSelected = new Set(basicSelectedCards);
+                        if (selected) {
+                          newSelected.add('default');
+                        } else {
+                          newSelected.delete('default');
+                        }
+                        setBasicSelectedCards(newSelected);
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ marginTop: '32px' }}>
+                  <h3 style={{ marginBottom: '16px' }}>Card with Custom Content</h3>
+                  <div style={{ marginBottom: '24px' }}>
+                    <Cards
+                      title="Project Proposal.pdf"
+                      subtitle="Last modified 2 hours ago • 2.5 MB"
+                      tag="PDF"
+                      selected={basicSelectedCards.has('custom')}
+                      onSelect={(selected) => {
+                        const newSelected = new Set(basicSelectedCards);
+                        if (selected) {
+                          newSelected.add('custom');
+                        } else {
+                          newSelected.delete('custom');
+                        }
+                        setBasicSelectedCards(newSelected);
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
 
             <div style={{ marginTop: '32px' }}>
               <h3 style={{ marginBottom: '16px' }}>Multiple Cards</h3>
@@ -396,34 +834,97 @@ const recentActivities = [
               <p>Cards with selection and event handlers</p>
             </div>
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px', overflow: 'visible' }}>
-            
-            <div style={{ marginTop: '24px' }}>
-              <h3>Selectable Cards</h3>
-              <p style={{ marginBottom: '16px' }}>Click anywhere on the card to select/deselect</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {[
-                  { title: "Report Q4 2024.pdf", subtitle: "Financial report for Q4", tag: "2.5 MB" },
-                  { title: "Budget Planning.xlsx", subtitle: "Annual budget spreadsheet", tag: "854 KB" },
-                  { title: "Meeting Notes.docx", subtitle: "Team meeting notes", tag: "125 KB" },
-                ].map((doc, index) => (
-                  <Cards
-                    key={index}
-                    selected={selectedCards.has(index)}
-                    title={doc.title}
-                    subtitle={doc.subtitle}
-                    tag={doc.tag}
-                    onSelect={(selected) => handleCardSelect(index, selected)}
-                    onInfoClick={() => handleInfoClick(index)}
-                    onMenuClick={() => handleMenuClick(index)}
-                  />
-                ))}
+
+            {showComparison ? (
+              <DemoComparison
+                title="Selectable Cards"
+                description="Click anywhere on the card to select/deselect"
+                odlExample={
+                  <div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
+                      {[
+                        { title: "Report Q4 2024.pdf", subtitle: "Financial report for Q4", tag: "2.5 MB" },
+                        { title: "Budget Planning.xlsx", subtitle: "Annual budget spreadsheet", tag: "854 KB" },
+                        { title: "Meeting Notes.docx", subtitle: "Team meeting notes", tag: "125 KB" },
+                      ].map((doc, index) => (
+                        <Cards
+                          key={index}
+                          selected={selectedCards.has(index)}
+                          title={doc.title}
+                          subtitle={doc.subtitle}
+                          tag={doc.tag}
+                          onSelect={(selected) => handleCardSelect(index, selected)}
+                          onInfoClick={() => handleInfoClick(index)}
+                          onMenuClick={() => handleMenuClick(index)}
+                        />
+                      ))}
+                    </div>
+                    {selectedCards.size > 0 && (
+                      <p style={{ marginTop: '16px', color: '#0F62FE' }}>
+                        {selectedCards.size} card{selectedCards.size > 1 ? 's' : ''} selected
+                      </p>
+                    )}
+                  </div>
+                }
+                muiExample={
+                  <ODLThemeProvider enableMui={true}>
+                    <div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
+                        {[
+                          { title: "Report Q4 2024.pdf", subtitle: "Financial report for Q4", tag: "2.5 MB" },
+                          { title: "Budget Planning.xlsx", subtitle: "Annual budget spreadsheet", tag: "854 KB" },
+                          { title: "Meeting Notes.docx", subtitle: "Team meeting notes", tag: "125 KB" },
+                        ].map((doc, index) => (
+                          <MUICardComponent
+                            key={index}
+                            selected={selectedCards.has(index)}
+                            title={doc.title}
+                            subtitle={doc.subtitle}
+                            tag={doc.tag}
+                            onSelect={(selected) => handleCardSelect(index, selected)}
+                            onInfoClick={() => handleInfoClick(index)}
+                            onMenuClick={() => handleMenuClick(index)}
+                          />
+                        ))}
+                      </div>
+                      {selectedCards.size > 0 && (
+                        <p style={{ marginTop: '16px', color: '#0F62FE' }}>
+                          {selectedCards.size} card{selectedCards.size > 1 ? 's' : ''} selected
+                        </p>
+                      )}
+                    </div>
+                  </ODLThemeProvider>
+                }
+              />
+            ) : (
+              <div style={{ marginTop: '24px' }}>
+                <h3>Selectable Cards</h3>
+                <p style={{ marginBottom: '16px' }}>Click anywhere on the card to select/deselect</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {[
+                    { title: "Report Q4 2024.pdf", subtitle: "Financial report for Q4", tag: "2.5 MB" },
+                    { title: "Budget Planning.xlsx", subtitle: "Annual budget spreadsheet", tag: "854 KB" },
+                    { title: "Meeting Notes.docx", subtitle: "Team meeting notes", tag: "125 KB" },
+                  ].map((doc, index) => (
+                    <Cards
+                      key={index}
+                      selected={selectedCards.has(index)}
+                      title={doc.title}
+                      subtitle={doc.subtitle}
+                      tag={doc.tag}
+                      onSelect={(selected) => handleCardSelect(index, selected)}
+                      onInfoClick={() => handleInfoClick(index)}
+                      onMenuClick={() => handleMenuClick(index)}
+                    />
+                  ))}
+                </div>
+                {selectedCards.size > 0 && (
+                  <p style={{ marginTop: '16px', color: '#0F62FE' }}>
+                    {selectedCards.size} card{selectedCards.size > 1 ? 's' : ''} selected
+                  </p>
+                )}
               </div>
-              {selectedCards.size > 0 && (
-                <p style={{ marginTop: '16px', color: '#0F62FE' }}>
-                  {selectedCards.size} card{selectedCards.size > 1 ? 's' : ''} selected
-                </p>
-              )}
-            </div>
+            )}
             </div>
           </div>
         )}
@@ -436,54 +937,129 @@ const recentActivities = [
               <p>Different card configurations and options</p>
             </div>
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px', overflow: 'visible' }}>
-            
-            <div style={{ marginTop: '24px' }}>
-              <h3>Selected Card</h3>
-              <Cards
-                selected={true}
-                title="Selected Document"
-                subtitle="This card is currently selected"
-                tag="fA7985"
-              />
-            </div>
 
-            <div style={{ marginTop: '24px' }}>
-              <h3>Card without Tag</h3>
-              <Cards
-                title="Document without tag"
-                subtitle="This card doesn't have a tag"
+            {showComparison ? (
+              <DemoComparison
+                title="Card Variations"
+                description="Different card configurations and styles"
+                odlExample={
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-end' }}>
+                    <Cards
+                      selected={true}
+                      title="Selected Document"
+                      subtitle="This card is currently selected"
+                      tag="fA7985"
+                    />
+                    <Cards
+                      title="Document without tag"
+                      subtitle="This card doesn't have a tag"
+                    />
+                    <Cards
+                      title="Document without action icons"
+                      subtitle="This card has no info or menu icons"
+                      tag="fA7985"
+                      showInfoIcon={false}
+                      showMenuIcon={false}
+                    />
+                    <Cards
+                      title="This is a very long document title that might wrap to multiple lines and shows how the component handles overflow gracefully"
+                      subtitle="Secondary text for the long title document with additional details about the file"
+                      tag="LongName.pdf"
+                    />
+                    <Cards
+                      title="Minimal Card"
+                      subtitle="Only essential elements"
+                      showInfoIcon={false}
+                      showMenuIcon={false}
+                    />
+                  </div>
+                }
+                muiExample={
+                  <ODLThemeProvider enableMui={true}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-end' }}>
+                      <MUICardComponent
+                        selected={true}
+                        title="Selected Document"
+                        subtitle="This card is currently selected"
+                        tag="fA7985"
+                      />
+                      <MUICardComponent
+                        title="Document without tag"
+                        subtitle="This card doesn't have a tag"
+                      />
+                      <MUICardComponent
+                        title="Document without action icons"
+                        subtitle="This card has no info or menu icons"
+                        tag="fA7985"
+                        showInfoIcon={false}
+                        showMenuIcon={false}
+                      />
+                      <MUICardComponent
+                        title="This is a very long document title that might wrap to multiple lines and shows how the component handles overflow gracefully"
+                        subtitle="Secondary text for the long title document with additional details about the file"
+                        tag="LongName.pdf"
+                      />
+                      <MUICardComponent
+                        title="Minimal Card"
+                        subtitle="Only essential elements"
+                        showInfoIcon={false}
+                        showMenuIcon={false}
+                      />
+                    </div>
+                  </ODLThemeProvider>
+                }
               />
-            </div>
+            ) : (
+              <div>
+                <div style={{ marginTop: '24px' }}>
+                  <h3>Selected Card</h3>
+                  <Cards
+                    selected={true}
+                    title="Selected Document"
+                    subtitle="This card is currently selected"
+                    tag="fA7985"
+                  />
+                </div>
 
-            <div style={{ marginTop: '24px' }}>
-              <h3>Card without Action Icons</h3>
-              <Cards
-                title="Document without action icons"
-                subtitle="This card has no info or menu icons"
-                tag="fA7985"
-                showInfoIcon={false}
-                showMenuIcon={false}
-              />
-            </div>
+                <div style={{ marginTop: '24px' }}>
+                  <h3>Card without Tag</h3>
+                  <Cards
+                    title="Document without tag"
+                    subtitle="This card doesn't have a tag"
+                  />
+                </div>
 
-            <div style={{ marginTop: '24px' }}>
-              <h3>Long Content Card</h3>
-              <Cards
-                title="This is a very long document title that might wrap to multiple lines and shows how the component handles overflow gracefully"
-                subtitle="Secondary text for the long title document with additional details about the file"
-                tag="LongName.pdf"
-              />
-            </div>
+                <div style={{ marginTop: '24px' }}>
+                  <h3>Card without Action Icons</h3>
+                  <Cards
+                    title="Document without action icons"
+                    subtitle="This card has no info or menu icons"
+                    tag="fA7985"
+                    showInfoIcon={false}
+                    showMenuIcon={false}
+                  />
+                </div>
 
-            <div style={{ marginTop: '24px' }}>
-              <h3>Minimal Card</h3>
-              <Cards
-                title="Minimal Card"
-                subtitle="Only essential elements"
-                showInfoIcon={false}
-                showMenuIcon={false}
-              />
-            </div>
+                <div style={{ marginTop: '24px' }}>
+                  <h3>Long Content Card</h3>
+                  <Cards
+                    title="This is a very long document title that might wrap to multiple lines and shows how the component handles overflow gracefully"
+                    subtitle="Secondary text for the long title document with additional details about the file"
+                    tag="LongName.pdf"
+                  />
+                </div>
+
+                <div style={{ marginTop: '24px' }}>
+                  <h3>Minimal Card</h3>
+                  <Cards
+                    title="Minimal Card"
+                    subtitle="Only essential elements"
+                    showInfoIcon={false}
+                    showMenuIcon={false}
+                  />
+                </div>
+              </div>
+            )}
             </div>
           </div>
         )}
@@ -496,45 +1072,106 @@ const recentActivities = [
               <p>Different visual states and behaviors</p>
             </div>
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px', overflow: 'visible' }}>
-            
-            <div style={{ marginTop: '24px' }}>
-              <h3>Default State</h3>
-              <Cards
-                title="Default State Card"
-                subtitle="Normal appearance"
-                tag="Default"
-              />
-            </div>
 
-            <div style={{ marginTop: '24px' }}>
-              <h3>Hover State</h3>
-              <p style={{ marginBottom: '8px', fontSize: '14px', color: '#666' }}>Hover over the card to see the effect</p>
-              <Cards
-                title="Hoverable Card"
-                subtitle="This card responds to hover"
-                tag="Hover"
+            {showComparison ? (
+              <DemoComparison
+                title="Card States"
+                description="Different visual states and hover behaviors"
+                odlExample={
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-end' }}>
+                    <Cards
+                      title="Default State Card"
+                      subtitle="Normal appearance"
+                      tag="Default"
+                    />
+                    <Cards
+                      title="Hoverable Card"
+                      subtitle="This card responds to hover"
+                      tag="Hover"
+                    />
+                    <Cards
+                      selected={true}
+                      title="Selected State Card"
+                      subtitle="This card is selected"
+                      tag="Selected"
+                    />
+                    <Cards
+                      title="Focusable Card"
+                      subtitle="This card can receive keyboard focus"
+                      tag="Focus"
+                    />
+                  </div>
+                }
+                muiExample={
+                  <ODLThemeProvider enableMui={true}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-end' }}>
+                      <MUICardComponent
+                        title="Default State Card"
+                        subtitle="Normal appearance"
+                        tag="Default"
+                      />
+                      <MUICardComponent
+                        title="Hoverable Card"
+                        subtitle="This card responds to hover"
+                        tag="Hover"
+                      />
+                      <MUICardComponent
+                        selected={true}
+                        title="Selected State Card"
+                        subtitle="This card is selected"
+                        tag="Selected"
+                      />
+                      <MUICardComponent
+                        title="Focusable Card"
+                        subtitle="This card can receive keyboard focus"
+                        tag="Focus"
+                      />
+                    </div>
+                  </ODLThemeProvider>
+                }
               />
-            </div>
+            ) : (
+              <div>
+                <div style={{ marginTop: '24px' }}>
+                  <h3>Default State</h3>
+                  <Cards
+                    title="Default State Card"
+                    subtitle="Normal appearance"
+                    tag="Default"
+                  />
+                </div>
 
-            <div style={{ marginTop: '24px' }}>
-              <h3>Selected State</h3>
-              <Cards
-                selected={true}
-                title="Selected State Card"
-                subtitle="This card is selected"
-                tag="Selected"
-              />
-            </div>
+                <div style={{ marginTop: '24px' }}>
+                  <h3>Hover State</h3>
+                  <p style={{ marginBottom: '8px', fontSize: '14px', color: '#666' }}>Hover over the card to see the effect</p>
+                  <Cards
+                    title="Hoverable Card"
+                    subtitle="This card responds to hover"
+                    tag="Hover"
+                  />
+                </div>
 
-            <div style={{ marginTop: '24px' }}>
-              <h3>Focus State</h3>
-              <p style={{ marginBottom: '8px', fontSize: '14px', color: '#666' }}>Tab to this card to see focus outline</p>
-              <Cards
-                title="Focusable Card"
-                subtitle="This card can receive keyboard focus"
-                tag="Focus"
-              />
-            </div>
+                <div style={{ marginTop: '24px' }}>
+                  <h3>Selected State</h3>
+                  <Cards
+                    selected={true}
+                    title="Selected State Card"
+                    subtitle="This card is selected"
+                    tag="Selected"
+                  />
+                </div>
+
+                <div style={{ marginTop: '24px' }}>
+                  <h3>Focus State</h3>
+                  <p style={{ marginBottom: '8px', fontSize: '14px', color: '#666' }}>Tab to this card to see focus outline</p>
+                  <Cards
+                    title="Focusable Card"
+                    subtitle="This card can receive keyboard focus"
+                    tag="Focus"
+                  />
+                </div>
+              </div>
+            )}
             </div>
           </div>
         )}
@@ -548,16 +1185,113 @@ const recentActivities = [
             </div>
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px', overflow: 'visible' }}>
 
-            {/* User Cards */}
-            <div style={{ marginTop: '24px' }}>
-              <h3>👤 User Cards</h3>
-              <div style={{ 
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-                gap: '16px',
-                marginTop: '16px',
-              }}>
-                <UserCard
+            {showComparison ? (
+              <DemoComparison
+                title="Document Cards"
+                description="Real-world examples with various document types"
+                odlExample={
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
+                    <Cards
+                      title="Annual Report 2024.pdf"
+                      subtitle="Last modified yesterday • 4.2 MB"
+                      tag="PDF"
+                      selected={false}
+                      onInfoClick={() => alert('View document info')}
+                      onMenuClick={() => alert('Open document menu')}
+                    />
+                    <Cards
+                      title="Q4 Budget Review.xlsx"
+                      subtitle="Last modified 2 days ago • 1.8 MB"
+                      tag="XLSX"
+                      selected={false}
+                      onInfoClick={() => alert('View spreadsheet info')}
+                      onMenuClick={() => alert('Open spreadsheet menu')}
+                    />
+                    <Cards
+                      title="Product Roadmap.pptx"
+                      subtitle="Last modified 1 week ago • 15.3 MB"
+                      tag="PPTX"
+                      selected={true}
+                      onInfoClick={() => alert('View presentation info')}
+                      onMenuClick={() => alert('Open presentation menu')}
+                    />
+                    <Cards
+                      title="Team Meeting Notes.docx"
+                      subtitle="Last modified 3 hours ago • 245 KB"
+                      tag="DOCX"
+                      selected={false}
+                      onInfoClick={() => alert('View document info')}
+                      onMenuClick={() => alert('Open document menu')}
+                    />
+                    <Cards
+                      title="Architecture Diagram.svg"
+                      subtitle="Last modified 5 days ago • 892 KB"
+                      tag="SVG"
+                      selected={false}
+                      showInfoIcon={false}
+                      onMenuClick={() => alert('Open image menu')}
+                    />
+                  </div>
+                }
+                muiExample={
+                  <ODLThemeProvider enableMui={true}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
+                      <MUICardComponent
+                        title="Annual Report 2024.pdf"
+                        subtitle="Last modified yesterday • 4.2 MB"
+                        tag="PDF"
+                        selected={false}
+                        onInfoClick={() => alert('View document info')}
+                        onMenuClick={() => alert('Open document menu')}
+                      />
+                      <MUICardComponent
+                        title="Q4 Budget Review.xlsx"
+                        subtitle="Last modified 2 days ago • 1.8 MB"
+                        tag="XLSX"
+                        selected={false}
+                        onInfoClick={() => alert('View spreadsheet info')}
+                        onMenuClick={() => alert('Open spreadsheet menu')}
+                      />
+                      <MUICardComponent
+                        title="Product Roadmap.pptx"
+                        subtitle="Last modified 1 week ago • 15.3 MB"
+                        tag="PPTX"
+                        selected={true}
+                        onInfoClick={() => alert('View presentation info')}
+                        onMenuClick={() => alert('Open presentation menu')}
+                      />
+                      <MUICardComponent
+                        title="Team Meeting Notes.docx"
+                        subtitle="Last modified 3 hours ago • 245 KB"
+                        tag="DOCX"
+                        selected={false}
+                        onInfoClick={() => alert('View document info')}
+                        onMenuClick={() => alert('Open document menu')}
+                      />
+                      <MUICardComponent
+                        title="Architecture Diagram.svg"
+                        subtitle="Last modified 5 days ago • 892 KB"
+                        tag="SVG"
+                        selected={false}
+                        showInfoIcon={false}
+                        onMenuClick={() => alert('Open image menu')}
+                      />
+                    </div>
+                  </ODLThemeProvider>
+                }
+              />
+            ) : (
+              <>
+                {/* User Cards */}
+                <div style={{ marginTop: '24px' }}>
+                  <h3>👤 User Cards</h3>
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                    gap: '16px',
+                    marginTop: '16px',
+                  }}>
+                    <UserCard
                   name="Sarah Johnson"
                   role="Senior UI/UX Designer"
                   department="Design Team"
@@ -783,7 +1517,7 @@ const recentActivities = [
                         </h3>
                         <span style={{ 
                           fontSize: '12px', 
-                          color: stat.change.startsWith('+') ? '#10B981' : '#EF4444',
+                              color: stat.change.startsWith('+') ? '#10B981' : '#EF4444',
                           fontWeight: 500,
                           background: stat.change.startsWith('+') ? '#10B98115' : '#EF444415',
                           padding: '2px 6px',
@@ -883,7 +1617,7 @@ const recentActivities = [
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ 
                         fontSize: '12px', 
-                        color: '#6B7280',
+                            color: '#6B7280',
                         fontWeight: 500
                       }}>
                         Status: {metric.status}
@@ -894,7 +1628,8 @@ const recentActivities = [
                 ))}
               </div>
             </div>
-
+              </>
+            )}
             </div>
           </div>
         )}
@@ -908,69 +1643,63 @@ const recentActivities = [
             </div>
             <div style={{ padding: '2rem', background: 'white', borderRadius: '0 0 12px 12px', overflow: 'visible' }}>
 
-            {/* Since You Were Here Cards */}
-            <div style={{ marginTop: '24px' }}>
-              <h3>📅 Since You Were Here</h3>
-              <p style={{ color: '#6B7280', fontSize: '14px', marginTop: '8px' }}>
-                Activity feed cards showing recent updates and changes with timestamps and user attribution
-              </p>
-              <div style={{ 
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-                marginTop: '16px',
-                maxWidth: '600px'
-              }}>
-                {[
-                  {
-                    id: 1,
-                    title: 'New application submitted',
-                    description: 'Building consent application for residential extension',
-                    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-                    user: 'Sarah Chen',
-                    icon: 'document-add',
-                    color: 'blue',
-                    relatedItem: 'BC-2024-0156'
-                  },
-                  {
-                    id: 2,
-                    title: 'Site inspection completed',
-                    description: 'Foundation inspection passed with no issues found',
-                    timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
-                    user: 'Mike Torres',
-                    icon: 'checkmark-filled',
-                    color: 'green',
-                    relatedItem: 'BC-2024-0143'
-                  },
-                  {
-                    id: 3,
-                    title: 'Document review required',
-                    description: 'Engineering drawings require additional approval',
-                    timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
-                    user: 'Emma Wilson',
-                    icon: 'warning',
-                    color: 'orange',
-                    relatedItem: 'BC-2024-0134'
-                  },
-                  {
-                    id: 4,
-                    title: 'Approval granted',
-                    description: 'Building consent approved and certificate issued',
-                    timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000),
-                    user: 'James Park',
-                    icon: 'certificate',
-                    color: 'green',
-                    relatedItem: 'BC-2024-0128'
-                  },
-                  {
-                    id: 5,
-                    title: 'Payment received',
-                    description: 'Application fee payment processed successfully',
-                    timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000),
-                    user: 'Lisa Anderson',
-                    icon: 'money',
-                    color: 'purple',
-                    relatedItem: 'BC-2024-0122'
+            {/* Activity Feed Cards - ODL Implementation Only */}
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px',
+                    maxWidth: '600px'
+                  }}>
+                    {[
+                      {
+                            id: 1,
+                        title: 'New application submitted',
+                        description: 'Building consent application for residential extension',
+                        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+                        user: 'Sarah Chen',
+                        icon: 'document-add',
+                        color: 'blue',
+                        relatedItem: 'BC-2024-0156'
+                      },
+                      {
+                        id: 2,
+                        title: 'Site inspection completed',
+                        description: 'Foundation inspection passed with no issues found',
+                        timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
+                        user: 'Mike Torres',
+                        icon: 'checkmark-filled',
+                        color: 'green',
+                        relatedItem: 'BC-2024-0143'
+                      },
+                      {
+                        id: 3,
+                        title: 'Document review required',
+                        description: 'Engineering drawings require additional approval',
+                        timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
+                        user: 'Emma Wilson',
+                        icon: 'warning',
+                        color: 'orange',
+                        relatedItem: 'BC-2024-0134'
+                      },
+                      {
+                        id: 4,
+                        title: 'Approval granted',
+                        description: 'Building consent approved and certificate issued',
+                        timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000),
+                        user: 'James Park',
+                        icon: 'certificate',
+                        color: 'green',
+                        relatedItem: 'BC-2024-0128'
+                      },
+                      {
+                        id: 5,
+                        title: 'Payment received',
+                        description: 'Application fee payment processed successfully',
+                        timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000),
+                        user: 'Lisa Anderson',
+                        icon: 'money',
+                        color: 'purple',
+                        relatedItem: 'BC-2024-0122'
                   }
                 ].map(activity => {
                   const getIconColor = () => {
@@ -1048,7 +1777,7 @@ const recentActivities = [
                                 justifyContent: 'center',
                                 fontSize: '10px',
                                 fontWeight: '600',
-                                color: '#6B7280'
+                                    color: '#6B7280'
                               }}>
                                 {activity.user.split(' ').map(n => n[0]).join('').toUpperCase()}
                               </div>
@@ -1070,8 +1799,6 @@ const recentActivities = [
                   View all activity →
                 </button>
               </div>
-            </div>
-
             </div>
           </div>
         )}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Graph, { GraphType, chartColors } from '../components/Graph/Graph';
+import Graph, { chartColors } from '../components/Graph/Graph';
 import Button from '../components/Button/Button';
 import Icon from '../components/Icon/Icon';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';

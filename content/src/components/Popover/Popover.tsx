@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Icon from '../Icon/Icon';
+import styles from './Popover.module.css';
 
 export interface PopoverProps {
   trigger: React.ReactElement;
@@ -134,10 +135,10 @@ const Popover: React.FC<PopoverProps> = ({
 
   return (
     <>
-      <div 
-        ref={triggerRef} 
+      <div
+        ref={triggerRef}
         onClick={handleToggle}
-        className="w-full"
+        className={styles.trigger}
       >
         {trigger}
       </div>
@@ -145,11 +146,10 @@ const Popover: React.FC<PopoverProps> = ({
       {isOpen && (
         <div
           ref={popoverRef}
-          className={`fixed z-50 bg-white rounded shadow-xl border border-blue-500 p-4 ${className}`}
+          className={`${styles.popover} ${styles[`popover--${position}`]} ${styles[`popover--align-${align}`]} ${className || ''}`}
           style={{
             top: `${popoverPosition.top}px`,
-            left: `${popoverPosition.left}px`,
-            width: '320px'
+            left: `${popoverPosition.left}px`
           }}
           role="dialog"
           aria-modal="true"
@@ -159,7 +159,7 @@ const Popover: React.FC<PopoverProps> = ({
               setIsOpen(false);
               if (onClose) onClose();
             }}
-            className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+            className={styles.closeButton}
             aria-label="Close popover"
           >
             <Icon name="close" size={16} />

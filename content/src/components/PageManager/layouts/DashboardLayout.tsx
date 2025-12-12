@@ -286,8 +286,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ stats, onNavigate }) 
                                       </ul>
                                     </div>
                                     <div className="dashboard-layout__button-group">
-                                      <Button variant="primary" size="small">View Application</Button>
-                                      <Button variant="secondary" size="small">Reschedule</Button>
+                                      <Button variant="primary" size="sm">View Application</Button>
+                                      <Button variant="secondary" size="sm">Reschedule</Button>
                                     </div>
                                   </div>
                                 </div>
@@ -358,8 +358,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ stats, onNavigate }) 
                                       </ul>
                                     </div>
                                     <div className="dashboard-layout__button-group">
-                                      <Button variant="primary" size="small">Start Inspection</Button>
-                                      <Button variant="secondary" size="small">View Checklist</Button>
+                                      <Button variant="primary" size="sm">Start Inspection</Button>
+                                      <Button variant="secondary" size="sm">View Checklist</Button>
                                     </div>
                                   </div>
                                 </div>
@@ -419,8 +419,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ stats, onNavigate }) 
                                       </div>
                                     </div>
                                     <div className="dashboard-layout__button-group">
-                                      <Button variant="primary" size="small">Start Review</Button>
-                                      <Button variant="secondary" size="small">View All</Button>
+                                      <Button variant="primary" size="sm">Start Review</Button>
+                                      <Button variant="secondary" size="sm">View All</Button>
                                     </div>
                                   </div>
                                 </div>
@@ -487,8 +487,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ stats, onNavigate }) 
                                       <p className="text-gray-600">Contractor confirmed all issues have been addressed. Verify compliance before issuing certificate.</p>
                                     </div>
                                     <div className="dashboard-layout__button-group">
-                                      <Button variant="primary" size="small">View History</Button>
-                                      <Button variant="secondary" size="small">Previous Report</Button>
+                                      <Button variant="primary" size="sm">View History</Button>
+                                      <Button variant="secondary" size="sm">Previous Report</Button>
                                     </div>
                                   </div>
                                 </div>
@@ -667,7 +667,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ stats, onNavigate }) 
               key: 'classification',
               header: 'Classification',
               render: (item: typeof governmentDocuments[0]) => {
-                const getClassificationColor = (classification: string): 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' => {
+                const getClassificationColor = (classification: string): 'success' | 'warning' | 'error' | 'info' => {
                   switch (classification) {
                     case 'TOP SECRET':
                       return 'error';
@@ -678,7 +678,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ stats, onNavigate }) 
                     case 'RESTRICTED':
                       return 'warning';
                     default:
-                      return 'secondary';
+                      return 'info';
                   }
                 };
                 
@@ -686,7 +686,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ stats, onNavigate }) 
                   <Chip
                     label={item.classification}
                     variant={getClassificationColor(item.classification)}
-                    size="small"
+                    size="sm"
                   />
                 );
               },

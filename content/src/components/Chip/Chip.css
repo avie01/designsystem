@@ -244,7 +244,7 @@
 /* Error/Red */
 .chip--error, .chip--red {
   background-color: var(--chip-error-light);
-  color: var(--chip-error);
+  color: #A21920; /* Darker red for WCAG AA compliance (4.5:1 contrast) */
 }
 
 .chip--error.chip--clickable:hover:not(.chip--disabled),

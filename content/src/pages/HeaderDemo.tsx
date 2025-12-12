@@ -3,9 +3,14 @@ import Header from '../components/Header/Header';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
 import Button from '../components/Button/Button';
+import DemoComparison from '../components/DemoComparison/DemoComparison';
+import { ODLThemeProvider } from '../theme/ODLThemeProvider';
+import Icon from '../components/Icon/Icon';
 import styles from './TableDemo.module.css';
+import { Box, Toolbar, IconButton, Avatar, Typography } from '@mui/material';
 
 const HeaderDemo: React.FC = () => {
+  const [showComparison, _setShowComparison] = useState(true);
   const [selectedDemo, setSelectedDemo] = useState<'build' | 'connect' | 'keystone' | 'nexus' | 'regworks' | '3sixty' | 'custom'>('build');
   const [showCode, setShowCode] = useState(false);
 
@@ -65,6 +70,7 @@ ${commonProps}
   };
 
   return (
+    <ODLThemeProvider enableMui={true}>
     <div className={styles.tableDemo}>
       {/* Breadcrumb Navigation */}
       <DemoBreadcrumb componentName="Header Component" />
@@ -120,13 +126,123 @@ ${commonProps}
               <h2>Objective Build Header</h2>
               <p>Green branding (#5DA10C) with application search functionality and embedded SVG logo</p>
             </div>
+
+            {/* ODL vs MUI Header Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Header Component Comparison"
+                description="ODL Header vs MUI AppBar + Toolbar"
+                odlExample={
+                  <div style={{ border: '1px solid #e0e0e0', borderRadius: '4px', overflow: 'hidden' }}>
+                    <Header
+                      variant="build"
+                      user={{ name: 'Scott Marshall', initials: 'SM' }}
+                      hasSearch={true}
+                      searchPlaceholder="New application"
+                    />
+                  </div>
+                }
+                muiExample={
+                  <Box sx={{
+                    position: 'relative',
+                    borderBottom: '1px solid #e0e0e0',
+                    width: '100%',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '4px',
+                    }
+                  }}>
+                    <Toolbar sx={{
+                      px: 3,
+                      py: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '100%',
+                      minHeight: '64px !important'
+                    }}>
+                      {/* Left - Logo */}
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+                        <IconButton sx={{
+                          p: 1,
+                          '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' }
+                        }}>
+                          <Box
+                            component="img"
+                            src="/assets/Logos/Objective-Build-H.svg"
+                            alt="Objective Build Logo"
+                            sx={{
+                              height: 28,
+                              width: 'auto',
+                              maxWidth: 160,
+                              objectFit: 'contain'
+                            }}
+                          />
+                        </IconButton>
+                      </Box>
+
+                      {/* Center - Spacer */}
+                      <Box sx={{ flex: 1 }} />
+
+                      {/* Right - Actions and User */}
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="notification" size={20} />
+                        </IconButton>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="settings" size={20} />
+                        </IconButton>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Avatar sx={{
+                            width: 36,
+                            height: 36,
+                            bgcolor: '#3560C1',
+                            fontSize: '14px',
+                            fontWeight: 600
+                          }}>
+                            SM
+                          </Avatar>
+                          <Box sx={{ textAlign: 'left' }}>
+                            <Typography sx={{
+                              fontSize: '14px',
+                              fontWeight: 500,
+                              color: '#111827',
+                              lineHeight: 1.2
+                            }}>
+                              Scott Marshall
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Toolbar>
+                  </Box>
+                }
+              />
+            )}
+
             <div style={{ padding: '0', background: 'white', borderRadius: '0 0 12px 12px', border: '1px solid #e0e0e0', overflow: 'hidden' }}>
-              <Header 
+              <Header
                 variant="build"
                 user={{ name: 'Scott Marshall', initials: 'SM' }}
                 hasSearch={true}
                 searchPlaceholder="New application"
-                backgroundColor="#ffffff"
               />
             </div>
             {showCode && (
@@ -143,13 +259,95 @@ ${commonProps}
               <h2>Objective Connect Header</h2>
               <p>Blue branding (#0B77D8) with property search functionality and embedded SVG logo</p>
             </div>
+
+            {/* ODL vs MUI Header Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Connect Header Comparison"
+                description="ODL Connect Header vs MUI AppBar + Toolbar"
+                odlExample={
+                  <div style={{ border: '1px solid #e0e0e0', borderRadius: '4px', overflow: 'hidden' }}>
+                    <Header
+                      variant="connect"
+                      user={{ name: 'Scott Marshall', initials: 'SM' }}
+                      hasSearch={true}
+                      searchPlaceholder="Property text"
+                    />
+                  </div>
+                }
+                muiExample={
+                  <Box sx={{
+                    position: 'relative',
+                    borderBottom: '1px solid #e0e0e0',
+                    width: '100%',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '4px',
+                    }
+                  }}>
+                    <Toolbar sx={{
+                      px: 3,
+                      py: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '100%',
+                      minHeight: '64px !important'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+                        <IconButton sx={{ p: 1, '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' } }}>
+                          <Box
+                            component="img"
+                            src="/assets/Logos/Product=Connect-light theme.svg"
+                            alt="Connect Logo"
+                            sx={{ height: 28, width: 'auto', maxWidth: 160, objectFit: 'contain' }}
+                          />
+                        </IconButton>
+                      </Box>
+                      <Box sx={{ flex: 1 }} />
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="notification" size={20} />
+                        </IconButton>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="settings" size={20} />
+                        </IconButton>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Avatar sx={{ width: 36, height: 36, bgcolor: '#007eb6', fontSize: '12px', fontWeight: 400 }}>SM</Avatar>
+                          <Box sx={{ textAlign: 'left' }}>
+                            <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#111827', lineHeight: 1.2 }}>Scott Marshall</Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Toolbar>
+                  </Box>
+                }
+              />
+            )}
+
             <div style={{ padding: '0', background: 'white', borderRadius: '0 0 12px 12px', border: '1px solid #e0e0e0', overflow: 'hidden' }}>
-              <Header 
+              <Header
                 variant="connect"
                 user={{ name: 'Scott Marshall', initials: 'SM' }}
                 hasSearch={true}
                 searchPlaceholder="Property text"
-                backgroundColor="#ffffff"
               />
             </div>
             {showCode && (
@@ -166,13 +364,95 @@ ${commonProps}
               <h2>Objective Keystone Header</h2>
               <p>Teal branding (#00928F) optimized for property management workflows</p>
             </div>
+
+            {/* ODL vs MUI Header Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Keystone Header Comparison"
+                description="ODL Keystone Header vs MUI AppBar + Toolbar"
+                odlExample={
+                  <div style={{ border: '1px solid #e0e0e0', borderRadius: '4px', overflow: 'hidden' }}>
+                    <Header
+                      variant="keystone"
+                      user={{ name: 'Scott Marshall', initials: 'SM' }}
+                      hasSearch={true}
+                      searchPlaceholder="Property text"
+                    />
+                  </div>
+                }
+                muiExample={
+                  <Box sx={{
+                    position: 'relative',
+                    borderBottom: '1px solid #e0e0e0',
+                    width: '100%',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '4px',
+                    }
+                  }}>
+                    <Toolbar sx={{
+                      px: 3,
+                      py: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '100%',
+                      minHeight: '64px !important'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+                        <IconButton sx={{ p: 1, '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' } }}>
+                          <Box
+                            component="img"
+                            src="/assets/Logos/Objective-Keystone-H.svg"
+                            alt="Objective Keystone Logo"
+                            sx={{ height: 28, width: 'auto', maxWidth: 160, objectFit: 'contain' }}
+                          />
+                        </IconButton>
+                      </Box>
+                      <Box sx={{ flex: 1 }} />
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="notification" size={20} />
+                        </IconButton>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="settings" size={20} />
+                        </IconButton>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Avatar sx={{ width: 36, height: 36, bgcolor: '#007eb6', fontSize: '12px', fontWeight: 400 }}>SM</Avatar>
+                          <Box sx={{ textAlign: 'left' }}>
+                            <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#111827', lineHeight: 1.2 }}>Scott Marshall</Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Toolbar>
+                  </Box>
+                }
+              />
+            )}
+
             <div style={{ padding: '0', background: 'white', borderRadius: '0 0 12px 12px', border: '1px solid #e0e0e0', overflow: 'hidden' }}>
-              <Header 
+              <Header
                 variant="keystone"
                 user={{ name: 'Scott Marshall', initials: 'SM' }}
                 hasSearch={true}
                 searchPlaceholder="Property text"
-                backgroundColor="#ffffff"
               />
             </div>
             {showCode && (
@@ -189,13 +469,95 @@ ${commonProps}
               <h2>Objective Nexus Header</h2>
               <p>Purple branding (#6B46C1) designed for comprehensive application management systems</p>
             </div>
+
+            {/* ODL vs MUI Header Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Nexus Header Comparison"
+                description="ODL Nexus Header vs MUI AppBar + Toolbar"
+                odlExample={
+                  <div style={{ border: '1px solid #e0e0e0', borderRadius: '4px', overflow: 'hidden' }}>
+                    <Header
+                      variant="nexus"
+                      user={{ name: 'Scott Marshall', initials: 'SM' }}
+                      hasSearch={true}
+                      searchPlaceholder="Search applications"
+                    />
+                  </div>
+                }
+                muiExample={
+                  <Box sx={{
+                    position: 'relative',
+                    borderBottom: '1px solid #e0e0e0',
+                    width: '100%',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '4px',
+                    }
+                  }}>
+                    <Toolbar sx={{
+                      px: 3,
+                      py: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '100%',
+                      minHeight: '64px !important'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+                        <IconButton sx={{ p: 1, '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' } }}>
+                          <Box
+                            component="img"
+                            src="/assets/Logos/Product=Nexus-light theme.svg"
+                            alt="Nexus Logo"
+                            sx={{ height: 36, width: 'auto', maxWidth: 200, objectFit: 'contain' }}
+                          />
+                        </IconButton>
+                      </Box>
+                      <Box sx={{ flex: 1 }} />
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="notification" size={20} />
+                        </IconButton>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="settings" size={20} />
+                        </IconButton>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Avatar sx={{ width: 36, height: 36, bgcolor: '#007eb6', fontSize: '12px', fontWeight: 400 }}>SM</Avatar>
+                          <Box sx={{ textAlign: 'left' }}>
+                            <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#111827', lineHeight: 1.2 }}>Scott Marshall</Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Toolbar>
+                  </Box>
+                }
+              />
+            )}
+
             <div style={{ padding: '0', background: 'white', borderRadius: '0 0 12px 12px', border: '1px solid #e0e0e0', overflow: 'hidden' }}>
-              <Header 
+              <Header
                 variant="nexus"
                 user={{ name: 'Scott Marshall', initials: 'SM' }}
                 hasSearch={true}
                 searchPlaceholder="Search applications"
-                backgroundColor="#ffffff"
               />
             </div>
             {showCode && (
@@ -212,13 +574,95 @@ ${commonProps}
               <h2>Regworks Header</h2>
               <p>Red branding (#DC2626) specialized for regulatory compliance and management workflows</p>
             </div>
+
+            {/* ODL vs MUI Header Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="Regworks Header Comparison"
+                description="ODL Regworks Header vs MUI AppBar + Toolbar"
+                odlExample={
+                  <div style={{ border: '1px solid #e0e0e0', borderRadius: '4px', overflow: 'hidden' }}>
+                    <Header
+                      variant="regworks"
+                      user={{ name: 'Scott Marshall', initials: 'SM' }}
+                      hasSearch={true}
+                      searchPlaceholder="Search regulations"
+                    />
+                  </div>
+                }
+                muiExample={
+                  <Box sx={{
+                    position: 'relative',
+                    borderBottom: '1px solid #e0e0e0',
+                    width: '100%',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '4px',
+                    }
+                  }}>
+                    <Toolbar sx={{
+                      px: 3,
+                      py: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '100%',
+                      minHeight: '64px !important'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+                        <IconButton sx={{ p: 1, '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' } }}>
+                          <Box
+                            component="img"
+                            src="/assets/Logos/Product=Regworks-light theme.svg"
+                            alt="Regworks Logo"
+                            sx={{ height: 36, width: 'auto', maxWidth: 200, objectFit: 'contain' }}
+                          />
+                        </IconButton>
+                      </Box>
+                      <Box sx={{ flex: 1 }} />
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="notification" size={20} />
+                        </IconButton>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="settings" size={20} />
+                        </IconButton>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Avatar sx={{ width: 36, height: 36, bgcolor: '#007eb6', fontSize: '12px', fontWeight: 400 }}>SM</Avatar>
+                          <Box sx={{ textAlign: 'left' }}>
+                            <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#111827', lineHeight: 1.2 }}>Scott Marshall</Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Toolbar>
+                  </Box>
+                }
+              />
+            )}
+
             <div style={{ padding: '0', background: 'white', borderRadius: '0 0 12px 12px', border: '1px solid #e0e0e0', overflow: 'hidden' }}>
-              <Header 
+              <Header
                 variant="regworks"
                 user={{ name: 'Scott Marshall', initials: 'SM' }}
                 hasSearch={true}
                 searchPlaceholder="Search regulations"
-                backgroundColor="#ffffff"
               />
             </div>
             {showCode && (
@@ -235,13 +679,94 @@ ${commonProps}
               <h2>Objective 3Sixty Header</h2>
               <p>Blue branding (#0B77D8) with 360-degree view functionality</p>
             </div>
+
+            {/* ODL vs MUI Header Comparison */}
+            {showComparison && (
+              <DemoComparison
+                title="3Sixty Header Comparison"
+                description="ODL 3Sixty Header vs MUI AppBar + Toolbar"
+                odlExample={
+                  <div style={{ border: '1px solid #e0e0e0', borderRadius: '4px', overflow: 'hidden' }}>
+                    <Header
+                      variant="3sixty"
+                      user={{ name: 'Scott Marshall', initials: 'SM' }}
+                      hasSearch={false}
+                    />
+                  </div>
+                }
+                muiExample={
+                  <Box sx={{
+                    position: 'relative',
+                    borderBottom: '1px solid #e0e0e0',
+                    width: '100%',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '4px',
+                    }
+                  }}>
+                    <Toolbar sx={{
+                      px: 3,
+                      py: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '100%',
+                      minHeight: '64px !important'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+                        <IconButton sx={{ p: 1, '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' } }}>
+                          <Box
+                            component="img"
+                            src="/assets/Logos/Product=3SIXTY-light theme.svg"
+                            alt="3Sixty Logo"
+                            sx={{ height: 36, width: 'auto', maxWidth: 200, objectFit: 'contain' }}
+                          />
+                        </IconButton>
+                      </Box>
+                      <Box sx={{ flex: 1 }} />
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="notification" size={20} />
+                        </IconButton>
+                        <IconButton sx={{
+                          minWidth: 40,
+                          minHeight: 40,
+                          color: '#6b7280',
+                          '&:hover': {
+                            color: '#374151',
+                          }
+                        }}>
+                          <Icon name="settings" size={20} />
+                        </IconButton>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Avatar sx={{ width: 36, height: 36, bgcolor: '#007eb6', fontSize: '12px', fontWeight: 400 }}>SM</Avatar>
+                          <Box sx={{ textAlign: 'left' }}>
+                            <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#111827', lineHeight: 1.2 }}>Scott Marshall</Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Toolbar>
+                  </Box>
+                }
+              />
+            )}
+
             <div style={{ padding: '0', background: 'white', borderRadius: '0 0 12px 12px', border: '1px solid #e0e0e0', overflow: 'hidden' }}>
-              <Header 
+              <Header
                 variant="3sixty"
                 user={{ name: 'Scott Marshall', initials: 'SM' }}
                 hasSearch={true}
                 searchPlaceholder="Search applications"
-                backgroundColor="#ffffff"
               />
             </div>
             {showCode && (
@@ -259,14 +784,11 @@ ${commonProps}
               <p>Fully customizable with configurable branding colors and logo text while maintaining consistent functionality</p>
             </div>
             <div style={{ padding: '0', background: 'white', borderRadius: '0 0 12px 12px', border: '1px solid #e0e0e0', overflow: 'hidden' }}>
-              <Header 
-                variant="custom"
-                brandColor="#6B46C1"
-                logoText="Custom Brand"
+              <Header
+                variant="build"
                 user={{ name: 'Scott Marshall', initials: 'SM' }}
                 hasSearch={true}
                 searchPlaceholder="Custom search..."
-                backgroundColor="#ffffff"
               />
             </div>
             {showCode && (
@@ -357,6 +879,7 @@ ${commonProps}
 
       <BackToTop />
     </div>
+    </ODLThemeProvider>
   );
 };
 

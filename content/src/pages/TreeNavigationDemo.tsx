@@ -3,10 +3,135 @@ import TreeNavigation, { TreeNode } from '../components/TreeNavigation/TreeNavig
 import Button from '../components/Button/Button';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
+import DemoComparison from '../components/DemoComparison/DemoComparison';
+import { ODLThemeProvider } from '../theme/ODLThemeProvider';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { Box } from '@mui/material';
+import Icon from '../components/Icon/Icon';
+import ODLTheme from '../styles/ODLTheme';
 import styles from './TableDemo.module.css';
+
+// MUI TreeView Component with ODL Styling
+interface MUITreeViewProps {
+  nodes: TreeNode[];
+  onNodeSelect?: (node: TreeNode) => void;
+  selectedNodeId?: string;
+  expandedNodeIds?: string[];
+}
+
+const MUITreeView: React.FC<MUITreeViewProps> = ({ nodes, onNodeSelect, selectedNodeId, expandedNodeIds = [] }) => {
+  const [expandedItems, setExpandedItems] = useState<string[]>(expandedNodeIds);
+
+  const handleExpandedItemsChange = (_event: React.SyntheticEvent, itemIds: string[]) => {
+    setExpandedItems(itemIds);
+  };
+
+  const handleSelectedItemsChange = (_event: React.SyntheticEvent, itemId: string | null) => {
+    if (itemId && onNodeSelect) {
+      const findNode = (nodes: TreeNode[], id: string): TreeNode | null => {
+        for (const node of nodes) {
+          if (node.id === id) return node;
+          if (node.children) {
+            const found = findNode(node.children, id);
+            if (found) return found;
+          }
+        }
+        return null;
+      };
+      const node = findNode(nodes, itemId);
+      if (node) onNodeSelect(node);
+    }
+  };
+
+  const renderTreeItems = (nodes: TreeNode[]) => {
+    return nodes.map((node) => (
+      <TreeItem
+        key={node.id}
+        itemId={node.id}
+        label={
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            py: '4px',
+            color: selectedNodeId === node.id ? ODLTheme.colors.primary : ODLTheme.colors.text.primary,
+            fontWeight: selectedNodeId === node.id ? 500 : 400,
+            fontSize: '14px'
+          }}>
+            {node.type === 'folder' ? (
+              <Icon name="folder" size={16} color={ODLTheme.colors.warning} />
+            ) : node.icon ? (
+              <Icon name={node.icon} size={16} />
+            ) : (
+              <Icon name="document" size={16} />
+            )}
+            <span>{node.label}</span>
+          </Box>
+        }
+        sx={{
+          '& .MuiTreeItem-content': {
+            padding: '4px 8px',
+            borderRadius: '4px',
+            '&:hover': {
+              backgroundColor: '#f5f5f5'
+            },
+            '&.Mui-selected': {
+              backgroundColor: `${ODLTheme.colors.primary}10`,
+              '&:hover': {
+                backgroundColor: `${ODLTheme.colors.primary}15`
+              }
+            }
+          },
+          '& .MuiTreeItem-iconContainer': {
+            marginRight: '4px',
+            width: '16px'
+          },
+          '& .MuiTreeItem-group': {
+            marginLeft: '20px',
+            paddingLeft: '0'
+          }
+        }}
+      >
+        {node.children && renderTreeItems(node.children)}
+      </TreeItem>
+    ));
+  };
+
+  return (
+    <SimpleTreeView
+      expandedItems={expandedItems}
+      selectedItems={selectedNodeId}
+      onExpandedItemsChange={(_event: React.SyntheticEvent | null, itemIds: string[]) => handleExpandedItemsChange(_event as React.SyntheticEvent, itemIds)}
+      onSelectedItemsChange={(_event: React.SyntheticEvent | null, itemId: string | null) => handleSelectedItemsChange(_event as React.SyntheticEvent, itemId)}
+      sx={{
+        flexGrow: 1,
+        maxWidth: 400,
+        '& .MuiTreeItem-root': {
+          '& .MuiTreeItem-content': {
+            paddingY: 0,
+            flexDirection: 'row'
+          },
+          '& .MuiTreeItem-iconContainer': {
+            order: 2,
+            marginLeft: 'auto',
+            marginRight: '0'
+          },
+          '& .MuiTreeItem-label': {
+            order: 1,
+            flexGrow: 1
+          }
+        }
+      }}
+    >
+      {renderTreeItems(nodes)}
+    </SimpleTreeView>
+  );
+};
 
 const TreeNavigationDemo: React.FC = () => {
   const [showCode, setShowCode] = useState(false);
+  const [showComparison, setShowComparison] = useState(true);
   const [selectedDemo, setSelectedDemo] = useState<'basic' | 'advanced' | 'interactive' | 'deep' | 'lazy' | 'virtual' | 'documents' | 'folders'>('basic');
   const [selectedNodeId, setSelectedNodeId] = useState<string>('');
   const [loadedNodes, setLoadedNodes] = useState<Set<string>>(new Set());
@@ -151,7 +276,7 @@ const TreeNavigationDemo: React.FC = () => {
     const folders = ['src', 'components', 'utils', 'services', 'hooks', 'types'];
     const files = ['index.ts', 'config.ts', 'README.md', 'test.spec.ts'];
     
-    return folders.slice(0, Math.max(2, 6 - depth)).map((folder, i) => ({
+    return folders.slice(0, Math.max(2, 6 - depth)).map((folder, _i) => ({
       id: `${path}-${folder}`,
       label: folder,
       type: 'folder' as const,
@@ -858,6 +983,13 @@ const ViewportTreeNavigation = () => {
           </div>
           <div className={styles.headerActions}>
             <Button
+              variant={showComparison ? 'primary' : 'secondary'}
+              size="small"
+              onClick={() => setShowComparison(!showComparison)}
+            >
+              {showComparison ? 'Hide MUI' : 'Show MUI'}
+            </Button>
+            <Button
               variant={showCode ? 'primary' : 'secondary'}
               size="small"
               onClick={() => setShowCode(!showCode)}
@@ -930,12 +1062,50 @@ const ViewportTreeNavigation = () => {
             flexWrap: 'wrap'
           }}>
             {selectedDemo === 'basic' && (
-              <TreeNavigation
-                title="Global folder"
-                nodes={basicNodes}
-                onNodeSelect={handleNodeSelect}
-                showFilter={true}
-              />
+              <>
+                {showComparison ? (
+                  <DemoComparison
+                    title="Basic Tree Navigation"
+                    description="A simple tree navigation with expandable folders"
+                    odlExample={
+                      <TreeNavigation
+                        title="Global folder"
+                        nodes={basicNodes}
+                        onNodeSelect={handleNodeSelect}
+                        showFilter={true}
+                      />
+                    }
+                    muiExample={
+                      <ODLThemeProvider enableMui={true}>
+                        <div style={{ padding: '20px', border: '1px solid #e0e0e0', borderRadius: '8px', minWidth: '300px' }}>
+                          <div style={{
+                            fontSize: '14px',
+                            fontWeight: 500,
+                            color: '#1f2937',
+                            marginBottom: '16px',
+                            paddingBottom: '8px',
+                            borderBottom: '1px solid #e5e7eb'
+                          }}>
+                            Global folder
+                          </div>
+                          <MUITreeView
+                            nodes={basicNodes}
+                            onNodeSelect={handleNodeSelect}
+                            selectedNodeId={selectedNodeId}
+                          />
+                        </div>
+                      </ODLThemeProvider>
+                    }
+                  />
+                ) : (
+                  <TreeNavigation
+                    title="Global folder"
+                    nodes={basicNodes}
+                    onNodeSelect={handleNodeSelect}
+                    showFilter={true}
+                  />
+                )}
+              </>
             )}
 
             {selectedDemo === 'documents' && (
@@ -946,14 +1116,53 @@ const ViewportTreeNavigation = () => {
                     This example shows a mixed structure with folders containing various file types - PDFs, documents, images, and videos.
                   </p>
                 </div>
-                <TreeNavigation
-                  title="Document Repository"
-                  nodes={documentsNodes}
-                  onNodeSelect={handleNodeSelect}
-                  selectedNodeId={selectedNodeId}
-                  expandedNodeIds={['doc-1', 'doc-4']}
-                  showFilter={true}
-                />
+                {showComparison ? (
+                  <DemoComparison
+                    title="Document Management System"
+                    description="Mixed folder and file structure for document management"
+                    odlExample={
+                      <TreeNavigation
+                        title="Document Repository"
+                        nodes={documentsNodes}
+                        onNodeSelect={handleNodeSelect}
+                        selectedNodeId={selectedNodeId}
+                        expandedNodeIds={['doc-1', 'doc-4']}
+                        showFilter={true}
+                      />
+                    }
+                    muiExample={
+                      <ODLThemeProvider enableMui={true}>
+                        <div style={{ padding: '20px', border: '1px solid #e0e0e0', borderRadius: '8px', minWidth: '300px' }}>
+                          <div style={{
+                            fontSize: '14px',
+                            fontWeight: 500,
+                            color: '#1f2937',
+                            marginBottom: '16px',
+                            paddingBottom: '8px',
+                            borderBottom: '1px solid #e5e7eb'
+                          }}>
+                            Document Repository
+                          </div>
+                          <MUITreeView
+                            nodes={documentsNodes}
+                            onNodeSelect={handleNodeSelect}
+                            selectedNodeId={selectedNodeId}
+                            expandedNodeIds={['doc-1', 'doc-4']}
+                          />
+                        </div>
+                      </ODLThemeProvider>
+                    }
+                  />
+                ) : (
+                  <TreeNavigation
+                    title="Document Repository"
+                    nodes={documentsNodes}
+                    onNodeSelect={handleNodeSelect}
+                    selectedNodeId={selectedNodeId}
+                    expandedNodeIds={['doc-1', 'doc-4']}
+                    showFilter={true}
+                  />
+                )}
               </div>
             )}
 
@@ -965,26 +1174,106 @@ const ViewportTreeNavigation = () => {
                     Pure folder hierarchy without files. Perfect for organizational structures, department trees, or category navigation.
                   </p>
                 </div>
-                <TreeNavigation
-                  title="Organization Structure"
-                  nodes={foldersOnlyNodes}
-                  onNodeSelect={handleNodeSelect}
-                  selectedNodeId={selectedNodeId}
-                  expandedNodeIds={['folder-1', 'folder-2']}
-                  showFilter={false}
-                />
+                {showComparison ? (
+                  <DemoComparison
+                    title="Folders-Only Structure"
+                    description="Pure folder hierarchy without files, ideal for organizational structures"
+                    odlExample={
+                      <TreeNavigation
+                        title="Organization Structure"
+                        nodes={foldersOnlyNodes}
+                        onNodeSelect={handleNodeSelect}
+                        selectedNodeId={selectedNodeId}
+                        expandedNodeIds={['folder-1', 'folder-2']}
+                        showFilter={false}
+                      />
+                    }
+                    muiExample={
+                      <ODLThemeProvider enableMui={true}>
+                        <div style={{ padding: '20px', border: '1px solid #e0e0e0', borderRadius: '8px', minWidth: '300px' }}>
+                          <div style={{
+                            fontSize: '14px',
+                            fontWeight: 500,
+                            color: '#1f2937',
+                            marginBottom: '16px',
+                            paddingBottom: '8px',
+                            borderBottom: '1px solid #e5e7eb'
+                          }}>
+                            Organization Structure
+                          </div>
+                          <MUITreeView
+                            nodes={foldersOnlyNodes}
+                            onNodeSelect={handleNodeSelect}
+                            selectedNodeId={selectedNodeId}
+                            expandedNodeIds={['folder-1', 'folder-2']}
+                          />
+                        </div>
+                      </ODLThemeProvider>
+                    }
+                  />
+                ) : (
+                  <TreeNavigation
+                    title="Organization Structure"
+                    nodes={foldersOnlyNodes}
+                    onNodeSelect={handleNodeSelect}
+                    selectedNodeId={selectedNodeId}
+                    expandedNodeIds={['folder-1', 'folder-2']}
+                    showFilter={false}
+                  />
+                )}
               </div>
             )}
 
             {selectedDemo === 'advanced' && (
-              <TreeNavigation
-                title="Security Framework"
-                nodes={advancedNodes}
-                onNodeSelect={handleNodeSelect}
-                selectedNodeId={selectedNodeId}
-                expandedNodeIds={['a1', 'a2']}
-                showFilter={true}
-              />
+              <>
+                {showComparison ? (
+                  <DemoComparison
+                    title="Advanced Tree Structure"
+                    description="Complex hierarchy with nested folders and files"
+                    odlExample={
+                      <TreeNavigation
+                        title="Security Framework"
+                        nodes={advancedNodes}
+                        onNodeSelect={handleNodeSelect}
+                        selectedNodeId={selectedNodeId}
+                        expandedNodeIds={['a1', 'a2']}
+                        showFilter={true}
+                      />
+                    }
+                    muiExample={
+                      <ODLThemeProvider enableMui={true}>
+                        <div style={{ padding: '20px', border: '1px solid #e0e0e0', borderRadius: '8px', minWidth: '300px' }}>
+                          <div style={{
+                            fontSize: '14px',
+                            fontWeight: 500,
+                            color: '#1f2937',
+                            marginBottom: '16px',
+                            paddingBottom: '8px',
+                            borderBottom: '1px solid #e5e7eb'
+                          }}>
+                            Security Framework
+                          </div>
+                          <MUITreeView
+                            nodes={advancedNodes}
+                            onNodeSelect={handleNodeSelect}
+                            selectedNodeId={selectedNodeId}
+                            expandedNodeIds={['a1', 'a2']}
+                          />
+                        </div>
+                      </ODLThemeProvider>
+                    }
+                  />
+                ) : (
+                  <TreeNavigation
+                    title="Security Framework"
+                    nodes={advancedNodes}
+                    onNodeSelect={handleNodeSelect}
+                    selectedNodeId={selectedNodeId}
+                    expandedNodeIds={['a1', 'a2']}
+                    showFilter={true}
+                  />
+                )}
+              </>
             )}
 
             {selectedDemo === 'interactive' && (

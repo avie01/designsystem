@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AccessibilityProvider } from '../context/AccessibilityContext';
-import AccessibilityPanel from '../components/AccessibilityPanel/AccessibilityPanel';
+// import AccessibilityPanel from '../components/AccessibilityPanel/AccessibilityPanel';
 import Icon from '../components/Icon/Icon';
 import styles from './AccessibilityPanelDemo.module.css';
 
@@ -59,10 +59,10 @@ const AccessibilityPanelDemo: React.FC = () => {
           </div>
         </div>
 
-        <AccessibilityPanel 
-          open={isPanelOpen} 
-          onClose={() => setIsPanelOpen(false)} 
-        />
+        {/* <AccessibilityPanel
+          open={isPanelOpen}
+          onClose={() => setIsPanelOpen(false)}
+        /> */}
       </div>
     </AccessibilityProvider>
   );

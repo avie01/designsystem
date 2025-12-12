@@ -42,15 +42,15 @@ export interface KanbanProps {
 }
 
 // Default task card component
-const DefaultTaskCard: React.FC<{ 
-  task: KanbanTask; 
+const DefaultTaskCard: React.FC<{
+  task: KanbanTask;
   onTaskClick?: (task: KanbanTask) => void;
   isDragging?: boolean;
   enableDragAndDrop?: boolean;
   onTaskMove?: (taskId: string, fromColumn: string, toColumn: string) => void;
   onDragStart?: (taskId: string) => void;
   onDragEnd?: () => void;
-}> = ({ task, onTaskClick, isDragging = false, enableDragAndDrop = false, onTaskMove, onDragStart, onDragEnd }) => {
+}> = ({ task, onTaskClick, isDragging = false, enableDragAndDrop = false, onDragStart, onDragEnd }) => {
   const [draggedOver, setDraggedOver] = React.useState(false);
   
   const handleDragStart = (e: React.DragEvent) => {
@@ -91,7 +91,7 @@ const DefaultTaskCard: React.FC<{
     }, 1);
   };
 
-  const handleDragEnd = (e: React.DragEvent) => {
+  const handleDragEnd = (_e: React.DragEvent) => {
     if (!enableDragAndDrop) return;
     onDragEnd?.();
     setDraggedOver(false);
@@ -124,11 +124,7 @@ const DefaultTaskCard: React.FC<{
         transform: isDragging ? 'rotate(2deg) scale(1.02)' : 'rotate(0deg) scale(1)',
         opacity: isDragging ? 0.8 : 1,
         zIndex: isDragging ? 1000 : 1,
-        boxShadow: isDragging ? ODLTheme.shadows.lg : (draggedOver ? ODLTheme.shadows.md : ODLTheme.shadows.sm),
-        ':hover': {
-          boxShadow: ODLTheme.shadows.md,
-          transform: enableDragAndDrop ? 'translateY(-2px)' : 'none'
-        }
+        boxShadow: isDragging ? ODLTheme.shadows.lg : (draggedOver ? ODLTheme.shadows.md : ODLTheme.shadows.sm)
       }}
       onMouseEnter={(e) => {
         if (onTaskClick || enableDragAndDrop) {
@@ -340,7 +336,7 @@ const Kanban: React.FC<KanbanProps> = ({
     setDraggedOverColumn(columnId);
   };
 
-  const handleDragLeave = (e: React.DragEvent, columnId: string) => {
+  const handleDragLeave = (e: React.DragEvent, _columnId: string) => {
     // Only clear if we're actually leaving the column (not just moving to a child)
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX;

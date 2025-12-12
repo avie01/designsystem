@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { LegislationDocument, ChecklistItem } from '../types';
+import { LegislationDocument } from '../types/legislation.types';
 
-interface ChecklistState {
+export interface ChecklistState {
   activeDocument: LegislationDocument | null;
   activeTab: 'overview' | 'document' | 'checklist' | 'review';
   showTOC: boolean;

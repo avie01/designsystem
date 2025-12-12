@@ -1,5 +1,6 @@
 import React from 'react';
-import { UserAvatarDropdown, DemoNavigation } from '../index';
+import { UserAvatarDropdown } from '../index';
+// import { DemoNavigation } from '../index'; // Not exported
 
 const UserAvatarDropdownDemo: React.FC = () => {
   const sampleUsers = [
@@ -60,7 +61,7 @@ const UserAvatarDropdownDemo: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <DemoNavigation title="UserAvatarDropdown Demo" />
+      {/* <DemoNavigation title="UserAvatarDropdown Demo" /> */}
       
       <div className="container mx-auto px-6 py-8">
         <div className="max-w-4xl mx-auto">

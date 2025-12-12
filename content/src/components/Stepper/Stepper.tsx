@@ -50,7 +50,6 @@ export interface StepperProps {
 const Stepper: React.FC<StepperProps> = ({
   steps,
   orientation = 'horizontal',
-  currentStep = 0,
   showDescription = true,
   size = 'medium',
   disabled = false,

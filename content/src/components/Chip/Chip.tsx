@@ -57,7 +57,7 @@ const Chip: React.FC<ChipProps> = ({
   'aria-describedby': ariaDescribedBy,
   onKeyDown,
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
+  const [_isFocused, _setIsFocused] = useState(false);
   
   // Generate component classes
   const componentClasses = classNames(
@@ -79,9 +79,9 @@ const Chip: React.FC<ChipProps> = ({
       onClick?.();
     }
     if (e.key === 'Escape') {
-      e.currentTarget.blur();
+      (e.currentTarget as HTMLElement).blur();
     }
-    
+
     onKeyDown?.(e);
   };
 
@@ -101,8 +101,8 @@ const Chip: React.FC<ChipProps> = ({
       tabIndex={disabled ? -1 : clickable ? 0 : -1}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
+      onFocus={() => _setIsFocused(true)}
+      onBlur={() => _setIsFocused(false)}
     >
       {/* Document icon */}
       {showDocumentIcon && (

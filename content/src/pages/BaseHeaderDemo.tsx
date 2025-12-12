@@ -73,13 +73,7 @@ const BaseHeaderDemo: React.FC = () => {
 
   return (
     <div style={{ padding: '24px', fontFamily: 'var(--odl-font-family-sans)' }}>
-      <DemoBreadcrumb 
-        items={[
-          { label: 'Components', path: '/' },
-          { label: 'Headers', path: '/headers' },
-          { label: 'BaseHeader', path: '/base-header-demo' }
-        ]} 
-      />
+      <DemoBreadcrumb componentName="BaseHeader" />
 
       <div style={{ marginBottom: '32px' }}>
         <h1 style={{ 

@@ -120,8 +120,8 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
     collapsed && 'navigation-rail__menu--collapsed'
   ].filter(Boolean).join(' ');
 
-  const getIconColor = (isActive: boolean, isHovered: boolean, itemDisabled?: boolean) => {
-    if (itemDisabled || disabled) return undefined;
+  const getIconColor = (isActive: boolean, isHovered: boolean, itemDisabled: boolean) => {
+    if (itemDisabled) return undefined;
     if (theme === 'dark') {
       return isActive ? 'var(--odl-white)' : isHovered ? 'var(--odl-text-primary-dark)' : 'var(--odl-text-secondary-dark)';
     }
@@ -138,11 +138,11 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
         {/* Main menu items */}
         <div className={menuClasses}>
           {menuItems.map((item) => {
-            const isActive = currentPath === item.path || item.children?.some(child => currentPath === child.path);
+            const isActive = currentPath === item.path || Boolean(item.children?.some(child => currentPath === child.path));
             const isHovered = hoveredItem === item.id;
             const isExpanded = expandedItems.has(item.id);
             const hasChildren = item.children && item.children.length > 0;
-            const itemDisabled = item.disabled || disabled;
+            const itemDisabled = !!(item.disabled || disabled);
             
             const itemClasses = [
               'navigation-rail__item',
@@ -171,10 +171,10 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
                   )}
                   
                   {/* Icon */}
-                  <Icon 
-                    name={item.iconName} 
+                  <Icon
+                    name={item.iconName}
                     size={20}
-                    color={getIconColor(isActive, isHovered, itemDisabled)}
+                    color={getIconColor(isActive, isHovered, itemDisabled as boolean)}
                     className="navigation-rail__icon"
                     aria-hidden="true"
                   />
@@ -215,7 +215,7 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
                     {item.children?.map((child) => {
                       const isChildActive = currentPath === child.path;
                       const isChildHovered = hoveredItem === child.id;
-                      const childDisabled = child.disabled || disabled;
+                      const childDisabled: boolean = !!(child.disabled || disabled);
                       
                       const childClasses = [
                         'navigation-rail__item',

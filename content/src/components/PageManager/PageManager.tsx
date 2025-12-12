@@ -240,7 +240,6 @@ const PageManagerInner: React.FC<PageManagerProps> = ({
         user={user}
         alerts={alerts}
         onAlertRead={markAlertAsRead}
-        disabled={disabled}
       >
         {/* Main Content Area */}
         <div className="page-manager__layout-content">
