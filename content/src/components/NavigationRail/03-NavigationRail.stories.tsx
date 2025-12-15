@@ -206,24 +206,38 @@ const defaultMenuItems = [
 
 export const Default: Story = {
   name: '01 Default',
+  parameters: {
+    layout: 'fullscreen',
+  },
   render: (args) => {
     const [collapsed, setCollapsed] = React.useState(false);
-    
+
     return (
-      <NavigationRail
-        {...args}
-        collapsed={collapsed}
-        showCollapseToggle={true}
-        onCollapseToggle={(newCollapsed) => {
-          setCollapsed(newCollapsed);
-          console.log('Collapse toggled:', newCollapsed);
-        }}
-      />
+      <div style={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: args.position === 'right' ? 'row-reverse' : 'row'
+      }}>
+        <NavigationRail
+          {...args}
+          collapsed={collapsed}
+          showCollapseToggle={true}
+          onCollapseToggle={(newCollapsed) => {
+            setCollapsed(newCollapsed);
+            console.log('Collapse toggled:', newCollapsed);
+          }}
+        />
+        <div style={{ flex: 1, padding: '20px', backgroundColor: '#f5f5f5' }}>
+          <h1>Main Content Area</h1>
+          <p>NavigationRail is positioned on the {args.position === 'right' ? 'right' : 'left'} side.</p>
+        </div>
+      </div>
     );
   },
   args: {
     currentPath: '/',
     menuItems: defaultMenuItems,
+    position: 'left',
     onNavigate: (path) => console.log('Navigate to:', path),
   },
 };
