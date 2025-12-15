@@ -138,7 +138,7 @@ const Accordion: React.FC<AccordionProps> = ({
               size={16}
               color={variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.grey700}
               style={{
-                transition: 'transform 0.2s ease',
+                transition: 'transform 0.5s ease',
                 transform: isOpen ? 'rotate(0deg)' : 'rotate(0deg)'
               }}
             />
