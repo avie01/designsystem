@@ -10,16 +10,12 @@ npm install
 npm run dev
 ```
 
-Then open:
-- **Local Dev:** http://localhost:3000/components-showcase.html
-- **Storybook (Local):** http://localhost:6006
-- **Storybook (Production):** https://content-7zjxkjw76-steamfrog2012s-projects.vercel.app
+Then view:
+- **Local Dev:** Component showcase at `http://localhost:3000/components-showcase.html`
+- **Storybook:** Launch with `npm run storybook`
 
 ## 🔗 Resources
 
-- **GitHub Repository:** [ODL-Library](https://github.com/steamfrog2012/ODL-Library)
-- **Branch:** `003-complete-wcag-aa`
-- **Live Storybook:** https://content-7zjxkjw76-steamfrog2012s-projects.vercel.app
 - **Getting Started Guide:** Available in Storybook under "Getting Started" with Claude Code integration examples
 
 ## 📦 What's Inside
@@ -73,7 +69,6 @@ The ODL Design System follows these core principles:
 - ✅ **Improved UX** - Slower animation provides better visual feedback
 
 ### Storybook & Deployment
-- ✅ **Consistent URLs** - Multiple Vercel deployments with latest: https://content-7zjxkjw76-steamfrog2012s-projects.vercel.app
 - ✅ **Getting Started Page** - Comprehensive home page with Claude Code integration guides (3 approaches)
 - ✅ **Component Organization** - Created CardComponents folder with 10 reorganized card-related components
 - ✅ **AlertBanner Fix** - Added explicit opacity: 1 to ensure solid non-transparent display
@@ -133,7 +128,7 @@ npm run lint
 ### Viewing the Component Showcase
 
 1. Start the dev server: `npm run dev`
-2. Open: **http://localhost:3000/components-showcase.html**
+2. Open the component showcase in your browser
 3. Browse components by category
 4. Click on any component card to see its demo
 
