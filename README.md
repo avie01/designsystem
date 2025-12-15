@@ -10,7 +10,17 @@ npm install
 npm run dev
 ```
 
-Then open **http://localhost:3000/components-showcase.html** to view all components.
+Then open:
+- **Local Dev:** http://localhost:3000/components-showcase.html
+- **Storybook (Local):** http://localhost:6006
+- **Storybook (Production):** https://content-7zjxkjw76-steamfrog2012s-projects.vercel.app
+
+## 🔗 Resources
+
+- **GitHub Repository:** [ODL-Library](https://github.com/steamfrog2012/ODL-Library)
+- **Branch:** `003-complete-wcag-aa`
+- **Live Storybook:** https://content-7zjxkjw76-steamfrog2012s-projects.vercel.app
+- **Getting Started Guide:** Available in Storybook under "Getting Started" with Claude Code integration examples
 
 ## 📦 What's Inside
 
@@ -41,24 +51,38 @@ The ODL Design System follows these core principles:
 4. **Flexibility** - Composable and customizable components
 5. **Developer Experience** - TypeScript support and clear documentation
 
-## 🚀 Recent Updates (WCAG 2.1 AA Compliance Complete & Storybook Improvements)
+## 🚀 Recent Updates (Latest Session - Component Refinements & Features)
 
-### Accessibility Remediation (COMPLETED)
+### NavigationRail Improvements
+- ✅ **Layout Decorator Fix** - Removed global meta decorator that was creating duplicate content areas in stories
+- ✅ **Left/Right Positioning** - Updated Default story to support dynamic left/right positioning via props
+- ✅ **Story Layout Management** - All stories (Default, Collapsed, WithDisabledItems, NoTooltips) now self-manage their layouts
+- ✅ **Verified in Production** - Left/right positioning working correctly in deployed Storybook
+
+### Dropdown Component Enhancements
+- ✅ **Emoji Flag Support** - Both approaches working perfectly:
+  - **Approach 1:** Emoji in label: `{ label: '🇺🇸 United States' }`
+  - **Approach 2:** Emoji as icon: `{ label: 'United States', icon: '🇺🇸' }`
+- ✅ **New Story Added** - "03 With Emoji Flags" story showcasing 8 countries with flag emojis
+- ✅ **List Component Integration** - Built-in emoji detection and rendering in List component
+- ✅ **Updated Country Options** - All Dropdown country examples now include emoji flags
+
+### Accordion Component Refinements
+- ✅ **Chevron Icon Color** - Updated from grey400 to grey700 for better contrast and visibility
+- ✅ **Transition Animation** - Increased transition duration from 0.2s to 0.5s ease for smoother expand/collapse
+- ✅ **Improved UX** - Slower animation provides better visual feedback
+
+### Storybook & Deployment
+- ✅ **Consistent URLs** - Multiple Vercel deployments with latest: https://content-7zjxkjw76-steamfrog2012s-projects.vercel.app
+- ✅ **Getting Started Page** - Comprehensive home page with Claude Code integration guides (3 approaches)
+- ✅ **Component Organization** - Created CardComponents folder with 10 reorganized card-related components
+- ✅ **AlertBanner Fix** - Added explicit opacity: 1 to ensure solid non-transparent display
+
+### Previous Session: Accessibility Remediation (WCAG 2.1 AA Compliance Complete)
 - ✅ **Color Contrast Fixes** - Updated disabled text colors from #C6C6C6 (2.37:1) to #A0A0A0 (4.5:1) across 9+ component CSS files
 - ✅ **Destructive Button Styling** - Verified dark red text (#7A1518) on light red background (#FFD7D9) achieves 5.0:1 contrast ratio
 - ✅ **List Component Alignment** - Fixed label alignment from center to left across all sizes (sm, md, lg)
-- ✅ **Complete WCAG 2.1 AA Audit** - Verified all 13 components in accessibility remediation plan are fully compliant with WCAG 2.1 Level AA standards:
-  - **CRITICAL (3):** Accordion, Popover, List - All have semantic HTML, ARIA attributes, and keyboard navigation
-  - **MAJOR (4):** Card, Cards, NavigationRail, Stepper - All implement required accessibility features
-  - **MODERATE (4):** FileUpload, Icon, Modal, Drawer - All pass accessibility compliance checks
-  - **MINOR (2):** Input, Dropdown - All include fallback labels and status announcements
-  - **Key Features Implemented:** Keyboard navigation (Arrow keys, Tab, Enter, Space, Home, End, Escape), ARIA attributes (role, aria-label, aria-expanded, aria-selected, aria-current, aria-describedby), Focus management and traps, Live regions for dynamic updates
-
-### Storybook Controls Cleanup
-- ✅ **32+ Components Updated** - Removed non-editable props (callbacks, render functions, data arrays) from Storybook controls and documentation tables
-- ✅ **Syntax Errors Fixed** - Corrected missing closing braces in Button, Modal, Input, Cards, Dropdown, and Icon story files
-- ✅ **Cleaner Documentation** - Eliminated empty "-" entries in Storybook docs for callback props
-- ✅ **Storybook Running Successfully** - All components loading properly with clean documentation views at http://localhost:6006
+- ✅ **Complete WCAG 2.1 AA Audit** - Verified all 13 components in accessibility remediation plan are fully compliant with WCAG 2.1 Level AA standards
 
 ## 🏗️ Project Structure
 

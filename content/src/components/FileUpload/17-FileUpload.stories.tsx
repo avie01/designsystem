@@ -1,451 +1,290 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import FileUpload from './FileUpload';
+import React, { useState } from 'react';
+import Modal from '../Modal/Modal';
+import Button from '../Button/Button';
+import Icon from '../Icon/Icon';
+import ODLTheme from '../../styles/ODLTheme';
 
 const meta = {
   title: 'Design System/Components/FileUpload',
-  component: FileUpload,
+  component: Modal,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: `
-## FileUpload Component
-
-A versatile file upload component with multiple variants optimized for different use cases.
-
-### Variants
-
-| Variant | Use Case |
-|---------|----------|
-| \`dropzone\` | Standard drag & drop area (default) |
-| \`compact\` | Inline upload for drawers/forms |
-| \`button\` | Simple button trigger |
-| \`picture-card\` | Image grid with previews |
-
-### AI Integration
-
-The component supports AI-powered document analysis via \`onAnalyze\` callback:
-- Auto-categorization
-- Tag extraction
-- Content summarization
-- Document understanding
-
-### Usage
-
-\`\`\`tsx
-// Compact variant for drawers
-<FileUpload
-  variant="compact"
-  label="Attachments"
-  accept=".pdf,.doc"
-  multiple
-  fullWidth
-/>
-
-// With AI analysis
-<FileUpload
-  variant="dropzone"
-  enableAI
-  onAnalyze={async (file) => {
-    const result = await myAIService.analyze(file);
-    return { summary: result.summary, tags: result.tags };
-  }}
-/>
-\`\`\`
-        `,
+        component: 'Simple file upload modal with drag-and-drop support.',
       },
     },
   },
   tags: ['autodocs'],
-  argTypes: {
-    variant: {
-      control: 'select',
-      options: ['dropzone', 'compact', 'button', 'picture-card'],
-    },
-    size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-    },
-  },
-} satisfies Meta<typeof FileUpload>;
+} satisfies Meta<typeof Modal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // ============================================
-// DROPZONE VARIANT
+// UPLOAD MODAL
 // ============================================
 
-export const Default: Story = {
-  name: '01 Default',
-  args: {
-    variant: 'dropzone',
-    dropzoneText: 'Drag and drop documents',
-    dropzoneSubtext: 'Upload relevant site description documents, or {browse}',
-  },
-};
+export const UploadModal: Story = {
+  name: '01 Upload Modal',
+  render: () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const [uploadedFiles, setUploadedFiles] = useState<Array<{
+      name: string;
+      size: string;
+      status: 'uploading' | 'completed' | 'error';
+      progress: number;
+    }>>([]);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
-export const DropzoneSmall: Story = {
-  args: {
-    label: 'Upload Document',
-    variant: 'dropzone',
-    size: 'sm',
-    accept: '.pdf,.doc,.docx',
-  },
-};
+    const handleFileUpload = (files: File[]) => {
+      const newFiles = files.map(file => ({
+        name: file.name,
+        size: `${(file.size / 1024).toFixed(1)} KB`,
+        status: 'uploading' as const,
+        progress: 0
+      }));
 
-export const DropzoneLarge: Story = {
-  name: '03 Dropzone Large',
-  args: {
-    variant: 'dropzone',
-    size: 'lg',
-    dropzoneText: 'Drag and drop documents',
-    dropzoneSubtext: 'Upload relevant site description documents, or {browse}',
-    multiple: true,
-    maxFiles: 10,
-  },
-};
+      setUploadedFiles(prev => [...prev, ...newFiles]);
 
-// ============================================
-// COMPACT VARIANT (for drawers/forms)
-// ============================================
+      // Simulate upload
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 10;
+        setUploadProgress(progress);
+        if (progress >= 100) {
+          clearInterval(interval);
+          setUploadedFiles(prev =>
+            prev.map(file =>
+              file.status === 'uploading'
+                ? { ...file, status: 'completed', progress: 100 }
+                : file
+            )
+          );
+        }
+      }, 200);
+    };
 
-export const Compact: Story = {
-  args: {
-    label: 'Attachments',
-    variant: 'compact',
-    accept: '.pdf,.doc,.docx',
-    multiple: true,
-    fullWidth: true,
-  },
-};
+    const resetModal = () => {
+      setIsOpen(false);
+      setUploadedFiles([]);
+      setUploadProgress(0);
+    };
 
-export const CompactInDrawer: Story = {
-  name: '05 Compact In Drawer',
-  render: () => (
-    <div style={{
-      width: '360px',
-      padding: '20px',
-      backgroundColor: 'white',
-      borderRadius: '8px',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-    }}>
-      <h3 style={{ margin: '0 0 16px', fontSize: '18px', fontWeight: 600 }}>
-        Project Settings
-      </h3>
-
-      <div style={{ marginBottom: '16px' }}>
-        <label style={{ display: 'block', marginBottom: '4px', fontSize: '14px', fontWeight: 500 }}>
-          Project Name
-        </label>
-        <input
-          type="text"
-          defaultValue="Website Redesign"
+    return (
+      <div>
+        <button
+          onClick={() => setIsOpen(true)}
           style={{
-            width: '100%',
-            padding: '8px 12px',
-            border: '1px solid var(--odl-border)',
-            borderRadius: '4px',
-            fontSize: '14px',
+            padding: '0.75rem 1.5rem',
+            borderRadius: '8px',
+            border: 'none',
+            background: ODLTheme.colors.primary,
+            color: 'white',
+            fontSize: ODLTheme.typography.fontSize.base,
+            cursor: 'pointer'
           }}
-        />
-      </div>
-
-      <FileUpload
-        variant="compact"
-        label="Attachments"
-        accept=".pdf,.doc,.docx,.jpg,.png"
-        multiple
-        maxFiles={5}
-        fullWidth
-        helperText="Max 5 files, 10MB each"
-      />
-
-      <FileUpload
-        variant="compact"
-        label="Cover Image"
-        accept="image/*"
-        dropzoneText="Drop image or click"
-        fullWidth
-        className="mt-4"
-      />
-
-      <div style={{ display: 'flex', gap: '8px', marginTop: '24px', justifyContent: 'flex-end' }}>
-        <button style={{
-          padding: '8px 16px',
-          border: '1px solid var(--odl-border)',
-          borderRadius: '4px',
-          backgroundColor: 'white',
-          cursor: 'pointer',
-        }}>
-          Cancel
+        >
+          Upload Documents
         </button>
-        <button style={{
-          padding: '8px 16px',
-          border: 'none',
-          borderRadius: '4px',
-          backgroundColor: 'var(--odl-primary)',
-          color: 'white',
-          cursor: 'pointer',
-        }}>
-          Save
-        </button>
-      </div>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Compact variant designed for use inside drawers alongside other form fields.',
-      },
-    },
-  },
-};
 
-// ============================================
-// BUTTON VARIANT
-// ============================================
-
-export const Button: Story = {
-  args: {
-    label: 'Resume',
-    variant: 'button',
-    buttonText: 'Choose File',
-    accept: '.pdf,.doc,.docx',
-  },
-};
-
-export const ButtonMultiple: Story = {
-  name: '07 Button Multiple',
-  args: {
-    label: 'Documents',
-    variant: 'button',
-    buttonText: 'Upload Documents',
-    multiple: true,
-    accept: '.pdf',
-    maxFiles: 5,
-  },
-};
-
-// ============================================
-// PICTURE CARD VARIANT
-// ============================================
-
-export const PictureCard: Story = {
-  args: {
-    label: 'Gallery Images',
-    variant: 'picture-card',
-    accept: 'image/*',
-    multiple: true,
-    maxFiles: 8,
-  },
-};
-
-export const PictureCardSingle: Story = {
-  name: '09 Picture Card Single',
-  args: {
-    label: 'Profile Photo',
-    variant: 'picture-card',
-    accept: 'image/*',
-    multiple: false,
-    helperText: 'Upload a profile picture',
-  },
-};
-
-// ============================================
-// AI INTEGRATION
-// ============================================
-
-const mockAIAnalysis = async (file: File) => {
-  await new Promise(resolve => setTimeout(resolve, 1500));
-
-  const fileName = file.name.toLowerCase();
-  let category = 'Document';
-  let tags = ['uploaded'];
-  let summary = 'Document uploaded successfully';
-
-  if (fileName.includes('invoice') || fileName.includes('receipt')) {
-    category = 'Financial';
-    tags = ['invoice', 'financial', 'expense'];
-    summary = 'Invoice document detected with payment details';
-  } else if (fileName.includes('contract') || fileName.includes('agreement')) {
-    category = 'Legal';
-    tags = ['contract', 'legal', 'agreement'];
-    summary = 'Legal contract requiring review';
-  } else if (file.type.startsWith('image/')) {
-    category = 'Media';
-    tags = ['image', 'visual', 'media'];
-    summary = 'Image file for visual content';
-  }
-
-  return { category, tags, summary, confidence: 0.85 };
-};
-
-export const WithAIAnalysis: Story = {
-  name: '10 With A I Analysis',
-  args: {
-    label: 'Smart Document Upload',
-    variant: 'dropzone',
-    enableAI: true,
-    onAnalyze: mockAIAnalysis,
-    onUpload: async (file, onProgress) => {
-      for (let i = 0; i <= 100; i += 20) {
-        await new Promise(r => setTimeout(r, 100));
-        onProgress(i);
-      }
-    },
-    helperText: 'AI will analyze and categorize your documents',
-    multiple: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Documents are automatically analyzed by AI after upload, extracting categories, tags, and summaries.',
-      },
-    },
-  },
-};
-
-export const CompactWithAI: Story = {
-  name: '11 Compact With A I',
-  render: () => (
-    <div style={{ width: '400px' }}>
-      <FileUpload
-        variant="compact"
-        label="Document Intelligence"
-        enableAI
-        onAnalyze={mockAIAnalysis}
-        onUpload={async (file, onProgress) => {
-          for (let i = 0; i <= 100; i += 25) {
-            await new Promise(r => setTimeout(r, 80));
-            onProgress(i);
+        <Modal
+          isOpen={isOpen}
+          onClose={resetModal}
+          title="Upload Documents"
+          size="medium"
+          footer={
+            <>
+              <Button
+                variant="ghost"
+                size="small"
+                onClick={resetModal}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                size="small"
+                disabled={uploadedFiles.length === 0}
+                onClick={() => {
+                  alert('Files uploaded successfully!');
+                  resetModal();
+                }}
+              >
+                Complete Upload
+              </Button>
+            </>
           }
-        }}
-        accept=".pdf,.doc,.docx"
-        multiple
-        fullWidth
-        helperText="AI-powered document analysis"
-      />
-    </div>
-  ),
-};
+        >
+          <div>
+            {/* Drag and Drop Zone */}
+            <div
+              style={{
+                border: isDragging ? `2px dashed ${ODLTheme.colors.primary}` : `2px dashed ${ODLTheme.colors.border}`,
+                borderRadius: '8px',
+                padding: '3rem 2rem',
+                textAlign: 'center',
+                backgroundColor: isDragging ? '#F0F7FF' : '#FAFAFA',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragging(true);
+              }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDragging(false);
+                const files = Array.from(e.dataTransfer.files);
+                handleFileUpload(files);
+              }}
+              onClick={() => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.multiple = true;
+                input.accept = '.pdf,.doc,.docx,.jpg,.png';
+                input.onchange = (e) => {
+                  const files = Array.from((e.target as HTMLInputElement).files || []);
+                  handleFileUpload(files);
+                };
+                input.click();
+              }}
+            >
+              {/* Animated Upload Icon */}
+              <div style={{
+                display: 'inline-block',
+                animation: 'uploadBounce 2s ease-in-out infinite'
+              }}>
+                <Icon name="upload" size={48} style={{ color: ODLTheme.colors.primary }} />
+              </div>
 
-// ============================================
-// STATES
-// ============================================
+              <h3 style={{
+                margin: '1rem 0 0.5rem 0',
+                color: ODLTheme.colors.text.primary,
+                fontSize: '1.125rem'
+              }}>
+                Drag & Drop files here
+              </h3>
+              <p style={{
+                color: ODLTheme.colors.text.secondary,
+                fontSize: '0.875rem',
+                marginBottom: '1rem'
+              }}>
+                or click to browse
+              </p>
+              <p style={{
+                color: ODLTheme.colors.text.tertiary,
+                fontSize: '0.75rem'
+              }}>
+                Supports PDF, DOC, DOCX, JPG, PNG (Max 10MB)
+              </p>
+            </div>
 
-export const WithError: Story = {
-  args: {
-    label: 'Upload File',
-    variant: 'dropzone',
-    error: true,
-    errorMessage: 'Please upload at least one file',
-  },
-};
+            {/* File List */}
+            {uploadedFiles.length > 0 && (
+              <div style={{ marginTop: '1.5rem' }}>
+                <h4 style={{
+                  marginBottom: '1rem',
+                  fontSize: '0.875rem',
+                  fontWeight: 600
+                }}>
+                  Uploaded Files ({uploadedFiles.length})
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {uploadedFiles.map((file, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '0.75rem',
+                        backgroundColor: '#F8F9FA',
+                        borderRadius: '6px',
+                        border: `1px solid ${ODLTheme.colors.border}`
+                      }}
+                    >
+                      <Icon
+                        name={file.name.endsWith('.pdf') ? 'document-pdf' : 'document'}
+                        size={24}
+                        style={{ color: file.name.endsWith('.pdf') ? '#DC2626' : ODLTheme.colors.primary }}
+                      />
+                      <div style={{ flex: 1, marginLeft: '0.75rem' }}>
+                        <div style={{ fontSize: '0.875rem', fontWeight: 500 }}>{file.name}</div>
+                        <div style={{ fontSize: '0.75rem', color: ODLTheme.colors.text.secondary }}>{file.size}</div>
+                      </div>
+                      {file.status === 'uploading' && (
+                        <div style={{
+                          width: '40px',
+                          height: '40px',
+                          position: 'relative'
+                        }}>
+                          <svg style={{
+                            animation: 'spin 1s linear infinite',
+                            width: '100%',
+                            height: '100%'
+                          }}>
+                            <circle
+                              cx="20"
+                              cy="20"
+                              r="18"
+                              stroke="#E5E7EB"
+                              strokeWidth="3"
+                              fill="none"
+                            />
+                            <circle
+                              cx="20"
+                              cy="20"
+                              r="18"
+                              stroke={ODLTheme.colors.primary}
+                              strokeWidth="3"
+                              fill="none"
+                              strokeDasharray={`${uploadProgress * 1.13} 113`}
+                              strokeLinecap="round"
+                              transform="rotate(-90 20 20)"
+                              style={{
+                                transition: 'stroke-dasharray 0.3s ease'
+                              }}
+                            />
+                          </svg>
+                          <span style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            fontSize: '0.625rem',
+                            fontWeight: 600
+                          }}>
+                            {uploadProgress}%
+                          </span>
+                        </div>
+                      )}
+                      {file.status === 'completed' && (
+                        <Icon name="checkmark-filled" size={24} style={{ color: ODLTheme.colors.success }} />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </Modal>
 
-export const Disabled: Story = {
-  name: '13 Disabled',
-  args: {
-    label: 'Upload File',
-    variant: 'dropzone',
-    disabled: true,
-    helperText: 'Upload is currently disabled',
-  },
-};
-
-export const CompactDisabled: Story = {
-  args: {
-    label: 'Attachments',
-    variant: 'compact',
-    disabled: true,
-    fullWidth: true,
-  },
-};
-
-// ============================================
-// WITH UPLOAD PROGRESS
-// ============================================
-
-export const WithProgress: Story = {
-  name: '15 With Progress',
-  args: {
-    label: 'Upload with Progress',
-    variant: 'dropzone',
-    multiple: true,
-    onUpload: async (file, onProgress) => {
-      for (let i = 0; i <= 100; i += 5) {
-        await new Promise(r => setTimeout(r, 50));
-        onProgress(i);
-      }
-    },
-  },
-};
-
-// ============================================
-// ALL VARIANTS COMPARISON
-// ============================================
-
-export const AllVariants: Story = {
-  name: '16 All Variants',
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', width: '500px' }}>
-      <section>
-        <h3 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 600, color: '#525252' }}>
-          Dropzone (Default)
-        </h3>
-        <FileUpload
-          variant="dropzone"
-          dropzoneText="Drag and drop documents"
-          dropzoneSubtext="Upload relevant documents, or {browse}"
-          size="md"
-        />
-      </section>
-
-      <section>
-        <h3 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 600, color: '#525252' }}>
-          Compact (For Drawers/Forms)
-        </h3>
-        <FileUpload
-          variant="compact"
-          label="Attachments"
-          accept=".pdf,.doc,.docx"
-          multiple
-          fullWidth
-        />
-      </section>
-
-      <section>
-        <h3 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 600, color: '#525252' }}>
-          Button
-        </h3>
-        <FileUpload
-          variant="button"
-          label="Resume"
-          buttonText="Choose File"
-          accept=".pdf"
-        />
-      </section>
-
-      <section>
-        <h3 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 600, color: '#525252' }}>
-          Picture Card
-        </h3>
-        <FileUpload
-          variant="picture-card"
-          label="Gallery"
-          accept="image/*"
-          multiple
-          maxFiles={6}
-        />
-      </section>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of all FileUpload variants side by side.',
-      },
-    },
+        <style>{`
+          @keyframes uploadBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+          }
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    );
   },
 };

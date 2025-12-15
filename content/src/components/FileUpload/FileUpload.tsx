@@ -4,7 +4,7 @@ import Button from '../Button/ButtonTW';
 import Chip from '../Chip/ChipTW';
 import './FileUpload.css';
 
-export type FileUploadVariant = 'dropzone' | 'compact' | 'button' | 'picture-card';
+export type FileUploadVariant = 'dropzone' | 'compact' | 'button' | 'picture-card' | 'horizontal';
 export type FileStatus = 'pending' | 'uploading' | 'complete' | 'error' | 'analyzing';
 
 export interface UploadedFile {
@@ -109,10 +109,11 @@ const FileUpload: React.FC<FileUploadProps> = ({
   const dropzoneRef = useRef<HTMLDivElement>(null);
   const dragCounter = useRef(0);
 
-  // Generate unique IDs for aria-describedby
+  // Generate unique IDs for aria-describedby and aria-live
   const instanceId = useRef(`file-upload-${Math.random().toString(36).substr(2, 9)}`);
   const helperId = `${instanceId.current}-helper`;
   const errorId = `${instanceId.current}-error`;
+  const statusId = `${instanceId.current}-status`;
 
   const files = value ?? internalFiles;
   const setFiles = (updater: UploadedFile[] | ((prev: UploadedFile[]) => UploadedFile[])) => {
@@ -299,6 +300,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       onChange={handleInputChange}
       disabled={disabled}
       aria-hidden="true"
+      tabIndex={-1}
     />
   );
 
@@ -329,6 +331,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </Button>
         {helperText && !errorMessage && <p id={helperId} className="file-upload__helper">{helperText}</p>}
         {errorMessage && <p id={errorId} className="file-upload__error">{errorMessage}</p>}
+        <div id={statusId} aria-live="polite" aria-atomic="true" className="sr-only">
+          {files.length > 0 && `${files.length} file${files.length !== 1 ? 's' : ''} uploaded`}
+        </div>
         {showFileList && files.length > 0 && <FileList files={files} onRemove={handleRemoveFile} getFileIcon={getFileIcon} formatFileSize={formatFileSize} compact />}
       </div>
     );
@@ -349,7 +354,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           onClick={!disabled ? handleBrowseClick : undefined}
           role="button"
           tabIndex={disabled ? -1 : 0}
-          aria-label={isDragActive ? 'Drop files here to upload' : 'Upload files'}
+          aria-label={isDragActive ? 'Drop files here to upload' : 'Upload files - drag and drop or click to browse'}
           aria-describedby={getAriaDescribedBy()}
           aria-invalid={error || !!errorMessage}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleBrowseClick(); } }}
@@ -362,6 +367,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </div>
         {helperText && !errorMessage && <p id={helperId} className="file-upload__helper">{helperText}</p>}
         {errorMessage && <p id={errorId} className="file-upload__error" role="alert">{errorMessage}</p>}
+        <div id={statusId} aria-live="polite" aria-atomic="true" className="sr-only">
+          {files.length > 0 && `${files.length} file${files.length !== 1 ? 's' : ''} uploaded`}
+        </div>
         {showFileList && files.length > 0 && <FileList files={files} onRemove={handleRemoveFile} getFileIcon={getFileIcon} formatFileSize={formatFileSize} compact />}
       </div>
     );
@@ -424,6 +432,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
               onDragOver={handleDragOver}
               onDrop={handleDrop}
               disabled={disabled}
+              aria-label={isDragActive ? 'Drop files here to upload' : 'Add files - drag and drop or click to browse'}
             >
               <Icon name="add" size={24} />
               <span>Upload</span>
@@ -432,6 +441,76 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </div>
         {helperText && !errorMessage && <p id={helperId} className="file-upload__helper">{helperText}</p>}
         {errorMessage && <p id={errorId} className="file-upload__error" role="alert">{errorMessage}</p>}
+        <div id={statusId} aria-live="polite" aria-atomic="true" className="sr-only">
+          {files.length > 0 && `${files.length} file${files.length !== 1 ? 's' : ''} uploaded`}
+        </div>
+      </div>
+    );
+  }
+
+  // VARIANT: Horizontal (dropzone on left, file list on right)
+  if (variant === 'horizontal') {
+    return (
+      <div className={`file-upload file-upload--horizontal ${fullWidth ? 'file-upload--full-width' : ''} ${className || ''}`}>
+        {label && <label className="file-upload__label">{label}</label>}
+        {hiddenInput}
+        <div className="file-upload__horizontal-container">
+          {/* Left side: Dropzone */}
+          <div className="file-upload__horizontal-dropzone">
+            <div
+              ref={dropzoneRef}
+              className={`file-upload__dropzone ${isDragActive ? 'file-upload__dropzone--active' : ''} ${disabled ? 'file-upload__dropzone--disabled' : ''} ${error ? 'file-upload__dropzone--error' : ''}`}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              onClick={!disabled ? handleBrowseClick : undefined}
+              role="button"
+              tabIndex={disabled ? -1 : 0}
+              aria-label={isDragActive ? 'Drop files here to upload' : 'Upload files - drag and drop files here or click to browse'}
+              aria-describedby={getAriaDescribedBy()}
+              aria-invalid={error || !!errorMessage}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleBrowseClick(); } }}
+            >
+              <div className="file-upload__content">
+                <div className="file-upload__icon">
+                  <Icon name={isDragActive ? 'download' : 'upload'} size={24} />
+                </div>
+                <div className="file-upload__text">
+                  <span className="file-upload__primary-text">
+                    {isDragActive ? 'Drop files here' : dropzoneText || 'Drag and drop files'}
+                  </span>
+                  <span className="file-upload__secondary-text">
+                    {dropzoneSubtext ? (
+                      dropzoneSubtext.includes('{browse}') ? (
+                        <>
+                          {dropzoneSubtext.split('{browse}')[0]}
+                          <span className="file-upload__browse-link">click to browse</span>
+                          {dropzoneSubtext.split('{browse}')[1]}
+                        </>
+                      ) : dropzoneSubtext
+                    ) : (
+                      <>or <span className="file-upload__browse-link">click to browse</span> your files</>
+                    )}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right side: File list */}
+          {showFileList && files.length > 0 && (
+            <div className="file-upload__horizontal-filelist">
+              <h3 className="file-upload__horizontal-title">Uploaded files</h3>
+              <FileList files={files} onRemove={handleRemoveFile} getFileIcon={getFileIcon} formatFileSize={formatFileSize} enableAI={enableAI} />
+            </div>
+          )}
+        </div>
+        {helperText && !errorMessage && <p id={helperId} className="file-upload__helper">{helperText}</p>}
+        {errorMessage && <p id={errorId} className="file-upload__error" role="alert">{errorMessage}</p>}
+        <div id={statusId} aria-live="polite" aria-atomic="true" className="sr-only">
+          {files.length > 0 && `${files.length} file${files.length !== 1 ? 's' : ''} uploaded`}
+        </div>
       </div>
     );
   }
@@ -453,7 +532,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         onClick={!disabled ? handleBrowseClick : undefined}
         role="button"
         tabIndex={disabled ? -1 : 0}
-        aria-label="Upload files"
+        aria-label={isDragActive ? 'Drop files here to upload' : 'Upload files - drag and drop files here or click to browse'}
         aria-describedby={getAriaDescribedBy()}
         aria-invalid={error || !!errorMessage}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleBrowseClick(); } }}
@@ -484,6 +563,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
       </div>
       {helperText && !errorMessage && <p id={helperId} className="file-upload__helper">{helperText}</p>}
       {errorMessage && <p id={errorId} className="file-upload__error" role="alert">{errorMessage}</p>}
+      <div id={statusId} aria-live="polite" aria-atomic="true" className="sr-only">
+        {files.length > 0 && `${files.length} file${files.length !== 1 ? 's' : ''} uploaded`}
+      </div>
       {showFileList && files.length > 0 && <FileList files={files} onRemove={handleRemoveFile} getFileIcon={getFileIcon} formatFileSize={formatFileSize} enableAI={enableAI} />}
     </div>
   );
