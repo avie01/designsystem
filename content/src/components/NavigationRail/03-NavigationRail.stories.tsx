@@ -10,17 +10,6 @@ const meta: Meta<typeof NavigationRail> = {
     layout: 'fullscreen',
   },
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <div style={{ height: '100vh', display: 'flex' }}>
-        <Story />
-        <div style={{ flex: 1, padding: '20px', backgroundColor: '#f5f5f5' }}>
-          <h1>Main Content Area</h1>
-          <p>This is the main content area that would be displayed alongside the navigation rail.</p>
-        </div>
-      </div>
-    ),
-  ],
   argTypes: {
     currentPath: {
       control: 'text',
@@ -244,19 +233,28 @@ export const Default: Story = {
 
 export const Collapsed: Story = {
   name: '02 Collapsed',
+  parameters: {
+    layout: 'fullscreen',
+  },
   render: (args) => {
     const [collapsed, setCollapsed] = React.useState(true);
-    
+
     return (
-      <NavigationRail
-        {...args}
-        collapsed={collapsed}
-        showCollapseToggle={true}
-        onCollapseToggle={(newCollapsed) => {
-          setCollapsed(newCollapsed);
-          console.log('Collapse toggled:', newCollapsed);
-        }}
-      />
+      <div style={{ height: '100vh', display: 'flex' }}>
+        <NavigationRail
+          {...args}
+          collapsed={collapsed}
+          showCollapseToggle={true}
+          onCollapseToggle={(newCollapsed) => {
+            setCollapsed(newCollapsed);
+            console.log('Collapse toggled:', newCollapsed);
+          }}
+        />
+        <div style={{ flex: 1, padding: '20px', backgroundColor: '#f5f5f5' }}>
+          <h1>Main Content Area</h1>
+          <p>This is the main content area displayed alongside the collapsed navigation rail.</p>
+        </div>
+      </div>
     );
   },
   args: {
@@ -348,29 +346,38 @@ export const RightPosition: Story = {
 
 export const WithDisabledItems: Story = {
   name: '05 With Disabled Items',
+  parameters: {
+    layout: 'fullscreen',
+  },
   render: (args) => {
     const [collapsed, setCollapsed] = React.useState(false);
-    
+
     return (
-      <NavigationRail
-        {...args}
-        collapsed={collapsed}
-        showCollapseToggle={true}
-        onCollapseToggle={(newCollapsed) => {
-          setCollapsed(newCollapsed);
-          console.log('Collapse toggled:', newCollapsed);
-        }}
-      />
+      <div style={{ height: '100vh', display: 'flex' }}>
+        <NavigationRail
+          {...args}
+          collapsed={collapsed}
+          showCollapseToggle={true}
+          onCollapseToggle={(newCollapsed) => {
+            setCollapsed(newCollapsed);
+            console.log('Collapse toggled:', newCollapsed);
+          }}
+        />
+        <div style={{ flex: 1, padding: '20px', backgroundColor: '#f5f5f5' }}>
+          <h1>Disabled Items Example</h1>
+          <p>Some navigation items are disabled and cannot be clicked. Try clicking on the disabled item - it won't respond.</p>
+        </div>
+      </div>
     );
   },
   args: {
     currentPath: '/',
     menuItems: [
       ...defaultMenuItems.slice(0, 3),
-      { 
-        id: 'disabled', 
-        iconName: 'status-help', 
-        label: 'Disabled Item', 
+      {
+        id: 'disabled',
+        iconName: 'status-help',
+        label: 'Disabled Item',
         path: '/disabled',
         disabled: true,
         description: 'This item is disabled'
@@ -383,20 +390,29 @@ export const WithDisabledItems: Story = {
 
 export const NoTooltips: Story = {
   name: '06 No Tooltips',
+  parameters: {
+    layout: 'fullscreen',
+  },
   render: (args) => {
     const [collapsed, setCollapsed] = React.useState(true);
-    
+
     return (
-      <NavigationRail
-        {...args}
-        collapsed={collapsed}
-        showTooltips={false}
-        showCollapseToggle={true}
-        onCollapseToggle={(newCollapsed) => {
-          setCollapsed(newCollapsed);
-          console.log('Collapse toggled:', newCollapsed);
-        }}
-      />
+      <div style={{ height: '100vh', display: 'flex' }}>
+        <NavigationRail
+          {...args}
+          collapsed={collapsed}
+          showTooltips={false}
+          showCollapseToggle={true}
+          onCollapseToggle={(newCollapsed) => {
+            setCollapsed(newCollapsed);
+            console.log('Collapse toggled:', newCollapsed);
+          }}
+        />
+        <div style={{ flex: 1, padding: '20px', backgroundColor: '#f5f5f5' }}>
+          <h1>No Tooltips Example</h1>
+          <p>This navigation rail is configured without tooltips. Hover over the items and you'll notice no tooltip appears.</p>
+        </div>
+      </div>
     );
   },
   args: {
