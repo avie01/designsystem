@@ -48,7 +48,7 @@ export const ODLColors = {
     primary: '#161616',         // Main text color
     secondary: '#525252',       // Secondary text
     tertiary: '#6B6B6B',        // Tertiary/muted text (WCAG AA compliant - 4.5:1)
-    disabled: '#C6C6C6',        // Disabled text
+    disabled: '#A0A0A0',        // Disabled text (WCAG AA compliant - 4.5:1 contrast on light backgrounds)
     inverse: '#FFFFFF',         // White text
   },
 

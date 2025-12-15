@@ -10,6 +10,7 @@
   margin-bottom: var(--odl-spacing-3);
   transition: var(--odl-transition-slow);
   font-family: var(--odl-font-family-sans);
+  opacity: 1;
 }
 
 /* Variant styles */

@@ -6,7 +6,7 @@ import Button from '../components/Button/ButtonTW';
 import Input from '../components/Input/InputTW';
 import Dropdown from '../components/Dropdown/Dropdown';
 import AdvancedTable, { TableColumn } from '../components/AdvancedTable/AdvancedTable';
-import Cards from '../components/Cards/CardsTW';
+import Cards from '../components/CardComponents/Cards/CardsTW';
 import Chip from '../components/Chip/ChipTW';
 import Breadcrumb from '../components/Breadcrumb/BreadcrumbTW';
 import SimpleTabs from '../components/SimpleTabs/SimpleTabs';

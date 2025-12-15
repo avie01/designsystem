@@ -12,7 +12,7 @@
   --color-night: #161616;
   --color-blue-default: #0F62FE;
   --color-active-background: #E0F3FE;
-  
+
   /* Dark theme colors */
   --color-vacuum: #161616;
   --color-deep-space: #262626;
@@ -21,7 +21,7 @@
   --color-white-dark: #FFFFFF;
   --color-blue: #4589FF;
   --color-dk-blue: #0043CE;
-  
+
   /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -29,11 +29,16 @@
   --spacing-lg: 24px;
   --spacing-xl: 32px;
   --spacing-xxl: 48px;
-  
+
   /* Border radius */
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 12px;
+
+  /* Motion Settings */
+  /* --reduce-motion-enabled: 0 = animations enabled (default) */
+  /* --reduce-motion-enabled: 1 = animations disabled */
+  --reduce-motion-enabled: 0;
 }
 
 /* Dark theme */

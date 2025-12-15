@@ -62,28 +62,28 @@ export { default as FileUpload } from './components/FileUpload/FileUpload';
 // Data Display
 export { default as Table } from './components/Table/Table';
 export { default as AdvancedTable } from './components/AdvancedTable/AdvancedTable';
-export { default as Cards } from './components/Cards/CardsTW';
-export { default as Card } from './components/Card/Card';
+export { default as Cards } from './components/CardComponents/Cards/CardsTW';
+export { default as Card } from './components/CardComponents/Card/Card';
 export { default as Chip } from './components/Chip/ChipTW';
 export { default as List } from './components/List/List';
 export { default as Icon } from './components/Icon/Icon';
 export { default as UserAvatar } from './components/UserAvatar/UserAvatar';
 export { default as UserAvatarDropdown } from './components/UserAvatar/UserAvatarDropdown';
-export { default as UserCard } from './components/UserCard/UserCard';
-export { default as StatusCard } from './components/StatusCard/StatusCard';
-export { default as StatsCard } from './components/StatsCard/StatsCard';
+export { default as UserCard } from './components/CardComponents/UserCard/UserCard';
+export { default as StatusCard } from './components/CardComponents/StatusCard/StatusCard';
+export { default as StatsCard } from './components/CardComponents/StatsCard/StatsCard';
 export { default as StatsGrid } from './components/StatsGrid/StatsGrid';
 
 // Charts & Visualization
 export { default as Graph } from './components/Graph/Graph';
-export { default as ChartCard } from './components/ChartCard/ChartCard';
+export { default as ChartCard } from './components/CardComponents/ChartCard/ChartCard';
 export { default as DocumentTreemap } from './components/DocumentTreemap/DocumentTreemap';
 export { default as Treemap } from './components/Treemap/Treemap';
 
 // Cards & Containers
-export { default as ApplicationDetailCard } from './components/ApplicationDetailCard/ApplicationDetailCard';
-export { default as DocumentLibraryCard } from './components/DocumentLibraryCard/DocumentLibraryCard';
-export { default as CollapsibleCard } from './components/CollapsibleCard/CollapsibleCard';
+export { default as ApplicationDetailCard } from './components/CardComponents/ApplicationDetailCard/ApplicationDetailCard';
+export { default as DocumentLibraryCard } from './components/CardComponents/DocumentLibraryCard/DocumentLibraryCard';
+export { default as CollapsibleCard } from './components/CardComponents/CollapsibleCard/CollapsibleCard';
 
 // Overlays & Feedback
 export { default as Modal } from './components/Modal/Modal';
@@ -137,7 +137,7 @@ export type { FileUploadProps, UploadedFile, AIAnalysisResult, FileUploadVariant
 
 // Data Display Types
 export type { TableProps, TableColumn } from './components/Table/Table';
-export type { CardsProps } from './components/Cards/CardsTW';
+export type { CardsProps } from './components/CardComponents/Cards/CardsTW';
 export type { ChipProps } from './components/Chip/ChipTW';
 export type { IconProps } from './components/Icon/Icon';
 export type { UserAvatarProps, UserInfo } from './components/UserAvatar/UserAvatar';

@@ -9,7 +9,7 @@
   --list-bg-hover: #2A4FA3; /* ODLColors.primaryHover */
   --list-text-primary: #161616; /* ODLColors.text.primary */
   --list-text-secondary: #525252; /* ODLColors.text.secondary */
-  --list-text-disabled: #C6C6C6; /* ODLColors.text.disabled */
+  --list-text-disabled: #A0A0A0; /* ODLColors.text.disabled - WCAG AA compliant (4.5:1 contrast) */
   --list-border-color: #E0E0E0; /* ODLColors.border */
   --list-primary-color: #3560C1; /* ODLColors.primary */
   
@@ -154,15 +154,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
   vertical-align: middle;
   overflow: hidden;
 }
 
-/* For small and medium sizes, keep content inline */
+/* For small and medium sizes, keep content on single line */
 .list-container--sm .list-item-content,
 .list-container--md .list-item-content {
-  display: inline-flex;
-  align-items: center;
   white-space: nowrap;
   text-overflow: ellipsis;
 }

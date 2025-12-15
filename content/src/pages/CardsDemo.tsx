@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Cards from '../components/Cards/Cards';
-import UserCard from '../components/UserCard/UserCard';
-import ChartCard from '../components/ChartCard/ChartCard';
+import Cards from '../components/CardComponents/Cards/Cards';
+import UserCard from '../components/CardComponents/UserCard/UserCard';
+import ChartCard from '../components/CardComponents/ChartCard/ChartCard';
 import Icon from '../components/Icon/Icon';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
@@ -275,7 +275,7 @@ const CardsDemo: React.FC = () => {
   const getCodeExample = () => {
     switch (selectedDemo) {
       case 'basic':
-        return `import Cards from '../components/Cards/Cards';
+        return `import Cards from '../components/CardComponents/Cards/Cards';
 
 // Basic card with default props
 <Cards />

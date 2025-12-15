@@ -59,7 +59,7 @@ export interface NavigationRailProps {
 const NavigationRail: React.FC<NavigationRailProps> = ({
   currentPath,
   onNavigate,
-  menuItems,
+  menuItems = [],
   collapsed = false,
   showTooltips = true,
   position = 'left',
@@ -78,6 +78,7 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
   const [helpHovered, setHelpHovered] = useState(false);
   const [chevronHovered, setChevronHovered] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const menuContainerRef = React.useRef<HTMLDivElement>(null);
 
   const handleItemClick = (item: MenuItem) => {
     if (!item.disabled && !disabled) {
@@ -102,6 +103,33 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
       e.preventDefault();
       callback();
     }
+  };
+
+  const handleMenuKeyDown = (e: React.KeyboardEvent) => {
+    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
+      return;
+    }
+
+    e.preventDefault();
+
+    const buttons = menuContainerRef.current?.querySelectorAll('button:not([disabled])') as NodeListOf<HTMLButtonElement>;
+    if (!buttons || buttons.length === 0) return;
+
+    const activeElement = document.activeElement as HTMLElement;
+    const currentIndex = Array.from(buttons).indexOf(activeElement as HTMLButtonElement);
+    let nextIndex = currentIndex;
+
+    if (e.key === 'ArrowDown') {
+      nextIndex = (currentIndex + 1) % buttons.length;
+    } else if (e.key === 'ArrowUp') {
+      nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = buttons.length - 1;
+    }
+
+    buttons[nextIndex].focus();
   };
 
   const railClasses = [
@@ -136,7 +164,7 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
     >
       <div className="navigation-rail__container">
         {/* Main menu items */}
-        <div className={menuClasses}>
+        <div className={menuClasses} ref={menuContainerRef} onKeyDown={handleMenuKeyDown}>
           {menuItems.map((item) => {
             const isActive = currentPath === item.path || Boolean(item.children?.some(child => currentPath === child.path));
             const isHovered = hoveredItem === item.id;

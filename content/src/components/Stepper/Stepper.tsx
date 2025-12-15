@@ -279,6 +279,7 @@ const Stepper: React.FC<StepperProps> = ({
             role="tab"
             aria-selected={isCurrent}
             aria-current={isCurrent ? 'step' : undefined}
+            aria-disabled={!isClickable}
             tabIndex={isClickable ? 0 : -1}
             onClick={() => {
               if (isClickable) {

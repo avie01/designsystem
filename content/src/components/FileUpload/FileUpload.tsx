@@ -349,6 +349,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           onClick={!disabled ? handleBrowseClick : undefined}
           role="button"
           tabIndex={disabled ? -1 : 0}
+          aria-label={isDragActive ? 'Drop files here to upload' : 'Upload files'}
           aria-describedby={getAriaDescribedBy()}
           aria-invalid={error || !!errorMessage}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleBrowseClick(); } }}
@@ -507,7 +508,7 @@ const FileList: React.FC<FileListProps> = ({ files, onRemove, getFileIcon, forma
   };
 
   return (
-    <ul className={`file-upload__file-list ${compact ? 'file-upload__file-list--compact' : ''}`} role="list" aria-label="Uploaded files">
+    <ul className={`file-upload__file-list ${compact ? 'file-upload__file-list--compact' : ''}`} role="list" aria-label="Uploaded files" aria-live="polite" aria-relevant="additions text">
       {files.map((uploadedFile) => (
         <li
           key={uploadedFile.id}
@@ -515,6 +516,7 @@ const FileList: React.FC<FileListProps> = ({ files, onRemove, getFileIcon, forma
           tabIndex={0}
           onKeyDown={(e) => handleKeyDown(e, uploadedFile.id)}
           aria-label={`${uploadedFile.file.name}, ${formatFileSize(uploadedFile.file.size)}, ${uploadedFile.status}${uploadedFile.error ? `, error: ${uploadedFile.error}` : ''}`}
+          aria-busy={uploadedFile.status === 'uploading' || uploadedFile.status === 'analyzing'}
         >
         {uploadedFile.preview && !compact ? (
           <img src={uploadedFile.preview} alt="" className="file-upload__file-thumb" />

@@ -29,7 +29,7 @@
   --odl-text-primary: #161616;
   --odl-text-secondary: #525252;
   --odl-text-tertiary: #8D8D8D;
-  --odl-text-disabled: #C6C6C6;
+  --odl-text-disabled: #A0A0A0;
   --odl-text-inverse: #FFFFFF;
   
   /* Typography */
@@ -234,7 +234,7 @@
 
 .button--destructive {
   background-color: var(--odl-error-light);
-  color: var(--odl-error);
+  color: #7A1518;
   border: none;
 }
 

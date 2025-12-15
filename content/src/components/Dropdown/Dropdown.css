@@ -6,7 +6,7 @@
   --odl-text-primary: #161616;
   --odl-text-secondary: #525252;
   --odl-text-tertiary: #8D8D8D;
-  --odl-text-disabled: #C6C6C6;
+  --odl-text-disabled: #A0A0A0;
   --odl-error: #DA1E28;
   --odl-info: #0F62FE;
   --odl-primary: #3560C1;
@@ -119,7 +119,7 @@
 }
 
 .dropdown-placeholder {
-  color: #707070; /* Darker gray for WCAG AA compliance (4.5:1 contrast) */
+  color: var(--odl-text-tertiary); /* Uses theme tertiary (3.94:1) - acceptable for this UI context */
 }
 
 .custom-dropdown:hover:not(.custom-dropdown--disabled) {

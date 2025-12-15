@@ -117,18 +117,21 @@ const Drawer: React.FC<DrawerProps> = ({
       previousActiveElement.current = document.activeElement as HTMLElement;
 
       // Focus first focusable element or drawer itself
+      // Use double requestAnimationFrame to ensure animation completes before focusing
       requestAnimationFrame(() => {
-        if (drawerRef.current) {
-          const firstFocusable = drawerRef.current.querySelector(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable="true"], audio[controls], video[controls]'
-          ) as HTMLElement;
-          
-          if (firstFocusable) {
-            firstFocusable.focus();
-          } else {
-            drawerRef.current.focus();
+        requestAnimationFrame(() => {
+          if (drawerRef.current) {
+            const firstFocusable = drawerRef.current.querySelector(
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable="true"], audio[controls], video[controls]'
+            ) as HTMLElement;
+
+            if (firstFocusable) {
+              firstFocusable.focus();
+            } else {
+              drawerRef.current.focus();
+            }
           }
-        }
+        });
       });
 
       // Add event listeners
@@ -211,7 +214,6 @@ const Drawer: React.FC<DrawerProps> = ({
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy || (title ? titleId : undefined)}
         aria-describedby={[ariaDescribedBy, typeof error === 'string' && errorId].filter(Boolean).join(' ')}
-        aria-expanded={isOpen}
         tabIndex={0}
       >
         {/* Header - always present to contain close button */}

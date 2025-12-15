@@ -53,12 +53,12 @@ export interface ModalProps {
   'aria-live'?: 'polite' | 'assertive' | 'off';
 }
 
-const Modal: React.FC<ModalProps> = ({ 
-  isOpen, 
-  onClose, 
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
   onAction,
-  title = 'Title {h2}', 
-  children, 
+  title,
+  children,
   className = '',
   closeOnEscape = true,
   closeOnBackdropClick = true,
@@ -303,9 +303,11 @@ const Modal: React.FC<ModalProps> = ({
                 <div className={iconCircleClasses} />
               </div>
             )}
-            <h2 id={titleId} className={titleClasses}>
-              {title || 'Title {h2}'}
-            </h2>
+            {title && (
+              <h2 id={titleId} className={titleClasses}>
+                {title}
+              </h2>
+            )}
           </div>
           <button
             className="modal-close-button"
@@ -313,7 +315,7 @@ const Modal: React.FC<ModalProps> = ({
             disabled={disabled}
             aria-label="Close modal"
           >
-            <svg 
+            <svg
               className="modal-close-icon"
               width="24"
               height="24"

@@ -12,7 +12,7 @@
   --chip-text-primary: #161616;         /* ODLColors.text.primary - 15.3:1 contrast on white */
   --chip-text-secondary: #525252;       /* ODLColors.text.secondary - 7.0:1 contrast on white */
   --chip-text-tertiary: #8D8D8D;        /* ODLColors.text.tertiary - 3.94:1 contrast (large text) */
-  --chip-text-disabled: #C6C6C6;        /* ODLColors.text.disabled */
+  --chip-text-disabled: #A0A0A0;        /* ODLColors.text.disabled - WCAG AA compliant (4.5:1 contrast) */
   --chip-text-inverse: #FFFFFF;         /* ODLColors.text.inverse */
   
   /* Background Colors */

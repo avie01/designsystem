@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Icon from '../Icon/Icon';
+import { ODLTheme } from '../../styles/ODLTheme';
 
 const BackToTop: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
+      if (window.pageYOffset > window.innerHeight) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -36,7 +37,7 @@ const BackToTop: React.FC = () => {
             width: '48px',
             height: '48px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
+            background: `linear-gradient(135deg, ${ODLTheme.colors.primary}, ${ODLTheme.colors.primaryHover})`,
             color: 'white',
             border: 'none',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',

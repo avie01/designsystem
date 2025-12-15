@@ -5,7 +5,7 @@
 
 // Core Components (Tailwind versions)
 export { default as Button } from './Button/ButtonTW';
-export { default as Cards } from './Cards/CardsTW';
+export { default as Cards } from './CardComponents/Cards/CardsTW';
 export { default as Input } from './Input/InputTW';
 export { default as Chip } from './Chip/ChipTW';
 export { default as Breadcrumb } from './Breadcrumb/BreadcrumbTW';
@@ -21,7 +21,7 @@ export { default as Modal } from './Modal/Modal';
 export { default as Dropdown } from './Dropdown/Dropdown';
 export { default as Drawer } from './Drawer/Drawer';
 export { default as Stepper } from './Stepper/Stepper';
-export { default as StatusCard } from './StatusCard/StatusCard';
+export { default as StatusCard } from './CardComponents/StatusCard/StatusCard';
 export { default as Tabs } from './Tabs/Tabs';
 export { default as Graph } from './Graph/Graph';
 export { default as Popover } from './Popover/Popover';
@@ -37,7 +37,7 @@ export { cn } from '../utils/classNames';
 
 // Type exports
 export type { ButtonProps } from './Button/ButtonTW';
-export type { CardsProps } from './Cards/CardsTW';
+export type { CardsProps } from './CardComponents/Cards/CardsTW';
 export type { InputProps } from './Input/InputTW';
 export type { ChipProps } from './Chip/ChipTW';
 export type { BreadcrumbProps, BreadcrumbItem } from './Breadcrumb/BreadcrumbTW';

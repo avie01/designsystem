@@ -37,21 +37,30 @@ const Accordion: React.FC<AccordionProps> = ({
 
   const toggleItem = (itemId: string) => {
     const newOpenItems = new Set(openItems);
-    
+
     if (!allowMultiple && !openItems.has(itemId)) {
       newOpenItems.clear();
     }
-    
+
     if (newOpenItems.has(itemId)) {
       newOpenItems.delete(itemId);
     } else {
       newOpenItems.add(itemId);
     }
-    
+
     setOpenItems(newOpenItems);
   };
 
-  const renderAccordionItem = (item: AccordionItem, level: number = 0): JSX.Element => {
+  const handleAccordionKeyDown = (e: React.KeyboardEvent, itemId: string, hasContent: boolean) => {
+    if (!hasContent) return;
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleItem(itemId);
+    }
+  };
+
+  const renderAccordionItem = (item: AccordionItem, level: number = 0, isLast: boolean = false): JSX.Element => {
     const isOpen = openItems.has(item.id);
     const isHovered = hoveredItem === item.id;
     const hasChildren = item.children && item.children.length > 0;
@@ -65,25 +74,31 @@ const Accordion: React.FC<AccordionProps> = ({
           marginLeft: level > 0 ? '20px' : 0,
         }}
       >
-        <div
+        <button
+          type="button"
           onClick={() => hasContent && toggleItem(item.id)}
+          onKeyDown={(e) => handleAccordionKeyDown(e, item.id, hasContent)}
           onMouseEnter={() => setHoveredItem(item.id)}
           onMouseLeave={() => setHoveredItem(null)}
+          aria-expanded={hasContent ? isOpen : undefined}
+          aria-controls={hasContent ? `accordion-content-${item.id}` : undefined}
+          id={`accordion-header-${item.id}`}
+          disabled={!hasContent}
           style={{
             padding: variant === 'filled' ? '16px 20px' : '14px 16px',
-            background: variant === 'filled' 
-              ? isOpen 
-                ? ODLTheme.colors.primary 
-                : isHovered 
-                  ? ODLTheme.colors.grey100 
+            background: variant === 'filled'
+              ? isOpen
+                ? ODLTheme.colors.primary
+                : isHovered
+                  ? ODLTheme.colors.grey100
                   : ODLTheme.colors.grey50
-              : isHovered 
-                ? ODLTheme.colors.grey50 
+              : isHovered
+                ? ODLTheme.colors.grey50
                 : 'white',
-            border: variant === 'bordered' 
-              ? `1px solid ${ODLTheme.colors.grey200}` 
+            border: variant === 'bordered'
+              ? `1px solid ${ODLTheme.colors.grey200}`
               : 'none',
-            borderBottom: variant === 'default' && level === 0
+            borderBottom: variant === 'default' && level === 0 && !isLast
               ? `1px solid ${ODLTheme.colors.grey200}`
               : 'none',
             borderRadius: variant === 'bordered' ? '6px' : 0,
@@ -91,7 +106,11 @@ const Accordion: React.FC<AccordionProps> = ({
             transition: 'all 0.2s ease',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            width: '100%',
+            textAlign: 'left',
+            font: 'inherit',
+            color: 'inherit'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -124,21 +143,24 @@ const Accordion: React.FC<AccordionProps> = ({
               }}
             />
           )}
-        </div>
+        </button>
 
         {/* Content */}
         {isOpen && hasContent && (
           <div
+            id={`accordion-content-${item.id}`}
+            role="region"
+            aria-labelledby={`accordion-header-${item.id}`}
             style={{
-              padding: variant === 'bordered' 
-                ? '16px 20px' 
-                : level > 0 
-                  ? '12px 16px 12px 32px' 
+              padding: variant === 'bordered'
+                ? '16px 20px'
+                : level > 0
+                  ? '12px 16px 12px 32px'
                   : '16px 16px 16px 32px',
-              background: variant === 'bordered' 
-                ? ODLTheme.colors.grey50 
-                : level > 0 
-                  ? ODLTheme.colors.grey50 
+              background: variant === 'bordered'
+                ? ODLTheme.colors.grey50
+                : level > 0
+                  ? ODLTheme.colors.grey50
                   : 'white',
               borderTop: variant === 'bordered' ? `1px solid ${ODLTheme.colors.grey200}` : 'none',
               color: ODLTheme.colors.textLight,
@@ -175,7 +197,7 @@ const Accordion: React.FC<AccordionProps> = ({
         ...style
       }}
     >
-      {items.map(item => renderAccordionItem(item))}
+      {items.map((item, index) => renderAccordionItem(item, 0, index === items.length - 1))}
     </div>
   );
 };

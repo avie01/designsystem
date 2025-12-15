@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Icon from '../components/Icon/Icon';
 import Button from '../components/Button/Button';
-import Cards from '../components/Cards/Cards';
+import Cards from '../components/CardComponents/Cards/Cards';
 import Input from '../components/Input/Input';
 import Dropdown from '../components/Dropdown/Dropdown';
 import ODLTheme from '../styles/ODLTheme';

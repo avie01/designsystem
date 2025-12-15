@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import MillerColumns from '../components/MillerColumns/MillerColumns';
-import BreadcrumbGrid from '../components/BreadcrumbGrid/BreadcrumbGrid';
+import FolderCards from '../components/CardComponents/FolderCards/FolderCards';
 import Treemap from '../components/Treemap/Treemap';
 import Button from '../components/Button/Button';
 import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
@@ -58,7 +58,7 @@ const HierarchyVisualizationsDemo: React.FC = () => {
     }
   ];
 
-  // BreadcrumbGrid Data - Work-focused with meaningful metadata
+  // FolderCards Data - Work-focused with meaningful metadata
   const gridData = [
     {
       id: 'project-alpha',
@@ -233,7 +233,7 @@ const MillerExample = () => {
 };`;
 
       case 'grid':
-        return `import BreadcrumbGrid from '../components/BreadcrumbGrid/BreadcrumbGrid';
+        return `import FolderCards from '../components/CardComponents/FolderCards/FolderCards';
 
 const GridExample = () => {
   const data = [
@@ -255,7 +255,7 @@ const GridExample = () => {
   ];
 
   return (
-    <BreadcrumbGrid
+    <FolderCards
       data={data}
       onItemClick={(item) => console.log('Clicked:', item)}
       gridColumns={6}
@@ -363,7 +363,7 @@ const TreemapExample = () => {
             <p style={{ marginBottom: '24px', color: '#6B7280' }}>
               Visual file browser with breadcrumb navigation. Click folders to navigate, click files to select.
             </p>
-            <BreadcrumbGrid
+            <FolderCards
               data={gridData}
               onNavigate={(path) => console.log('Navigated to:', path)}
               onItemClick={(item) => console.log('Clicked item:', item)}

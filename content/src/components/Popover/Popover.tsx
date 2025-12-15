@@ -9,6 +9,8 @@ export interface PopoverProps {
   align?: 'start' | 'center' | 'end';
   className?: string;
   onClose?: () => void;
+  ariaLabel?: string; // For accessibility
+  interactive?: boolean; // If true, use role="dialog" and focus trap
 }
 
 const Popover: React.FC<PopoverProps> = ({
@@ -17,12 +19,20 @@ const Popover: React.FC<PopoverProps> = ({
   position = 'bottom',
   align = 'start',
   className = '',
-  onClose
+  onClose,
+  ariaLabel,
+  interactive = true
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
   const triggerRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
+
+  // Generate unique IDs for accessibility
+  const popoverIdRef = useRef(`popover-${Math.random().toString(36).substr(2, 9)}`);
+  const triggerIdRef = useRef(`popover-trigger-${Math.random().toString(36).substr(2, 9)}`);
+  const popoverId = popoverIdRef.current;
+  const triggerId = triggerIdRef.current;
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -54,11 +64,23 @@ const Popover: React.FC<PopoverProps> = ({
     }
   };
 
+  // Focus trap for interactive popovers
+  useEffect(() => {
+    if (isOpen && interactive && popoverRef.current) {
+      const firstFocusable = popoverRef.current.querySelector(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      ) as HTMLElement;
+      if (firstFocusable) {
+        firstFocusable.focus();
+      }
+    }
+  }, [isOpen, interactive]);
+
   useEffect(() => {
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('keydown', handleEscape);
-      
+
       // Calculate position
       if (triggerRef.current && popoverRef.current) {
         const triggerRect = triggerRef.current.getBoundingClientRect();
@@ -135,24 +157,33 @@ const Popover: React.FC<PopoverProps> = ({
 
   return (
     <>
-      <div
-        ref={triggerRef}
+      <button
+        ref={triggerRef as any}
+        type="button"
+        id={triggerId}
         onClick={handleToggle}
         className={styles.trigger}
+        aria-haspopup={interactive ? 'dialog' : 'true'}
+        aria-expanded={isOpen}
+        aria-controls={isOpen ? popoverId : undefined}
+        aria-label={ariaLabel}
       >
         {trigger}
-      </div>
-      
+      </button>
+
       {isOpen && (
         <div
           ref={popoverRef}
+          id={popoverId}
           className={`${styles.popover} ${styles[`popover--${position}`]} ${styles[`popover--align-${align}`]} ${className || ''}`}
           style={{
             top: `${popoverPosition.top}px`,
             left: `${popoverPosition.left}px`
           }}
-          role="dialog"
-          aria-modal="true"
+          role={interactive ? 'dialog' : 'tooltip'}
+          aria-modal={interactive ? 'true' : undefined}
+          aria-labelledby={triggerId}
+          tabIndex={interactive ? -1 : undefined}
         >
           <button
             onClick={() => {

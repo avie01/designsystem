@@ -7,7 +7,7 @@
 .popover {
   position: fixed;
   z-index: 50;
-  background-color: var(--odl-background-primary);
+  background-color: #FFFFFF;
   border-radius: var(--odl-border-radius-base);
   box-shadow: var(--odl-shadow-xl);
   border: 1px solid var(--odl-info);
@@ -19,7 +19,7 @@
   position: absolute;
   top: var(--odl-spacing-2);
   right: var(--odl-spacing-2);
-  color: var(--odl-text-disabled);
+  color: var(--odl-text-secondary);
   background: transparent;
   border: none;
   cursor: pointer;

@@ -36,6 +36,8 @@ export interface ListProps {
   renderItem?: (item: ListItem, level: number) => React.ReactNode;
   /** Whether to show expand/collapse icons for hierarchical items */
   showExpandIcons?: boolean;
+  /** ARIA label for the listbox - required for accessibility */
+  ariaLabel?: string;
 }
 
 const List: React.FC<ListProps> = ({
@@ -48,14 +50,58 @@ const List: React.FC<ListProps> = ({
   onSelectionChange,
   className = '',
   showExpandIcons = true,
+  ariaLabel = 'List',
 }) => {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
-  
+  const [focusedItemId, setFocusedItemId] = useState<string | null>(null);
+
   // Initialize selected items from props
   const initialSelected = new Set(
     items.filter(item => item.selected).map(item => item.id)
   );
   const [selectedItems, setSelectedItems] = useState<Set<string>>(initialSelected);
+
+  // Flatten list for keyboard navigation
+  const getAllItemIds = (itemList: ListItem[]): string[] => {
+    return itemList.reduce((acc: string[], item: ListItem) => {
+      acc.push(item.id);
+      if (hierarchical && item.children && expandedItems.has(item.id)) {
+        acc.push(...getAllItemIds(item.children));
+      }
+      return acc;
+    }, []);
+  };
+
+  const handleListKeyDown = (e: React.KeyboardEvent) => {
+    const allItemIds = getAllItemIds(items);
+    const currentIndex = allItemIds.indexOf(focusedItemId || '');
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextIndex = Math.min(currentIndex + 1, allItemIds.length - 1);
+      setFocusedItemId(allItemIds[nextIndex]);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevIndex = Math.max(currentIndex - 1, 0);
+      setFocusedItemId(allItemIds[prevIndex]);
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const focusedItem = flattenItems(items).find(item => item.id === focusedItemId);
+      if (focusedItem) {
+        handleItemClick(focusedItem);
+      }
+    }
+  };
+
+  const flattenItems = (itemList: ListItem[]): ListItem[] => {
+    return itemList.reduce((acc: ListItem[], item: ListItem) => {
+      acc.push(item);
+      if (hierarchical && item.children && expandedItems.has(item.id)) {
+        acc.push(...flattenItems(item.children));
+      }
+      return acc;
+    }, []);
+  };
 
   const toggleExpanded = (itemId: string) => {
     const newExpanded = new Set(expandedItems);
@@ -101,16 +147,46 @@ const List: React.FC<ListProps> = ({
   const renderListItem = (item: ListItem, level: number = 0): React.ReactNode => {
     const isSelected = selectedItems.has(item.id);
     const isExpanded = expandedItems.has(item.id);
+    const isFocused = focusedItemId === item.id;
     const hasChildren = hierarchical && item.children && item.children.length > 0;
 
     return (
       <React.Fragment key={item.id}>
         <div
+          role="option"
           className={`list-item ${isSelected ? 'list-item--selected' : ''} ${
             item.disabled ? 'list-item--disabled' : ''
           }`}
           style={{ paddingLeft: `${level * parseInt(ODLSpacing['5']) + parseInt(ODLSpacing['2'])}px` }}
           onClick={() => handleItemClick(item)}
+          onKeyDown={(e) => {
+            if (item.disabled) return;
+            if (e.key === 'ArrowRight' && hasChildren) {
+              e.preventDefault();
+              if (!isExpanded) {
+                toggleExpanded(item.id);
+              }
+            } else if (e.key === 'ArrowLeft' && hasChildren) {
+              e.preventDefault();
+              if (isExpanded) {
+                toggleExpanded(item.id);
+              }
+            }
+          }}
+          tabIndex={isFocused ? 0 : -1}
+          onFocus={() => setFocusedItemId(item.id)}
+          onBlur={() => {
+            if (isFocused) setFocusedItemId(null);
+          }}
+          aria-selected={isSelected}
+          aria-disabled={item.disabled}
+          aria-level={level + 1}
+          aria-expanded={hasChildren ? isExpanded : undefined}
+          ref={(el) => {
+            if (isFocused && el) {
+              el.focus();
+            }
+          }}
         >
           {item.icon && (
             <span className="list-item-icon">
@@ -138,20 +214,24 @@ const List: React.FC<ListProps> = ({
             )}
           </div>
           {hasChildren && showExpandIcons && (
-            <span 
+            <button
+              type="button"
               className="list-expand-icon"
+              aria-label={isExpanded ? `Collapse ${item.label}` : `Expand ${item.label}`}
+              aria-expanded={isExpanded}
               onClick={(e) => {
                 e.stopPropagation();
                 toggleExpanded(item.id);
               }}
             >
-              <Icon 
-                name={isExpanded ? "chevron-down" : "chevron-right"} 
-                size={size === 'sm' ? parseInt(ODLTypography.fontSize.xs) : 
-                      size === 'lg' ? parseInt(ODLTypography.fontSize.base) : 
-                      parseInt(ODLTypography.fontSize.sm)} 
+              <Icon
+                name={isExpanded ? "chevron-down" : "chevron-right"}
+                size={size === 'sm' ? parseInt(ODLTypography.fontSize.xs) :
+                      size === 'lg' ? parseInt(ODLTypography.fontSize.base) :
+                      parseInt(ODLTypography.fontSize.sm)}
+                aria-hidden="true"
               />
-            </span>
+            </button>
           )}
         </div>
 
@@ -166,7 +246,19 @@ const List: React.FC<ListProps> = ({
 
   return (
     <div className={`list-container list-container--${size} ${className}`}>
-      <div className="list-items">
+      <div
+        role="listbox"
+        className="list-items"
+        aria-label={ariaLabel}
+        aria-multiselectable={multiSelect}
+        onKeyDown={handleListKeyDown}
+        tabIndex={focusedItemId === null ? 0 : -1}
+        onFocus={() => {
+          if (focusedItemId === null && items.length > 0) {
+            setFocusedItemId(items[0].id);
+          }
+        }}
+      >
         {items.map(item => renderListItem(item))}
       </div>
     </div>

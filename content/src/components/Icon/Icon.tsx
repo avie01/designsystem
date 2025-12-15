@@ -11,7 +11,12 @@ export interface IconProps {
   name: string;
   /** Additional CSS classes */
   className?: string;
-  /** Alt text for accessibility */
+  /**
+   * Alt text for accessibility
+   * For decorative icons: pass empty string "" or set aria-hidden="true"
+   * For meaningful icons: provide descriptive text (e.g., "Delete item", "Open menu")
+   * Required for all icons unless aria-hidden="true"
+   */
   alt?: string;
   /** Width of the icon */
   width?: number | string;
@@ -23,6 +28,11 @@ export interface IconProps {
   color?: string;
   /** Whether the icon should be clickable */
   onClick?: () => void;
+  /**
+   * Hide icon from screen readers (for decorative icons)
+   * Use when the icon is purely decorative or when the text context is sufficient
+   */
+  'aria-hidden'?: boolean | 'true' | 'false';
   /** Additional props for the icon element */
   [key: string]: any;
 }
@@ -86,16 +96,17 @@ const createLazyIcon = (carbonExportName: string) => {
   return iconComponentCache[carbonExportName];
 };
 
-const Icon: React.FC<IconProps> = ({ 
-  name, 
-  className = "w-6 h-6", 
-  alt = "", 
+const Icon: React.FC<IconProps> = ({
+  name,
+  className = "w-6 h-6",
+  alt = "",
   width,
   height,
   size,
   color,
   onClick,
-  ...props 
+  'aria-hidden': ariaHidden,
+  ...props
 }) => {
   const sizeClasses = {
     small: 'w-4 h-4',
@@ -144,14 +155,15 @@ const Icon: React.FC<IconProps> = ({
   if (!IconComponent) {
     // Fallback icon for unknown icons
     return (
-      <svg 
+      <svg
         className={classNames(finalClassName, onClick && 'cursor-pointer')}
         style={iconStyle}
-        viewBox="0 0 24 24" 
-        fill="none" 
+        viewBox="0 0 24 24"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
         onClick={onClick}
-        aria-label={alt || name}
+        aria-label={ariaHidden ? undefined : (alt || name)}
+        aria-hidden={ariaHidden}
         {...(props as React.SVGAttributes<SVGElement>)}
       >
         <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
@@ -162,13 +174,14 @@ const Icon: React.FC<IconProps> = ({
   
   return (
     <Suspense fallback={<IconFallback className={finalClassName} size={size} color={color} onClick={onClick} />}>
-      <IconComponent 
+      <IconComponent
         className={classNames(finalClassName, onClick && 'cursor-pointer')}
         style={iconStyle}
         width={typeof size === 'number' ? size : width}
         height={typeof size === 'number' ? size : height}
         onClick={onClick}
-        aria-label={alt || name}
+        aria-label={ariaHidden ? undefined : (alt || name)}
+        aria-hidden={ariaHidden}
         {...(props as any)}
       />
     </Suspense>

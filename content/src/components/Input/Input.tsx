@@ -43,7 +43,11 @@ export interface InputProps {
   rows?: number;
   /** Whether textarea is resizable */
   resize?: 'none' | 'vertical' | 'horizontal' | 'both'
-  
+  /** Aria label for the input (required when label is hidden) */
+  'aria-label'?: string;
+  /** Aria describedby for additional context */
+  'aria-describedby'?: string;
+
   // Legacy API compatibility (Carbon Design System style)
   /** Legacy: Label text (alias for label) */
   labelText?: string;
@@ -74,6 +78,8 @@ const Input: React.FC<InputProps> = ({
   iconRight,
   rows = 4,
   resize = 'vertical',
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
   // Legacy props
   labelText,
   invalid,
@@ -83,6 +89,17 @@ const Input: React.FC<InputProps> = ({
   const actualLabel = label || labelText;
   const actualError = error || invalid || false;
   const actualErrorMessage = errorMessage || invalidText;
+
+  // Determine aria-label: use provided one, or fallback to label if hidden
+  const finalAriaLabel = ariaLabel || (hideLabel && actualLabel ? actualLabel : undefined);
+
+  // Build aria-describedby combining custom and auto-generated IDs
+  const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+  const describedByIds = [
+    ariaDescribedBy,
+    actualErrorMessage ? `${inputId}-error` : null,
+    helperText ? `${inputId}-helper` : null
+  ].filter(Boolean).join(' ') || undefined;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (onChange) {
       onChange(e.target.value);
@@ -139,7 +156,7 @@ const Input: React.FC<InputProps> = ({
         
         {type === 'textarea' ? (
           <textarea
-            id={id || `input-${Math.random().toString(36).substr(2, 9)}`}
+            id={inputId}
             name={name}
             value={value}
             onChange={handleChange}
@@ -149,18 +166,14 @@ const Input: React.FC<InputProps> = ({
             required={required}
             className={textareaClasses}
             aria-invalid={actualError}
+            aria-label={finalAriaLabel}
+            aria-describedby={describedByIds}
             rows={rows}
-            aria-describedby={
-              [
-                actualErrorMessage ? `${id}-error` : null,
-                helperText ? `${id}-helper` : null
-              ].filter(Boolean).join(' ') || undefined
-            }
           />
         ) : (
           <input
             type={type}
-            id={id || `input-${Math.random().toString(36).substr(2, 9)}`}
+            id={inputId}
             name={name}
             value={value}
             onChange={handleChange}
@@ -170,12 +183,8 @@ const Input: React.FC<InputProps> = ({
             required={required}
             className={inputClasses}
             aria-invalid={actualError}
-            aria-describedby={
-              [
-                actualErrorMessage ? `${id}-error` : null,
-                helperText ? `${id}-helper` : null
-              ].filter(Boolean).join(' ') || undefined
-            }
+            aria-label={finalAriaLabel}
+            aria-describedby={describedByIds}
           />
         )}
         
@@ -193,13 +202,13 @@ const Input: React.FC<InputProps> = ({
       </div>
       
       {actualErrorMessage && actualError && (
-        <div id={`${id}-error`} className="input-error-message">
+        <div id={`${inputId}-error`} className="input-error-message">
           {actualErrorMessage}
         </div>
       )}
-      
+
       {helperText && !actualError && (
-        <div id={`${id}-helper`} className="input-helper-text">
+        <div id={`${inputId}-helper`} className="input-helper-text">
           {helperText}
         </div>
       )}

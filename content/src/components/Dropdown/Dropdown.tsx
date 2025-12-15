@@ -454,7 +454,9 @@ const Dropdown: React.FC<DropdownProps> = ({
             
             <div className="dropdown-options" id={`${dropdownId}-listbox`} role="listbox">
               {filteredOptions.length === 0 ? (
-                <div className="dropdown-no-options">No options found</div>
+                <div className="dropdown-no-options" role="status" aria-live="polite">
+                  No options found
+                </div>
               ) : (
                 <List
                   items={listItems}

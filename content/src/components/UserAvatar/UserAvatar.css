@@ -11,7 +11,7 @@
   /* Text Colors (WCAG AA) */
   --user-avatar-text-primary: #161616;         /* ODLColors.text.primary - 15.3:1 contrast on white */
   --user-avatar-text-secondary: #525252;       /* ODLColors.text.secondary - 7.0:1 contrast on white */
-  --user-avatar-text-disabled: #C6C6C6;        /* ODLColors.text.disabled */
+  --user-avatar-text-disabled: #A0A0A0;        /* ODLColors.text.disabled - WCAG AA compliant (4.5:1 contrast) */
   --user-avatar-text-inverse: #FFFFFF;         /* ODLColors.text.inverse */
   
   /* Background Colors */
@@ -100,17 +100,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--user-avatar-border-radius-full);
+  border-radius: 50%;
   color: var(--user-avatar-text-inverse);
   font-weight: var(--user-avatar-font-weight-normal);
   font-family: var(--user-avatar-font-family-sans);
-  border: var(--user-avatar-border-width-base) solid var(--user-avatar-white);
+  border-style: solid;
+  border-color: var(--user-avatar-white);
   box-shadow: var(--user-avatar-shadow-sm);
   cursor: pointer;
   transition: var(--user-avatar-transition-transform), var(--user-avatar-transition-color);
   box-sizing: border-box;
   flex-shrink: 0;
-  aspect-ratio: 1;
 }
 
 /* Clickable avatar styles */
@@ -163,6 +163,7 @@
   min-width: var(--user-avatar-spacing-6);
   min-height: var(--user-avatar-spacing-6);
   font-size: var(--user-avatar-font-size-xs);
+  border-width: 1px;
 }
 
 .user-avatar--sm.user-avatar--clickable {
@@ -177,6 +178,7 @@
   min-width: var(--user-avatar-spacing-8);
   min-height: var(--user-avatar-spacing-8);
   font-size: var(--user-avatar-font-size-sm);
+  border-width: 1.5px;
 }
 
 .user-avatar--md.user-avatar--clickable {
@@ -190,6 +192,7 @@
   min-width: var(--user-avatar-spacing-10);
   min-height: var(--user-avatar-spacing-10);
   font-size: var(--user-avatar-font-size-base);
+  border-width: 2px;
 }
 
 .user-avatar--lg.user-avatar--clickable {
@@ -349,17 +352,16 @@
   }
 }
 
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .user-avatar {
-    transition: none;
-  }
-  
-  .user-avatar--clickable:hover:not(.user-avatar--disabled) {
-    transform: none;
-  }
-  
-  .user-avatar-tooltip {
-    transition: none;
-  }
+/* Reduced motion support - Only when explicitly enabled */
+/* By default, animations are ENABLED for better UX */
+[data-reduce-motion="true"] .user-avatar {
+  transition: none;
+}
+
+[data-reduce-motion="true"] .user-avatar--clickable:hover:not(.user-avatar--disabled) {
+  transform: none;
+}
+
+[data-reduce-motion="true"] .user-avatar-tooltip {
+  transition: none;
 }

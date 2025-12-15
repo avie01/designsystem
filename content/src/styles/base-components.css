@@ -251,13 +251,23 @@
 }
 
 /* ===== ACCESSIBILITY UTILITIES ===== */
+/* Respect prefers-reduced-motion ONLY if --reduce-motion-enabled is 1 (opt-in) */
+/* By default, animations are ENABLED for better UX */
+/* To disable animations: Set [data-reduce-motion="true"] on body or set --reduce-motion-enabled: 1 in CSS */
+
 @media (prefers-reduced-motion: reduce) {
-  .odl-button-base,
-  .odl-input-base,
-  .odl-checkbox-base,
-  .odl-switch-base {
-    transition: none;
+  :root:has([data-reduce-motion="true"]),
+  [data-reduce-motion="true"] {
+    --reduce-motion-enabled: 1;
   }
+}
+
+/* Only apply when explicitly enabled via CSS variable or data attribute */
+:where([data-reduce-motion="true"]) .odl-button-base,
+:where([data-reduce-motion="true"]) .odl-input-base,
+:where([data-reduce-motion="true"]) .odl-checkbox-base,
+:where([data-reduce-motion="true"]) .odl-switch-base {
+  transition: none;
 }
 
 @media (prefers-contrast: high) {
