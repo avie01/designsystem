@@ -12,10 +12,17 @@ export interface IconProps {
   /** Additional CSS classes */
   className?: string;
   /**
-   * Alt text for accessibility
-   * For decorative icons: pass empty string "" or set aria-hidden="true"
-   * For meaningful icons: provide descriptive text (e.g., "Delete item", "Open menu")
-   * Required for all icons unless aria-hidden="true"
+   * Alt text for accessibility - required for meaningful icons, optional for decorative ones
+   *
+   * IMPORTANT ACCESSIBILITY GUIDELINES:
+   * - For icons that convey meaning (e.g., in buttons): Provide descriptive alt text
+   *   Example: alt="Delete item", alt="Save changes", alt="Open settings menu"
+   * - For purely decorative icons: Either set alt="" (empty string) OR set aria-hidden="true"
+   *   Decorative icons are those that duplicate adjacent text or are visual padding
+   * - Avoid generic alt text like "settings" or "menu" - be specific about the action/purpose
+   * - When icon has onClick: ALWAYS provide meaningful alt text describing the action
+   *
+   * In development mode, you'll get console warnings for missing or generic alt text
    */
   alt?: string;
   /** Width of the icon */
@@ -29,8 +36,20 @@ export interface IconProps {
   /** Whether the icon should be clickable */
   onClick?: () => void;
   /**
-   * Hide icon from screen readers (for decorative icons)
-   * Use when the icon is purely decorative or when the text context is sufficient
+   * Hide icon from screen readers - use for decorative icons only
+   *
+   * WHEN TO USE aria-hidden="true":
+   * - Icon is purely decorative (visual enhancement only)
+   * - Icon's meaning is already communicated by adjacent text
+   * - Examples: icon next to "Save" button, flag next to country name, checkmark on completed item
+   *
+   * WHEN NOT TO USE aria-hidden:
+   * - Icon conveys essential information (use alt text instead)
+   * - Icon is standalone with no text context
+   * - Icon is interactive (has onClick handler)
+   *
+   * Default: undefined (icon is announced to screen readers)
+   * Set to "true" or true for decorative icons (or use alt="" as alternative)
    */
   'aria-hidden'?: boolean | 'true' | 'false';
   /** Additional props for the icon element */
@@ -108,6 +127,26 @@ const Icon: React.FC<IconProps> = ({
   'aria-hidden': ariaHidden,
   ...props
 }) => {
+  // Development-time accessibility warning
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      // Warn if icon is clickable but lacks accessibility attributes
+      if (onClick && !alt && !ariaHidden) {
+        console.warn(
+          `Icon: Clickable icon "${name}" should have either 'alt' text (for meaningful icons) ` +
+          `or 'aria-hidden="true"' (for decorative icons). This helps screen reader users understand the icon's purpose.`
+        );
+      }
+      // Warn if alt text is too generic (just the icon name)
+      if (alt && alt === name && onClick) {
+        console.warn(
+          `Icon: alt text for "${name}" should be more descriptive than the icon name. ` +
+          `Provide context like "alt='Delete item'" or "alt='Open settings menu'" instead of just "${name}".`
+        );
+      }
+    }
+  }, [name, alt, onClick, ariaHidden]);
+
   const sizeClasses = {
     small: 'w-4 h-4',
     medium: 'w-6 h-6',

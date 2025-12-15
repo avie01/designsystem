@@ -232,9 +232,10 @@ const Drawer: React.FC<DrawerProps> = ({
             aria-label="Close drawer"
             type="button"
           >
-            <Icon 
-              name="close" 
-              size={size === 'small' ? 16 : size === 'large' || size === 'extra-large' ? 24 : 20} 
+            <Icon
+              name="close"
+              size={size === 'small' ? 16 : size === 'large' || size === 'extra-large' ? 24 : 20}
+              aria-hidden="true"
             />
           </button>
         </header>
