@@ -300,20 +300,29 @@ export const WithToggleButton: Story = {
 
 export const RightPosition: Story = {
   name: '04 Right Position',
+  parameters: {
+    layout: 'fullscreen',
+  },
   render: (args) => {
     const [collapsed, setCollapsed] = React.useState(false);
-    
+
     return (
-      <NavigationRail
-        {...args}
-        collapsed={collapsed}
-        position="right"
-        showCollapseToggle={true}
-        onCollapseToggle={(newCollapsed) => {
-          setCollapsed(newCollapsed);
-          console.log('Collapse toggled:', newCollapsed);
-        }}
-      />
+      <div style={{ height: '100vh', display: 'flex', flexDirection: 'row-reverse' }}>
+        <NavigationRail
+          {...args}
+          collapsed={collapsed}
+          position="right"
+          showCollapseToggle={true}
+          onCollapseToggle={(newCollapsed) => {
+            setCollapsed(newCollapsed);
+            console.log('Collapse toggled:', newCollapsed);
+          }}
+        />
+        <div style={{ flex: 1, padding: '20px', backgroundColor: '#f5f5f5' }}>
+          <h1>Main Content Area</h1>
+          <p>NavigationRail is now positioned on the right side.</p>
+        </div>
+      </div>
     );
   },
   args: {
