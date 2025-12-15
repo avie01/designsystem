@@ -124,10 +124,21 @@ const basicOptions: DropdownOption[] = [
 ];
 
 const countryOptions: DropdownOption[] = [
-  { value: 'us', label: 'United States' },
-  { value: 'uk', label: 'United Kingdom' },
-  { value: 'ca', label: 'Canada' },
-  { value: 'au', label: 'Australia' },
+  { value: 'us', label: '🇺🇸 United States' },
+  { value: 'uk', label: '🇬🇧 United Kingdom' },
+  { value: 'ca', label: '🇨🇦 Canada' },
+  { value: 'au', label: '🇦🇺 Australia' },
+];
+
+const countryOptionsWithIcons: DropdownOption[] = [
+  { value: 'us', label: 'United States', icon: '🇺🇸' },
+  { value: 'uk', label: 'United Kingdom', icon: '🇬🇧' },
+  { value: 'ca', label: 'Canada', icon: '🇨🇦' },
+  { value: 'au', label: 'Australia', icon: '🇦🇺' },
+  { value: 'fr', label: 'France', icon: '🇫🇷' },
+  { value: 'de', label: 'Germany', icon: '🇩🇪' },
+  { value: 'jp', label: 'Japan', icon: '🇯🇵' },
+  { value: 'br', label: 'Brazil', icon: '🇧🇷' },
 ];
 
 // Basic dropdown
@@ -149,8 +160,20 @@ export const WithValue: Story = {
   },
 };
 
+// With emoji flag icons
+export const WithEmojiFlags: Story = {
+  name: '03 With Emoji Flags',
+  args: {
+    label: 'Select Country',
+    options: countryOptionsWithIcons,
+    value: 'us',
+    placeholder: 'Choose a country...',
+  },
+};
+
 // Searchable
 export const Searchable: Story = {
+  name: '04 Searchable',
   args: {
     label: 'Search Countries',
     options: countryOptions,
@@ -161,7 +184,7 @@ export const Searchable: Story = {
 
 // Required
 export const Required: Story = {
-  name: '04 Required',
+  name: '05 Required',
   args: {
     label: 'Required Field',
     options: basicOptions,
@@ -172,6 +195,7 @@ export const Required: Story = {
 
 // Error state
 export const ErrorState: Story = {
+  name: '06 Error State',
   args: {
     label: 'Select Option',
     options: basicOptions,
@@ -182,7 +206,7 @@ export const ErrorState: Story = {
 
 // Disabled
 export const Disabled: Story = {
-  name: '06 Disabled',
+  name: '07 Disabled',
   args: {
     label: 'Disabled Dropdown',
     options: basicOptions,
