@@ -1,0 +1,256 @@
+/* Example App Styles - Import ODL Design System */
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* ODL Design System - All styles inline to avoid import issues */
+
+:root {
+  /* ===== CORE COLORS ===== */
+  /* Light theme colors */
+  --color-white: #FFFFFF;
+  --color-wave: #F4F4F4;
+  --color-light-deco: #E0E0E0;
+  --color-twilight: #6F6F6F;
+  --color-night: #161616;
+  --color-blue-default: #0F62FE;
+  --color-blue-hover: #0F52E0;
+  --color-active-background: #E0F3FE;
+  
+  /* Dark theme colors */
+  --color-vacuum: #161616;
+  --color-deep-space: #262626;
+  --color-dark-deco: #393939;
+  --color-moonlight: #A8A8A8;
+  --color-white-dark: #FFFFFF;
+  --color-blue: #4589FF;
+  --color-dk-blue: #0043CE;
+  
+  /* ===== SEMANTIC COLORS ===== */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+  
+  /* ===== SPACING SYSTEM ===== */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  /* ===== BORDER RADIUS ===== */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  
+  /* ===== SHADOWS ===== */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-panel: -2px 0 8px rgba(0, 0, 0, 0.1);
+  
+  /* ===== TYPOGRAPHY ===== */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-family-noto: 'Noto Sans', sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+  
+  /* ===== TRANSITIONS ===== */
+  --transition-fast: 0.2s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+  
+  /* ===== FOCUS STYLES ===== */
+  --focus-outline: 2px solid var(--color-blue-default);
+  --focus-outline-offset: 2px;
+  
+  /* ===== Z-INDEX LAYERS ===== */
+  --z-dropdown: 1000;
+  --z-modal: 1010;
+  --z-tooltip: 1020;
+  --z-notification: 1030;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --color-white: var(--color-vacuum);
+  --color-wave: var(--color-deep-space);
+  --color-light-deco: var(--color-dark-deco);
+  --color-twilight: var(--color-moonlight);
+  --color-night: var(--color-white-dark);
+}
+
+/* Base styles */
+body {
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Component library root styles */
+.odl-component {
+  box-sizing: border-box;
+}
+
+.odl-component *,
+.odl-component *::before,
+.odl-component *::after {
+  box-sizing: border-box;
+}
+
+/* Custom scrollbar styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-twilight) var(--color-wave);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: var(--color-light-deco);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--color-twilight);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--color-night);
+}
+
+/* ===== BASE BUTTON STYLES ===== */
+.odl-button-base {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-noto);
+  line-height: var(--line-height-normal);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: 1px solid var(--color-light-deco);
+  background-color: var(--color-white);
+  color: var(--color-night);
+  min-height: 36px;
+}
+
+.odl-button-base:hover {
+  background-color: var(--color-wave);
+  border-color: var(--color-twilight);
+}
+
+.odl-button-base:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
+.odl-button-primary {
+  background-color: var(--color-blue-default);
+  color: var(--color-white);
+  border-color: var(--color-blue-default);
+}
+
+.odl-button-primary:hover {
+  background-color: var(--color-blue-hover);
+  border-color: var(--color-blue-hover);
+}
+
+/* ===== PRODUCT THEMES ===== */
+
+/* Keystone Theme */
+.keystone-theme {
+  --color-primary: #00928F;
+  --color-secondary: #00B4B1;
+  --color-accent: #F59E0B;
+}
+
+.keystone-theme .odl-button-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.keystone-theme .odl-button-primary:hover {
+  background-color: #007A77;
+  border-color: #007A77;
+}
+
+/* Build AU Theme */
+.build-au-theme {
+  --color-primary: #1E40AF;
+  --color-secondary: #3B82F6;
+  --color-accent: #10B981;
+}
+
+.build-au-theme .odl-button-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Connect Theme */
+.connect-theme {
+  --color-primary: #3B82F6;
+  --color-secondary: #60A5FA;
+  --color-accent: #F59E0B;
+}
+
+.connect-theme .odl-button-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Keyplan Theme */
+.keyplan-theme {
+  --color-primary: #7C3AED;
+  --color-secondary: #A78BFA;
+  --color-accent: #F59E0B;
+}
+
+.keyplan-theme .odl-button-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Nexus Theme */
+.nexus-theme {
+  --color-primary: #4F46E5;
+  --color-secondary: #818CF8;
+  --color-accent: #10B981;
+}
+
+.nexus-theme .odl-button-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* 3Sixty Theme */
+.threesixty-theme {
+  --color-primary: #059669;
+  --color-secondary: #10B981;
+  --color-accent: #F59E0B;
+}
+
+.threesixty-theme .odl-button-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}

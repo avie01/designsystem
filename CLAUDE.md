@@ -2,11 +2,14 @@
 
 ## 🎯 Quick Reference
 
-**Main Landing Page:** http://localhost:3000/components-showcase.html
+**Primary Documentation:** Storybook (Single Source of Truth)
+- **Live:** https://content-steamfrog2012s-projects.vercel.app
+- **Local:** `http://localhost:6006` (after running `npm run storybook`)
 
-**Start Dev Server:**
+**Start Storybook:**
 ```bash
-npm run dev
+cd content
+npm run storybook
 ```
 
 ## ⚠️ IMPORTANT RULES
@@ -40,10 +43,12 @@ Reference: `/src/pages/TableDemo.tsx`
 
 ## 🔍 Finding Components
 
-To find component examples:
-1. Look for `*-demo.html` files in `/example/`
-2. Find corresponding `*Demo.tsx` in `/src/pages/`
-3. Check the Components Showcase at http://localhost:3000/components-showcase.html
+**Storybook is the primary reference for all components:**
+1. Browse stories in Storybook at https://content-steamfrog2012s-projects.vercel.app
+2. Each component has multiple stories showing different variants
+3. Use Storybook's search to quickly find components by name
+4. View props, accessibility features, and usage patterns in each story
+5. Source files are in `/content/src/components/[ComponentName]/[ComponentName].stories.tsx`
 
 ## 💻 Common Patterns
 
@@ -100,16 +105,21 @@ className="bg-[var(--odl-primary)]"
 ## 📁 Project Structure
 
 ```
-odl-design-system/
+content/
+├── .storybook/         # Storybook configuration
 ├── src/
-│   ├── components/     # 53 components - avoid modifying
-│   ├── pages/          # Demo pages - add new demos here
-│   ├── styles/         # Global styles and themes
+│   ├── components/     # 44 components with .stories.tsx files
+│   ├── pages/          # Legacy demo pages (being phased out)
+│   ├── styles/         # Global styles, themes, ODLTheme
 │   ├── utils/          # Utility functions
-│   └── hooks/          # Custom React hooks
-├── example/            # HTML entry points for demos
-└── package.json        # Dependencies
+│   ├── hooks/          # Custom React hooks
+│   └── types/          # TypeScript type definitions
+├── example/            # Legacy HTML entry points (being phased out)
+├── package.json        # Dependencies
+└── vite.config.ts      # Vite build configuration
 ```
+
+**Note:** Storybook is now the primary documentation. Legacy demo pages will be deprecated.
 
 ## 🛠️ Troubleshooting
 
@@ -132,40 +142,45 @@ npm run dev
 
 ## 📋 Component Status
 
-**Total Components:** 53
-**Demo Pages:** 28
+**Total Components:** 44
+**Storybook Stories:** 48 (multiple stories per component showing different variants)
 **Categories:** Data, Navigation, Input, Display, Feedback, Layout
+**Documentation:** 100% of components documented in Storybook
 
-## 🚀 Creating New Demos
+## 🚀 Creating Storybook Stories
 
-1. Create `/src/pages/NewDemo.tsx`
-2. Create `/example/new-demo.html`:
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>New Demo</title>
-</head>
-<body>
-  <div id="root"></div>
-  <script type="module" src="NewDemoEntry.tsx"></script>
-</body>
-</html>
-```
-3. Create `/example/NewDemoEntry.tsx`:
+**All new component documentation should be added to Storybook, not legacy demo pages.**
+
+1. Create stories file: `/content/src/components/ComponentName/NN-ComponentName.stories.tsx`
+   - Use numbering scheme (01-, 02-, etc.) to organize in Storybook
+2. Follow existing story patterns from other components
+3. Export Meta object with title and component:
 ```tsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import NewDemo from '../src/pages/NewDemo';
-import '../src/styles/index.css';
+const meta: Meta<typeof ComponentName> = {
+  title: 'Components/ComponentName',
+  component: ComponentName,
+  parameters: {
+    layout: 'centered',
+  },
+};
+export default meta;
+```
+4. Create story variants (Default, WithProps, States, etc.)
+5. Stories will automatically appear in Storybook at http://localhost:6006
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <NewDemo />
-  </React.StrictMode>
-);
+**Example story structure:**
+```tsx
+export const Default: Story = {
+  args: {
+    // default props
+  },
+};
+
+export const WithCustomProps: Story = {
+  args: {
+    // custom props
+  },
+};
 ```
 
 ## 🎯 Key Components
@@ -196,4 +211,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 - Carbon icons are dynamically imported for performance
 
 ---
-Last Updated: 2025-09-08
+Last Updated: 2025-12-17 (Storybook as Single Source of Truth)

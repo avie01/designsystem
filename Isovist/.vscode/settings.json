@@ -1,0 +1,67 @@
+{
+  // TypeScript and JavaScript Settings
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // Format on save
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+
+  // Code Actions on Save
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+
+  // TypeScript validation
+  "typescript.validate.enable": true,
+  "javascript.validate.enable": true,
+
+  // Show errors inline
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+
+  // Bracket pair colorization
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+
+  // Auto close tags
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "javascript.autoClosingTags": true,
+  "typescript.autoClosingTags": true,
+
+  // Files to exclude from watching
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/.git/**": true
+  },
+
+  // Terminal settings for automatic checks
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1"
+  },
+
+  // Save actions
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+
+  // Error lens extension settings (if installed)
+  "errorLens.enabled": true,
+  "errorLens.enabledDiagnosticLevels": ["error", "warning"],
+
+  // Prettier settings
+  "prettier.enable": true,
+  "prettier.requireConfig": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // Show problems automatically
+  "problems.autoReveal": true,
+  "problems.showCurrentInStatus": true
+}

@@ -1,0 +1,213 @@
+/* ODL Design System - Centralized Design Tokens */
+/* This file contains all design tokens used across the entire library */
+
+:root {
+  /* ===== ODL THEME COLORS (WCAG 2.1 AA Compliant) ===== */
+  --odl-white: #FFFFFF;
+  --odl-surface: #F4F4F4;
+  --odl-surface-hover: #EBEBEB;
+  --odl-border: #E0E0E0;
+  --odl-primary: #3560C1;
+  --odl-primary-hover: #2A4FA3;
+  --odl-primary-light: #E0F3FE;
+  
+  /* Text Colors (WCAG AA Compliant) */
+  --odl-text-primary: #161616;
+  --odl-text-secondary: #525252;
+  --odl-text-tertiary: #8D8D8D;
+  --odl-text-disabled: #C6C6C6;
+  
+  /* Status Colors (WCAG AA Compliant) */
+  --odl-error: #DA1E28;
+  --odl-warning: #FF832B;
+  --odl-success: #24A148;
+  --odl-info: #0F62FE;
+  
+  /* Status Light Colors (10% opacity for backgrounds) */
+  --odl-success-light: rgba(36, 161, 72, 0.1);
+  --odl-success-border: rgba(36, 161, 72, 0.3);
+  --odl-warning-light: rgba(255, 131, 43, 0.1);
+  --odl-warning-border: rgba(255, 131, 43, 0.3);
+  --odl-info-light: rgba(15, 98, 254, 0.1);
+  --odl-info-border: rgba(15, 98, 254, 0.3);
+  --odl-error-light: rgba(218, 30, 40, 0.1);
+  --odl-error-border: rgba(218, 30, 40, 0.3);
+  
+  /* Dark Theme Colors (WCAG AA Compliant) */
+  --odl-surface-dark: #262626;
+  --odl-surface-hover-dark: #393939;
+  --odl-border-dark: #393939;
+  --odl-text-primary-dark: #F4F4F4;
+  --odl-text-secondary-dark: #C6C6C6;
+  --odl-text-secondary-inverse: #D4D4D4;
+  
+  /* ===== LEGACY COLORS (Deprecated - Use ODL variants above) ===== */
+  /* Light theme colors */
+  --color-white: #FFFFFF;
+  --color-wave: #F4F4F4;
+  --color-light-deco: #E0E0E0;
+  --color-twilight: #6F6F6F;
+  --color-night: #161616;
+  --color-blue-default: #0F62FE;
+  --color-blue-hover: #0F52E0;
+  --color-active-background: #E0F3FE;
+  
+  /* Dark theme colors */
+  --color-vacuum: #161616;
+  --color-deep-space: #262626;
+  --color-dark-deco: #393939;
+  --color-moonlight: #A8A8A8;
+  --color-white-dark: #FFFFFF;
+  --color-blue: #4589FF;
+  --color-dk-blue: #0043CE;
+  
+  /* ===== SEMANTIC COLORS ===== */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+  
+  /* ===== ODL SPACING SYSTEM (8px grid) ===== */
+  --odl-spacing-1: 4px;   /* 0.5 * base */
+  --odl-spacing-2: 8px;   /* base unit */
+  --odl-spacing-3: 12px;  /* 1.5 * base */
+  --odl-spacing-4: 16px;  /* 2 * base */
+  --odl-spacing-5: 20px;  /* 2.5 * base */
+  --odl-spacing-6: 24px;  /* 3 * base */
+  --odl-spacing-8: 32px;  /* 4 * base */
+  --odl-spacing-9: 36px;  /* 4.5 * base */
+  --odl-spacing-10: 40px; /* 5 * base */
+  --odl-spacing-12: 48px; /* 6 * base */
+  --odl-spacing-14: 56px; /* 7 * base */
+  
+  /* ===== LEGACY SPACING (Deprecated - Use ODL variants above) ===== */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  /* ===== ODL BORDERS & RADIUS ===== */
+  --odl-border-width-thin: 1px;
+  --odl-border-width-base: 2px;        /* Focus indicators */
+  --odl-border-radius-sm: 2px;
+  --odl-border-radius-base: 4px;
+  --odl-border-radius-lg: 8px;
+  
+  /* ===== LEGACY BORDER RADIUS (Deprecated) ===== */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  
+  /* ===== SHADOWS ===== */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-panel: -2px 0 8px rgba(0, 0, 0, 0.1);
+  
+  /* ===== ODL TYPOGRAPHY ===== */
+  --odl-font-family-sans: 'Noto Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  --odl-font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  --odl-font-size-2xs: 10px;
+  --odl-font-size-xs: 11px;
+  --odl-font-size-sm: 12px;
+  --odl-font-size-base: 14px;
+  --odl-font-size-md: 16px;
+  --odl-font-size-lg: 18px;
+  --odl-font-size-xl: 20px;
+  --odl-font-weight-regular: 400;
+  --odl-font-weight-medium: 500;
+  --odl-font-weight-semibold: 600;
+  --odl-line-height-tight: 1.2;
+  --odl-line-height-normal: 1.5;
+  --odl-line-height-relaxed: 1.75;
+  
+  /* ===== LEGACY TYPOGRAPHY (Deprecated) ===== */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-family-noto: 'Noto Sans', sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+  
+  /* ===== ODL TRANSITIONS ===== */
+  --odl-transition-fast: 0.15s ease;
+  --odl-transition-normal: 0.2s ease;
+  --odl-transition-slow: 0.3s ease;
+  --odl-transition-width: width 0.3s ease;
+  --odl-transition-transform: transform 0.2s ease;
+  --odl-transition-color: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  
+  /* ===== LEGACY TRANSITIONS (Deprecated) ===== */
+  --transition-fast: 0.2s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+  
+  /* ===== ODL FOCUS STYLES (WCAG 2.1 AA) ===== */
+  --odl-focus-border-width: 2px;
+  --odl-focus-border-color: var(--odl-primary);
+  --odl-focus-outline-offset: 2px;
+  --odl-opacity-disabled: 0.5;
+  
+  /* ===== ODL SHADOWS ===== */
+  --odl-shadow-small: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --odl-shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --odl-shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  /* ===== ODL Z-INDEX LAYERS ===== */
+  --odl-z-index-dropdown: 1000;
+  --odl-z-index-overlay: 1010;
+  --odl-z-index-modal: 1020;
+  --odl-z-index-tooltip: 1030;
+  --odl-z-index-notification: 1040;
+  
+  /* ===== ODL OVERLAY COLORS ===== */
+  --odl-overlay-backdrop: rgba(0, 0, 0, 0.4);
+  --odl-overlay-light: rgba(0, 0, 0, 0.1);
+  
+  /* ===== LEGACY FOCUS STYLES (Deprecated) ===== */
+  --focus-outline: 2px solid var(--color-blue-default);
+  --focus-outline-offset: 2px;
+  
+  /* ===== LEGACY Z-INDEX LAYERS (Deprecated) ===== */
+  --z-dropdown: 1000;
+  --z-modal: 1010;
+  --z-tooltip: 1020;
+  --z-notification: 1030;
+}
+
+/* ===== THEME VARIATIONS ===== */
+
+/* Dark theme overrides */
+[data-theme="dark"] {
+  --color-white: var(--color-vacuum);
+  --color-wave: var(--color-deep-space);
+  --color-light-deco: var(--color-dark-deco);
+  --color-twilight: var(--color-moonlight);
+  --color-night: var(--color-white-dark);
+}
+
+/* High contrast light theme */
+[data-theme="high-contrast-light"] {
+  --color-light-deco: var(--color-night);
+  --focus-outline: 3px solid var(--color-night);
+}
+
+/* High contrast dark theme */
+[data-theme="high-contrast-dark"] {
+  --color-white: var(--color-vacuum);
+  --color-wave: var(--color-deep-space);
+  --color-light-deco: var(--color-white-dark);
+  --color-twilight: var(--color-white-dark);
+  --color-night: var(--color-white-dark);
+  --focus-outline: 3px solid var(--color-white-dark);
+}

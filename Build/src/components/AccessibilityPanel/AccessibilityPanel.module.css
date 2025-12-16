@@ -1,0 +1,605 @@
+/* Accessibility Panel Styles - Optimized and Inlined */
+
+.slideOutPanel {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 400px;
+  height: 100vh;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-light-deco);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-panel);
+  z-index: var(--z-modal);
+  transition: right var(--transition-normal);
+  overflow: hidden;
+  font-family: var(--font-family-noto);
+  font-size: var(--font-size-sm);
+  /* Accessibility overrides */
+  filter: none !important;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.slideOutPanel.open {
+  right: 0;
+}
+
+.panelContent {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--color-light-deco);
+  background-color: var(--color-white);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+/* Header icons styling */
+.headerContent svg {
+  color: #ffffff;
+  filter: brightness(0) invert(1);
+}
+
+.panelTitle {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-night);
+  margin: 0;
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-noto);
+  line-height: var(--line-height-normal);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  min-height: auto;
+  color: var(--color-twilight);
+}
+
+.closeButton svg {
+  color: #ffffff;
+  filter: brightness(0) invert(1);
+}
+
+.closeButton:hover {
+  background-color: var(--color-wave);
+  color: var(--color-night);
+}
+
+.closeButton:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
+.settingsContainer {
+  padding: var(--spacing-lg);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-light-deco);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  margin: var(--spacing-md);
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Scrollbar styles */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-twilight) var(--color-wave);
+}
+
+.settingsContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.settingsContainer::-webkit-scrollbar-track {
+  background: var(--color-light-deco);
+  border-radius: var(--border-radius-sm);
+}
+
+.settingsContainer::-webkit-scrollbar-thumb {
+  background: var(--color-twilight);
+  border-radius: var(--border-radius-sm);
+}
+
+.settingsContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--color-night);
+}
+
+.settingsTitle {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-night);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.settingGroup {
+  margin-bottom: var(--spacing-lg);
+}
+
+.settingGroup:last-child {
+  margin-bottom: 0;
+}
+
+.settingHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.settingLabel {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-night);
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.settingDescription {
+  color: var(--color-twilight);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-normal);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+/* Theme and font size buttons using base button styles */
+.themeButton,
+.fontSizeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-noto);
+  line-height: var(--line-height-normal);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: 1px solid var(--color-light-deco);
+  background-color: var(--color-white);
+  color: var(--color-night);
+  min-height: 36px;
+}
+
+.themeButton:hover,
+.fontSizeButton:hover {
+  background-color: var(--color-wave);
+  border-color: var(--color-twilight);
+}
+
+.themeButton:focus-visible,
+.fontSizeButton:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
+.themeButton {
+  flex: 1;
+  min-width: 120px;
+  max-width: 200px;
+}
+
+.fontSizeButton {
+  flex: 0 0 auto;
+}
+
+/* Selected button states */
+.themeButton[data-selected="true"],
+.fontSizeButton[data-selected="true"],
+.themeButton.selected,
+.fontSizeButton.selected {
+  background-color: var(--color-blue-default);
+  color: var(--color-white);
+  border-color: var(--color-blue-default);
+}
+
+.themeButton[data-selected="true"]:hover,
+.fontSizeButton[data-selected="true"]:hover,
+.themeButton.selected:hover,
+.fontSizeButton.selected:hover {
+  background-color: var(--color-blue-hover);
+  border-color: var(--color-blue-hover);
+}
+
+.buttonText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: inherit;
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-tight);
+}
+
+.selectControl {
+  margin-top: var(--spacing-sm);
+  width: 100%;
+}
+
+.selectControl select {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-light-deco);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-family-noto);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-white);
+  color: var(--color-night);
+  transition: all var(--transition-fast);
+  line-height: var(--line-height-normal);
+}
+
+.selectControl select:focus {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+  border-color: var(--color-blue-default);
+}
+
+.switchControl {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.switchControl input[type="checkbox"] {
+  appearance: none;
+  width: 40px;
+  height: 20px;
+  background-color: var(--color-light-deco);
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.switchControl input[type="checkbox"]:checked {
+  background-color: var(--color-blue-default);
+}
+
+.switchControl input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-white);
+  border-radius: 50%;
+  transition: all var(--transition-fast);
+}
+
+.switchControl input[type="checkbox"]:checked::before {
+  transform: translateX(20px);
+}
+
+.switchControl input[type="checkbox"]:focus {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
+.switchControl label {
+  font-family: var(--font-family-noto);
+  font-size: var(--font-size-sm);
+  color: var(--color-night);
+  cursor: pointer;
+}
+
+.divider {
+  margin: var(--spacing-lg) 0;
+  border: none;
+  height: 1px;
+  background-color: var(--color-light-deco);
+}
+
+.alert {
+  margin: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-family-noto);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.alert.error {
+  background-color: #FFEBEE;
+  color: #C62828;
+  border: 1px solid var(--color-error);
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--color-light-deco);
+  background-color: var(--color-white);
+  margin-top: auto;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-noto);
+  line-height: var(--line-height-normal);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: 1px solid var(--color-light-deco);
+  background-color: var(--color-white);
+  color: var(--color-twilight);
+  min-height: 36px;
+  flex: 1;
+}
+
+.actionButton:hover {
+  background-color: var(--color-wave);
+  border-color: var(--color-twilight);
+  color: var(--color-night);
+}
+
+.actionButton:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* ===== THEME-SPECIFIC OVERRIDES ===== */
+
+/* High Contrast Light Theme */
+[data-theme="high-contrast-light"] .slideOutPanel,
+[data-theme="high-contrast-light"] .panelHeader,
+[data-theme="high-contrast-light"] .settingsContainer {
+  background-color: var(--custom-bg-color, var(--color-white));
+  border-color: var(--custom-border-color, var(--color-night));
+}
+
+[data-theme="high-contrast-light"] .panelTitle,
+[data-theme="high-contrast-light"] .settingLabel,
+[data-theme="high-contrast-light"] .settingsTitle,
+[data-theme="high-contrast-light"] .settingDescription {
+  color: var(--custom-text-color, var(--color-night));
+}
+
+[data-theme="high-contrast-light"] .themeButton,
+[data-theme="high-contrast-light"] .fontSizeButton,
+[data-theme="high-contrast-light"] .actionButton {
+  background-color: var(--color-white);
+  border-color: var(--color-night);
+  color: var(--color-night);
+}
+
+[data-theme="high-contrast-light"] .themeButton[data-selected="true"],
+[data-theme="high-contrast-light"] .fontSizeButton[data-selected="true"],
+[data-theme="high-contrast-light"] .themeButton.selected,
+[data-theme="high-contrast-light"] .fontSizeButton.selected {
+  background-color: var(--color-blue-default);
+  color: var(--color-white);
+  border-color: var(--color-blue-default);
+}
+
+/* High Contrast Dark Theme */
+[data-theme="high-contrast-dark"] .slideOutPanel,
+[data-theme="high-contrast-dark"] .panelHeader,
+[data-theme="high-contrast-dark"] .settingsContainer {
+  background-color: var(--custom-bg-color, var(--color-vacuum));
+  border-color: var(--custom-border-color, var(--color-white-dark));
+}
+
+[data-theme="high-contrast-dark"] .panelTitle,
+[data-theme="high-contrast-dark"] .settingLabel,
+[data-theme="high-contrast-dark"] .settingsTitle,
+[data-theme="high-contrast-dark"] .settingDescription {
+  color: var(--custom-text-color, var(--color-white-dark));
+}
+
+[data-theme="high-contrast-dark"] .themeButton,
+[data-theme="high-contrast-dark"] .fontSizeButton,
+[data-theme="high-contrast-dark"] .actionButton {
+  background-color: var(--color-vacuum);
+  border-color: var(--color-white-dark);
+  color: var(--color-white-dark);
+}
+
+[data-theme="high-contrast-dark"] .themeButton[data-selected="true"],
+[data-theme="high-contrast-dark"] .fontSizeButton[data-selected="true"],
+[data-theme="high-contrast-dark"] .themeButton.selected,
+[data-theme="high-contrast-dark"] .fontSizeButton.selected {
+  background-color: var(--color-blue-default);
+  color: var(--color-white);
+  border-color: var(--color-blue-default);
+}
+
+/* ===== RESPONSIVE OVERRIDES ===== */
+@media (max-width: 480px) {
+  .slideOutPanel {
+    width: 100vw;
+    right: -100vw;
+  }
+  
+  .buttonGroup {
+    flex-direction: column;
+  }
+  
+  .themeButton,
+  .fontSizeButton {
+    width: 100%;
+  }
+  
+  .actionButtons {
+    flex-direction: column;
+  }
+}
+
+/* Color customization specific styles */
+.colorCustomization {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.colorOption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.colorLabel {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-night);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.colorInputGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.colorInput {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-light-deco);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  background: none;
+  padding: 0;
+}
+
+.colorInput:focus {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
+.colorTextInput {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-light-deco);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-family-noto);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-white);
+  color: var(--color-night);
+  transition: all var(--transition-fast);
+  line-height: var(--line-height-normal);
+  flex: 1;
+}
+
+.colorTextInput:focus {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+  border-color: var(--color-blue-default);
+}
+
+.resetButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-noto);
+  line-height: var(--line-height-normal);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: 1px solid var(--color-light-deco);
+  background-color: var(--color-white);
+  color: var(--color-night);
+  min-height: 36px;
+  margin-top: var(--spacing-sm);
+}
+
+.resetButton:hover {
+  background-color: var(--color-wave);
+  border-color: var(--color-twilight);
+}
+
+.resetButton:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* ===== ACCESSIBILITY FEATURES ===== */
+@media (prefers-reduced-motion: reduce) {
+  .slideOutPanel {
+    transition: none;
+  }
+  
+  .themeButton,
+  .fontSizeButton,
+  .actionButton,
+  .closeButton,
+  .resetButton {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .slideOutPanel {
+    border-left-width: 3px;
+  }
+  
+  .settingsContainer {
+    border-width: 2px;
+  }
+  
+  .divider {
+    border-width: 2px;
+  }
+  
+  .themeButton,
+  .fontSizeButton,
+  .actionButton {
+    border-width: 2px;
+  }
+}
+
+@media print {
+  .slideOutPanel {
+    display: none;
+  }
+}

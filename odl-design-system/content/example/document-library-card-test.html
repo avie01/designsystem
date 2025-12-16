@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DocumentLibraryCard Pa11y Test</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      #root {
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        margin-bottom: 2rem;
+        color: #333;
+      }
+
+      .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+      }
+
+      h2 {
+        margin-bottom: 1rem;
+        color: #555;
+        font-size: 1.2rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import React from 'react';
+      import ReactDOM from 'react-dom/client';
+      import DocumentLibraryCard from '../src/components/DocumentLibraryCard/DocumentLibraryCard.tsx';
+
+      const TestComponent = () => {
+        const handleView = () => {
+          console.log('View clicked');
+        };
+
+        return React.createElement('div', { className: 'container' },
+          React.createElement('h1', null, 'DocumentLibraryCard Accessibility Test'),
+
+          // Test Case 1: Basic card with default title
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 1: Default Title'),
+            React.createElement(DocumentLibraryCard, {
+              onView: handleView
+            })
+          ),
+
+          // Test Case 2: Custom title
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 2: Custom Title'),
+            React.createElement(DocumentLibraryCard, {
+              title: 'Project Documents',
+              onView: handleView
+            })
+          ),
+
+          // Test Case 3: Long title
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 3: Long Title'),
+            React.createElement(DocumentLibraryCard, {
+              title: 'Engineering Design Documents and Technical Specifications Library',
+              onView: handleView
+            })
+          ),
+
+          // Test Case 4: Special characters in title
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 4: Special Characters'),
+            React.createElement(DocumentLibraryCard, {
+              title: 'Q&A Documents & User\'s Guides',
+              onView: handleView
+            })
+          ),
+
+          // Test Case 5: Without click handler
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 5: No Click Handler'),
+            React.createElement(DocumentLibraryCard, {
+              title: 'Archive (Read-Only)'
+            })
+          ),
+
+          // Test Case 6: Multiple cards in grid layout
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 6: Multiple Cards in Grid'),
+            React.createElement('div', { className: 'grid' },
+              React.createElement(DocumentLibraryCard, {
+                title: 'Legal Documents',
+                onView: handleView
+              }),
+              React.createElement(DocumentLibraryCard, {
+                title: 'Financial Reports',
+                onView: handleView
+              }),
+              React.createElement(DocumentLibraryCard, {
+                title: 'Meeting Minutes',
+                onView: handleView
+              }),
+              React.createElement(DocumentLibraryCard, {
+                title: 'Policy Documents',
+                onView: handleView
+              })
+            )
+          ),
+
+          // Test Case 7: With custom className
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 7: Custom Class'),
+            React.createElement(DocumentLibraryCard, {
+              title: 'Styled Library',
+              onView: handleView,
+              className: 'custom-document-card'
+            })
+          ),
+
+          // Test Case 8: Unicode and emoji in title
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 8: Unicode and International Text'),
+            React.createElement(DocumentLibraryCard, {
+              title: '文档库 • ライブラリ • مكتبة',
+              onView: handleView
+            })
+          )
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(TestComponent));
+    </script>
+  </body>
+</html>

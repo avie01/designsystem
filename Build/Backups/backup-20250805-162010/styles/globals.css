@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design System CSS Variables */
+:root {
+  /* Light theme colors */
+  --color-white: #FFFFFF;
+  --color-wave: #F4F4F4;
+  --color-light-deco: #E0E0E0;
+  --color-twilight: #6F6F6F;
+  --color-night: #161616;
+  --color-blue-default: #0F62FE;
+  --color-active-background: #E0F3FE;
+  
+  /* Dark theme colors */
+  --color-vacuum: #161616;
+  --color-deep-space: #262626;
+  --color-dark-deco: #393939;
+  --color-moonlight: #A8A8A8;
+  --color-white-dark: #FFFFFF;
+  --color-blue: #4589FF;
+  --color-dk-blue: #0043CE;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  /* Border radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --color-white: var(--color-vacuum);
+  --color-wave: var(--color-deep-space);
+  --color-light-deco: var(--color-dark-deco);
+  --color-twilight: var(--color-moonlight);
+  --color-night: var(--color-white-dark);
+}
+
+/* Base styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Component library specific styles */
+.odl-component {
+  box-sizing: border-box;
+}
+
+.odl-component *,
+.odl-component *::before,
+.odl-component *::after {
+  box-sizing: border-box;
+}
+
+/* Custom scrollbar styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+} 

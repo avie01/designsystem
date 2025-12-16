@@ -1,0 +1,183 @@
+import React, { useState } from 'react';
+import ODLTheme from '../../styles/ODLTheme';
+import Icon from '../Icon/Icon';
+
+export interface AccordionItem {
+  id: string;
+  title: string;
+  content?: React.ReactNode;
+  icon?: string;
+  children?: AccordionItem[];
+  defaultOpen?: boolean;
+}
+
+export interface AccordionProps {
+  items: AccordionItem[];
+  allowMultiple?: boolean;
+  nested?: boolean;
+  showIcons?: boolean;
+  variant?: 'default' | 'bordered' | 'filled';
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+const Accordion: React.FC<AccordionProps> = ({
+  items,
+  allowMultiple = true,
+  nested = true,
+  showIcons = true,
+  variant = 'default',
+  className = '',
+  style
+}) => {
+  const [openItems, setOpenItems] = useState<Set<string>>(
+    new Set(items.filter(item => item.defaultOpen).map(item => item.id))
+  );
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
+  const toggleItem = (itemId: string) => {
+    const newOpenItems = new Set(openItems);
+    
+    if (!allowMultiple && !openItems.has(itemId)) {
+      newOpenItems.clear();
+    }
+    
+    if (newOpenItems.has(itemId)) {
+      newOpenItems.delete(itemId);
+    } else {
+      newOpenItems.add(itemId);
+    }
+    
+    setOpenItems(newOpenItems);
+  };
+
+  const renderAccordionItem = (item: AccordionItem, level: number = 0): JSX.Element => {
+    const isOpen = openItems.has(item.id);
+    const isHovered = hoveredItem === item.id;
+    const hasChildren = item.children && item.children.length > 0;
+    const hasContent = item.content || hasChildren;
+
+    return (
+      <div
+        key={item.id}
+        style={{
+          marginBottom: level === 0 && variant === 'default' ? '2px' : 0,
+          marginLeft: level > 0 ? '20px' : 0,
+        }}
+      >
+        <div
+          onClick={() => hasContent && toggleItem(item.id)}
+          onMouseEnter={() => setHoveredItem(item.id)}
+          onMouseLeave={() => setHoveredItem(null)}
+          style={{
+            padding: variant === 'filled' ? '16px 20px' : '14px 16px',
+            background: variant === 'filled' 
+              ? isOpen 
+                ? ODLTheme.colors.primary 
+                : isHovered 
+                  ? ODLTheme.colors.grey100 
+                  : ODLTheme.colors.grey50
+              : isHovered 
+                ? ODLTheme.colors.grey50 
+                : 'white',
+            border: variant === 'bordered' 
+              ? `1px solid ${ODLTheme.colors.grey200}` 
+              : 'none',
+            borderBottom: variant === 'default' && level === 0
+              ? `1px solid ${ODLTheme.colors.grey200}`
+              : 'none',
+            borderRadius: variant === 'bordered' ? '6px' : 0,
+            cursor: hasContent ? 'pointer' : 'default',
+            transition: 'all 0.2s ease',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {showIcons && item.icon && (
+              <Icon
+                name={item.icon}
+                size={18}
+                color={variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.grey500}
+              />
+            )}
+            <span
+              style={{
+                fontSize: level === 0 ? ODLTheme.typography.fontSize.base : ODLTheme.typography.fontSize.sm,
+                fontWeight: level === 0 ? 500 : 400,
+                color: variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.text
+              }}
+            >
+              {item.title}
+            </span>
+          </div>
+          
+          {hasContent && (
+            <Icon
+              name={isOpen ? 'chevron-down' : 'chevron-right'}
+              size={16}
+              color={variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.grey400}
+              style={{
+                transition: 'transform 0.2s ease',
+                transform: isOpen ? 'rotate(0deg)' : 'rotate(0deg)'
+              }}
+            />
+          )}
+        </div>
+
+        {/* Content */}
+        {isOpen && hasContent && (
+          <div
+            style={{
+              padding: variant === 'bordered' 
+                ? '16px 20px' 
+                : level > 0 
+                  ? '12px 16px 12px 32px' 
+                  : '16px 16px 16px 32px',
+              background: variant === 'bordered' 
+                ? ODLTheme.colors.grey50 
+                : level > 0 
+                  ? ODLTheme.colors.grey50 
+                  : 'white',
+              borderTop: variant === 'bordered' ? `1px solid ${ODLTheme.colors.grey200}` : 'none',
+              color: ODLTheme.colors.textLight,
+              fontSize: ODLTheme.typography.fontSize.sm,
+              lineHeight: 1.6
+            }}
+          >
+            {item.content && (
+              <div style={{ marginBottom: hasChildren ? '12px' : 0 }}>
+                {item.content}
+              </div>
+            )}
+            
+            {/* Nested Children */}
+            {nested && hasChildren && (
+              <div>
+                {item.children!.map(child => renderAccordionItem(child, level + 1))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div
+      className={className}
+      style={{
+        background: 'white',
+        borderRadius: variant === 'bordered' ? '8px' : '8px',
+        border: variant !== 'bordered' ? `1px solid ${ODLTheme.colors.grey200}` : 'none',
+        overflow: 'hidden',
+        ...style
+      }}
+    >
+      {items.map(item => renderAccordionItem(item))}
+    </div>
+  );
+};
+
+export default Accordion;

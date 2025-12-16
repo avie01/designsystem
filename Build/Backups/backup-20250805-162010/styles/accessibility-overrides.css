@@ -1,0 +1,103 @@
+/* Accessibility Override Styles */
+/* These styles ensure accessibility settings apply correctly across the entire application */
+
+/* Apply accessibility font to all elements when not using default theme */
+html[data-theme="high-contrast-light"] *,
+html[data-theme="high-contrast-dark"] * {
+  font-family: var(--accessibility-font-family, inherit) !important;
+}
+
+/* Ensure font size is properly applied to text elements only in non-default themes */
+html[data-theme="high-contrast-light"] body,
+html[data-theme="high-contrast-light"] p,
+html[data-theme="high-contrast-light"] div,
+html[data-theme="high-contrast-light"] span,
+html[data-theme="high-contrast-light"] button,
+html[data-theme="high-contrast-light"] input,
+html[data-theme="high-contrast-light"] select,
+html[data-theme="high-contrast-light"] textarea,
+html[data-theme="high-contrast-dark"] body,
+html[data-theme="high-contrast-dark"] p,
+html[data-theme="high-contrast-dark"] div,
+html[data-theme="high-contrast-dark"] span,
+html[data-theme="high-contrast-dark"] button,
+html[data-theme="high-contrast-dark"] input,
+html[data-theme="high-contrast-dark"] select,
+html[data-theme="high-contrast-dark"] textarea {
+  font-size: var(--accessibility-font-size, inherit) !important;
+}
+
+/* High contrast theme overrides */
+html[data-theme="high-contrast-light"] {
+  background-color: var(--high-contrast-bg, #ffffff) !important;
+  color: var(--high-contrast-text, #000000) !important;
+}
+
+html[data-theme="high-contrast-light"] body,
+html[data-theme="high-contrast-light"] .odl-panel-base,
+html[data-theme="high-contrast-light"] .odl-panel-header,
+html[data-theme="high-contrast-light"] .odl-panel-content,
+html[data-theme="high-contrast-light"] .odl-panel-footer {
+  background-color: var(--high-contrast-bg, #ffffff) !important;
+  color: var(--high-contrast-text, #000000) !important;
+  border-color: var(--high-contrast-border, #000000) !important;
+}
+
+html[data-theme="high-contrast-light"] button,
+html[data-theme="high-contrast-light"] input,
+html[data-theme="high-contrast-light"] select,
+html[data-theme="high-contrast-light"] textarea {
+  border-color: var(--high-contrast-border, #000000) !important;
+}
+
+html[data-theme="high-contrast-dark"] {
+  background-color: var(--high-contrast-bg, #000000) !important;
+  color: var(--high-contrast-text, #ffffff) !important;
+}
+
+html[data-theme="high-contrast-dark"] body,
+html[data-theme="high-contrast-dark"] .odl-panel-base,
+html[data-theme="high-contrast-dark"] .odl-panel-header,
+html[data-theme="high-contrast-dark"] .odl-panel-content,
+html[data-theme="high-contrast-dark"] .odl-panel-footer {
+  background-color: var(--high-contrast-bg, #000000) !important;
+  color: var(--high-contrast-text, #ffffff) !important;
+  border-color: var(--high-contrast-border, #ffffff) !important;
+}
+
+html[data-theme="high-contrast-dark"] button,
+html[data-theme="high-contrast-dark"] input,
+html[data-theme="high-contrast-dark"] select,
+html[data-theme="high-contrast-dark"] textarea {
+  border-color: var(--high-contrast-border, #ffffff) !important;
+}
+
+/* Make focus outline setting apply only to high contrast themes */
+html[data-theme="high-contrast-light"] button:focus-visible,
+html[data-theme="high-contrast-light"] a:focus-visible,
+html[data-theme="high-contrast-light"] input:focus-visible,
+html[data-theme="high-contrast-light"] select:focus-visible,
+html[data-theme="high-contrast-light"] textarea:focus-visible,
+html[data-theme="high-contrast-light"] [tabindex]:focus-visible,
+html[data-theme="high-contrast-dark"] button:focus-visible,
+html[data-theme="high-contrast-dark"] a:focus-visible,
+html[data-theme="high-contrast-dark"] input:focus-visible,
+html[data-theme="high-contrast-dark"] select:focus-visible,
+html[data-theme="high-contrast-dark"] textarea:focus-visible,
+html[data-theme="high-contrast-dark"] [tabindex]:focus-visible {
+  outline: var(--focus-outline) !important;
+  outline-offset: var(--focus-outline-offset) !important;
+}
+
+/* Ensure color blind filter is properly applied */
+html[data-color-blind-filter="protanopia"] {
+  filter: url('#protanopia') !important;
+}
+
+html[data-color-blind-filter="deuteranopia"] {
+  filter: url('#deuteranopia') !important;
+}
+
+html[data-color-blind-filter="tritanopia"] {
+  filter: url('#tritanopia') !important;
+}
