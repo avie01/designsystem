@@ -32,24 +32,38 @@ const Tabs: React.FC<TabsProps> = ({
 }) => {
   const [internalActiveTab, setInternalActiveTab] = useState(activeTab || tabs[0]?.id || '');
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [stylesInjected, setStylesInjected] = useState(false);
+  const styleRef = useRef<HTMLStyleElement | null>(null);
 
   useEffect(() => {
-    if (!stylesInjected) {
-      const style = document.createElement('style');
-      style.textContent = `
-        .odl-tab-item:hover:not(:disabled) {
-          background-color: var(--grey-400-obj-hover-grey, #E8E8E8) !important;
-        }
-      `;
-      document.head.appendChild(style);
-      setStylesInjected(true);
-      
-      return () => {
-        document.head.removeChild(style);
-      };
-    }
-  }, [stylesInjected]);
+    const style = document.createElement('style');
+    style.textContent = `
+      .odl-tab-item:hover:not(:disabled) {
+        background-color: ${ODLTheme.colors.surfaceHover} !important;
+      }
+      .odl-tab-item:focus-visible {
+        outline: 2px solid ${ODLTheme.colors.primary};
+        outline-offset: 2px;
+      }
+      .odl-tab-item.odl-tab-active::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background-color: ${ODLTheme.colors.primary};
+      }
+    `;
+    document.head.appendChild(style);
+    styleRef.current = style;
+    
+    return () => {
+      if (styleRef.current) {
+        document.head.removeChild(styleRef.current);
+        styleRef.current = null;
+      }
+    };
+  }, []);
 
   const currentActiveTab = activeTab || internalActiveTab;
 
@@ -97,26 +111,30 @@ const Tabs: React.FC<TabsProps> = ({
 
   // Self-contained styles
   // DESIGN RULE: Tabs must maintain consistent spacing across all implementations
-  // - Always use 'px-4 py-3 text-sm' for default variant (standard tabs)
-  // - Always use 'px-3 py-2 text-xs' for compact variant (space-constrained areas)
+  // - Always use 'px-4 py-3 text-md' for default variant (standard tabs)
+  // - Always use 'px-3 py-2 text-md' for compact variant (space-constrained areas)
   // - Tab container should have proper padding/margin from parent elements (p-4 or equivalent)
   // - Content area should have consistent 'py-4' padding
   const containerStyles = 'w-full';
-  const navigationStyles = 'flex border-b border-gray-200 gap-0';
+  const navigationStyles = 'flex border-b gap-0';
   const tabItemStyles = classNames(
     'relative bg-none border-none cursor-pointer transition-all duration-200 rounded-none outline-none whitespace-nowrap min-w-0 flex-shrink-0',
-    variant === 'default' ? 'px-4 py-3' : 'px-3 py-2',
-    'hover:bg-[var(--grey-400-obj-hover-grey,#E8E8E8)]',
-    'focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'
+    variant === 'default' ? 'px-4 py-3' : 'px-3 py-2'
   );
-  const activeTabStyles = 'font-medium after:content-[""] after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[4px] after:bg-[var(--after-bg-color)]';
-  const disabledTabStyles = 'text-gray-400 cursor-not-allowed opacity-60 hover:bg-transparent';
+  const activeTabStyles = 'odl-tab-active font-medium';
+  const disabledTabStyles = 'cursor-not-allowed opacity-60 hover:bg-transparent';
   const contentStyles = 'py-4';
 
   return (
     <div className={classNames(containerStyles, className)}>
       {/* Tab Navigation */}
-      <div className={navigationStyles} role="tablist">
+      <div 
+        className={navigationStyles} 
+        role="tablist"
+        style={{
+          borderColor: ODLTheme.colors.border,
+        }}
+      >
         {tabs.map((tab, index) => {
           const isActive = tab.id === currentActiveTab;
           const isDisabled = tab.disabled;
@@ -141,13 +159,16 @@ const Tabs: React.FC<TabsProps> = ({
                 isDisabled && disabledTabStyles
               )}
               style={{
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", sans-serif",
-                fontSize: '16px',
+                fontFamily: ODLTheme.typography.fontFamily.sans,
+                fontSize: ODLTheme.typography.fontSize.md,
                 fontStyle: 'normal',
-                fontWeight: 600,
-                lineHeight: '24px',
-                color: isActive ? ODLTheme.colors.primary : 'var(--secondary-obj-twilight, #525965)',
-                '--after-bg-color': isActive ? ODLTheme.colors.primary : 'transparent'
+                fontWeight: ODLTheme.typography.fontWeight.semibold,
+                lineHeight: ODLTheme.typography.lineHeight.normal,
+                color: isDisabled 
+                  ? ODLTheme.colors.text.disabled 
+                  : isActive 
+                    ? ODLTheme.colors.primary 
+                    : ODLTheme.colors.text.secondary,
               } as React.CSSProperties}
             >
               {tab.label}
