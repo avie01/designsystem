@@ -1,4 +1,5 @@
-import React, { useState, useRef, useCallback, KeyboardEvent } from 'react';
+import React, { useState, useRef, useCallback, KeyboardEvent, useEffect } from 'react';
+import { ODLTheme } from '../../styles/ODLTheme';
 
 // Self-contained utility function to replace clsx
 const classNames = (...classes: (string | boolean | undefined | null)[]): string => {
@@ -31,6 +32,24 @@ const Tabs: React.FC<TabsProps> = ({
 }) => {
   const [internalActiveTab, setInternalActiveTab] = useState(activeTab || tabs[0]?.id || '');
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [stylesInjected, setStylesInjected] = useState(false);
+
+  useEffect(() => {
+    if (!stylesInjected) {
+      const style = document.createElement('style');
+      style.textContent = `
+        .odl-tab-item:hover:not(:disabled) {
+          background-color: var(--grey-400-obj-hover-grey, #E8E8E8) !important;
+        }
+      `;
+      document.head.appendChild(style);
+      setStylesInjected(true);
+      
+      return () => {
+        document.head.removeChild(style);
+      };
+    }
+  }, [stylesInjected]);
 
   const currentActiveTab = activeTab || internalActiveTab;
 
@@ -85,12 +104,12 @@ const Tabs: React.FC<TabsProps> = ({
   const containerStyles = 'w-full';
   const navigationStyles = 'flex border-b border-gray-200 gap-0';
   const tabItemStyles = classNames(
-    'relative bg-none border-none font-normal text-gray-600 cursor-pointer transition-all duration-200 rounded-none outline-none whitespace-nowrap min-w-0 flex-shrink-0',
-    variant === 'default' ? 'px-4 py-3 text-sm' : 'px-3 py-2 text-xs',
-    'hover:not-disabled:bg-gray-100 hover:not-disabled:text-gray-600',
+    'relative bg-none border-none cursor-pointer transition-all duration-200 rounded-none outline-none whitespace-nowrap min-w-0 flex-shrink-0',
+    variant === 'default' ? 'px-4 py-3' : 'px-3 py-2',
+    'hover:bg-[var(--grey-400-obj-hover-grey,#E8E8E8)]',
     'focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'
   );
-  const activeTabStyles = 'text-blue-600 font-medium after:content-[""] after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-0.5 after:bg-blue-600 after:rounded-sm';
+  const activeTabStyles = 'font-medium after:content-[""] after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[4px] after:bg-[var(--after-bg-color)]';
   const disabledTabStyles = 'text-gray-400 cursor-not-allowed opacity-60 hover:bg-transparent';
   const contentStyles = 'py-4';
 
@@ -116,10 +135,20 @@ const Tabs: React.FC<TabsProps> = ({
               onClick={() => !isDisabled && handleTabClick(tab.id)}
               onKeyDown={(event) => handleKeyDown(event, index)}
               className={classNames(
+                'odl-tab-item',
                 tabItemStyles,
                 isActive && activeTabStyles,
                 isDisabled && disabledTabStyles
               )}
+              style={{
+                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", sans-serif",
+                fontSize: '16px',
+                fontStyle: 'normal',
+                fontWeight: 600,
+                lineHeight: '24px',
+                color: isActive ? ODLTheme.colors.primary : 'var(--secondary-obj-twilight, #525965)',
+                '--after-bg-color': isActive ? ODLTheme.colors.primary : 'transparent'
+              } as React.CSSProperties}
             >
               {tab.label}
             </button>
