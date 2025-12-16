@@ -5,7 +5,7 @@
   align-items: flex-start;
   gap: var(--odl-spacing-3);
   padding: var(--odl-spacing-4);
-  border-radius: 0 var(--odl-border-radius-lg) var(--odl-border-radius-lg) 0;
+  border-radius: 2px;
   box-shadow: var(--odl-shadow-small);
   margin-bottom: var(--odl-spacing-3);
   transition: var(--odl-transition-slow);
@@ -16,25 +16,21 @@
 /* Variant styles */
 .alert-banner--info {
   background-color: var(--odl-info-light);
-  border-left: 4px solid var(--odl-info);
   color: var(--odl-text-primary);
 }
 
 .alert-banner--success {
   background-color: var(--odl-success-light);
-  border-left: 4px solid var(--odl-success);
   color: var(--odl-text-primary);
 }
 
 .alert-banner--warning {
   background-color: var(--odl-warning-light);
-  border-left: 4px solid var(--odl-warning);
   color: var(--odl-text-primary);
 }
 
 .alert-banner--error {
   background-color: var(--odl-error-light);
-  border-left: 4px solid var(--odl-error);
   color: var(--odl-text-primary);
 }
 
