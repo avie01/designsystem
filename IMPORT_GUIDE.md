@@ -10,7 +10,6 @@ This method creates a symbolic link to use the design system locally across proj
 
 ```bash
 # In the design system directory
-cd /Users/andrewk/Documents/ODL-Library/odl-design-system/content
 npm run build
 ```
 
@@ -24,8 +23,8 @@ npm link
 ### Step 3: Link in Your Project
 
 ```bash
-# In your project directory (e.g., Isovist)
-cd /Users/andrewk/Documents/ODL-Library/Isovist
+# In your project directory
+cd /path/to/your/project
 npm link @odl/design-system
 ```
 
@@ -55,7 +54,7 @@ Add the design system as a dependency using a file path:
 ```json
 {
   "dependencies": {
-    "@odl/design-system": "file:../odl-design-system/content"
+    "@odl/design-system": "file:../odl-design-system"
   }
 }
 ```
@@ -72,7 +71,6 @@ For production use across multiple projects:
 ### Step 1: Build for Production
 
 ```bash
-cd /Users/andrewk/Documents/ODL-Library/odl-design-system/content
 npm run build
 ```
 
@@ -188,7 +186,6 @@ When you make changes to the design system:
 
 ```bash
 # In design system directory
-cd /Users/andrewk/Documents/ODL-Library/odl-design-system/content
 npm run build
 
 # Your linked projects will automatically get the updates
@@ -209,18 +206,16 @@ Create this script in your project to quickly set up the design system:
 
 echo "Setting up ODL Design System..."
 
-# Build the design system
-cd /Users/andrewk/Documents/ODL-Library/odl-design-system/content
+# Build the design system (run from the design system directory)
 npm run build
 
 # Link it
 npm link
 
-# Return to project and link
-cd -
-npm link @odl/design-system
+# In your consuming project, run:
+# npm link @odl/design-system
 
-echo "✅ ODL Design System linked successfully!"
+echo "✅ ODL Design System built and linked successfully!"
 ```
 
 ## 📝 Example Project Setup

@@ -2,13 +2,10 @@
 
 ## 🎯 Quick Reference
 
-**Project Location:** `/Users/andrewk/Documents/ODL-Library/odl-design-system/content`
-
 **Main Landing Page:** http://localhost:3000/components-showcase.html
 
 **Start Dev Server:**
 ```bash
-cd /Users/andrewk/Documents/ODL-Library/odl-design-system/content
 npm run dev
 ```
 
@@ -103,7 +100,7 @@ className="bg-[var(--odl-primary)]"
 ## 📁 Project Structure
 
 ```
-content/
+odl-design-system/
 ├── src/
 │   ├── components/     # 53 components - avoid modifying
 │   ├── pages/          # Demo pages - add new demos here

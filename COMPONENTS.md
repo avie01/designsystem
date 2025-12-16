@@ -133,7 +133,7 @@ import { Button, Input, Table } from '../components';
 
 ## 📝 Notes
 
-- Components are located in `/content/src/components/`
+- Components are located in `/src/components/`
 - Each component is a self-contained folder with its own styles
 - TypeScript definitions are included for all components
 - Components use ODLTheme for consistent styling
