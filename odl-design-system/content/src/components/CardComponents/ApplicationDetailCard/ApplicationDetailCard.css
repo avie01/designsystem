@@ -1,0 +1,26 @@
+.application-detail-card {
+  background: white;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 6px 0;
+}
+
+.detail-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: #6b7280;
+  line-height: 20px;
+}
+
+.detail-value {
+  font-size: 14px;
+  font-weight: 400;
+  color: #111827;
+  line-height: 20px;
+  word-wrap: break-word;
+}

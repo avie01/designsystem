@@ -1,0 +1,205 @@
+/* AlertBanner - ODL Compliant CSS */
+
+.alert-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--odl-spacing-3);
+  padding: var(--odl-spacing-4);
+  border-radius: 10px;
+  box-shadow: var(--odl-shadow-small);
+  margin-bottom: var(--odl-spacing-3);
+  transition: var(--odl-transition-slow);
+  font-family: var(--odl-font-family-sans);
+  opacity: 1;
+}
+
+/* Variant styles */
+.alert-banner--info {
+  background-color: var(--odl-info-light);
+  color: var(--odl-text-primary);
+}
+
+.alert-banner--success {
+  background-color: var(--odl-success-light);
+  color: var(--odl-text-primary);
+}
+
+.alert-banner--warning {
+  background-color: var(--odl-warning-light);
+  color: var(--odl-text-primary);
+}
+
+.alert-banner--error {
+  background-color: var(--odl-error-light);
+  color: var(--odl-text-primary);
+}
+
+/* Size variants */
+.alert-banner--small {
+  padding: var(--odl-spacing-3);
+  gap: var(--odl-spacing-2);
+}
+
+.alert-banner--small .alert-banner__title {
+  font-size: var(--odl-font-size-sm);
+}
+
+.alert-banner--small .alert-banner__message {
+  font-size: var(--odl-font-size-xs);
+}
+
+.alert-banner--large {
+  padding: var(--odl-spacing-6);
+  gap: var(--odl-spacing-4);
+}
+
+.alert-banner--large .alert-banner__title {
+  font-size: var(--odl-font-size-lg);
+}
+
+.alert-banner--large .alert-banner__message {
+  font-size: var(--odl-font-size-base);
+}
+
+/* State modifiers */
+.alert-banner--disabled {
+  opacity: var(--odl-opacity-disabled);
+  pointer-events: none;
+}
+
+.alert-banner--hidden {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.alert-banner--visible {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+/* Icon container */
+.alert-banner__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  /* Center icon with text baseline */
+  margin-top: 0px;
+}
+
+.alert-banner__icon--info {
+  color: var(--odl-info);
+}
+
+.alert-banner__icon--success {
+  color: var(--odl-success);
+}
+
+.alert-banner__icon--warning {
+  color: var(--odl-warning);
+}
+
+.alert-banner__icon--error {
+  color: var(--odl-error);
+}
+
+/* Content container */
+.alert-banner__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-banner__title {
+  font-size: var(--odl-font-size-base);
+  font-weight: var(--odl-font-weight-semibold);
+  margin-bottom: var(--odl-spacing-2);
+  line-height: var(--odl-line-height-tight);
+}
+
+.alert-banner__message {
+  font-size: var(--odl-font-size-sm);
+  line-height: var(--odl-line-height-relaxed);
+}
+
+/* Actions container */
+.alert-banner__actions {
+  margin-top: var(--odl-spacing-3);
+  display: flex;
+  gap: var(--odl-spacing-2);
+  flex-wrap: wrap;
+}
+
+/* Close button */
+.alert-banner__close-button {
+  flex-shrink: 0;
+  padding: var(--odl-spacing-1);
+  border-radius: var(--odl-border-radius-base);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: var(--odl-transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--odl-text-primary);
+  /* Align close button with text */
+  align-self: flex-start;
+  margin-top: -3px;
+}
+
+.alert-banner__close-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.alert-banner__close-button:focus {
+  outline: var(--odl-focus-border-width) solid var(--odl-focus-border-color);
+  outline-offset: var(--odl-focus-outline-offset);
+}
+
+.alert-banner__close-button:active {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Keyboard navigation support */
+.alert-banner:focus-within .alert-banner__close-button {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .alert-banner {
+    padding: var(--odl-spacing-3);
+    gap: var(--odl-spacing-2);
+  }
+  
+  .alert-banner__actions {
+    flex-direction: column;
+    gap: var(--odl-spacing-1);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .alert-banner {
+    border-width: 2px;
+  }
+  
+  .alert-banner__close-button:focus {
+    outline-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .alert-banner {
+    transition: none;
+  }
+  
+  .alert-banner__close-button {
+    transition: none;
+  }
+  
+  .alert-banner--hidden,
+  .alert-banner--visible {
+    transform: none;
+  }
+}

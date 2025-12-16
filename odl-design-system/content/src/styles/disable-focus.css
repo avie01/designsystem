@@ -1,0 +1,59 @@
+/* Temporarily disable all focus indicators */
+/* Remove this file when you want to re-enable accessibility focus indicators */
+
+* {
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-offset: 0 !important;
+}
+
+*:focus,
+*:focus-visible,
+*:focus-within {
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Specifically target common focusable elements */
+button:focus,
+button:focus-visible,
+a:focus,
+a:focus-visible,
+input:focus,
+input:focus-visible,
+select:focus,
+select:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+[tabindex]:focus,
+[tabindex]:focus-visible,
+.odl-button-base:focus-visible,
+.odl-input-base:focus,
+.odl-checkbox-base:focus,
+.odl-switch-base:focus {
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Also disable focus indicators for ODL components */
+.custom-dropdown:focus,
+.dropdown-option:focus,
+.input-field:focus,
+.button:focus,
+.button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Disable Carbon component focus indicators */
+.bx--btn:focus,
+.bx--text-input:focus,
+.bx--select:focus,
+.bx--checkbox:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}

@@ -1,0 +1,293 @@
+/* AlertPanel - ODL Compliant CSS Module */
+
+.panel {
+  position: fixed;
+  top: 3.5rem;
+  right: 1rem;
+  z-index: 50;
+  width: 24rem;
+  max-height: 600px;
+  background-color: var(--odl-background-primary);
+  border-radius: var(--odl-border-radius-lg);
+  box-shadow: var(--odl-shadow-xl);
+  border: 1px solid var(--odl-border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: var(--odl-background-secondary);
+  padding: var(--odl-spacing-4) var(--odl-spacing-4) var(--odl-spacing-3);
+  border-bottom: 1px solid var(--odl-border-color);
+  flex-shrink: 0;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: var(--odl-font-size-lg);
+  font-weight: var(--odl-font-weight-semibold);
+  color: var(--odl-text-primary);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: var(--odl-font-size-sm);
+  color: var(--odl-text-secondary);
+  margin: 0;
+}
+
+.closeButton {
+  padding: var(--odl-spacing-1);
+  background: transparent;
+  border: none;
+  border-radius: var(--odl-border-radius-lg);
+  cursor: pointer;
+  transition: var(--odl-transition-normal);
+}
+
+.closeButton:hover {
+  background-color: var(--odl-background-hover);
+}
+
+.closeButton:focus {
+  outline: var(--odl-focus-border-width) solid var(--odl-focus-border-color);
+  outline-offset: var(--odl-focus-outline-offset);
+}
+
+.closeButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--odl-text-secondary);
+}
+
+.alertsList {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.emptyState {
+  padding: var(--odl-spacing-8);
+  text-align: center;
+}
+
+.emptyStateIcon {
+  width: 3rem;
+  height: 3rem;
+  color: var(--odl-text-disabled);
+  margin: 0 auto var(--odl-spacing-3);
+}
+
+.emptyStateText {
+  color: var(--odl-text-secondary);
+  margin: 0;
+}
+
+.sectionHeader {
+  padding: var(--odl-spacing-2) var(--odl-spacing-4);
+  border-bottom: 1px solid var(--odl-border-color);
+}
+
+.newUpdatesHeader {
+  background-color: var(--odl-info-light);
+  border-bottom-color: var(--odl-info-border, rgba(59, 130, 246, 0.2));
+}
+
+.previousUpdatesHeader {
+  background-color: var(--odl-background-secondary);
+}
+
+.sectionHeaderLabel {
+  font-size: var(--odl-font-size-xs);
+  font-weight: var(--odl-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.newUpdatesLabel {
+  color: var(--odl-info-dark, #1e40af);
+}
+
+.previousUpdatesLabel {
+  color: var(--odl-text-secondary);
+}
+
+.alertItem {
+  padding: var(--odl-spacing-3) var(--odl-spacing-4);
+  border-bottom: 1px solid var(--odl-border-color-light);
+  transition: var(--odl-transition-normal);
+  cursor: pointer;
+}
+
+.alertItem:hover {
+  background-color: var(--odl-background-hover);
+}
+
+.readAlertItem {
+  opacity: 0.75;
+}
+
+.alertItemContent {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--odl-spacing-3);
+}
+
+.alertIconContainer {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.alertIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.successIcon {
+  color: var(--odl-success);
+}
+
+.warningIcon {
+  color: var(--odl-warning);
+}
+
+.errorIcon {
+  color: var(--odl-error);
+}
+
+.infoIcon {
+  color: var(--odl-info);
+}
+
+.alertTextContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.alertTitle {
+  font-size: var(--odl-font-size-sm);
+  font-weight: var(--odl-font-weight-semibold);
+  color: var(--odl-text-primary);
+  margin: 0;
+}
+
+.readAlertTitle {
+  font-weight: var(--odl-font-weight-medium);
+  color: var(--odl-text-secondary);
+}
+
+.alertMessage {
+  font-size: var(--odl-font-size-sm);
+  color: var(--odl-text-secondary);
+  margin: var(--odl-spacing-1) 0 0;
+}
+
+.readAlertMessage {
+  color: var(--odl-text-muted);
+}
+
+.alertTimestamp {
+  font-size: var(--odl-font-size-xs);
+  color: var(--odl-text-muted);
+  margin: var(--odl-spacing-2) 0 0;
+}
+
+.readAlertTimestamp {
+  color: var(--odl-text-disabled);
+}
+
+.dismissButton {
+  flex-shrink: 0;
+  padding: var(--odl-spacing-1);
+  background: transparent;
+  border: none;
+  border-radius: var(--odl-border-radius-base);
+  cursor: pointer;
+  transition: var(--odl-transition-normal);
+}
+
+.dismissButton:hover {
+  background-color: var(--odl-background-hover);
+}
+
+.dismissButton:focus {
+  outline: var(--odl-focus-border-width) solid var(--odl-focus-border-color);
+  outline-offset: var(--odl-focus-outline-offset);
+}
+
+.dismissButtonIcon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--odl-text-disabled);
+}
+
+.footer {
+  background-color: var(--odl-background-secondary);
+  padding: var(--odl-spacing-3) var(--odl-spacing-4);
+  border-top: 1px solid var(--odl-border-color);
+  flex-shrink: 0;
+}
+
+.markAllReadButton {
+  width: 100%;
+  font-size: var(--odl-font-size-sm);
+  font-weight: var(--odl-font-weight-medium);
+  color: var(--odl-info);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: var(--odl-transition-normal);
+  padding: var(--odl-spacing-1);
+}
+
+.markAllReadButton:hover {
+  color: var(--odl-info-dark, #1e40af);
+}
+
+.markAllReadButton:focus {
+  outline: var(--odl-focus-border-width) solid var(--odl-focus-border-color);
+  outline-offset: var(--odl-focus-outline-offset);
+  border-radius: var(--odl-border-radius-base);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .panel {
+    width: calc(100vw - 2rem);
+    right: 1rem;
+    left: 1rem;
+    max-height: 80vh;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .panel {
+    border-width: 2px;
+  }
+
+  .alertItem:hover {
+    border: 1px solid var(--odl-border-color);
+  }
+
+  .closeButton:focus,
+  .dismissButton:focus,
+  .markAllReadButton:focus {
+    outline-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .closeButton,
+  .dismissButton,
+  .alertItem,
+  .markAllReadButton {
+    transition: none;
+  }
+}

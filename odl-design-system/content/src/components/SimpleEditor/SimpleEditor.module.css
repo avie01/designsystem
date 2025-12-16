@@ -1,0 +1,118 @@
+.editorContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+.menuBar {
+  background-color: var(--odl-white, #ffffff);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  position: sticky;
+  top: -30px;
+  z-index: 100;
+}
+
+.menuHeader {
+  padding: var(--odl-spacing-3, 12px) var(--odl-spacing-4, 16px);
+  border-bottom: 1px solid var(--odl-border, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menuTitle {
+  font-size: var(--odl-font-size-lg, 18px);
+  font-weight: 600;
+  margin: 0;
+  color: var(--odl-text-primary, #111827);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  padding: var(--odl-spacing-1, 4px);
+  cursor: pointer;
+  color: var(--odl-text-secondary, #6b7280);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--odl-border-radius-sm, 4px);
+  transition: background-color 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: var(--odl-surface, #f9fafb);
+}
+
+.toolbar {
+  display: flex;
+  gap: 4px;
+  padding: var(--odl-spacing-2, 8px) var(--odl-spacing-3, 12px);
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.iconButton {
+  background: transparent;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--odl-border-radius-sm, 4px);
+  color: var(--odl-text-primary, #111827);
+  transition: all 0.2s ease;
+}
+
+.iconButton:hover:not(:disabled) {
+  background-color: var(--odl-surface, #f9fafb);
+}
+
+.iconButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.iconButtonActive {
+  background: var(--odl-primary-light, #EBF5FF);
+  color: var(--odl-primary, #0F62FE);
+}
+
+.iconButtonActive:hover {
+  background: var(--odl-primary-light, #EBF5FF);
+}
+
+.headingLabel {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--odl-border, #e5e7eb);
+  margin: 0 4px;
+}
+
+.editorWrapper {
+  border: 2px solid var(--odl-primary, #0F62FE);
+  border-radius: var(--odl-border-radius-base, 6px);
+  background-color: var(--odl-white, #ffffff);
+  overflow: auto;
+  min-height: 200px;
+  flex: 1;
+  margin-top: var(--odl-spacing-2, 8px);
+}
+
+.editorFooter {
+  padding: var(--odl-spacing-1, 4px) var(--odl-spacing-3, 12px);
+  font-size: var(--odl-font-size-xs, 12px);
+  color: var(--odl-text-secondary, #6b7280);
+  background-color: var(--odl-surface, #f9fafb);
+  border-top: 1px solid var(--odl-border, #e5e7eb);
+}
