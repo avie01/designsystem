@@ -114,9 +114,9 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <div>
-            <h3 className={styles.title}>Council Updates</h3>
+            <h3 className={styles.title}>Notifications</h3>
             <p className={styles.subtitle}>
-              {unreadAlerts.length} new update{unreadAlerts.length !== 1 ? 's' : ''}
+              {unreadAlerts.length} new notification{unreadAlerts.length !== 1 ? 's' : ''}
             </p>
           </div>
           <button
@@ -138,7 +138,7 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
             <svg className={styles.emptyStateIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
             </svg>
-            <p className={styles.emptyStateText}>No council updates</p>
+            <p className={styles.emptyStateText}>No notifications</p>
           </div>
         ) : (
           <>
