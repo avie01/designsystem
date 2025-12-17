@@ -1,0 +1,23 @@
+/* Spinner Component */
+
+.spinner {
+  display: inline-block;
+  animation: spinner-spin 1s linear infinite;
+}
+
+@keyframes spinner-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respects prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+    opacity: 0.6;
+  }
+}
