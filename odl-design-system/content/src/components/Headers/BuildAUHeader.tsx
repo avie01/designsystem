@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '../../index';
+import { Icon, Button } from '../../index';
 // import BuildAULogo from '../../../products/build-au/components/BuildAULogo';
 
 export interface BuildAUHeaderProps {
@@ -25,12 +25,12 @@ const BuildAUHeader: React.FC<BuildAUHeaderProps> = ({
           <span className="text-lg font-semibold text-gray-900">Australian Construction Platform</span>
         </div>
         <div className="flex items-center space-x-4">
-          <button className="text-gray-500 hover:text-gray-700">
-            <Icon name="notification" className="w-5 h-5" />
-          </button>
-          <button className="text-gray-500 hover:text-gray-700">
-            <Icon name="settings" className="w-5 h-5" />
-          </button>
+          <Button variant="ghost" size="sm" aria-label="View notifications">
+            <Icon name="notification" size={20} aria-hidden="true" />
+          </Button>
+          <Button variant="ghost" size="sm" aria-label="Open settings">
+            <Icon name="settings" size={20} aria-hidden="true" />
+          </Button>
         </div>
       </div>
     </div>

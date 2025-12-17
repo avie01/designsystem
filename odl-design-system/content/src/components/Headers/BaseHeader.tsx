@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '../../index';
+import { Icon, Button } from '../../index';
 import './BaseHeader.css';
 
 export interface BaseHeaderProps {
@@ -53,13 +53,6 @@ const BaseHeader: React.FC<BaseHeaderProps> = ({
   onSettingsClick,
   onAvatarClick
 }) => {
-  const handleKeyDown = (e: React.KeyboardEvent, callback: () => void) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      callback();
-    }
-    onKeyDown?.(e);
-  };
 
   const headerClasses = [
     'base-header',
@@ -77,54 +70,54 @@ const BaseHeader: React.FC<BaseHeaderProps> = ({
     >
       <div className="base-header__content">
         <div className="base-header__logo-section">
-          <button
+          <Button
             className="base-header__logo-button"
             onClick={() => onNavigate('/')}
-            onKeyDown={(e) => handleKeyDown(e, () => onNavigate('/'))}
             aria-label={`Navigate to ${productTitle} home page`}
-            tabIndex={disabled ? -1 : 0}
             disabled={disabled}
+            variant="ghost"
+            size="sm"
           >
             <img
               src={logo}
               alt={logoAlt}
               className="base-header__logo"
             />
-          </button>
+          </Button>
           <div className="base-header__divider" aria-hidden="true"></div>
           <h1 className="base-header__title">{productTitle}</h1>
         </div>
         <div className="base-header__actions">
-          <button
+          <Button
             className="base-header__action-button"
             onClick={onNotificationClick}
-            onKeyDown={(e) => handleKeyDown(e, onNotificationClick || (() => {}))}
             aria-label="View notifications"
-            tabIndex={disabled ? -1 : 0}
             disabled={disabled}
+            variant="ghost"
+            size="sm"
           >
             <Icon name="notification" size={20} aria-hidden="true" />
-          </button>
-          <button
+          </Button>
+          <Button
             className="base-header__action-button"
             onClick={onSettingsClick}
-            onKeyDown={(e) => handleKeyDown(e, onSettingsClick || (() => {}))}
             aria-label="Open settings"
-            tabIndex={disabled ? -1 : 0}
             disabled={disabled}
+            variant="ghost"
+            size="sm"
           >
             <Icon name="settings" size={20} aria-hidden="true" />
-          </button>
-          <button
+          </Button>
+          <Button
             className="base-header__avatar"
             onClick={onAvatarClick}
-            onKeyDown={(e) => handleKeyDown(e, onAvatarClick || (() => {}))}
             aria-label={`User menu for ${userInitials}`}
-            tabIndex={disabled ? -1 : 0}
             disabled={disabled}
+            variant="ghost"
+            size="sm"
           >
             {userInitials}
-          </button>
+          </Button>
         </div>
       </div>
     </header>

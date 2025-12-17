@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Icon from '../../Icon/Icon';
+import Button from '../../Button/Button';
 import './CollapsibleCard.css';
 
 export interface CollapsibleCardProps {
@@ -27,19 +28,22 @@ const CollapsibleCard: React.FC<CollapsibleCardProps> = ({
 
   return (
     <div className={`collapsible-card ${expanded ? 'collapsible-card--expanded' : ''} ${className}`}>
-      <button 
+      <Button
         className="collapsible-card-header"
         onClick={handleToggle}
         aria-expanded={expanded}
         aria-controls={`collapsible-content-${title.replace(/\s+/g, '-').toLowerCase()}`}
+        variant="text"
+        size="md"
       >
         <h3 className="collapsible-card-title">{title}</h3>
-        <Icon 
-          name={expanded ? 'chevron-up' : 'chevron-down'} 
+        <Icon
+          name={expanded ? 'chevron-up' : 'chevron-down'}
           size={20}
           className="collapsible-card-icon"
+          aria-hidden="true"
         />
-      </button>
+      </Button>
       
       {expanded && (
         <div 

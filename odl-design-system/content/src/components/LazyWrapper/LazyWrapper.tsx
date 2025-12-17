@@ -1,4 +1,5 @@
 import React, { Suspense, ComponentType } from 'react';
+import Button from '../Button/Button';
 
 // Loading spinner component with accessibility support
 const LoadingSpinner: React.FC<{ message?: string }> = ({ message = 'Loading...' }) => (
@@ -47,12 +48,13 @@ class LazyErrorBoundary extends React.Component<
           </div>
           <h2 className="text-lg font-semibold text-gray-800 mb-2">Failed to load component</h2>
           <p className="text-sm text-gray-600 mb-4">Please try refreshing the page.</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+          <Button
+            onClick={() => window.location.reload()}
+            variant="primary"
+            size="md"
           >
             Refresh Page
-          </button>
+          </Button>
         </div>
       );
     }

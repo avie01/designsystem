@@ -11,11 +11,11 @@ const triggerPresets: Record<string, React.ReactNode> = {
   'Primary Button': <Button variant="primary">Open Popover</Button>,
   'Secondary Button': <Button variant="secondary">Click Me</Button>,
   'Icon Button': (
-    <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px' }}>
+    <Button variant="ghost" size="sm">
       <Icon name="help" size={24} color={ODLTheme.colors.primary} />
-    </button>
+    </Button>
   ),
-  'Text Link': <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: ODLTheme.colors.primary, textDecoration: 'underline' }}>More Info</button>,
+  'Text Link': <Button variant="text">More Info</Button>,
 };
 
 // Content presets for interactive controls
@@ -157,27 +157,9 @@ export const WithIconTrigger: Story = {
   name: '05 With Icon Trigger',
   args: {
     trigger: (
-      <button
-        style={{
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          padding: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: '4px',
-          transition: 'background 0.2s',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = ODLTheme.colors.grey100;
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'none';
-        }}
-      >
+      <Button variant="ghost" size="sm">
         <Icon name="help" size={24} color={ODLTheme.colors.primary} />
-      </button>
+      </Button>
     ),
     content: (
       <div style={{ padding: '12px 16px', maxWidth: '250px' }}>
@@ -201,29 +183,19 @@ export const WithList: Story = {
     content: (
       <div style={{ padding: '8px 0', minWidth: '200px' }}>
         {['Edit', 'Duplicate', 'Archive', 'Delete'].map((item, index) => (
-          <button
+          <Button
             key={item}
+            variant="text"
+            onClick={() => console.log(`Clicked ${item}`)}
             style={{
               width: '100%',
-              padding: '10px 16px',
-              border: 'none',
-              background: 'none',
-              textAlign: 'left',
-              cursor: 'pointer',
-              fontSize: '14px',
+              justifyContent: 'flex-start',
               color: item === 'Delete' ? ODLTheme.colors.error : ODLTheme.colors.text.primary,
-              transition: 'background 0.2s',
+              fontSize: '14px',
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = ODLTheme.colors.grey100;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'none';
-            }}
-            onClick={() => console.log(`Clicked ${item}`)}
           >
             {item}
-          </button>
+          </Button>
         ))}
       </div>
     ),
@@ -274,27 +246,7 @@ export const UserProfile: Story = {
   name: '08 User Profile',
   args: {
     trigger: (
-      <button
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          padding: '6px 12px',
-          border: `1px solid ${ODLTheme.colors.grey300}`,
-          borderRadius: '6px',
-          background: 'white',
-          cursor: 'pointer',
-          transition: 'all 0.2s',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = ODLTheme.colors.primary;
-          e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = ODLTheme.colors.grey300;
-          e.currentTarget.style.boxShadow = 'none';
-        }}
-      >
+      <Button variant="secondary" size="sm" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <div
           style={{
             width: '32px',
@@ -318,7 +270,7 @@ export const UserProfile: Story = {
           </div>
         </div>
         <Icon name="chevron-down" size={16} />
-      </button>
+      </Button>
     ),
     content: (
       <div style={{ padding: '12px 0', minWidth: '220px' }}>
@@ -332,33 +284,21 @@ export const UserProfile: Story = {
           { icon: 'help', label: 'Help & Support' },
           { icon: 'logout', label: 'Sign Out', danger: true },
         ].map((item) => (
-          <button
+          <Button
             key={item.label}
+            variant="text"
+            onClick={() => console.log(`Clicked ${item.label}`)}
             style={{
               width: '100%',
-              padding: '10px 16px',
-              border: 'none',
-              background: 'none',
-              textAlign: 'left',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              fontSize: '14px',
+              justifyContent: 'flex-start',
               color: item.danger ? ODLTheme.colors.error : ODLTheme.colors.text.primary,
-              transition: 'background 0.2s',
+              fontSize: '14px',
+              gap: '12px',
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = ODLTheme.colors.grey100;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'none';
-            }}
-            onClick={() => console.log(`Clicked ${item.label}`)}
           >
             <Icon name={item.icon} size={16} color={item.danger ? ODLTheme.colors.error : ODLTheme.colors.grey600} />
             {item.label}
-          </button>
+          </Button>
         ))}
       </div>
     ),
@@ -453,15 +393,16 @@ const ColorPickerContent = () => {
 };
 
 const ColorPickerTrigger = ({ color }: { color: string }) => (
-  <button
+  <Button
+    variant="ghost"
+    size="sm"
     style={{
       width: '36px',
       height: '36px',
       borderRadius: '6px',
       border: `2px solid ${ODLTheme.colors.grey300}`,
       background: color,
-      cursor: 'pointer',
-      transition: 'all 0.2s',
+      padding: 0,
     }}
   />
 );

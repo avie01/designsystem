@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Icon from '../Icon/Icon';
+import Button from '../Button/Button';
 import styles from './AlertPanel.module.css';
 
 export interface Alert {
@@ -109,13 +110,15 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
               {unreadAlerts.length} new notification{unreadAlerts.length !== 1 ? 's' : ''}
             </p>
           </div>
-          <button
+          <Button
             onClick={onClose}
             className={styles.closeButton}
             aria-label="Close alerts panel"
+            variant="ghost"
+            size="sm"
           >
             <Icon name="close" size={20} className={styles.closeButtonIcon} aria-hidden="true" />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -151,16 +154,18 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
                           {formatTimestamp(alert.timestamp)}
                         </p>
                       </div>
-                      <button
+                      <Button
                         onClick={(e) => {
-                          e.stopPropagation();
+                          e.stopPropagation?.();
                           onAlertDismiss(alert.id);
                         }}
                         className={styles.dismissButton}
                         aria-label="Dismiss alert"
+                        variant="ghost"
+                        size="sm"
                       >
                         <Icon name="close" size={16} className={styles.dismissButtonIcon} aria-hidden="true" />
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -189,16 +194,18 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
                           {formatTimestamp(alert.timestamp)}
                         </p>
                       </div>
-                      <button
+                      <Button
                         onClick={(e) => {
-                          e.stopPropagation();
+                          e.stopPropagation?.();
                           onAlertDismiss(alert.id);
                         }}
                         className={styles.dismissButton}
                         aria-label="Dismiss alert"
+                        variant="ghost"
+                        size="sm"
                       >
                         <Icon name="close" size={16} className={styles.dismissButtonIcon} aria-hidden="true" />
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -211,12 +218,14 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
       {/* Footer with Mark All as Read */}
       {unreadAlerts.length > 0 && (
         <div className={styles.footer}>
-          <button
+          <Button
             onClick={() => unreadAlerts.forEach(alert => onAlertRead(alert.id))}
             className={styles.markAllReadButton}
+            variant="text"
+            size="sm"
           >
             Mark all as read
-          </button>
+          </Button>
         </div>
       )}
     </div>
