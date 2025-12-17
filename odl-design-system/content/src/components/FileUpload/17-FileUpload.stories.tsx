@@ -187,7 +187,8 @@ export const CompactInDrawer: Story = {
 // BUTTON VARIANT
 // ============================================
 
-export const Button: Story = {
+export const ButtonVariant: Story = {
+  name: '04 Button Variant',
   args: {
     label: 'Resume',
     variant: 'button',
