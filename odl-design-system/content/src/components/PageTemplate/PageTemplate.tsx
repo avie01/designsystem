@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../Header/Header';
+import Icon from '../Icon/Icon';
 import './PageTemplate.css';
 
 // Self-contained utility function to replace clsx
@@ -22,15 +23,7 @@ const SimpleBreadcrumb: React.FC<{
       {items.map((item, index) => (
         <React.Fragment key={index}>
           {index > 0 && (
-            <svg 
-              className="simple-breadcrumb__separator" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            <Icon name="chevron-right" size={16} className="simple-breadcrumb__separator" aria-hidden="true" />
           )}
           <div className="simple-breadcrumb__item">
             {item.path && onNavigate ? (
