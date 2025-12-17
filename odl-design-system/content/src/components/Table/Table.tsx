@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TableRowData, SortConfig } from '../../types/common';
 import Icon from '../Icon/Icon';
+import Dropdown from '../Dropdown/Dropdown';
 import ODLTheme from '../../styles/ODLTheme';
 import styles from './Table.module.css';
 
@@ -383,28 +384,19 @@ function Table<T extends TableRowData>({
             gap: '8px',
             height: '100%'
           }}>
-            <select
-              value={actualItemsPerPage}
-              onChange={handleItemsPerPageChange}
-              style={{
-                padding: '4px 20px 4px 8px',
-                border: 'none',
-                fontSize: '14px',
-                backgroundColor: 'transparent',
-                cursor: 'pointer',
-                appearance: 'none',
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 6L0 0H10L5 6Z' fill='%2332373F'/%3E%3C/svg%3E")`,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'right 4px center',
-                backgroundSize: '10px'
-              }}
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>
+            <Dropdown
+              value={String(actualItemsPerPage)}
+              onChange={(value) => handleItemsPerPageChange(parseInt(value))}
+              options={[
+                { value: '5', label: '5' },
+                { value: '10', label: '10' },
+                { value: '20', label: '20' },
+                { value: '50', label: '50' },
+                { value: '100', label: '100' }
+              ]}
+              hideLabel
+              size="sm"
+            />
           </div>
 
           {/* Vertical divider */}
@@ -446,26 +438,16 @@ function Table<T extends TableRowData>({
               padding: '0 16px',
               gap: '8px'
             }}>
-              <select
-                value={actualCurrentPage}
-                onChange={(e) => handlePageChange(parseInt(e.target.value))}
-                style={{
-                  padding: '4px 20px 4px 8px',
-                  border: 'none',
-                  fontSize: '14px',
-                  backgroundColor: 'transparent',
-                  cursor: 'pointer',
-                  appearance: 'none',
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 6L0 0H10L5 6Z' fill='%2332373F'/%3E%3C/svg%3E")`,
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'right 4px center',
-                  backgroundSize: '10px'
-                }}
-              >
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <option key={i + 1} value={i + 1}>{i + 1}</option>
-                ))}
-              </select>
+              <Dropdown
+                value={String(actualCurrentPage)}
+                onChange={(value) => handlePageChange(parseInt(value))}
+                options={Array.from({ length: totalPages }, (_, i) => ({
+                  value: String(i + 1),
+                  label: String(i + 1)
+                }))}
+                hideLabel
+                size="sm"
+              />
               <span style={{ fontSize: '14px', color: ODLTheme.colors.text.primary }}>
                 of {totalPages} pages
               </span>
