@@ -6,6 +6,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
 import Icon from '../Icon/Icon';
+import Button from '../Button/Button';
 import ODLTheme from '../../styles/ODLTheme';
 import styles from './SimpleEditor.module.css';
 
@@ -60,120 +61,137 @@ function MenuBar({ editor, onCancel, onInsertImage }: { editor: Editor; onSave: 
     <div className={styles.menuBar}>
       <div className={styles.menuHeader}>
         <h2 className={styles.menuTitle}>Formatting Tools</h2>
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={onCancel}
           className={styles.closeButton}
           aria-label="Close formatting tools"
-        >
-          <Icon name="close" size={20} aria-hidden="true" />
-        </button>
+          leftIcon="close"
+        />
       </div>
 
       <div className={styles.toolbar}>
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isBold)}
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editorState.canBold}
           aria-label="Bold"
           aria-pressed={editorState.isBold}
-        >
-          <Icon name="text-bold" size={18} />
-        </button>
-        <button
+          leftIcon="text-bold"
+        />
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isItalic)}
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={!editorState.canItalic}
           aria-label="Italic"
           aria-pressed={editorState.isItalic}
-        >
-          <Icon name="text-italic" size={18} />
-        </button>
-        <button
+          leftIcon="text-italic"
+        />
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isUnderline)}
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           disabled={!editorState.canUnderline}
           aria-label="Underline"
           aria-pressed={editorState.isUnderline}
-        >
-          <Icon name="text-underline" size={18} />
-        </button>
-        <button
+          leftIcon="text-underline"
+        />
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isStrike)}
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={!editorState.canStrike}
           aria-label="Strikethrough"
           aria-pressed={editorState.isStrike}
-        >
-          <Icon name="text-strikethrough" size={18} />
-        </button>
-        <button
+          leftIcon="text-strikethrough"
+        />
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isCode)}
           onClick={() => editor.chain().focus().toggleCode().run()}
           disabled={!editorState.canCode}
           aria-label="Inline code"
           aria-pressed={editorState.isCode}
-        >
-          <Icon name="code" size={18} />
-        </button>
+          leftIcon="code"
+        />
 
         <div className={styles.divider} />
 
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isParagraph)}
           onClick={() => editor.chain().focus().setParagraph().run()}
           aria-label="Paragraph"
           aria-pressed={editorState.isParagraph}
         >
           <span className={styles.headingLabel}>P</span>
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isHeading1)}
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
           aria-label="Heading 1"
           aria-pressed={editorState.isHeading1}
         >
           <span className={styles.headingLabel}>H1</span>
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isHeading2)}
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
           aria-label="Heading 2"
           aria-pressed={editorState.isHeading2}
         >
           <span className={styles.headingLabel}>H2</span>
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isHeading3)}
           onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
           aria-label="Heading 3"
           aria-pressed={editorState.isHeading3}
         >
           <span className={styles.headingLabel}>H3</span>
-        </button>
+        </Button>
 
         <div className={styles.divider} />
 
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isBulletList)}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           aria-label="Bullet list"
           aria-pressed={editorState.isBulletList}
-        >
-          <Icon name="list-bulleted" size={18} />
-        </button>
-        <button
+          leftIcon="list-bulleted"
+        />
+        <Button
+          variant="ghost"
+          size="sm"
           className={getButtonClass(editorState.isOrderedList)}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           aria-label="Ordered list"
           aria-pressed={editorState.isOrderedList}
-        >
-          <Icon name="list-numbered" size={18} />
-        </button>
+          leftIcon="list-numbered"
+        />
 
         <div className={styles.divider} />
 
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
           className={styles.iconButton}
           onClick={(e) => {
             e.preventDefault();
@@ -181,10 +199,11 @@ function MenuBar({ editor, onCancel, onInsertImage }: { editor: Editor; onSave: 
             alert('Table insertion not yet implemented');
           }}
           aria-label="Insert table"
-        >
-          <Icon name="table" size={18} />
-        </button>
-        <button
+          leftIcon="table"
+        />
+        <Button
+          variant="ghost"
+          size="sm"
           className={styles.iconButton}
           onClick={(e) => {
             e.preventDefault();
@@ -196,12 +215,11 @@ function MenuBar({ editor, onCancel, onInsertImage }: { editor: Editor; onSave: 
             }
           }}
           aria-label="Insert image"
-          type="button"
-        >
-          <Icon name="image" size={18} />
-        </button>
-        <button
-          type="button"
+          leftIcon="image"
+        />
+        <Button
+          variant="ghost"
+          size="sm"
           className={styles.iconButton}
           onClick={(e) => {
             e.preventDefault();
@@ -209,28 +227,29 @@ function MenuBar({ editor, onCancel, onInsertImage }: { editor: Editor; onSave: 
             alert('Graph insertion not yet implemented');
           }}
           aria-label="Insert graph"
-        >
-          <Icon name="chart-line" size={18} />
-        </button>
+          leftIcon="chart-line"
+        />
 
         <div className={styles.divider} />
 
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           className={styles.iconButton}
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editorState.canUndo}
           aria-label="Undo"
-        >
-          <Icon name="undo" size={18} />
-        </button>
-        <button
+          leftIcon="undo"
+        />
+        <Button
+          variant="ghost"
+          size="sm"
           className={styles.iconButton}
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editorState.canRedo}
           aria-label="Redo"
-        >
-          <Icon name="redo" size={18} />
-        </button>
+          leftIcon="redo"
+        />
       </div>
     </div>
   );
