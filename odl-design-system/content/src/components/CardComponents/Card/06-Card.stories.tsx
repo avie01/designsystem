@@ -3,7 +3,7 @@ import Card from './Card';
 import { ODLTheme } from '../../../styles/ODLTheme';
 
 const meta: Meta<typeof Card> = {
-  title: 'Design System/Components/Info Panel',
+  title: 'Design System/Components/Card',
   component: Card,
   parameters: {
     layout: 'padded',
