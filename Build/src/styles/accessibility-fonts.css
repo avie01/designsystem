@@ -1,7 +1,0 @@
-/* Font imports for accessibility options - temporarily disabled for Parcel build */
-
-/* Define font fallbacks */
-:root {
-  --font-family-dyslexic: 'Arial', sans-serif;
-  --font-family-hyperlegible: 'Arial', sans-serif;
-}
