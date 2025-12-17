@@ -1,7 +1,7 @@
 .tableContainer {
   overflow: hidden;
-  border: 1px solid #e0e0e0;
-  border-radius: 0 0 8px 8px;
+  border: 1px solid var(--odl-border, #e0e0e0);
+  border-radius: 0 0 var(--odl-border-radius-md, 8px) var(--odl-border-radius-md, 8px);
 }
 
 .scrollContainer {
@@ -23,14 +23,14 @@
   overflow: hidden;
   min-width: 100px;
   width: 100%;
-  padding: 12px 24px;
+  padding: var(--odl-spacing-3, 12px) var(--odl-spacing-6, 24px);
   display: flex;
   align-items: center;
 }
 
 .sortableLabel {
-  padding: 2px 4px;
-  border-radius: 4px;
+  padding: var(--odl-spacing-1, 2px) var(--odl-spacing-1, 4px);
+  border-radius: var(--odl-border-radius-sm, 4px);
   white-space: nowrap;
 }
 
@@ -39,41 +39,41 @@
   align-items: center;
   padding: 0;
   background-color: white;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--odl-border, #e0e0e0);
   height: 48px;
 }
 
 .paginationSection {
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  gap: 8px;
+  padding: 0 var(--odl-spacing-4, 16px);
+  gap: var(--odl-spacing-2, 8px);
   height: 100%;
 }
 
 .paginationDivider {
   width: 1px;
   height: 48px;
-  background-color: #e0e0e0;
+  background-color: var(--odl-border, #e0e0e0);
 }
 
 .paginationSelect {
-  padding: 4px 20px 4px 8px;
+  padding: var(--odl-spacing-1, 4px) 20px var(--odl-spacing-1, 4px) var(--odl-spacing-2, 8px);
   border: none;
-  font-size: 14px;
+  font-size: var(--odl-font-size-base, 14px);
   background-color: transparent;
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 6L0 0H10L5 6Z' fill='%2332373F'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 4px center;
+  background-position: right var(--odl-spacing-1, 4px) center;
   background-size: 10px;
 }
 
 .paginationInfo {
-  padding: 0 24px;
-  font-size: 14px;
-  color: #161616;
+  padding: 0 var(--odl-spacing-6, 24px);
+  font-size: var(--odl-font-size-base, 14px);
+  color: var(--odl-text-primary, #161616);
 }
 
 .paginationSpacer {
@@ -89,17 +89,17 @@
 .pageDropdownSection {
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  gap: 8px;
+  padding: 0 var(--odl-spacing-4, 16px);
+  gap: var(--odl-spacing-2, 8px);
 }
 
 .paginationLabel {
-  font-size: 14px;
-  color: #161616;
+  font-size: var(--odl-font-size-base, 14px);
+  color: var(--odl-text-primary, #161616);
 }
 
 .paginationButton {
-  padding: 0 16px;
+  padding: 0 var(--odl-spacing-4, 16px);
   height: 48px;
   border: none;
   background: none;
