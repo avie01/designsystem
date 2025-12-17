@@ -37,6 +37,12 @@ export interface ButtonProps {
   'aria-pressed'?: boolean;
   /** ARIA expanded state for dropdown triggers */
   'aria-expanded'?: boolean;
+  /** ARIA controls - references element controlled by button */
+  'aria-controls'?: string;
+  /** ARIA described by - references descriptive element */
+  'aria-describedby'?: string;
+  /** ARIA has popup - indicates popup type */
+  'aria-haspopup'?: boolean | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog';
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -57,6 +63,9 @@ const Button: React.FC<ButtonProps> = ({
   'aria-label': ariaLabel,
   'aria-pressed': ariaPressed,
   'aria-expanded': ariaExpanded,
+  'aria-controls': ariaControls,
+  'aria-describedby': ariaDescribedby,
+  'aria-haspopup': ariaHaspopup,
 }) => {
   const [_isPressed, setIsPressed] = useState(false);
   const [_isHovered, setIsHovered] = useState(false);
@@ -121,6 +130,9 @@ const Button: React.FC<ButtonProps> = ({
       aria-label={ariaLabel}
       aria-pressed={ariaPressed}
       aria-expanded={ariaExpanded}
+      aria-controls={ariaControls}
+      aria-describedby={ariaDescribedby}
+      aria-haspopup={ariaHaspopup}
       aria-disabled={isDisabled}
       style={style}
     >
