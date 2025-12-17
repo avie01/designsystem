@@ -61,7 +61,7 @@
   background-color: #F7F9FB;
   cursor: pointer;
   transition: all 200ms ease;
-  padding: var(--odl-spacing-5);
+  padding: var(--odl-spacing-6);
 }
 
 .file-upload__dropzone:hover {
