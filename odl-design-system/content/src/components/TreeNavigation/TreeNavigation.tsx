@@ -2,13 +2,6 @@ import React, { useState } from 'react';
 import Icon from '../Icon/Icon';
 import ODLTheme from '../../styles/ODLTheme';
 
-// Custom Folder Icon - filled version
-const FolderIcon: React.FC<{ size?: number }> = ({ size = 16 }) => (
-  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2 2C1.73478 2 1.48043 2.10536 1.29289 2.29289C1.10536 2.48043 1 2.73478 1 3V13C1 13.2652 1.10536 13.5196 1.29289 13.7071C1.48043 13.8946 1.73478 14 2 14H14C14.2652 14 14.5196 13.8946 14.7071 13.7071C14.8946 13.5196 15 13.2652 15 13V5C15 4.73478 14.8946 4.48043 14.7071 4.29289C14.5196 4.10536 14.2652 4 14 4H8L6.295 2.295C6.20197 2.20142 6.09134 2.12717 5.96948 2.07654C5.84763 2.02591 5.71696 1.9999 5.585 2H2Z" fill={ODLTheme.colors.warning}/>
-  </svg>
-);
-
 export interface TreeNode {
   id: string;
   label: string;
@@ -92,15 +85,12 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
         >
           {/* Folder/File Icon */}
           <div style={{ marginRight: ODLTheme.spacing[2], display: 'flex', alignItems: 'center' }}>
-            {isFolder ? (
-              <FolderIcon size={16} />
-            ) : (
-              <Icon
-                name="document"
-                size={16}
-                color={ODLTheme.colors.text.secondary}
-              />
-            )}
+            <Icon
+              name={isFolder ? 'folder' : 'document'}
+              size={16}
+              color={isFolder ? ODLTheme.colors.warning : ODLTheme.colors.text.secondary}
+              aria-hidden="true"
+            />
           </div>
           
           {/* Label */}
