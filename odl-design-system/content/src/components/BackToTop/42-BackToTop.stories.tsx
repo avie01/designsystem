@@ -26,7 +26,7 @@ const LongContent: React.FC = () => (
 
     {Array.from({ length: 50 }, (_, i) => (
       <div key={i} style={{ marginBottom: '24px', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-        <h3>Section {i + 1}</h3>
+        <h2>Section {i + 1}</h2>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -236,7 +236,7 @@ export const MultipleScrollableAreas: Story = {
               borderRadius: '8px',
               minHeight: '150px'
             }}>
-              <h3>Card {i + 1}</h3>
+              <h2>Card {i + 1}</h2>
               <p>This is a card with some content. The Back to Top button will help you navigate back up quickly.</p>
               <p>More content to increase the scroll height and demonstrate the functionality.</p>
             </div>
@@ -301,7 +301,7 @@ export const ProductCatalog: Story = {
               {i + 1}
             </div>
             <div style={{ padding: '16px' }}>
-              <h3 style={{ margin: '0 0 8px 0' }}>Product {i + 1}</h3>
+              <h2 style={{ margin: '0 0 8px 0', fontSize: '16px' }}>Product {i + 1}</h2>
               <p style={{ margin: '0', color: '#666', fontSize: '14px' }}>
                 Description of product {i + 1}. High quality item with great features.
               </p>
