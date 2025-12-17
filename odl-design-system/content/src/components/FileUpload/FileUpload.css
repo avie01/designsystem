@@ -664,3 +664,47 @@
     border-width: 2px;
   }
 }
+
+/* ============================================
+   SCREEN READER ONLY
+   ============================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================
+   HORIZONTAL VARIANT (Side-by-side)
+   ============================================ */
+.file-upload--horizontal {
+  width: 100%;
+}
+
+.file-upload__horizontal-container {
+  display: flex;
+  gap: var(--odl-spacing-4);
+  align-items: flex-start;
+}
+
+.file-upload__horizontal-dropzone {
+  flex: 0 0 40%;
+  min-width: 300px;
+}
+
+.file-upload__horizontal-dropzone .file-upload__dropzone {
+  min-height: 200px;
+}
+
+.file-upload__horizontal-file-list {
+  flex: 1;
+  min-width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}

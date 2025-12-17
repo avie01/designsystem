@@ -4,7 +4,7 @@ import Button from '../Button/ButtonTW';
 import Chip from '../Chip/ChipTW';
 import './FileUpload.css';
 
-export type FileUploadVariant = 'dropzone' | 'compact' | 'button' | 'picture-card';
+export type FileUploadVariant = 'dropzone' | 'compact' | 'button' | 'picture-card' | 'horizontal';
 export type FileStatus = 'pending' | 'uploading' | 'complete' | 'error' | 'analyzing';
 
 export interface UploadedFile {
@@ -109,10 +109,11 @@ const FileUpload: React.FC<FileUploadProps> = ({
   const dropzoneRef = useRef<HTMLDivElement>(null);
   const dragCounter = useRef(0);
 
-  // Generate unique IDs for aria-describedby
+  // Generate unique IDs for aria-describedby and aria-live
   const instanceId = useRef(`file-upload-${Math.random().toString(36).substr(2, 9)}`);
   const helperId = `${instanceId.current}-helper`;
   const errorId = `${instanceId.current}-error`;
+  const statusId = `${instanceId.current}-status`;
 
   const files = value ?? internalFiles;
   const setFiles = (updater: UploadedFile[] | ((prev: UploadedFile[]) => UploadedFile[])) => {
@@ -299,6 +300,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       onChange={handleInputChange}
       disabled={disabled}
       aria-hidden="true"
+      tabIndex={-1}
     />
   );
 
@@ -329,6 +331,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </Button>
         {helperText && !errorMessage && <p id={helperId} className="file-upload__helper">{helperText}</p>}
         {errorMessage && <p id={errorId} className="file-upload__error">{errorMessage}</p>}
+        <div id={statusId} aria-live="polite" aria-atomic="true" className="sr-only">
+          {files.length > 0 && `${files.length} file${files.length !== 1 ? 's' : ''} uploaded`}
+        </div>
         {showFileList && files.length > 0 && <FileList files={files} onRemove={handleRemoveFile} getFileIcon={getFileIcon} formatFileSize={formatFileSize} compact />}
       </div>
     );
@@ -349,7 +354,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           onClick={!disabled ? handleBrowseClick : undefined}
           role="button"
           tabIndex={disabled ? -1 : 0}
-          aria-label={isDragActive ? 'Drop files here to upload' : 'Upload files'}
+          aria-label={isDragActive ? 'Drop files here to upload' : 'Upload files - drag and drop or click to browse'}
           aria-describedby={getAriaDescribedBy()}
           aria-invalid={error || !!errorMessage}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleBrowseClick(); } }}
