@@ -571,10 +571,10 @@ const removeAlert = (id) => {
                 )}
               </div>
               
-              <div style={{ minHeight: '200px' }}>
+              <div style={{ minHeight: '600px' }}>
                 {stackedAlerts.length === 0 ? (
-                  <div style={{ 
-                    textAlign: 'center', 
+                  <div style={{
+                    textAlign: 'center',
                     padding: '3rem',
                     backgroundColor: '#F9FAFB',
                     borderRadius: ODLTheme.borders.radius.md,
