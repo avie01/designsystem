@@ -51,7 +51,7 @@ const mockColumnGroups: ColumnGroup[] = [
 ];
 
 const meta: Meta<typeof ColumnSelectionTree> = {
-  title: 'Design System/Components/Data/ColumnSelectionTree',
+  title: 'Design System/Components/ColumnSelectionTree',
   component: ColumnSelectionTree,
   parameters: {
     layout: 'centered',
