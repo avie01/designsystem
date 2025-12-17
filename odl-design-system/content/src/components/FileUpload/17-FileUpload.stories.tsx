@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import FileUpload from './FileUpload';
+import Button from '../Button/Button';
+import Input from '../Input/Input';
 
 const meta = {
   title: 'Design System/Components/FileUpload',
@@ -136,19 +138,10 @@ export const CompactInDrawer: Story = {
       </h3>
 
       <div style={{ marginBottom: '16px' }}>
-        <label style={{ display: 'block', marginBottom: '4px', fontSize: '14px', fontWeight: 500 }}>
-          Project Name
-        </label>
-        <input
+        <Input
+          label="Project Name"
           type="text"
           defaultValue="Website Redesign"
-          style={{
-            width: '100%',
-            padding: '8px 12px',
-            border: '1px solid var(--odl-border)',
-            borderRadius: '4px',
-            fontSize: '14px',
-          }}
         />
       </div>
 
@@ -172,25 +165,12 @@ export const CompactInDrawer: Story = {
       />
 
       <div style={{ display: 'flex', gap: '8px', marginTop: '24px', justifyContent: 'flex-end' }}>
-        <button style={{
-          padding: '8px 16px',
-          border: '1px solid var(--odl-border)',
-          borderRadius: '4px',
-          backgroundColor: 'white',
-          cursor: 'pointer',
-        }}>
+        <Button variant="secondary" size="md">
           Cancel
-        </button>
-        <button style={{
-          padding: '8px 16px',
-          border: 'none',
-          borderRadius: '4px',
-          backgroundColor: 'var(--odl-primary)',
-          color: 'white',
-          cursor: 'pointer',
-        }}>
+        </Button>
+        <Button variant="primary" size="md">
           Save
-        </button>
+        </Button>
       </div>
     </div>
   ),
