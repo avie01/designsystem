@@ -7,7 +7,7 @@ const BackToTop: React.FC = () => {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > window.innerHeight) {
+      if (window.pageYOffset > 300) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
