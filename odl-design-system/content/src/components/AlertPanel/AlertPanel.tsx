@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import Icon from '../Icon/Icon';
 import styles from './AlertPanel.module.css';
 
 export interface Alert {
@@ -62,32 +63,21 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
   if (!isOpen) return null;
 
   const getAlertIcon = (type: Alert['type']) => {
-    switch (type) {
-      case 'success':
-        return (
-          <svg className={`${styles.alertIcon} ${styles.successIcon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      case 'warning':
-        return (
-          <svg className={`${styles.alertIcon} ${styles.warningIcon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        );
-      case 'error':
-        return (
-          <svg className={`${styles.alertIcon} ${styles.errorIcon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg className={`${styles.alertIcon} ${styles.infoIcon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-    }
+    const iconMap = {
+      success: 'checkmark-filled',
+      warning: 'warning-filled',
+      error: 'error-filled',
+      info: 'information'
+    };
+
+    return (
+      <Icon
+        name={iconMap[type] || 'information'}
+        size={20}
+        className={styles.alertIcon}
+        aria-hidden="true"
+      />
+    );
   };
 
   const formatTimestamp = (date: Date) => {
@@ -124,9 +114,7 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
             className={styles.closeButton}
             aria-label="Close alerts panel"
           >
-            <svg className={styles.closeButtonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <Icon name="close" size={20} className={styles.closeButtonIcon} aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -135,9 +123,7 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
       <div className={styles.alertsList}>
         {alerts.length === 0 ? (
           <div className={styles.emptyState}>
-            <svg className={styles.emptyStateIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-            </svg>
+            <Icon name="notification" size={32} className={styles.emptyStateIcon} aria-hidden="true" />
             <p className={styles.emptyStateText}>No notifications</p>
           </div>
         ) : (
@@ -173,9 +159,7 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
                         className={styles.dismissButton}
                         aria-label="Dismiss alert"
                       >
-                        <svg className={styles.dismissButtonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <Icon name="close" size={16} className={styles.dismissButtonIcon} aria-hidden="true" />
                       </button>
                     </div>
                   </div>
@@ -213,9 +197,7 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
                         className={styles.dismissButton}
                         aria-label="Dismiss alert"
                       >
-                        <svg className={styles.dismissButtonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <Icon name="close" size={16} className={styles.dismissButtonIcon} aria-hidden="true" />
                       </button>
                     </div>
                   </div>
