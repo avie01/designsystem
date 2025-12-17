@@ -11,14 +11,14 @@
 }
 
 .breadcrumb__separator {
-  color: var(--odl-text-tertiary);
+  color: var(--odl-text-secondary);
   margin: 0 var(--odl-spacing-2);
 }
 
 .breadcrumb__separator-icon {
   width: 12px;
   height: 12px;
-  color: var(--odl-text-tertiary);
+  color: var(--odl-text-secondary);
 }
 
 .breadcrumb__item {
@@ -139,7 +139,7 @@
 }
 
 .breadcrumb--dark .breadcrumb__link {
-  color: #4589FF;
+  color: var(--odl-primary);
 }
 
 .breadcrumb--primary {
