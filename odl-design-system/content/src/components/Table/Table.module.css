@@ -1,0 +1,118 @@
+.tableContainer {
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  border-radius: 0 0 8px 8px;
+}
+
+.scrollContainer {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  table-layout: auto;
+}
+
+.headerCell {
+  padding: 0;
+  position: relative;
+}
+
+.headerCellContent {
+  resize: horizontal;
+  overflow: hidden;
+  min-width: 100px;
+  width: 100%;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+}
+
+.sortableLabel {
+  padding: 2px 4px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  background-color: white;
+  border-top: 1px solid #e0e0e0;
+  height: 48px;
+}
+
+.paginationSection {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+  height: 100%;
+}
+
+.paginationDivider {
+  width: 1px;
+  height: 48px;
+  background-color: #e0e0e0;
+}
+
+.paginationSelect {
+  padding: 4px 20px 4px 8px;
+  border: none;
+  font-size: 14px;
+  background-color: transparent;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 6L0 0H10L5 6Z' fill='%2332373F'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  background-size: 10px;
+}
+
+.paginationInfo {
+  padding: 0 24px;
+  font-size: 14px;
+  color: #161616;
+}
+
+.paginationSpacer {
+  flex: 1;
+}
+
+.paginationNavSection {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.pageDropdownSection {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+}
+
+.paginationLabel {
+  font-size: 14px;
+  color: #161616;
+}
+
+.paginationButton {
+  padding: 0 16px;
+  height: 48px;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+}
+
+.paginationButtonEnabled {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.paginationButtonDisabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DocumentTreemap Pa11y Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      #root {
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        margin-bottom: 2rem;
+        color: #333;
+        font-size: 2rem;
+      }
+
+      .test-section {
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      h2 {
+        margin-bottom: 1rem;
+        color: #555;
+        font-size: 1.2rem;
+      }
+
+      .output {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f9f9f9;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import React from 'react';
+      import ReactDOM from 'react-dom/client';
+      import DocumentTreemap from '../src/components/DocumentTreemap/DocumentTreemap.tsx';
+
+      const TestComponent = () => {
+        const [clickOutput, setClickOutput] = React.useState('');
+
+        const handleNodeClick = (node) => {
+          const message = `Clicked: Classification=${node.classification || 'N/A'}, Department=${node.department || 'N/A'}`;
+          setClickOutput(message);
+          console.log(message);
+        };
+
+        // Test data set 1: Balanced distribution
+        const testData1 = [
+          { id: '1', classification: 'TOP SECRET', department: 'Engineering', status: 'active' },
+          { id: '2', classification: 'TOP SECRET', department: 'Engineering', status: 'active' },
+          { id: '3', classification: 'TOP SECRET', department: 'Finance', status: 'active' },
+          { id: '4', classification: 'SECRET', department: 'Engineering', status: 'active' },
+          { id: '5', classification: 'SECRET', department: 'HR', status: 'active' },
+          { id: '6', classification: 'SECRET', department: 'HR', status: 'active' },
+          { id: '7', classification: 'SECRET', department: 'Finance', status: 'active' },
+          { id: '8', classification: 'CONFIDENTIAL', department: 'Marketing', status: 'active' },
+          { id: '9', classification: 'CONFIDENTIAL', department: 'Marketing', status: 'active' },
+          { id: '10', classification: 'CONFIDENTIAL', department: 'Sales', status: 'active' },
+        ];
+
+        // Test data set 2: Large dataset
+        const testData2 = Array.from({ length: 50 }, (_, i) => ({
+          id: String(i),
+          classification: ['TOP SECRET', 'SECRET', 'CONFIDENTIAL'][i % 3],
+          department: ['Engineering', 'Finance', 'HR', 'Marketing', 'Sales', 'Operations'][i % 6],
+          status: 'active'
+        }));
+
+        // Test data set 3: Single classification
+        const testData3 = [
+          { id: '1', classification: 'CONFIDENTIAL', department: 'Legal', status: 'active' },
+          { id: '2', classification: 'CONFIDENTIAL', department: 'Legal', status: 'active' },
+          { id: '3', classification: 'CONFIDENTIAL', department: 'Compliance', status: 'active' },
+        ];
+
+        // Test data set 4: Many departments
+        const testData4 = [
+          { id: '1', classification: 'SECRET', department: 'Dept A', status: 'active' },
+          { id: '2', classification: 'SECRET', department: 'Dept B', status: 'active' },
+          { id: '3', classification: 'SECRET', department: 'Dept C', status: 'active' },
+          { id: '4', classification: 'SECRET', department: 'Dept D', status: 'active' },
+          { id: '5', classification: 'SECRET', department: 'Dept E', status: 'active' },
+          { id: '6', classification: 'SECRET', department: 'Dept F', status: 'active' },
+        ];
+
+        // Test data set 5: Edge case - empty data
+        const testData5 = [];
+
+        // Test data set 6: Custom classification
+        const testData6 = [
+          { id: '1', classification: 'PUBLIC', department: 'Marketing', status: 'active' },
+          { id: '2', classification: 'INTERNAL', department: 'HR', status: 'active' },
+          { id: '3', classification: 'RESTRICTED', department: 'Finance', status: 'active' },
+        ];
+
+        return React.createElement('div', { className: 'container' },
+          React.createElement('h1', null, 'DocumentTreemap Accessibility Test'),
+
+          // Test Case 1: Standard treemap with click handler
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 1: Standard Treemap'),
+            React.createElement(DocumentTreemap, {
+              data: testData1,
+              onNodeClick: handleNodeClick
+            }),
+            clickOutput && React.createElement('div', { className: 'output' }, clickOutput)
+          ),
+
+          // Test Case 2: Large dataset
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 2: Large Dataset (50 items)'),
+            React.createElement(DocumentTreemap, {
+              data: testData2,
+              onNodeClick: handleNodeClick
+            })
+          ),
+
+          // Test Case 3: Single classification
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 3: Single Classification'),
+            React.createElement(DocumentTreemap, {
+              data: testData3,
+              onNodeClick: handleNodeClick
+            })
+          ),
+
+          // Test Case 4: Many departments
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 4: Many Departments'),
+            React.createElement(DocumentTreemap, {
+              data: testData4,
+              onNodeClick: handleNodeClick
+            })
+          ),
+
+          // Test Case 5: Empty data
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 5: Empty Data'),
+            React.createElement(DocumentTreemap, {
+              data: testData5,
+              onNodeClick: handleNodeClick
+            })
+          ),
+
+          // Test Case 6: Custom classifications
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 6: Custom Classifications'),
+            React.createElement(DocumentTreemap, {
+              data: testData6,
+              onNodeClick: handleNodeClick
+            })
+          ),
+
+          // Test Case 7: No click handler
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 7: No Click Handler'),
+            React.createElement(DocumentTreemap, {
+              data: testData1
+            })
+          )
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(TestComponent));
+    </script>
+  </body>
+</html>

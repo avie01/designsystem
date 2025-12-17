@@ -1,0 +1,408 @@
+/* ODL-Compliant Dropdown component styles - matching Input component design */
+/* Using CSS custom properties to reference ODL Theme constants */
+
+:root {
+  /* ODL Theme Colors */
+  --odl-text-primary: #161616;
+  --odl-text-secondary: #525252;
+  --odl-text-tertiary: #8D8D8D;
+  --odl-text-disabled: #A0A0A0;
+  --odl-error: #DA1E28;
+  --odl-info: #0F62FE;
+  --odl-primary: #3560C1;
+  --odl-primary-light: #E0F3FE;
+  --odl-primary-hover: #2A4FA3;
+  --odl-surface: #F4F4F4;
+  --odl-surface-hover: #EBEBEB;
+  --odl-border: #E0E0E0;
+  --odl-white: #FFFFFF;
+  
+  /* ODL Theme Typography */
+  --odl-font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --odl-font-size-xs: 11px;
+  --odl-font-size-sm: 12px;
+  --odl-font-size-base: 14px;
+  --odl-font-weight-normal: 400;
+  --odl-line-height-input-sm: 1rem;
+  --odl-line-height-input-base: 1.125rem;
+  
+  /* ODL Theme Spacing */
+  --odl-spacing-0: 0;
+  --odl-spacing-1: 4px;
+  --odl-spacing-2: 8px;
+  --odl-spacing-3: 12px;
+  --odl-spacing-4: 16px;
+  --odl-spacing-5: 20px;
+  --odl-spacing-8: 32px;
+  --odl-spacing-10: 40px;
+  --odl-spacing-11: 44px;
+  
+  /* ODL Theme Borders */
+  --odl-border-width-base: 2px;
+  --odl-border-width-thin: 1px;
+  --odl-border-radius-base: 4px;
+  --odl-border-radius-sm: 2px;
+  
+  /* ODL Theme Shadows */
+  --odl-shadow-xl: 0 8px 24px rgba(0,0,0,0.12);
+  
+  /* ODL Theme Z-Index */
+  --odl-z-dropdown: 1000;
+  
+  /* ODL Theme Transitions */
+  --odl-transition-input: all 0.15s cubic-bezier(0.2, 0, 0.38, 0.9);
+  --odl-transition-color: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  --odl-transition-transform: transform 0.2s ease;
+}
+
+.dropdown-wrapper {
+  margin-bottom: 0;
+  width: 100%;
+  position: relative;
+}
+
+.dropdown-label {
+  display: block;
+  font-size: var(--odl-font-size-base);
+  font-weight: var(--odl-font-weight-normal);
+  line-height: var(--odl-line-height-input-base);
+  color: var(--odl-text-primary);
+  margin-bottom: var(--odl-spacing-2);
+  font-family: var(--odl-font-family-sans);
+}
+
+.dropdown-label--required {
+  color: var(--odl-error);
+}
+
+.dropdown-field-wrapper {
+  position: relative;
+}
+
+.custom-dropdown {
+  width: 100%;
+  padding: var(--odl-spacing-3) var(--odl-spacing-4);
+  padding-right: var(--odl-spacing-10); /* Make room for chevron */
+  border: none;
+  border-bottom: var(--odl-border-width-base) solid var(--odl-border);
+  background-color: var(--odl-surface);
+  color: var(--odl-text-primary);
+  font-size: var(--odl-font-size-base);
+  font-weight: var(--odl-font-weight-normal);
+  line-height: var(--odl-line-height-input-base);
+  font-family: var(--odl-font-family-sans);
+  outline: none;
+  transition: var(--odl-transition-input);
+  border-radius: 0;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--odl-spacing-10);
+  box-sizing: border-box;
+}
+
+.dropdown-value {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-2);
+}
+
+.dropdown-value-icon {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-placeholder {
+  color: var(--odl-text-tertiary); /* Uses theme tertiary (3.94:1) - acceptable for this UI context */
+}
+
+.custom-dropdown:hover:not(.custom-dropdown--disabled) {
+  background-color: var(--odl-surface-hover);
+  border-bottom-color: var(--odl-primary);
+}
+
+.custom-dropdown:focus:not(.custom-dropdown--disabled),
+.custom-dropdown--open:not(.custom-dropdown--disabled) {
+  border-bottom: var(--odl-border-width-base) solid var(--odl-primary);
+  outline: none;
+}
+
+/* Size variants */
+.dropdown-size--sm {
+  padding: var(--odl-spacing-2) var(--odl-spacing-3);
+  font-size: var(--odl-font-size-sm);
+  line-height: var(--odl-line-height-input-sm);
+  min-height: var(--odl-spacing-8);
+}
+
+.dropdown-size--lg {
+  padding: var(--odl-spacing-3) var(--odl-spacing-4);
+  font-size: var(--odl-font-size-base);
+  line-height: var(--odl-line-height-input-base);
+  min-height: var(--odl-spacing-11);
+  height: var(--odl-spacing-11);
+}
+
+/* Dynamic padding classes for icons and states */
+.custom-dropdown--with-icon {
+  padding-left: var(--odl-spacing-10); /* 2.5rem equivalent */
+}
+
+.custom-dropdown--with-right-elements {
+  padding-right: var(--odl-spacing-10); /* 2.5rem equivalent for clearable/error/chevron */
+}
+
+/* States */
+.custom-dropdown--disabled {
+  background-color: var(--odl-surface);
+  color: var(--odl-text-disabled);
+  border-bottom: var(--odl-border-width-base) solid var(--odl-text-disabled);
+  cursor: not-allowed;
+}
+
+.custom-dropdown--error {
+  border-bottom: var(--odl-border-width-base) solid var(--odl-error);
+  outline: none;
+}
+
+.custom-dropdown--error:focus,
+.custom-dropdown--error.custom-dropdown--open {
+  border-bottom: var(--odl-border-width-base) solid var(--odl-error);
+  outline: none;
+}
+
+/* Icons */
+.dropdown-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-icon--left {
+  left: var(--odl-spacing-3);
+  color: var(--odl-text-secondary);
+}
+
+.dropdown-icon--right {
+  right: var(--odl-spacing-3);
+  color: var(--odl-text-secondary);
+}
+
+.dropdown-chevron {
+  position: absolute;
+  right: var(--odl-spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  transition: var(--odl-transition-transform);
+  color: var(--odl-text-secondary);
+  pointer-events: none;
+}
+
+.dropdown-chevron--open {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.dropdown-chevron--disabled {
+  color: var(--odl-text-disabled);
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: var(--odl-z-dropdown);
+  background-color: var(--odl-white);
+  border: var(--odl-border-width-base) solid var(--odl-primary);
+  border-radius: var(--odl-border-radius-base);
+  box-shadow: var(--odl-shadow-xl);
+  max-height: 20rem;
+  overflow-y: auto;
+}
+
+.dropdown-search {
+  padding: var(--odl-spacing-2);
+  border-bottom: var(--odl-border-width-thin) solid var(--odl-border);
+}
+
+.dropdown-search-input {
+  width: 100%;
+  padding: var(--odl-spacing-2) var(--odl-spacing-3);
+  border: none;
+  border-bottom: var(--odl-border-width-thin) solid var(--odl-border);
+  background-color: var(--odl-surface);
+  font-size: var(--odl-font-size-base);
+  font-family: var(--odl-font-family-sans);
+  outline: none;
+}
+
+.dropdown-search-input:focus {
+  border-bottom-color: var(--odl-primary);
+}
+
+.dropdown-list {
+  max-height: 18rem;
+  overflow-y: auto;
+  padding: var(--odl-spacing-1) var(--odl-spacing-0);
+}
+
+.dropdown-option {
+  padding: var(--odl-spacing-2) var(--odl-spacing-3);
+  cursor: pointer;
+  border-bottom: var(--odl-border-width-thin) solid transparent;
+  font-size: var(--odl-font-size-base);
+  font-family: var(--odl-font-family-sans);
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-2);
+  transition: var(--odl-transition-color);
+  color: var(--odl-text-primary);
+}
+
+.dropdown-option:last-child {
+  border-bottom: var(--odl-border-width-thin) solid transparent;
+}
+
+.dropdown-option--group {
+  background-color: var(--odl-primary-light);
+  font-weight: var(--odl-font-weight-normal);
+  cursor: default;
+}
+
+.dropdown-option--selected {
+  background-color: var(--odl-primary-light);
+}
+
+.dropdown-option--highlighted {
+  background-color: var(--odl-primary-hover);
+}
+
+.dropdown-option:focus {
+  outline: var(--odl-border-width-base) solid var(--odl-primary);
+  outline-offset: -2px;
+}
+
+.dropdown-option--disabled {
+  color: var(--odl-text-disabled);
+  cursor: not-allowed;
+}
+
+.dropdown-option-icon {
+  color: var(--odl-text-secondary);
+}
+
+.dropdown-option-selected-indicator {
+  color: var(--odl-primary);
+  margin-left: auto;
+}
+
+.dropdown-option-checkbox {
+  color: var(--odl-primary);
+}
+
+.dropdown-option-text {
+  flex: 1;
+}
+
+.dropdown-no-options {
+  padding: var(--odl-spacing-4);
+  text-align: center;
+  color: var(--odl-text-secondary);
+  font-size: var(--odl-font-size-base);
+  font-family: var(--odl-font-family-sans);
+}
+
+/* Helper text and error messages */
+.dropdown-error-message {
+  margin-top: var(--odl-spacing-1);
+  font-size: var(--odl-font-size-sm);
+  line-height: var(--odl-line-height-input-sm);
+  color: var(--odl-error);
+  font-weight: var(--odl-font-weight-normal);
+  font-family: var(--odl-font-family-sans);
+}
+
+.dropdown-helper-text {
+  margin-top: var(--odl-spacing-1);
+  font-size: var(--odl-font-size-sm);
+  line-height: var(--odl-line-height-input-sm);
+  color: var(--odl-text-secondary);
+  font-weight: var(--odl-font-weight-normal);
+  font-family: var(--odl-font-family-sans);
+}
+
+/* List component integration within dropdown */
+.dropdown-list.list-container {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  max-height: none;
+}
+
+.dropdown-list .list-items {
+  background-color: transparent;
+}
+
+.dropdown-list .list-item {
+  border-bottom: none;
+  padding: var(--odl-spacing-2) var(--odl-spacing-3);
+  margin: 0;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.dropdown-list .list-item-content {
+  text-align: left;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+}
+
+.dropdown-list .list-item-label {
+  text-align: left;
+  display: block;
+  width: 100%;
+}
+
+.dropdown-list .list-item:hover:not(.list-item--disabled) {
+  background-color: var(--odl-surface-hover);
+}
+
+.dropdown-list .list-item--selected {
+  background-color: var(--odl-primary-light);
+}
+
+.dropdown-list .list-item--selected:hover {
+  background-color: var(--odl-primary-hover);
+  color: var(--odl-white);
+}
+
+/* Scrollbar styling for dropdown list */
+.dropdown-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-list::-webkit-scrollbar-track {
+  background: transparent;
+  margin: var(--odl-spacing-2) var(--odl-spacing-0);
+}
+
+.dropdown-list::-webkit-scrollbar-thumb {
+  background: var(--odl-border);
+  border-radius: var(--odl-border-radius-sm);
+}
+
+.dropdown-list::-webkit-scrollbar-thumb:hover {
+  background: var(--odl-text-tertiary);
+}

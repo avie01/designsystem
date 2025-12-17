@@ -1,0 +1,436 @@
+import React from 'react';
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  ScatterChart,
+  Scatter,
+  ComposedChart,
+  RadialBarChart,
+  RadialBar,
+  Treemap
+} from 'recharts';
+import ODLTheme from '../../styles/ODLTheme';
+
+export type GraphType = 'line' | 'area' | 'bar' | 'pie' | 'radar' | 'scatter' | 'composed' | 'radial' | 'treemap';
+
+export interface GraphProps {
+  type: GraphType;
+  data: any[];
+  width?: string | number;
+  height?: string | number;
+  colors?: string[];
+  animated?: boolean;
+  showGrid?: boolean;
+  showLegend?: boolean;
+  showTooltip?: boolean;
+  dataKeys?: string[];
+  xAxisKey?: string;
+  yAxisLabel?: string;
+  xAxisLabel?: string;
+  stacked?: boolean;
+  curved?: boolean;
+  gradient?: boolean;
+  className?: string;
+}
+
+// Export chart colors from theme for convenience
+export const chartColors = ODLTheme.colors.charts;
+
+// Default chart color sequence - optimized for readability
+export const defaultChartColors = [
+  chartColors.blue,
+  chartColors.emerald,
+  chartColors.violet,
+  chartColors.rose,      // Swapped rose and amber for better contrast
+  chartColors.amber,
+  chartColors.cyan,
+  chartColors.indigo,
+  chartColors.lime,
+];
+
+const Graph: React.FC<GraphProps> = ({
+  type,
+  data,
+  width = '100%',
+  height = 400,
+  colors = defaultChartColors,
+  animated = true,
+  showGrid = true,
+  showLegend = true,
+  showTooltip = true,
+  dataKeys = [],
+  xAxisKey = 'name',
+  yAxisLabel = '',
+  xAxisLabel: _xAxisLabel = '',
+  stacked = false,
+  curved = true,
+  gradient = false,
+  className = ''
+}) => {
+  // Convert height to number for comparisons
+  const numericHeight = typeof height === 'number' ? height : parseInt(String(height)) || 400;
+  // Custom tooltip styling
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div style={{
+          backgroundColor: 'white',
+          border: `1px solid ${ODLTheme.colors.border}`,
+          borderRadius: ODLTheme.borders.radius.md,
+          padding: ODLTheme.spacing[3],
+          boxShadow: ODLTheme.shadows.lg
+        }}>
+          <p style={{
+            margin: 0,
+            fontWeight: ODLTheme.typography.fontWeight.semibold,
+            color: ODLTheme.colors.text.primary,
+            marginBottom: ODLTheme.spacing[2]
+          }}>
+            {label}
+          </p>
+          {payload.map((entry: any, index: number) => (
+            <p key={index} style={{
+              margin: 0,
+              color: entry.color,
+              fontSize: ODLTheme.typography.fontSize.sm,
+              marginTop: ODLTheme.spacing[1]
+            }}>
+              {entry.name}: {typeof entry.value === 'number' ? entry.value.toLocaleString() : entry.value}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  // Axis styling - smaller font for compact charts
+  const axisStyle = {
+    fontSize: numericHeight < 150 ? '10px' : ODLTheme.typography.fontSize.sm,
+    fill: ODLTheme.colors.text.secondary
+  };
+
+  // Grid styling
+  const gridStyle = {
+    stroke: ODLTheme.colors.border,
+    strokeDasharray: '3 3'
+  };
+
+  // Legend styling
+  const legendStyle = {
+    fontSize: ODLTheme.typography.fontSize.sm,
+    color: ODLTheme.colors.text.primary
+  };
+
+  // Animation duration
+  const animationDuration = animated ? 1000 : 0;
+
+  // Responsive margins based on chart height
+  const getChartMargins = () => {
+    if (numericHeight < 60) {
+      return { top: 0, right: 0, left: 0, bottom: 0 };
+    } else if (numericHeight < 150) {
+      return { top: 5, right: 5, left: 5, bottom: 5 };
+    } else {
+      return { top: 5, right: 30, left: 20, bottom: 5 };
+    }
+  };
+
+  const margins = getChartMargins();
+
+  // Render different chart types
+  const renderChart = () => {
+    switch (type) {
+      case 'line':
+        return (
+          <ResponsiveContainer width={width} height={height}>
+            <LineChart data={data} margin={margins}>
+              {showGrid && numericHeight >= 100 && <CartesianGrid {...gridStyle} />}
+              {numericHeight >= 60 && <XAxis dataKey={xAxisKey} tick={axisStyle} hide={numericHeight < 60} />}
+              {numericHeight >= 60 && <YAxis tick={axisStyle} hide={numericHeight < 60} label={numericHeight >= 150 ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined} />}
+              {showTooltip && <Tooltip content={<CustomTooltip />} />}
+              {showLegend && numericHeight >= 150 && <Legend wrapperStyle={legendStyle} />}
+              {dataKeys.map((key, index) => (
+                <Line
+                  key={key}
+                  type={curved ? 'monotone' : 'linear'}
+                  dataKey={key}
+                  stroke={colors[index % colors.length]}
+                  strokeWidth={numericHeight < 100 ? 1.5 : 2}
+                  dot={numericHeight < 100 ? false : { r: 4 }}
+                  activeDot={numericHeight < 100 ? false : { r: 6 }}
+                  animationDuration={animationDuration}
+                />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
+        );
+
+      case 'area':
+        return (
+          <ResponsiveContainer width={width} height={height}>
+            <AreaChart data={data} margin={margins}>
+              {gradient && (
+                <defs>
+                  {dataKeys.map((key, index) => (
+                    <linearGradient key={key} id={`gradient-${key}`} x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={colors[index % colors.length]} stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor={colors[index % colors.length]} stopOpacity={0.1}/>
+                    </linearGradient>
+                  ))}
+                </defs>
+              )}
+              {showGrid && numericHeight >= 100 && <CartesianGrid {...gridStyle} />}
+              {numericHeight >= 60 && <XAxis dataKey={xAxisKey} tick={axisStyle} hide={numericHeight < 60} />}
+              {numericHeight >= 60 && <YAxis tick={axisStyle} hide={numericHeight < 60} label={numericHeight >= 150 ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined} />}
+              {showTooltip && <Tooltip content={<CustomTooltip />} />}
+              {showLegend && numericHeight >= 150 && <Legend wrapperStyle={legendStyle} />}
+              {dataKeys.map((key, index) => (
+                <Area
+                  key={key}
+                  type={curved ? 'monotone' : 'linear'}
+                  dataKey={key}
+                  stackId={stacked ? '1' : undefined}
+                  stroke={colors[index % colors.length]}
+                  strokeWidth={numericHeight < 100 ? 1 : 2}
+                  fill={gradient ? `url(#gradient-${key})` : colors[index % colors.length]}
+                  fillOpacity={gradient ? 1 : 0.6}
+                  animationDuration={animationDuration}
+                />
+              ))}
+            </AreaChart>
+          </ResponsiveContainer>
+        );
+
+      case 'bar':
+        return (
+          <ResponsiveContainer width={width} height={height}>
+            <BarChart data={data} margin={margins}>
+              {showGrid && numericHeight >= 100 && <CartesianGrid {...gridStyle} />}
+              {numericHeight >= 60 && <XAxis dataKey={xAxisKey} tick={axisStyle} hide={numericHeight < 60} />}
+              {numericHeight >= 60 && <YAxis tick={axisStyle} hide={numericHeight < 60} label={numericHeight >= 150 ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined} />}
+              {showTooltip && <Tooltip content={<CustomTooltip />} />}
+              {showLegend && numericHeight >= 150 && <Legend wrapperStyle={legendStyle} />}
+              {dataKeys.map((key, index) => (
+                <Bar
+                  key={key}
+                  dataKey={key}
+                  stackId={stacked ? '1' : undefined}
+                  fill={colors[index % colors.length]}
+                  animationDuration={animationDuration}
+                  radius={numericHeight < 100 ? [2, 2, 0, 0] : [4, 4, 0, 0]}
+                />
+              ))}
+            </BarChart>
+          </ResponsiveContainer>
+        );
+
+      case 'pie':
+        return (
+          <ResponsiveContainer width={width} height={height}>
+            <PieChart margin={numericHeight < 150 ? { top: 0, right: 0, bottom: 0, left: 0 } : { top: 5, right: 5, bottom: 5, left: 5 }}>
+              <Pie
+                data={data}
+                cx={numericHeight < 150 && showLegend ? "35%" : "50%"}
+                cy="50%"
+                labelLine={false}
+                label={numericHeight >= 150 && !showLegend ? ({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%` : false}
+                outerRadius={numericHeight < 150 ? '85%' : 80}
+                fill="#8884d8"
+                dataKey={dataKeys[0] || 'value'}
+                animationDuration={animationDuration}
+              >
+                {data.map((_entry, index) => (
+                  <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                ))}
+              </Pie>
+              {showTooltip && <Tooltip content={<CustomTooltip />} />}
+              {showLegend && numericHeight < 150 && (
+                <Legend 
+                  layout="vertical" 
+                  align="right" 
+                  verticalAlign="middle"
+                  iconSize={10}
+                  wrapperStyle={{
+                    fontSize: '10px',
+                    paddingLeft: '10px'
+                  }}
+                />
+              )}
+              {showLegend && numericHeight >= 150 && (
+                <Legend 
+                  wrapperStyle={legendStyle}
+                />
+              )}
+            </PieChart>
+          </ResponsiveContainer>
+        );
+
+      case 'radar':
+        return (
+          <ResponsiveContainer width={width} height={height}>
+            <RadarChart data={data}>
+              <PolarGrid stroke={ODLTheme.colors.border} />
+              <PolarAngleAxis dataKey={xAxisKey} tick={axisStyle} />
+              <PolarRadiusAxis tick={axisStyle} />
+              {dataKeys.map((key, index) => {
+                // Use opposite colors for contrast (e.g., blue vs orange, green vs rose)
+                const radarColors = [
+                  chartColors.blue,    // Blue
+                  chartColors.orange,  // Orange (opposite of blue)
+                  chartColors.emerald, // Green
+                  chartColors.rose,    // Rose (opposite of green)
+                  chartColors.violet,  // Purple
+                  chartColors.amber,   // Amber (opposite of purple)
+                ];
+                return (
+                  <Radar
+                    key={key}
+                    name={key}
+                    dataKey={key}
+                    stroke={radarColors[index % radarColors.length]}
+                    fill={radarColors[index % radarColors.length]}
+                    fillOpacity={0.25 + (index * 0.15)}  // Varying opacity for better distinction
+                    strokeWidth={2}
+                    animationDuration={animationDuration}
+                  />
+                );
+              })}
+              {showLegend && <Legend wrapperStyle={legendStyle} />}
+              {showTooltip && <Tooltip content={<CustomTooltip />} />}
+            </RadarChart>
+          </ResponsiveContainer>
+        );
+
+      case 'scatter':
+        return (
+          <ResponsiveContainer width={width} height={height}>
+            <ScatterChart margin={margins}>
+              {showGrid && numericHeight >= 100 && <CartesianGrid {...gridStyle} />}
+              {numericHeight >= 60 && <XAxis type="number" dataKey={dataKeys[0]} tick={axisStyle} name={dataKeys[0]} hide={numericHeight < 60} />}
+              {numericHeight >= 60 && <YAxis type="number" dataKey={dataKeys[1]} tick={axisStyle} name={dataKeys[1]} hide={numericHeight < 60} />}
+              {showTooltip && <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />}
+              <Scatter name="Data" data={data} fill={colors[0]} animationDuration={animationDuration} />
+            </ScatterChart>
+          </ResponsiveContainer>
+        );
+
+      case 'composed':
+        return (
+          <ResponsiveContainer width={width} height={height}>
+            <ComposedChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              {showGrid && <CartesianGrid {...gridStyle} />}
+              <XAxis dataKey={xAxisKey} tick={axisStyle} />
+              <YAxis tick={axisStyle} />
+              {showTooltip && <Tooltip content={<CustomTooltip />} />}
+              {showLegend && <Legend wrapperStyle={legendStyle} />}
+              {dataKeys.length > 0 && (
+                <Bar dataKey={dataKeys[0]} fill={colors[0]} animationDuration={animationDuration} />
+              )}
+              {dataKeys.length > 1 && (
+                <Line type="monotone" dataKey={dataKeys[1]} stroke={colors[1]} animationDuration={animationDuration} />
+              )}
+              {dataKeys.length > 2 && (
+                <Area type="monotone" dataKey={dataKeys[2]} fill={colors[2]} stroke={colors[2]} animationDuration={animationDuration} />
+              )}
+            </ComposedChart>
+          </ResponsiveContainer>
+        );
+
+      case 'radial':
+        return (
+          <ResponsiveContainer width={width} height={height}>
+            <RadialBarChart 
+              cx={numericHeight < 150 && showLegend ? "35%" : "50%"} 
+              cy="50%" 
+              innerRadius={numericHeight < 150 ? "15%" : "20%"} 
+              outerRadius={numericHeight < 150 ? "85%" : "90%"} 
+              data={data}
+              margin={numericHeight < 150 ? { top: 0, right: 0, bottom: 0, left: 0 } : { top: 20, right: 20, bottom: 20, left: 20 }}
+            >
+              <RadialBar
+                label={numericHeight >= 150 && !showLegend ? { position: 'insideStart', fill: '#fff', fontSize: 12 } : false}
+                background={{ fill: ODLTheme.colors.background }}
+                dataKey={dataKeys[0] || 'value'}
+                animationDuration={animationDuration}
+              >
+                {data.map((_entry, index) => (
+                  <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                ))}
+              </RadialBar>
+              {showLegend && numericHeight < 150 && (
+                <Legend 
+                  layout="vertical" 
+                  align="right" 
+                  verticalAlign="middle"
+                  iconSize={10}
+                  wrapperStyle={{
+                    fontSize: '10px',
+                    paddingLeft: '10px'
+                  }}
+                />
+              )}
+              {showLegend && numericHeight >= 150 && (
+                <Legend 
+                  iconSize={18} 
+                  layout="horizontal" 
+                  verticalAlign="bottom" 
+                  align="center"
+                  wrapperStyle={{
+                    ...legendStyle,
+                    paddingTop: '20px'
+                  }} 
+                />
+              )}
+              {showTooltip && <Tooltip content={<CustomTooltip />} />}
+            </RadialBarChart>
+          </ResponsiveContainer>
+        );
+
+      case 'treemap':
+        return (
+          <ResponsiveContainer width={width} height={height}>
+            <Treemap
+              data={data}
+              dataKey={dataKeys[0] || 'value'}
+              aspectRatio={4 / 3}
+              stroke="#fff"
+              fill={colors[0]}
+              animationDuration={animationDuration}
+            >
+              {showTooltip && <Tooltip content={<CustomTooltip />} />}
+            </Treemap>
+          </ResponsiveContainer>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className={className} style={{ width, height }}>
+      {renderChart()}
+    </div>
+  );
+};
+
+export default Graph;

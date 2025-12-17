@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accordion Pa11y Test</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      #root {
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        margin-bottom: 2rem;
+        color: #333;
+      }
+
+      .test-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+      }
+
+      h2 {
+        margin-bottom: 1rem;
+        color: #555;
+        font-size: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import React from 'react';
+      import ReactDOM from 'react-dom/client';
+      import Accordion from '../src/components/Accordion/Accordion.tsx';
+
+      const TestComponent = () => {
+        const accordionItems = [
+          {
+            id: '1',
+            title: 'What is ODL Design System?',
+            content: 'ODL Design System is a comprehensive component library for building consistent user interfaces.'
+          },
+          {
+            id: '2',
+            title: 'How do I get started?',
+            content: 'To get started, install the package via npm and import the components you need.'
+          },
+          {
+            id: '3',
+            title: 'Is it accessible?',
+            content: 'Yes, all components are built with WCAG 2.1 AA compliance in mind.'
+          }
+        ];
+
+        const longContentItems = [
+          {
+            id: 'long1',
+            title: 'Section with long content',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
+          },
+          {
+            id: 'long2',
+            title: 'Another long section',
+            content: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.'
+          }
+        ];
+
+        const nestedItems = [
+          {
+            id: 'nested1',
+            title: 'Parent Item 1',
+            content: React.createElement('div', null,
+              'This contains nested content',
+              React.createElement('ul', null,
+                React.createElement('li', null, 'Nested item 1'),
+                React.createElement('li', null, 'Nested item 2'),
+                React.createElement('li', null, 'Nested item 3')
+              )
+            )
+          },
+          {
+            id: 'nested2',
+            title: 'Parent Item 2',
+            content: React.createElement('div', null,
+              React.createElement('strong', null, 'Important: '),
+              'This section contains formatted text with ',
+              React.createElement('em', null, 'emphasis'),
+              ' and other elements.'
+            )
+          }
+        ];
+
+        return React.createElement('div', { className: 'container' },
+          React.createElement('h1', null, 'Accordion Accessibility Test'),
+
+          // Test Case 1: Basic Accordion
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 1: Basic Accordion'),
+            React.createElement(Accordion, {
+              items: accordionItems
+            })
+          ),
+
+          // Test Case 2: Single Expand Mode
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 2: Single Expand Mode'),
+            React.createElement(Accordion, {
+              items: accordionItems,
+              allowMultiple: false
+            })
+          ),
+
+          // Test Case 3: Multiple Expand Mode
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 3: Multiple Expand Mode'),
+            React.createElement(Accordion, {
+              items: accordionItems,
+              allowMultiple: true,
+              defaultExpandedItems: ['1', '3']
+            })
+          ),
+
+          // Test Case 4: Long Content
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 4: Long Content'),
+            React.createElement(Accordion, {
+              items: longContentItems
+            })
+          ),
+
+          // Test Case 5: Nested Content
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 5: Nested Content'),
+            React.createElement(Accordion, {
+              items: nestedItems
+            })
+          ),
+
+          // Test Case 6: Custom Icons
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 6: With Icons'),
+            React.createElement(Accordion, {
+              items: accordionItems.map(item => ({
+                ...item,
+                icon: '📋'
+              }))
+            })
+          ),
+
+          // Test Case 7: Disabled State
+          React.createElement('div', { className: 'test-section' },
+            React.createElement('h2', null, 'Test Case 7: Disabled Items'),
+            React.createElement(Accordion, {
+              items: accordionItems.map((item, index) => ({
+                ...item,
+                disabled: index === 1
+              }))
+            })
+          )
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(TestComponent));
+    </script>
+  </body>
+</html>

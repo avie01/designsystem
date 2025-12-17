@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChartCard Pa11y Test</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      #root {
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        margin-bottom: 2rem;
+        color: #333;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      h2 {
+        margin: 2rem 0 1rem;
+        color: #555;
+        font-size: 1.2rem;
+        grid-column: 1 / -1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import React from 'react';
+      import ReactDOM from 'react-dom/client';
+      import ChartCard from '../src/components/ChartCard/ChartCard.tsx';
+
+      const TestComponent = () => {
+        const sparklineData1 = [10, 15, 8, 22, 18, 25, 20, 28, 24, 30, 35, 32];
+        const sparklineData2 = [100, 95, 98, 88, 92, 85, 90, 82, 78, 75, 72, 70];
+        const sparklineData3 = [50, 50, 51, 52, 51, 53, 52, 54, 53, 55, 54, 56];
+
+        return React.createElement('div', { className: 'container' },
+          React.createElement('h1', null, 'ChartCard Accessibility Test'),
+
+          React.createElement('div', { className: 'grid' },
+            // Test Case 1: Basic chart card with upward trend
+            React.createElement('div', null,
+              React.createElement('h2', null, 'Test 1: Upward Trend'),
+              React.createElement(ChartCard, {
+                title: 'Total Revenue',
+                subtitle: 'Monthly revenue overview',
+                value: '$125,430',
+                change: {
+                  value: 2340,
+                  percentage: 12.5,
+                  trend: 'up'
+                },
+                timeframe: 'Last 30 days',
+                sparklineData: sparklineData1,
+                type: 'line',
+                color: '#24A148',
+                icon: 'chart-line',
+                actions: {
+                  onViewDetails: () => console.log('View details'),
+                  onExport: () => console.log('Export'),
+                  onRefresh: () => console.log('Refresh')
+                },
+                onSave: (saved) => console.log('Saved:', saved)
+              })
+            ),
+
+            // Test Case 2: Chart card with downward trend
+            React.createElement('div', null,
+              React.createElement('h2', null, 'Test 2: Downward Trend'),
+              React.createElement(ChartCard, {
+                title: 'Active Users',
+                subtitle: 'Daily active users',
+                value: '8,245',
+                change: {
+                  value: -523,
+                  percentage: -6.3,
+                  trend: 'down'
+                },
+                timeframe: 'Last 7 days',
+                sparklineData: sparklineData2,
+                type: 'area',
+                color: '#DA1E28',
+                icon: 'user-multiple',
+                saved: true
+              })
+            ),
+
+            // Test Case 3: Neutral trend with bar chart
+            React.createElement('div', null,
+              React.createElement('h2', null, 'Test 3: Neutral Trend'),
+              React.createElement(ChartCard, {
+                title: 'API Calls',
+                subtitle: 'Hourly API usage',
+                value: '1.2M',
+                change: {
+                  value: 0,
+                  percentage: 0,
+                  trend: 'neutral'
+                },
+                timeframe: 'Last hour',
+                sparklineData: sparklineData3,
+                type: 'bar',
+                color: '#8D8D8D',
+                icon: 'api'
+              })
+            ),
+
+            // Test Case 4: Minimal configuration
+            React.createElement('div', null,
+              React.createElement('h2', null, 'Test 4: Minimal Config'),
+              React.createElement(ChartCard, {
+                title: 'Simple Metric',
+                value: '42'
+              })
+            ),
+
+            // Test Case 5: With custom chart content
+            React.createElement('div', null,
+              React.createElement('h2', null, 'Test 5: Custom Chart'),
+              React.createElement(ChartCard, {
+                title: 'Custom Visualization',
+                subtitle: 'With embedded content',
+                value: '99.9%',
+                chart: React.createElement('div', {
+                  style: {
+                    width: '100%',
+                    height: '100px',
+                    background: 'linear-gradient(to right, #3560C1, #24A148)',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white'
+                  },
+                  'aria-label': 'Custom chart visualization'
+                }, 'Custom Chart Content')
+              })
+            ),
+
+            // Test Case 6: Long text content
+            React.createElement('div', null,
+              React.createElement('h2', null, 'Test 6: Long Content'),
+              React.createElement(ChartCard, {
+                title: 'Very Long Title That Should Wrap Properly in the Card Header',
+                subtitle: 'This is an extremely long subtitle that contains detailed information about the metric being displayed',
+                value: '$999,999,999.99',
+                change: {
+                  value: 123456789,
+                  percentage: 999.99,
+                  trend: 'up'
+                },
+                timeframe: 'From January 1st, 2024 to December 31st, 2024',
+                sparklineData: sparklineData1
+              })
+            )
+          )
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(TestComponent));
+    </script>
+  </body>
+</html>

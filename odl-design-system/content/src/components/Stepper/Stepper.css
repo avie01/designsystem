@@ -1,0 +1,353 @@
+/* Stepper - ODL Compliant CSS */
+
+/* Base stepper styles */
+.stepper {
+  position: relative;
+  font-family: var(--odl-font-family-sans);
+}
+
+.stepper--horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.stepper--vertical {
+  display: flex;
+  flex-direction: column;
+  gap: var(--odl-spacing-6);
+}
+
+.stepper--compact.stepper--vertical {
+  gap: var(--odl-spacing-4);
+}
+
+.stepper--fill-space {
+  width: 100%;
+  height: 100%;
+}
+
+.stepper--horizontal.stepper--fill-space {
+  justify-content: space-between;
+}
+
+/* Size variants */
+.stepper--small {
+  --stepper-circle-size: 32px;
+  --stepper-icon-size: 14px;
+  --stepper-font-size: var(--odl-font-size-xs);
+  --stepper-gap: var(--odl-spacing-2);
+}
+
+.stepper--medium {
+  --stepper-circle-size: 44px;
+  --stepper-icon-size: 20px;
+  --stepper-font-size: var(--odl-font-size-base);
+  --stepper-gap: var(--odl-spacing-3);
+}
+
+.stepper--large {
+  --stepper-circle-size: 52px;
+  --stepper-icon-size: 24px;
+  --stepper-font-size: var(--odl-font-size-md);
+  --stepper-gap: var(--odl-spacing-4);
+}
+
+.stepper--compact {
+  --stepper-circle-size: 32px;
+  --stepper-icon-size: 14px;
+  --stepper-font-size: var(--odl-font-size-xs);
+  --stepper-gap: var(--odl-spacing-2);
+}
+
+/* State modifiers */
+.stepper--disabled {
+  opacity: var(--odl-opacity-disabled);
+  pointer-events: none;
+}
+
+.stepper--error .stepper__step--current .stepper__circle {
+  border-color: var(--odl-error);
+  background-color: var(--odl-error);
+}
+
+/* Background line for horizontal stepper */
+.stepper__background-line {
+  position: absolute;
+  height: 2px;
+  background-color: var(--odl-border);
+  z-index: 0;
+}
+
+.stepper--horizontal .stepper__background-line {
+  top: calc(var(--stepper-circle-size) / 2 - 1px);
+  left: calc(var(--stepper-circle-size) / 2);
+  right: calc(var(--stepper-circle-size) / 2);
+}
+
+/* Progress lines for finished steps */
+.stepper__progress-line {
+  position: absolute;
+  height: 2px;
+  background-color: var(--odl-success);
+  z-index: 1;
+  transition: width 0.7s ease;
+}
+
+.stepper--horizontal .stepper__progress-line {
+  top: calc(var(--stepper-circle-size) / 2 - 1px);
+}
+
+/* Step container */
+.stepper__step {
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: var(--odl-transition-color);
+  cursor: default;
+}
+
+.stepper--horizontal .stepper__step {
+  flex-direction: column;
+  flex: 1;
+  text-align: center;
+}
+
+.stepper--vertical .stepper__step {
+  flex-direction: row;
+  gap: var(--stepper-gap);
+  min-height: var(--stepper-circle-size);
+  position: relative;
+  padding-bottom: var(--stepper-gap);
+}
+
+.stepper__step--clickable {
+  cursor: pointer;
+}
+
+.stepper__step--clickable:hover {
+  opacity: 0.8;
+}
+
+.stepper__step--clickable:focus-visible {
+  outline: var(--odl-focus-border-width) solid var(--odl-focus-border-color);
+  outline-offset: var(--odl-focus-outline-offset);
+  border-radius: var(--odl-border-radius-base);
+}
+
+.stepper__step--clickable:active {
+  opacity: 0.9;
+}
+
+/* Step circle */
+.stepper__circle-container {
+  position: relative;
+  z-index: 2;
+}
+
+.stepper__circle {
+  width: var(--stepper-circle-size);
+  height: var(--stepper-circle-size);
+  min-width: var(--stepper-circle-size);
+  min-height: var(--stepper-circle-size);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--stepper-font-size);
+  font-weight: var(--odl-font-weight-medium);
+  transition: all 0.7s ease;
+  border: 2px solid var(--odl-border);
+  background-color: var(--odl-white);
+  color: var(--odl-text-secondary);
+}
+
+.stepper__number {
+  font-size: var(--stepper-font-size);
+  font-weight: var(--odl-font-weight-semibold);
+  line-height: 1;
+}
+
+/* Circle states */
+.stepper__circle--finished {
+  background-color: var(--odl-success);
+  border-color: var(--odl-success);
+  color: var(--odl-white);
+}
+
+.stepper__circle--current {
+  background-color: var(--odl-primary);
+  border-color: var(--odl-primary);
+  color: var(--odl-white);
+  font-weight: var(--odl-font-weight-semibold);
+}
+
+.stepper__circle--error {
+  background-color: var(--odl-error);
+  border-color: var(--odl-error);
+  color: var(--odl-white);
+}
+
+.stepper__circle--waiting {
+  background-color: var(--odl-white);
+  border-color: var(--odl-border);
+  color: var(--odl-text-secondary);
+}
+
+/* Vertical connector lines */
+.stepper__vertical-line {
+  position: absolute;
+  left: calc(var(--stepper-circle-size) / 2 - 1px);
+  top: var(--stepper-circle-size);
+  height: 100vh; /* Make it very tall to span any content */
+  width: 2px;
+  background-color: var(--odl-border);
+  z-index: 0; /* Behind content */
+  transition: background-color 0.7s ease;
+}
+
+.stepper__vertical-line--finished {
+  background-color: var(--odl-success);
+}
+
+/* Step content */
+.stepper__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--odl-spacing-1);
+  width: 100%;
+}
+
+.stepper--horizontal .stepper__content {
+  align-items: center;
+  text-align: center;
+  margin-top: var(--odl-spacing-3);
+}
+
+.stepper--vertical .stepper__content {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.stepper__title {
+  font-size: var(--stepper-font-size);
+  font-weight: var(--odl-font-weight-medium);
+  color: var(--odl-text-primary);
+  margin: 0;
+  line-height: var(--odl-line-height-tight);
+}
+
+.stepper__title--current {
+  font-weight: var(--odl-font-weight-semibold);
+}
+
+.stepper__title--waiting {
+  color: var(--odl-text-secondary);
+}
+
+.stepper__description {
+  font-size: calc(var(--stepper-font-size) * 0.875);
+  color: var(--odl-text-secondary);
+  margin: 0;
+  line-height: var(--odl-line-height-normal);
+}
+
+/* Expanded content */
+.stepper__expanded-content {
+  margin-top: var(--odl-spacing-4);
+  padding: var(--odl-spacing-4);
+  background-color: var(--odl-surface);
+  border-radius: var(--odl-border-radius-lg);
+  border: var(--odl-border-width-thin) solid var(--odl-border);
+  text-align: left;
+}
+
+.stepper--vertical .stepper__expanded-content {
+  width: 400px;
+}
+
+.stepper--horizontal .stepper__expanded-content {
+  width: auto;
+}
+
+.stepper__actions {
+  margin-top: var(--odl-spacing-4);
+  display: flex;
+  gap: var(--odl-spacing-3);
+}
+
+.stepper--horizontal .stepper__actions {
+  justify-content: center;
+}
+
+.stepper--vertical .stepper__actions {
+  justify-content: flex-start;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .stepper--horizontal {
+    flex-direction: column;
+    gap: var(--odl-spacing-4);
+  }
+  
+  .stepper--horizontal .stepper__step {
+    flex-direction: row;
+    text-align: left;
+  }
+  
+  .stepper--horizontal .stepper__content {
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 0;
+    margin-left: var(--odl-spacing-3);
+  }
+  
+  .stepper--horizontal .stepper__background-line,
+  .stepper--horizontal .stepper__progress-line {
+    display: none;
+  }
+  
+  .stepper--horizontal .stepper__vertical-line {
+    display: block;
+  }
+  
+  .stepper--horizontal .stepper__expanded-content {
+    width: 100%;
+  }
+  
+  .stepper--horizontal .stepper__actions {
+    justify-content: flex-start;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .stepper__circle {
+    border-width: var(--odl-border-width-base);
+  }
+  
+  .stepper__step--clickable:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+/* Error message */
+.stepper__error {
+  color: var(--odl-error);
+  font-size: var(--odl-font-size-sm);
+  margin-bottom: var(--odl-spacing-3);
+  padding: var(--odl-spacing-2);
+  background-color: var(--odl-error-light);
+  border: var(--odl-border-width-thin) solid var(--odl-error-border);
+  border-radius: var(--odl-border-radius-base);
+  font-family: var(--odl-font-family-sans);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .stepper__step,
+  .stepper__circle {
+    transition: none;
+  }
+}

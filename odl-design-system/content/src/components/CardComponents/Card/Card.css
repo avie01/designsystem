@@ -1,0 +1,96 @@
+/* Card Component Styles - ODL Compliant */
+
+.odl-card {
+  background: var(--color-white);
+  border-radius: var(--border-radius-md);
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+/* Padding Variants */
+.odl-card-padding-none {
+  padding: 0;
+}
+
+.odl-card-padding-sm {
+  padding: var(--spacing-sm);
+}
+
+.odl-card-padding-md {
+  padding: var(--spacing-md);
+}
+
+.odl-card-padding-lg {
+  padding: var(--spacing-lg);
+}
+
+.odl-card-padding-xl {
+  padding: var(--spacing-xl);
+}
+
+/* Border */
+.odl-card-bordered {
+  border: 1px solid var(--color-light-deco);
+}
+
+/* Shadow Variants */
+.odl-card-shadow-none {
+  box-shadow: none;
+}
+
+.odl-card-shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.odl-card-shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.odl-card-shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.odl-card-shadow-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+/* Hoverable State */
+.odl-card-hoverable {
+  transition: all var(--transition-fast);
+}
+
+.odl-card-hoverable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Clickable State */
+.odl-card-clickable {
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.odl-card-clickable:focus {
+  outline: 2px solid var(--color-blue-default);
+  outline-offset: 2px;
+}
+
+.odl-card-clickable:active {
+  transform: translateY(0);
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] .odl-card {
+  background: var(--color-night);
+  color: var(--color-white);
+}
+
+[data-theme="dark"] .odl-card-bordered {
+  border-color: var(--color-twilight);
+}
+
+/* High Contrast Support */
+[data-theme="high-contrast-light"] .odl-card-bordered,
+[data-theme="high-contrast-dark"] .odl-card-bordered {
+  border-width: 2px;
+}

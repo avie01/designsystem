@@ -1,0 +1,31 @@
+/* Import Carbon Design System styles */
+/* @import '@carbon/styles/css/styles.css'; -- Disabled: Package not installed */
+
+/* Override Carbon default border radius to match authentic Carbon design (no rounded corners) */
+.cds--text-input,
+.cds--text-input-wrapper,
+input.cds--text-input,
+.cds--select-input,
+.cds--dropdown,
+.cds--dropdown-list,
+.cds--list-box,
+.cds--list-box__field,
+.cds--combo-box .cds--text-input {
+  border-radius: 0 !important;
+}
+
+/* Ensure focus states also have no border radius */
+.cds--text-input:focus,
+.cds--select-input:focus,
+.cds--dropdown:focus,
+.cds--list-box__field:focus {
+  border-radius: 0 !important;
+}
+
+/* Remove border radius from error states */
+.cds--text-input--invalid,
+.cds--text-input--invalid:focus,
+.cds--select-input--invalid,
+.cds--dropdown--invalid {
+  border-radius: 0 !important;
+}

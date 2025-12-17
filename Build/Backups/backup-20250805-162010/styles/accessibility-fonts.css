@@ -1,0 +1,42 @@
+/* Font imports for accessibility options */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic-Regular.woff2') format('woff2'),
+       url('/fonts/OpenDyslexic-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic-Bold.woff2') format('woff2'),
+       url('/fonts/OpenDyslexic-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('/fonts/Atkinson-Hyperlegible-Regular.woff2') format('woff2'),
+       url('/fonts/Atkinson-Hyperlegible-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('/fonts/Atkinson-Hyperlegible-Bold.woff2') format('woff2'),
+       url('/fonts/Atkinson-Hyperlegible-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Define font fallbacks */
+:root {
+  --font-family-dyslexic: 'OpenDyslexic', 'Arial', sans-serif;
+  --font-family-hyperlegible: 'Atkinson Hyperlegible', 'Arial', sans-serif;
+}

@@ -1,0 +1,139 @@
+.chartCard {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  position: relative;
+}
+
+.chartCard:hover {
+  background-color: #f8f8f8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.titleContainer {
+  flex: 1;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #161616;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: #6F6F6F;
+  margin: 4px 0 0 0;
+}
+
+.saveButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.valueSection {
+  margin-bottom: 16px;
+}
+
+.value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #161616;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.changeContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.changeBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.changeBadgeUp {
+  background-color: #DEFBE6;
+}
+
+.changeBadgeDown {
+  background-color: #FFD7D9;
+}
+
+.changeBadgeNeutral {
+  background-color: #F4F4F4;
+}
+
+.changePercentage {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.changeText {
+  font-size: 12px;
+  color: #6F6F6F;
+}
+
+.chartArea {
+  margin-bottom: 16px;
+  min-height: 60px;
+  position: relative;
+}
+
+.sparkline {
+  display: block;
+}
+
+.timeframeBadge {
+  margin-bottom: 16px;
+}
+
+.timeframeLabel {
+  padding: 4px 12px;
+  background-color: #F4F4F4;
+  color: #525252;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.actionsContainer {
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.actionButton {
+  flex: 1;
+}
