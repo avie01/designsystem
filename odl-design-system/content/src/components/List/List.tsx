@@ -225,11 +225,16 @@ const List: React.FC<ListProps> = ({
               }}
             >
               <Icon
-                name={isExpanded ? "chevron-down" : "chevron-right"}
+                name="chevron-right"
                 size={size === 'sm' ? parseInt(ODLTypography.fontSize.xs) :
                       size === 'lg' ? parseInt(ODLTypography.fontSize.base) :
                       parseInt(ODLTypography.fontSize.sm)}
                 aria-hidden="true"
+                style={{
+                  transition: 'transform 0.4s ease-in-out',
+                  transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                  display: 'inline-block'
+                }}
               />
             </button>
           )}
