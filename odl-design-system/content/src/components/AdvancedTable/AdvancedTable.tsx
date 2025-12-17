@@ -457,9 +457,9 @@ function AdvancedTable<T extends TableRowData>({
     <div className={clsx('bg-white rounded-lg shadow-sm border border-gray-200', className)}>
       {/* Bulk Actions Bar */}
       {showBulkActions && selectedRows.size > 0 && bulkActions && bulkActions.length > 0 && (
-        <div className="bg-blue-50 border-b border-blue-200 px-6 py-3">
+        <div style={{ backgroundColor: '#E3F2FD', borderBottom: `1px solid #90CAF9`, padding: `${ODLTheme.spacing[3]} ${ODLTheme.spacing[6]}` }}>
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-blue-700">
+            <span style={{ fontSize: ODLTheme.typography.fontSize.sm, fontWeight: 500, color: '#1565C0' }}>
               {selectedRows.size} item{selectedRows.size !== 1 ? 's' : ''} selected
             </span>
             <div className="flex items-center gap-2">
@@ -487,31 +487,58 @@ function AdvancedTable<T extends TableRowData>({
 
       {/* Table Header */}
       {(title || subtitle || showSearch || showColumnSelection || showExport) && (
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between mb-4">
+        <div style={{ padding: ODLTheme.spacing[6], borderBottom: `1px solid ${ODLTheme.colors.border}` }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: ODLTheme.spacing[4] }}>
             <div>
-              {title && <h3 className="text-lg font-semibold text-gray-800">{title}</h3>}
-              {subtitle && <p className="text-sm text-gray-600 mt-1">{subtitle}</p>}
+              {title && <h3 style={{ fontSize: ODLTheme.typography.fontSize.lg, fontWeight: 600, color: ODLTheme.colors.text.primary }}>{title}</h3>}
+              {subtitle && <p style={{ fontSize: ODLTheme.typography.fontSize.sm, color: ODLTheme.colors.text.secondary, marginTop: ODLTheme.spacing[1] }}>{subtitle}</p>}
             </div>
             <div className="flex items-center space-x-3">
               {showSearch && (
                 <div className="relative">
-                  <Icon name="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" aria-hidden="true" />
+                  <Icon name="search" style={{ position: 'absolute', left: ODLTheme.spacing[3], top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', color: ODLTheme.colors.text.secondary }} aria-hidden="true" />
                   <input
                     type="text"
                     placeholder="Search..."
                     aria-label="Search table"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 pr-4 py-2 bg-gray-100 border-0 border-b-2 border-gray-300 rounded-none focus:outline-none focus:border-blue-500 focus:bg-white hover:bg-white hover:border-gray-400 transition-all duration-200 text-sm"
-                    style={{ backgroundColor: '#f5f5f5' }}
+                    style={{
+                      paddingLeft: `${ODLTheme.spacing[10]}`,
+                      paddingRight: ODLTheme.spacing[4],
+                      paddingTop: ODLTheme.spacing[2],
+                      paddingBottom: ODLTheme.spacing[2],
+                      backgroundColor: ODLTheme.colors.surface,
+                      border: 'none',
+                      borderBottom: `2px solid ${ODLTheme.colors.border}`,
+                      borderRadius: '0',
+                      outline: 'none',
+                      fontSize: ODLTheme.typography.fontSize.sm,
+                      transition: ODLTheme.transitions.base
+                    }}
                   />
                 </div>
               )}
               {(showColumnSelection || showColumnToggle) && (
                 <button
                   onClick={() => setShowColumnModal(true)}
-                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded transition-colors"
+                  style={{
+                    padding: ODLTheme.spacing[2],
+                    color: ODLTheme.colors.text.secondary,
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    borderRadius: ODLTheme.borders.radius.base,
+                    cursor: 'pointer',
+                    transition: ODLTheme.transitions.base
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = ODLTheme.colors.text.primary;
+                    e.currentTarget.style.backgroundColor = ODLTheme.colors.surface;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = ODLTheme.colors.text.secondary;
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }}
                   title="Columns"
                 >
                   <Icon name="column" size={20} />
@@ -521,7 +548,23 @@ function AdvancedTable<T extends TableRowData>({
                 <>
                   <button
                     onClick={() => handleExport('csv')}
-                    className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded transition-colors"
+                    style={{
+                      padding: ODLTheme.spacing[2],
+                      color: ODLTheme.colors.text.secondary,
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      borderRadius: ODLTheme.borders.radius.base,
+                      cursor: 'pointer',
+                      transition: ODLTheme.transitions.base
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = ODLTheme.colors.text.primary;
+                      e.currentTarget.style.backgroundColor = ODLTheme.colors.surface;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = ODLTheme.colors.text.secondary;
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
                     title="Export CSV"
                   >
                     <Icon name="download" size={20} />
@@ -529,7 +572,23 @@ function AdvancedTable<T extends TableRowData>({
                   {exportFormats.includes('json') && (
                     <button
                       onClick={() => handleExport('json')}
-                      className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded transition-colors"
+                      style={{
+                        padding: ODLTheme.spacing[2],
+                        color: ODLTheme.colors.text.secondary,
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        borderRadius: ODLTheme.borders.radius.base,
+                        cursor: 'pointer',
+                        transition: ODLTheme.transitions.base
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = ODLTheme.colors.text.primary;
+                        e.currentTarget.style.backgroundColor = ODLTheme.colors.surface;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = ODLTheme.colors.text.secondary;
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                      }}
                       title="Export JSON"
                     >
                       <Icon name="code" size={20} />
@@ -545,17 +604,14 @@ function AdvancedTable<T extends TableRowData>({
       {/* Table */}
       <div className="overflow-x-auto">
         <table
-          className={clsx(
-            'w-full table-fixed',
-            compact ? 'text-xs' : 'text-xs',
-            bordered && 'border border-gray-200'
-          )}
+          className="w-full table-fixed"
+          style={{ fontSize: ODLTheme.typography.fontSize.xs, border: bordered ? `1px solid ${ODLTheme.colors.border}` : 'none' }}
           aria-label={ariaLabel}
         >
-          <thead className="bg-gray-50">
+          <thead style={{ backgroundColor: ODLTheme.colors.background }}>
             <tr>
               {selectable && (
-                <th className="px-6 py-3 text-left w-12">
+                <th style={{ padding: `${ODLTheme.spacing[3]} ${ODLTheme.spacing[6]}`, textAlign: 'left', width: '48px' }}>
                   <input
                     type="checkbox"
                     checked={selectedRows.size === data.length && data.length > 0}
@@ -568,15 +624,29 @@ function AdvancedTable<T extends TableRowData>({
               {visibleColumns.map((column, colIndex) => (
                 <th
                   key={column.key}
-                  className={clsx(
-                    'px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap relative',
-                    column.alignRight ? 'text-right' : 'text-left',
-                    column.sortable && 'cursor-pointer hover:bg-gray-100'
-                  )}
                   style={{
-                    width: getColumnWidth(column),
-                    minWidth: column.minWidth ? `${column.minWidth}px` : undefined,
-                    maxWidth: column.maxWidth ? `${column.maxWidth}px` : undefined,
+                    padding: `${ODLTheme.spacing[3]} ${ODLTheme.spacing[6]}`,
+                    fontSize: ODLTheme.typography.fontSize.xs,
+                    fontWeight: 600,
+                    color: ODLTheme.colors.text.secondary,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    whiteSpace: 'nowrap',
+                    position: 'relative',
+                    textAlign: column.alignRight ? 'right' : 'left',
+                    cursor: column.sortable ? 'pointer' : 'default',
+                    backgroundColor: column.sortable ? ODLTheme.colors.surface : 'transparent',
+                    transition: ODLTheme.transitions.base
+                  }}
+                  onMouseEnter={(e) => {
+                    if (column.sortable) {
+                      e.currentTarget.style.backgroundColor = '#E0E0E0';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (column.sortable) {
+                      e.currentTarget.style.backgroundColor = ODLTheme.colors.surface;
+                    }
                   }}
                   onClick={() => column.sortable && handleSort(column.key)}
                 >
@@ -618,7 +688,7 @@ function AdvancedTable<T extends TableRowData>({
               ))}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody style={{ backgroundColor: 'white', borderTop: `1px solid ${ODLTheme.colors.border}` }}>
             {currentData.map((item, index) => {
               const rowKey = getKey(item, startIndex + index);
               const isSelected = selectedRows.has(rowKey);
