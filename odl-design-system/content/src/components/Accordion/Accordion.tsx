@@ -135,12 +135,12 @@ const Accordion: React.FC<AccordionProps> = ({
           
           {hasContent && (
             <Icon
-              name={isOpen ? 'chevron-down' : 'chevron-right'}
+              name="chevron-right"
               size={16}
               color={variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.grey700}
               style={{
                 transition: 'transform 0.4s ease-in-out',
-                transform: isOpen ? 'rotate(0deg)' : 'rotate(0deg)'
+                transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)'
               }}
             />
           )}
