@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import BackToTop from './BackToTop';
+import { ODLTheme } from '../../styles/ODLTheme';
 
 const meta: Meta<typeof BackToTop> = {
   title: 'Design System/Components/BackToTop',
@@ -52,14 +53,14 @@ export const WithInstructions: Story = {
       <div style={{
         position: 'sticky',
         top: 0,
-        backgroundColor: '#4a90e2',
+        backgroundColor: ODLTheme.colors.primary,
         color: 'white',
         padding: '16px',
         textAlign: 'center',
         zIndex: 100,
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
       }}>
-        <strong>Scroll down one full viewport height to see the Back to Top button appear in the bottom right</strong>
+        <strong>Scroll down to see the Back to Top button appear in the bottom right</strong>
       </div>
       <LongContent />
       <BackToTop />
@@ -266,13 +267,13 @@ export const ProductCatalog: Story = {
         position: 'sticky',
         top: 0,
         backgroundColor: 'white',
-        borderBottom: '2px solid #e0e0e0',
+        borderBottom: `2px solid ${ODLTheme.colors.border}`,
         padding: '20px',
         zIndex: 10,
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
       }}>
         <h1 style={{ margin: 0 }}>Product Catalog</h1>
-        <p style={{ margin: '8px 0 0 0', color: '#666' }}>Browse our extensive collection</p>
+        <p style={{ margin: '8px 0 0 0', color: ODLTheme.colors.text.secondary }}>Browse our extensive collection</p>
       </div>
 
       <div style={{
@@ -283,7 +284,7 @@ export const ProductCatalog: Story = {
       }}>
         {Array.from({ length: 48 }, (_, i) => (
           <div key={i} style={{
-            border: '1px solid #e0e0e0',
+            border: `1px solid ${ODLTheme.colors.border}`,
             borderRadius: '8px',
             overflow: 'hidden',
             backgroundColor: 'white'
@@ -302,10 +303,10 @@ export const ProductCatalog: Story = {
             </div>
             <div style={{ padding: '16px' }}>
               <h2 style={{ margin: '0 0 8px 0', fontSize: '16px' }}>Product {i + 1}</h2>
-              <p style={{ margin: '0', color: '#666', fontSize: '14px' }}>
+              <p style={{ margin: '0', color: ODLTheme.colors.text.secondary, fontSize: '14px' }}>
                 Description of product {i + 1}. High quality item with great features.
               </p>
-              <p style={{ margin: '8px 0 0 0', fontWeight: 'bold', color: '#4a90e2' }}>
+              <p style={{ margin: '8px 0 0 0', fontWeight: 'bold', color: ODLTheme.colors.primary }}>
                 ${(Math.random() * 100 + 20).toFixed(2)}
               </p>
             </div>
