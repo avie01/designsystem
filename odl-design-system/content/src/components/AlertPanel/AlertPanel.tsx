@@ -155,10 +155,7 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
                         </p>
                       </div>
                       <Button
-                        onClick={(e) => {
-                          e.stopPropagation?.();
-                          onAlertDismiss(alert.id);
-                        }}
+                        onClick={() => onAlertDismiss(alert.id)}
                         className={styles.dismissButton}
                         aria-label="Dismiss alert"
                         variant="ghost"
@@ -195,10 +192,7 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
                         </p>
                       </div>
                       <Button
-                        onClick={(e) => {
-                          e.stopPropagation?.();
-                          onAlertDismiss(alert.id);
-                        }}
+                        onClick={() => onAlertDismiss(alert.id)}
                         className={styles.dismissButton}
                         aria-label="Dismiss alert"
                         variant="ghost"
