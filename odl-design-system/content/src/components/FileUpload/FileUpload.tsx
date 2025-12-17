@@ -27,53 +27,29 @@ export interface AIAnalysisResult {
 }
 
 export interface FileUploadProps {
-  /** Display variant */
   variant?: FileUploadVariant;
-  /** Label for the upload component */
   label?: string;
-  /** Helper text below dropzone */
   helperText?: string;
-  /** Accepted file types (e.g., ".pdf,.doc" or "image/*") */
   accept?: string;
-  /** Allow multiple file selection */
   multiple?: boolean;
-  /** Maximum file size in bytes */
   maxSize?: number;
-  /** Maximum number of files */
   maxFiles?: number;
-  /** Controlled files array */
   value?: UploadedFile[];
-  /** Callback when files change */
   onChange?: (files: UploadedFile[]) => void;
-  /** Callback when files are selected (before processing) */
   onFilesSelected?: (files: File[]) => void;
-  /** Callback when a file is removed */
   onFileRemove?: (fileId: string, file: File) => void;
-  /** Upload handler - return promise that resolves when upload complete */
   onUpload?: (file: File, onProgress: (progress: number) => void) => Promise<void>;
-  /** AI analysis handler - called after upload for document understanding */
   onAnalyze?: (file: File) => Promise<AIAnalysisResult>;
-  /** Enable AI analysis automatically after upload */
   enableAI?: boolean;
-  /** Whether the component is disabled */
   disabled?: boolean;
-  /** Error state */
   error?: boolean;
-  /** Error message */
   errorMessage?: string;
-  /** Size variant */
   size?: 'sm' | 'md' | 'lg';
-  /** Show file list */
   showFileList?: boolean;
-  /** Custom dropzone heading text */
   dropzoneText?: string;
-  /** Custom dropzone description text (use {browse} placeholder for link) */
   dropzoneSubtext?: string;
-  /** Custom button text for button variant */
   buttonText?: string;
-  /** Additional CSS classes */
   className?: string;
-  /** Full width */
   fullWidth?: boolean;
 }
 
@@ -109,7 +85,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
   const dropzoneRef = useRef<HTMLDivElement>(null);
   const dragCounter = useRef(0);
 
-  // Generate unique IDs for aria-describedby and aria-live
   const instanceId = useRef(`file-upload-${Math.random().toString(36).substr(2, 9)}`);
   const helperId = `${instanceId.current}-helper`;
   const errorId = `${instanceId.current}-error`;
@@ -190,7 +165,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     setFiles(newFilesList);
     onFilesSelected?.(fileArray);
 
-    // Auto-upload
     if (onUpload) {
       for (const uploadedFile of processedFiles) {
         if (uploadedFile.status === 'pending') {
@@ -201,7 +175,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
             });
             setFiles(prev => prev.map(f => f.id === uploadedFile.id ? { ...f, status: 'complete', progress: 100 } : f));
 
-            // AI Analysis after upload
             if (enableAI && onAnalyze) {
               setFiles(prev => prev.map(f => f.id === uploadedFile.id ? { ...f, status: 'analyzing' } : f));
               try {
@@ -219,7 +192,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     }
   }, [files, multiple, maxFiles, onFilesSelected, onUpload, onAnalyze, enableAI]);
 
-  // Fix drag-leave flicker: use counter to track nested drag events
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -281,7 +253,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     return 'document';
   };
 
-  // Cleanup previews
   useEffect(() => {
     return () => {
       files.forEach(f => {
@@ -304,7 +275,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     />
   );
 
-  // Build aria-describedby value
   const getAriaDescribedBy = () => {
     const ids: string[] = [];
     if (helperText && !errorMessage) ids.push(helperId);
@@ -312,7 +282,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     return ids.length > 0 ? ids.join(' ') : undefined;
   };
 
-  // VARIANT: Button only
   if (variant === 'button') {
     return (
       <div className={`file-upload file-upload--button ${fullWidth ? 'file-upload--full-width' : ''} ${className || ''}`}>
@@ -339,7 +308,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     );
   }
 
-  // VARIANT: Compact (inline for forms/drawers)
   if (variant === 'compact') {
     return (
       <div className={`file-upload file-upload--compact ${fullWidth ? 'file-upload--full-width' : ''} ${className || ''}`}>
@@ -372,7 +340,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     );
   }
 
-  // VARIANT: Picture card (image grid with previews)
   if (variant === 'picture-card') {
     return (
       <div className={`file-upload file-upload--picture-card ${fullWidth ? 'file-upload--full-width' : ''} ${className || ''}`}>
@@ -446,7 +413,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     );
   }
 
-  // DEFAULT VARIANT: Dropzone
   const sizeClasses = { sm: 'file-upload--sm', md: 'file-upload--md', lg: 'file-upload--lg' };
 
   return (
@@ -470,26 +436,31 @@ const FileUpload: React.FC<FileUploadProps> = ({
       >
         <div className="file-upload__content">
           <div className="file-upload__icon">
-            <Icon name={isDragActive ? 'download' : 'upload'} size={24} />
+            <Icon name={isDragActive ? 'download' : 'upload'} size={28} />
           </div>
           <div className="file-upload__text">
             <span className="file-upload__primary-text">
-              {isDragActive ? 'Drop files here' : dropzoneText || 'Drag and drop files'}
+              {isDragActive ? 'Drop your files here' : 'Drag and drop your files here'}
             </span>
             <span className="file-upload__secondary-text">
               {dropzoneSubtext ? (
                 dropzoneSubtext.includes('{browse}') ? (
                   <>
                     {dropzoneSubtext.split('{browse}')[0]}
-                    <span className="file-upload__browse-link">click to browse</span>
+                    <span className="file-upload__browse-link">or click to browse</span>
                     {dropzoneSubtext.split('{browse}')[1]}
                   </>
                 ) : dropzoneSubtext
               ) : (
-                <>or <span className="file-upload__browse-link">click to browse</span> your files</>
+                <>or <span className="file-upload__browse-link">click to browse</span></>
               )}
             </span>
           </div>
+          {accept && (
+            <span className="file-upload__restrictions">
+              <span>Formats: {accept}</span>
+            </span>
+          )}
         </div>
       </div>
       {helperText && !errorMessage && <p id={helperId} className="file-upload__helper">{helperText}</p>}
@@ -499,7 +470,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
   );
 };
 
-// File List Component
 interface FileListProps {
   files: UploadedFile[];
   onRemove: (id: string) => void;
@@ -528,56 +498,56 @@ const FileList: React.FC<FileListProps> = ({ files, onRemove, getFileIcon, forma
           aria-label={`${uploadedFile.file.name}, ${formatFileSize(uploadedFile.file.size)}, ${uploadedFile.status}${uploadedFile.error ? `, error: ${uploadedFile.error}` : ''}`}
           aria-busy={uploadedFile.status === 'uploading' || uploadedFile.status === 'analyzing'}
         >
-        {uploadedFile.preview && !compact ? (
-          <img src={uploadedFile.preview} alt="" className="file-upload__file-thumb" />
-        ) : (
-          <div className="file-upload__file-icon">
-            <Icon name={getFileIcon(uploadedFile.file)} size={compact ? 16 : 20} />
+          {uploadedFile.preview && !compact ? (
+            <img src={uploadedFile.preview} alt="" className="file-upload__file-thumb" />
+          ) : (
+            <div className="file-upload__file-icon">
+              <Icon name={getFileIcon(uploadedFile.file)} size={compact ? 16 : 20} />
+            </div>
+          )}
+
+          <div className="file-upload__file-info">
+            <span className="file-upload__file-name">{uploadedFile.file.name}</span>
+            <span className="file-upload__file-meta">
+              {formatFileSize(uploadedFile.file.size)}
+              {uploadedFile.error && <span className="file-upload__file-error"> • {uploadedFile.error}</span>}
+              {uploadedFile.status === 'analyzing' && <span className="file-upload__file-analyzing"> • AI analyzing...</span>}
+            </span>
+            {uploadedFile.status === 'uploading' && (
+              <div className="file-upload__progress">
+                <div className="file-upload__progress-bar" style={{ width: `${uploadedFile.progress}%` }} />
+              </div>
+            )}
+            {enableAI && uploadedFile.aiAnalysis && (
+              <div className="file-upload__file-ai">
+                {uploadedFile.aiAnalysis.tags?.slice(0, 3).map((tag, i) => (
+                  <Chip key={i} label={tag} size="small" variant="default" />
+                ))}
+                {uploadedFile.aiAnalysis.summary && (
+                  <span className="file-upload__file-ai-summary">{uploadedFile.aiAnalysis.summary}</span>
+                )}
+              </div>
+            )}
           </div>
-        )}
 
-        <div className="file-upload__file-info">
-          <span className="file-upload__file-name">{uploadedFile.file.name}</span>
-          <span className="file-upload__file-meta">
-            {formatFileSize(uploadedFile.file.size)}
-            {uploadedFile.error && <span className="file-upload__file-error"> • {uploadedFile.error}</span>}
-            {uploadedFile.status === 'analyzing' && <span className="file-upload__file-analyzing"> • AI analyzing...</span>}
-          </span>
-          {uploadedFile.status === 'uploading' && (
-            <div className="file-upload__progress">
-              <div className="file-upload__progress-bar" style={{ width: `${uploadedFile.progress}%` }} />
-            </div>
-          )}
-          {enableAI && uploadedFile.aiAnalysis && (
-            <div className="file-upload__file-ai">
-              {uploadedFile.aiAnalysis.tags?.slice(0, 3).map((tag, i) => (
-                <Chip key={i} label={tag} size="small" variant="default" />
-              ))}
-              {uploadedFile.aiAnalysis.summary && (
-                <span className="file-upload__file-ai-summary">{uploadedFile.aiAnalysis.summary}</span>
-              )}
-            </div>
-          )}
-        </div>
+          <div className="file-upload__file-status">
+            {uploadedFile.status === 'complete' && <Icon name="checkmark--filled" size={16} className="file-upload__status-icon--success" />}
+            {uploadedFile.status === 'error' && <Icon name="warning--filled" size={16} className="file-upload__status-icon--error" />}
+            {uploadedFile.status === 'uploading' && <span className="file-upload__progress-text">{uploadedFile.progress}%</span>}
+            {uploadedFile.status === 'analyzing' && <Icon name="watson" size={16} className="file-upload__status-icon--ai" />}
+          </div>
 
-        <div className="file-upload__file-status">
-          {uploadedFile.status === 'complete' && <Icon name="checkmark--filled" size={16} className="file-upload__status-icon--success" />}
-          {uploadedFile.status === 'error' && <Icon name="warning--filled" size={16} className="file-upload__status-icon--error" />}
-          {uploadedFile.status === 'uploading' && <span className="file-upload__progress-text">{uploadedFile.progress}%</span>}
-          {uploadedFile.status === 'analyzing' && <Icon name="watson" size={16} className="file-upload__status-icon--ai" />}
-        </div>
-
-        <Button
-          variant="ghost"
-          size="xs"
-          className="file-upload__remove-btn"
-          onClick={() => onRemove(uploadedFile.id)}
-          aria-label={`Remove ${uploadedFile.file.name}`}
-          leftIcon="close"
-        />
-      </li>
-    ))}
-  </ul>
+          <Button
+            variant="ghost"
+            size="xs"
+            className="file-upload__remove-btn"
+            onClick={() => onRemove(uploadedFile.id)}
+            aria-label={`Remove ${uploadedFile.file.name}`}
+            leftIcon="close"
+          />
+        </li>
+      ))}
+    </ul>
   );
 };
 
