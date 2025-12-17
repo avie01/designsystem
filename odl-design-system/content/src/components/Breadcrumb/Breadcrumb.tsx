@@ -7,21 +7,9 @@ const classNames = (...classes: (string | boolean | undefined | null)[]): string
   return classes.filter(Boolean).join(' ');
 };
 
-// Simple chevron icon component
-const ChevronIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    className={className || 'breadcrumb__separator-icon'}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-  </svg>
-);
-
 // Preset separator styles
 const SEPARATOR_STYLES: { [key: string]: string | React.ReactNode } = {
-  chevron: <ChevronIcon />,
+  chevron: <Icon name="chevron-right" size={16} className="breadcrumb__separator-icon" aria-hidden="true" />,
   slash: '/',
   arrow: '→',
   pipe: '|',
