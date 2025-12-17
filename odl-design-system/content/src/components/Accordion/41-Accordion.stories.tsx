@@ -90,7 +90,7 @@ export const SingleExpand: Story = {
         id: '3',
         title: 'Step 3: Start Building',
         content: 'Import components and start building your application.',
-        icon: 'build',
+        icon: 'application',
       },
     ],
     allowMultiple: false,
@@ -145,7 +145,7 @@ export const BorderedVariant: Story = {
         id: '3',
         title: 'Security',
         content: 'Update your password and manage two-factor authentication.',
-        icon: 'locked',
+        icon: 'password',
       },
     ],
     allowMultiple: true,
@@ -175,7 +175,7 @@ export const FilledVariant: Story = {
         id: '3',
         title: 'Enterprise Plan',
         content: 'For large organizations with advanced needs. Unlimited users, storage, and premium support.',
-        icon: 'enterprise',
+        icon: 'building',
       },
     ],
     allowMultiple: false,
@@ -213,7 +213,7 @@ export const NestedAccordion: Story = {
       {
         id: '2',
         title: 'Backend Development',
-        icon: 'server',
+        icon: 'data-base',
         children: [
           {
             id: '2-1',
