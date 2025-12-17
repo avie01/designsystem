@@ -4,6 +4,7 @@ import { ODLTheme } from '../../styles/ODLTheme';
 
 const BackToTop: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -14,14 +15,26 @@ const BackToTop: React.FC = () => {
       }
     };
 
+    const checkReducedMotion = () => {
+      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setPrefersReducedMotion(mediaQuery.matches);
+    };
+
+    checkReducedMotion();
     window.addEventListener('scroll', toggleVisibility);
-    return () => window.removeEventListener('scroll', toggleVisibility);
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    mediaQuery.addEventListener('change', checkReducedMotion);
+
+    return () => {
+      window.removeEventListener('scroll', toggleVisibility);
+      mediaQuery.removeEventListener('change', checkReducedMotion);
+    };
   }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: prefersReducedMotion ? 'auto' : 'smooth'
     });
   };
 
@@ -30,6 +43,7 @@ const BackToTop: React.FC = () => {
       {isVisible && (
         <button
           onClick={scrollToTop}
+          aria-label="Back to top"
           style={{
             position: 'fixed',
             bottom: '2rem',
@@ -46,19 +60,30 @@ const BackToTop: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 1000,
-            transition: 'all 0.3s ease',
+            transition: prefersReducedMotion ? 'none' : 'all 0.3s ease',
             opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'scale(1)' : 'scale(0.8)'
+            transform: isVisible ? 'scale(1)' : 'scale(0.8)',
+            outline: 'none'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'scale(1.1)';
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2)';
+            if (!prefersReducedMotion) {
+              e.currentTarget.style.transform = 'scale(1.1)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2)';
+            }
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'scale(1)';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            if (!prefersReducedMotion) {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            }
           }}
-          title="Back to top"
+          onFocus={(e) => {
+            e.currentTarget.style.outline = `2px solid ${ODLTheme.colors.primary}`;
+            e.currentTarget.style.outlineOffset = '2px';
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.outline = 'none';
+          }}
         >
           <Icon name="arrow-up" size={20} />
         </button>
