@@ -88,15 +88,6 @@ export const Default: Story = {
   },
 };
 
-export const DropzoneSmall: Story = {
-  args: {
-    label: 'Upload Document',
-    variant: 'dropzone',
-    size: 'sm',
-    accept: '.pdf,.doc,.docx',
-  },
-};
-
 export const DropzoneLarge: Story = {
   name: '03 Dropzone Large',
   args: {
@@ -112,16 +103,6 @@ export const DropzoneLarge: Story = {
 // ============================================
 // COMPACT VARIANT (for drawers/forms)
 // ============================================
-
-export const Compact: Story = {
-  args: {
-    label: 'Attachments',
-    variant: 'compact',
-    accept: '.pdf,.doc,.docx',
-    multiple: true,
-    fullWidth: true,
-  },
-};
 
 export const CompactInDrawer: Story = {
   name: '05 Compact In Drawer',
@@ -212,16 +193,6 @@ export const ButtonMultiple: Story = {
 // ============================================
 // PICTURE CARD VARIANT
 // ============================================
-
-export const PictureCard: Story = {
-  args: {
-    label: 'Gallery Images',
-    variant: 'picture-card',
-    accept: 'image/*',
-    multiple: true,
-    maxFiles: 8,
-  },
-};
 
 export const PictureCardSingle: Story = {
   name: '09 Picture Card Single',
@@ -316,15 +287,6 @@ export const CompactWithAI: Story = {
 // STATES
 // ============================================
 
-export const WithError: Story = {
-  args: {
-    label: 'Upload File',
-    variant: 'dropzone',
-    error: true,
-    errorMessage: 'Please upload at least one file',
-  },
-};
-
 export const Disabled: Story = {
   name: '13 Disabled',
   args: {
@@ -332,15 +294,6 @@ export const Disabled: Story = {
     variant: 'dropzone',
     disabled: true,
     helperText: 'Upload is currently disabled',
-  },
-};
-
-export const CompactDisabled: Story = {
-  args: {
-    label: 'Attachments',
-    variant: 'compact',
-    disabled: true,
-    fullWidth: true,
   },
 };
 
