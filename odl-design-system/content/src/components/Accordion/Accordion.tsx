@@ -94,7 +94,7 @@ const Accordion: React.FC<AccordionProps> = ({
                   ? ODLTheme.colors.grey100
                   : ODLTheme.colors.grey50
               : isHovered
-                ? ODLTheme.colors.grey50
+                ? ODLTheme.colors.grey400
                 : 'white',
             border: variant === 'bordered'
               ? `1px solid ${ODLTheme.colors.grey200}`
