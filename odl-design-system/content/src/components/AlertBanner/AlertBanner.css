@@ -6,7 +6,7 @@
   gap: var(--odl-spacing-3);
   padding: var(--odl-spacing-4);
   border-radius: 0;
-  box-shadow: var(--odl-shadow-small);
+  box-shadow: var(--odl-shadow-xl);
   margin-bottom: var(--odl-spacing-3);
   transition: var(--odl-transition-slow);
   font-family: var(--odl-font-family-sans);

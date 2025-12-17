@@ -164,6 +164,7 @@
   --odl-shadow-small: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --odl-shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --odl-shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --odl-shadow-xl: 0 11px 24px rgba(0, 0, 0, 0.15);
   
   /* ===== ODL Z-INDEX LAYERS ===== */
   --odl-z-index-dropdown: 1000;
