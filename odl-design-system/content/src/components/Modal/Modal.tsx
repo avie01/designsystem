@@ -315,19 +315,7 @@ const Modal: React.FC<ModalProps> = ({
             disabled={disabled}
             aria-label="Close modal"
           >
-            <svg
-              className="modal-close-icon"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
+            <Icon name="close" size={24} className="modal-close-icon" aria-hidden="true" />
           </button>
         </div>
 
