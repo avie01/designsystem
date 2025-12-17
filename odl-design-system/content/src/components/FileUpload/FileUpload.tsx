@@ -402,9 +402,14 @@ const FileUpload: React.FC<FileUploadProps> = ({
                 )}
                 {(uploadedFile.status === 'complete' || uploadedFile.status === 'pending') && (
                   <div className="file-upload__picture-actions">
-                    <button className="file-upload__picture-action" onClick={() => handleRemoveFile(uploadedFile.id)} aria-label="Remove">
-                      <Icon name="trash-can" size={16} />
-                    </button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRemoveFile(uploadedFile.id)}
+                      aria-label="Remove"
+                      className="file-upload__picture-action"
+                      leftIcon="trash-can"
+                    />
                   </div>
                 )}
                 {uploadedFile.status === 'error' && (
@@ -421,7 +426,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
             </div>
           ))}
           {(multiple || files.length === 0) && files.length < maxFiles && (
-            <button
+            <Button
               className={`file-upload__picture-add ${disabled ? 'file-upload__picture-add--disabled' : ''}`}
               onClick={!disabled ? handleBrowseClick : undefined}
               onDragEnter={handleDragEnter}
@@ -429,10 +434,10 @@ const FileUpload: React.FC<FileUploadProps> = ({
               onDragOver={handleDragOver}
               onDrop={handleDrop}
               disabled={disabled}
+              leftIcon="add"
             >
-              <Icon name="add" size={24} />
-              <span>Upload</span>
-            </button>
+              Upload
+            </Button>
           )}
         </div>
         {helperText && !errorMessage && <p id={helperId} className="file-upload__helper">{helperText}</p>}
@@ -562,13 +567,14 @@ const FileList: React.FC<FileListProps> = ({ files, onRemove, getFileIcon, forma
           {uploadedFile.status === 'analyzing' && <Icon name="watson" size={16} className="file-upload__status-icon--ai" />}
         </div>
 
-        <button
+        <Button
+          variant="ghost"
+          size="xs"
           className="file-upload__remove-btn"
           onClick={() => onRemove(uploadedFile.id)}
           aria-label={`Remove ${uploadedFile.file.name}`}
-        >
-          <Icon name="close" size={14} />
-        </button>
+          leftIcon="close"
+        />
       </li>
     ))}
   </ul>
