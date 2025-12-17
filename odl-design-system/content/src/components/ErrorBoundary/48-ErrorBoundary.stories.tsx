@@ -105,7 +105,7 @@ const ComponentWithButton: React.FC = () => {
 
   return (
     <div style={{ padding: '20px', border: '2px solid #4a90e2', borderRadius: '8px' }}>
-      <h3>Stable Component</h3>
+      <h2>Stable Component</h2>
       <p>This component is working fine. Click the button below to trigger an error:</p>
       <Button variant="destructive" onClick={() => setShouldThrow(true)}>
         Trigger Error

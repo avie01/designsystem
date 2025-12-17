@@ -216,6 +216,7 @@ export const ChipsAndSeparator: Story = {
             { label: <MUIChip label="Feature: Auth" size="small" sx={getODLChipStyles('purple')} /> as any },
           ]}
           separatorStyle="arrow"
+          ariaLabel="Development status breadcrumb"
           onNavigate={(path) => console.log('Clicked:', path)}
         />
       </div>
@@ -229,6 +230,7 @@ export const ChipsAndSeparator: Story = {
             { label: <MUIChip label="Release v2.0" size="small" sx={getODLChipStyles('purple')} /> as any },
           ]}
           separatorStyle="pipe"
+          ariaLabel="Project breadcrumb"
           onNavigate={(path) => console.log('Clicked:', path)}
         />
       </div>
@@ -257,6 +259,7 @@ export const IconsAndSeparator: Story = {
             { label: 'Reports', icon: <CheckmarkFilled size={16} /> },
           ]}
           separatorStyle="arrow"
+          ariaLabel="Dashboard navigation breadcrumb"
           onNavigate={(path) => console.log('Clicked:', path)}
         />
       </div>
@@ -274,6 +277,7 @@ export const IconsAndSeparator: Story = {
           spacing="spacious"
           separatorStyle="pipe"
           colorScheme="primary"
+          ariaLabel="Pipeline status breadcrumb"
           style={{ paddingLeft: '24px' }}
           onNavigate={(path) => console.log('Clicked:', path)}
         />
@@ -288,6 +292,7 @@ export const IconsAndSeparator: Story = {
             { label: 'Permissions', icon: <CheckmarkFilled size={16} /> },
           ]}
           separatorStyle="slash"
+          ariaLabel="Admin hierarchy breadcrumb"
           onNavigate={(path) => console.log('Clicked:', path)}
         />
       </div>
@@ -321,6 +326,7 @@ export const MixOfAll: Story = {
           separatorStyle="arrow"
           spacing="spacious"
           colorScheme="primary"
+          ariaLabel="Dashboard navigation with status breadcrumb"
           onNavigate={(path) => console.log('Clicked:', path)}
         />
       </div>
@@ -337,6 +343,7 @@ export const MixOfAll: Story = {
           ]}
           separatorStyle="pipe"
           spacing="comfortable"
+          ariaLabel="Deployment pipeline breadcrumb"
           onNavigate={(path) => console.log('Clicked:', path)}
         />
       </div>

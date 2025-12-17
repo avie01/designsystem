@@ -91,6 +91,8 @@ export interface BreadcrumbProps {
   className?: string;
   /** Additional inline styles */
   style?: React.CSSProperties;
+  /** Aria label for the navigation landmark - defaults to 'Breadcrumb' */
+  ariaLabel?: string;
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({
@@ -106,6 +108,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   showSeparator = true,
   className,
   style,
+  ariaLabel = 'Breadcrumb',
 }) => {
   const handleClick = (item: BreadcrumbItem) => {
     if (item.path && onNavigate) {
@@ -132,7 +135,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
         padding: spacingStyles.padding,
         ...style,
       }}
-      aria-label="Breadcrumb"
+      aria-label={ariaLabel}
     >
       {items.map((item, index) => (
         <React.Fragment key={index}>
