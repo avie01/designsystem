@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ODLTheme from '../../styles/ODLTheme';
 import Icon from '../Icon/Icon';
+import './Accordion.css';
 
 export interface AccordionItem {
   id: string;
@@ -103,7 +104,7 @@ const Accordion: React.FC<AccordionProps> = ({
               : 'none',
             borderRadius: variant === 'bordered' ? '6px' : 0,
             cursor: hasContent ? 'pointer' : 'default',
-            transition: 'all 0.2s ease',
+            transition: 'all 0.4s ease-in-out',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -138,7 +139,7 @@ const Accordion: React.FC<AccordionProps> = ({
               size={16}
               color={variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.grey700}
               style={{
-                transition: 'transform 0.5s ease',
+                transition: 'transform 0.4s ease-in-out',
                 transform: isOpen ? 'rotate(0deg)' : 'rotate(0deg)'
               }}
             />
@@ -165,7 +166,8 @@ const Accordion: React.FC<AccordionProps> = ({
               borderTop: variant === 'bordered' ? `1px solid ${ODLTheme.colors.grey200}` : 'none',
               color: ODLTheme.colors.textLight,
               fontSize: ODLTheme.typography.fontSize.sm,
-              lineHeight: 1.6
+              lineHeight: 1.6,
+              animation: 'slideDown 0.4s ease-in-out'
             }}
           >
             {item.content && (
