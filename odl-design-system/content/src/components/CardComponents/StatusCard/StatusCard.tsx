@@ -42,44 +42,44 @@ const StatusCard: React.FC<StatusCardProps> = ({
     switch (variant) {
       case 'primary':
         return {
-          background: 'linear-gradient(135deg, #F0F6FF 0%, #E6F1FF 100%)',
-          borderColor: '#3560C1',
-          iconColor: '#3560C1',
-          metricColor: '#3560C1'
+          background: `linear-gradient(135deg, ${ODLTheme.colors.primary}15 0%, ${ODLTheme.colors.primary}08 100%)`,
+          borderColor: ODLTheme.colors.primary,
+          iconColor: ODLTheme.colors.primary,
+          metricColor: ODLTheme.colors.primary
         };
       case 'success':
         return {
-          background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
-          borderColor: '#5DA10C',
-          iconColor: '#5DA10C',
-          metricColor: '#166534'
+          background: `linear-gradient(135deg, ${ODLTheme.colors.success}15 0%, ${ODLTheme.colors.success}08 100%)`,
+          borderColor: ODLTheme.colors.success,
+          iconColor: ODLTheme.colors.success,
+          metricColor: ODLTheme.colors.success
         };
       case 'warning':
         return {
-          background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
-          borderColor: '#F59E0B',
-          iconColor: '#D97706',
-          metricColor: '#92400E'
+          background: `linear-gradient(135deg, ${ODLTheme.colors.warning}15 0%, ${ODLTheme.colors.warning}08 100%)`,
+          borderColor: ODLTheme.colors.warning,
+          iconColor: ODLTheme.colors.warning,
+          metricColor: ODLTheme.colors.warning
         };
       case 'error':
         return {
-          background: 'linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%)',
-          borderColor: '#DC2626',
-          iconColor: '#DC2626',
-          metricColor: '#991B1B'
+          background: `linear-gradient(135deg, ${ODLTheme.colors.error}15 0%, ${ODLTheme.colors.error}08 100%)`,
+          borderColor: ODLTheme.colors.error,
+          iconColor: ODLTheme.colors.error,
+          metricColor: ODLTheme.colors.error
         };
       case 'info':
         return {
-          background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
-          borderColor: '#2563EB',
-          iconColor: '#2563EB',
-          metricColor: '#1E40AF'
+          background: `linear-gradient(135deg, ${ODLTheme.colors.info}15 0%, ${ODLTheme.colors.info}08 100%)`,
+          borderColor: ODLTheme.colors.info,
+          iconColor: ODLTheme.colors.info,
+          metricColor: ODLTheme.colors.info
         };
       default:
         return {
-          background: 'linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%)',
-          borderColor: ODLTheme.colors.grey200,
-          iconColor: ODLTheme.colors.grey600,
+          background: `linear-gradient(135deg, ${ODLTheme.colors.background} 0%, ${ODLTheme.colors.surface} 100%)`,
+          borderColor: ODLTheme.colors.border,
+          iconColor: ODLTheme.colors.text.secondary,
           metricColor: ODLTheme.colors.text.primary
         };
     }
@@ -92,11 +92,11 @@ const StatusCard: React.FC<StatusCardProps> = ({
     if (!trend) return null;
     switch (trend) {
       case 'up':
-        return { icon: 'arrow-up', color: '#10B981' };
+        return { icon: 'arrow-up', color: ODLTheme.colors.success };
       case 'down':
-        return { icon: 'arrow-down', color: '#EF4444' };
+        return { icon: 'arrow-down', color: ODLTheme.colors.error };
       case 'neutral':
-        return { icon: 'subtract', color: '#6B7280' };
+        return { icon: 'subtract', color: ODLTheme.colors.text.secondary };
       default:
         return null;
     }
@@ -111,63 +111,57 @@ const StatusCard: React.FC<StatusCardProps> = ({
       style={{
         background: variantStyles.background,
         border: `1px solid ${variantStyles.borderColor}`,
-        borderRadius: '12px',
-        padding: '20px',
+        borderRadius: ODLTheme.borders.radius.lg,
+        padding: ODLTheme.spacing[5],
         cursor: onClick ? 'pointer' : 'default',
-        transition: 'all 0.2s ease',
+        transition: ODLTheme.transitions.base,
         position: 'relative',
         overflow: 'hidden',
         minHeight: '140px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-        ...style,
-        ...(onClick && {
-          '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-          }
-        })
+        boxShadow: ODLTheme.shadows.sm,
+        ...style
       }}
       onMouseEnter={(e) => {
         if (onClick) {
           e.currentTarget.style.transform = 'translateY(-2px)';
-          e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+          e.currentTarget.style.boxShadow = ODLTheme.shadows.md;
         }
       }}
       onMouseLeave={(e) => {
         if (onClick) {
           e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)';
+          e.currentTarget.style.boxShadow = ODLTheme.shadows.sm;
         }
       }}
     >
       {/* Header with icon and title */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'flex-start',
-        marginBottom: '12px'
+        marginBottom: ODLTheme.spacing[3]
       }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '10px',
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: ODLTheme.spacing[2],
           flex: 1
         }}>
           {icon && (
             <div style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
+              width: `${ODLTheme.spacing[8]}px`,
+              height: `${ODLTheme.spacing[8]}px`,
+              borderRadius: ODLTheme.borders.radius.md,
               background: 'rgba(255, 255, 255, 0.8)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0
             }}>
-              <Icon name={icon} size={18} color={variantStyles.iconColor} />
+              <Icon name={icon} size={16} color={variantStyles.iconColor} />
             </div>
           )}
           <span style={{
@@ -183,7 +177,7 @@ const StatusCard: React.FC<StatusCardProps> = ({
       </div>
 
       {/* Metric value */}
-      <div style={{ marginBottom: '8px' }}>
+      <div style={{ marginBottom: ODLTheme.spacing[2] }}>
         <div style={{
           fontSize: '32px',
           fontWeight: ODLTheme.typography.fontWeight.bold,
@@ -196,11 +190,11 @@ const StatusCard: React.FC<StatusCardProps> = ({
       </div>
 
       {/* Footer with subtitle and comparison */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'flex-end',
-        gap: '8px'
+        gap: ODLTheme.spacing[2]
       }}>
         {subtitle && (
           <span style={{
@@ -211,12 +205,12 @@ const StatusCard: React.FC<StatusCardProps> = ({
             {subtitle}
           </span>
         )}
-        
+
         {comparison && (
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '4px',
+            gap: ODLTheme.spacing[1],
             fontSize: ODLTheme.typography.fontSize.xs,
             fontWeight: ODLTheme.typography.fontWeight.medium,
             color: trendInfo?.color || ODLTheme.colors.textLight
@@ -232,12 +226,12 @@ const StatusCard: React.FC<StatusCardProps> = ({
       {/* Decorative element for visual interest */}
       <div style={{
         position: 'absolute',
-        top: '-20px',
-        right: '-20px',
-        width: '80px',
-        height: '80px',
+        top: `-${ODLTheme.spacing[5]}px`,
+        right: `-${ODLTheme.spacing[5]}px`,
+        width: `${ODLTheme.spacing[20]}px`,
+        height: `${ODLTheme.spacing[20]}px`,
         borderRadius: '50%',
-        background: 'rgba(255, 255, 255, 0.2)',
+        background: 'rgba(255, 255, 255, 0.15)',
         pointerEvents: 'none'
       }} />
     </div>

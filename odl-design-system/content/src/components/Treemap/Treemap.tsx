@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-// import ODLTheme from '../../styles/ODLTheme';
+import ODLTheme from '../../styles/ODLTheme';
 
 export interface TreemapNode {
   id: string;
@@ -33,28 +33,29 @@ const Treemap: React.FC<TreemapProps> = ({
 }) => {
   const [hoveredNode, setHoveredNode] = React.useState<string | null>(null);
 
-  // Color schemes
+  // Color schemes using ODLTheme colors
   const getColorForNode = (node: TreemapNode, index: number): string => {
     if (node.color) return node.color;
-    
+
+    const chartColors = ODLTheme.colors.charts;
     const schemes = {
       default: [
-        '#3560C1', // ODL Primary Blue
-        '#00928F', // Teal
-        '#5DA10C', // Green
-        '#0B77D8', // Bright Blue
-        '#F59E0B', // Amber
-        '#8B5CF6', // Purple
-        '#10B981', // Emerald
-        '#EC4899', // Pink
-        '#06B6D4'  // Cyan
+        chartColors.blue,
+        chartColors.emerald,
+        chartColors.violet,
+        chartColors.rose,
+        chartColors.amber,
+        chartColors.cyan,
+        chartColors.indigo,
+        chartColors.lime,
+        chartColors.orange
       ],
       heat: [
         '#FEF3C7',
         '#FDE68A',
         '#FCD34D',
         '#FBBF24',
-        '#F59E0B',
+        chartColors.amber,
         '#D97706',
         '#92400E'
       ],
@@ -63,20 +64,20 @@ const Treemap: React.FC<TreemapProps> = ({
         '#BFDBFE',
         '#93C5FD',
         '#60A5FA',
-        '#3B82F6',
+        chartColors.blue,
         '#2563EB',
         '#1D4ED8'
       ],
       rainbow: [
-        '#EF4444',
-        '#F97316',
-        '#F59E0B',
-        '#84CC16',
-        '#10B981',
-        '#06B6D4',
-        '#6366F1',
-        '#8B5CF6',
-        '#EC4899'
+        chartColors.rose,
+        chartColors.orange,
+        chartColors.amber,
+        chartColors.lime,
+        chartColors.emerald,
+        chartColors.cyan,
+        chartColors.indigo,
+        chartColors.violet,
+        chartColors.pink
       ]
     };
 
@@ -153,7 +154,7 @@ const Treemap: React.FC<TreemapProps> = ({
     const g = parseInt(hex.substr(2, 2), 16);
     const b = parseInt(hex.substr(4, 2), 16);
     const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness > 128 ? '#000000' : '#FFFFFF';
+    return brightness > 128 ? ODLTheme.colors.text.primary : ODLTheme.colors.background;
   };
 
   return (
@@ -163,11 +164,11 @@ const Treemap: React.FC<TreemapProps> = ({
         position: 'relative',
         width: '100%',
         height,
-        background: 'white',
-        borderRadius: '12px',
-        border: '1px solid #e5e7eb',
+        background: ODLTheme.colors.background,
+        borderRadius: ODLTheme.borders.radius.md,
+        border: `1px solid ${ODLTheme.colors.border}`,
         overflow: 'hidden',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+        boxShadow: ODLTheme.shadows.sm,
         ...style
       }}
     >
@@ -199,7 +200,7 @@ const Treemap: React.FC<TreemapProps> = ({
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '12px',
+              padding: ODLTheme.spacing[3],
               boxSizing: 'border-box',
               boxShadow: isHovered 
                 ? 'inset 0 2px 8px rgba(0, 0, 0, 0.15)' 
@@ -269,13 +270,13 @@ const Treemap: React.FC<TreemapProps> = ({
                   left: '50%',
                   transform: 'translateX(-50%)',
                   background: 'rgba(0, 0, 0, 0.9)',
-                  color: 'white',
-                  padding: '8px 12px',
-                  borderRadius: '4px',
-                  fontSize: '12px',
+                  color: ODLTheme.colors.background,
+                  padding: `${ODLTheme.spacing[2]}px ${ODLTheme.spacing[3]}px`,
+                  borderRadius: ODLTheme.borders.radius.sm,
+                  fontSize: ODLTheme.typography.fontSize.xs,
                   whiteSpace: 'nowrap',
                   zIndex: 1000,
-                  marginBottom: '4px'
+                  marginBottom: ODLTheme.spacing[1]
                 }}
               >
                 <div style={{ fontWeight: 600 }}>{node.name}</div>

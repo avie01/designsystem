@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ODLTheme from '../../../styles/ODLTheme';
 import Icon from '../../Icon/Icon';
 import Button from '../../Button/Button';
 
@@ -48,10 +49,10 @@ const UserCard: React.FC<UserCardProps> = ({
 
   const getStatusColor = () => {
     switch (status) {
-      case 'active': return '#24A148';
-      case 'away': return '#F1C21B';
-      case 'offline': return '#8D8D8D';
-      default: return '#8D8D8D';
+      case 'active': return ODLTheme.colors.success;
+      case 'away': return ODLTheme.colors.warning;
+      case 'offline': return ODLTheme.colors.text.secondary;
+      default: return ODLTheme.colors.text.secondary;
     }
   };
 
@@ -61,15 +62,15 @@ const UserCard: React.FC<UserCardProps> = ({
   };
 
   return (
-    <div 
+    <div
       className={className}
       style={{
-        backgroundColor: isHovered ? '#f8f8f8' : '#ffffff',
-        border: '1px solid #e0e0e0',
-        borderRadius: '8px',
-        padding: '20px',
-        transition: 'all 0.2s ease',
-        boxShadow: isHovered ? '0 4px 12px rgba(0,0,0,0.08)' : '0 2px 4px rgba(0,0,0,0.04)',
+        backgroundColor: isHovered ? ODLTheme.colors.surface : ODLTheme.colors.background,
+        border: `1px solid ${ODLTheme.colors.border}`,
+        borderRadius: ODLTheme.borders.radius.md,
+        padding: ODLTheme.spacing[5],
+        transition: ODLTheme.transitions.base,
+        boxShadow: isHovered ? ODLTheme.shadows.md : ODLTheme.shadows.sm,
         cursor: 'pointer',
         position: 'relative',
       }}
@@ -81,51 +82,51 @@ const UserCard: React.FC<UserCardProps> = ({
         onClick={handleSave}
         style={{
           position: 'absolute',
-          top: '16px',
-          right: '16px',
+          top: ODLTheme.spacing[4],
+          right: ODLTheme.spacing[4],
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
-          padding: '4px',
+          padding: ODLTheme.spacing[1],
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <Icon 
-          name={isSaved ? "bookmark-filled" : "bookmark"} 
-          size={20} 
-          color={isSaved ? "#3560C1" : "#8D8D8D"}
+        <Icon
+          name={isSaved ? "bookmark-filled" : "bookmark"}
+          size={18}
+          color={isSaved ? ODLTheme.colors.primary : ODLTheme.colors.text.secondary}
         />
       </button>
 
       {/* Header with Avatar and Status */}
-      <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', gap: ODLTheme.spacing[4], marginBottom: ODLTheme.spacing[4] }}>
         {/* Avatar */}
         <div style={{ position: 'relative' }}>
           {avatar ? (
-            <img 
-              src={avatar} 
+            <img
+              src={avatar}
               alt={name}
               style={{
-                width: '48px',
-                height: '48px',
+                width: `${ODLTheme.spacing[12]}px`,
+                height: `${ODLTheme.spacing[12]}px`,
                 borderRadius: '50%',
                 objectFit: 'cover',
               }}
             />
           ) : (
             <div style={{
-              width: '48px',
-              height: '48px',
+              width: `${ODLTheme.spacing[12]}px`,
+              height: `${ODLTheme.spacing[12]}px`,
               borderRadius: '50%',
-              backgroundColor: '#3560C1',
+              backgroundColor: ODLTheme.colors.primary,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#ffffff',
-              fontSize: '16px',
-              fontWeight: '600',
+              color: ODLTheme.colors.background,
+              fontSize: ODLTheme.typography.fontSize.base,
+              fontWeight: ODLTheme.typography.fontWeight.semibold,
             }}>
               {getInitials()}
             </div>
@@ -135,38 +136,38 @@ const UserCard: React.FC<UserCardProps> = ({
             position: 'absolute',
             bottom: '0',
             right: '0',
-            width: '12px',
-            height: '12px',
+            width: `${ODLTheme.spacing[3]}px`,
+            height: `${ODLTheme.spacing[3]}px`,
             borderRadius: '50%',
             backgroundColor: getStatusColor(),
-            border: '2px solid #ffffff',
+            border: `2px solid ${ODLTheme.colors.background}`,
           }} />
         </div>
 
         {/* Name and Info */}
         <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <h3 style={{ 
-              fontSize: '16px', 
-              fontWeight: '600', 
-              color: '#161616',
+          <div style={{ display: 'flex', alignItems: 'center', gap: ODLTheme.spacing[2] }}>
+            <h3 style={{
+              fontSize: ODLTheme.typography.fontSize.base,
+              fontWeight: ODLTheme.typography.fontWeight.semibold,
+              color: ODLTheme.colors.text.primary,
               margin: 0,
             }}>
               {name}
             </h3>
             {lastActive && (
-              <span style={{ 
-                fontSize: '12px', 
-                color: '#8D8D8D',
+              <span style={{
+                fontSize: ODLTheme.typography.fontSize.xs,
+                color: ODLTheme.colors.text.secondary,
               }}>
                 {lastActive}
               </span>
             )}
           </div>
-          <p style={{ 
-            fontSize: '14px', 
-            color: '#525252',
-            margin: '4px 0 0 0',
+          <p style={{
+            fontSize: ODLTheme.typography.fontSize.sm,
+            color: ODLTheme.colors.text.secondary,
+            margin: `${ODLTheme.spacing[1]}px 0 0 0`,
           }}>
             {role}
           </p>
@@ -175,26 +176,26 @@ const UserCard: React.FC<UserCardProps> = ({
 
       {/* Department and Email */}
       {(department || email) && (
-        <div style={{ marginBottom: '16px' }}>
+        <div style={{ marginBottom: ODLTheme.spacing[4] }}>
           {department && (
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '8px',
-              marginBottom: '4px',
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: ODLTheme.spacing[2],
+              marginBottom: ODLTheme.spacing[1],
             }}>
-              <Icon name="folder" size={14} color="#8D8D8D" />
-              <span style={{ fontSize: '13px', color: '#525252' }}>{department}</span>
+              <Icon name="folder" size={14} color={ODLTheme.colors.text.secondary} />
+              <span style={{ fontSize: ODLTheme.typography.fontSize.sm, color: ODLTheme.colors.text.secondary }}>{department}</span>
             </div>
           )}
           {email && (
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '8px',
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: ODLTheme.spacing[2],
             }}>
-              <Icon name="email" size={14} color="#8D8D8D" />
-              <span style={{ fontSize: '13px', color: '#525252' }}>{email}</span>
+              <Icon name="email" size={14} color={ODLTheme.colors.text.secondary} />
+              <span style={{ fontSize: ODLTheme.typography.fontSize.sm, color: ODLTheme.colors.text.secondary }}>{email}</span>
             </div>
           )}
         </div>
@@ -202,22 +203,22 @@ const UserCard: React.FC<UserCardProps> = ({
 
       {/* Tags */}
       {tags.length > 0 && (
-        <div style={{ 
-          display: 'flex', 
-          gap: '8px', 
+        <div style={{
+          display: 'flex',
+          gap: ODLTheme.spacing[2],
           flexWrap: 'wrap',
-          marginBottom: '16px',
+          marginBottom: ODLTheme.spacing[4],
         }}>
           {tags.map((tag, index) => (
-            <span 
+            <span
               key={index}
               style={{
-                padding: '4px 12px',
-                backgroundColor: '#F4F4F4',
-                color: '#161616',
-                borderRadius: '16px',
-                fontSize: '12px',
-                fontWeight: '500',
+                padding: `${ODLTheme.spacing[1]}px ${ODLTheme.spacing[3]}px`,
+                backgroundColor: ODLTheme.colors.surface,
+                color: ODLTheme.colors.text.primary,
+                borderRadius: ODLTheme.borders.radius.full,
+                fontSize: ODLTheme.typography.fontSize.xs,
+                fontWeight: ODLTheme.typography.fontWeight.medium,
               }}
             >
               {tag}
@@ -228,11 +229,11 @@ const UserCard: React.FC<UserCardProps> = ({
 
       {/* Action Buttons */}
       {actions && (
-        <div style={{ 
-          display: 'flex', 
-          gap: '8px',
-          paddingTop: '16px',
-          borderTop: '1px solid #e0e0e0',
+        <div style={{
+          display: 'flex',
+          gap: ODLTheme.spacing[2],
+          paddingTop: ODLTheme.spacing[4],
+          borderTop: `1px solid ${ODLTheme.colors.border}`,
         }}>
           {actions.onMessage && (
             <Button

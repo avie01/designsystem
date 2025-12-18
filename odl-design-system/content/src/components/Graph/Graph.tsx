@@ -92,7 +92,7 @@ const Graph: React.FC<GraphProps> = ({
     if (active && payload && payload.length) {
       return (
         <div style={{
-          backgroundColor: 'white',
+          backgroundColor: ODLTheme.colors.background,
           border: `1px solid ${ODLTheme.colors.border}`,
           borderRadius: ODLTheme.borders.radius.md,
           padding: ODLTheme.spacing[3],
@@ -143,14 +143,14 @@ const Graph: React.FC<GraphProps> = ({
   // Animation duration
   const animationDuration = animated ? 1000 : 0;
 
-  // Responsive margins based on chart height
+  // Responsive margins based on chart height (using theme spacing as base unit: 4px)
   const getChartMargins = () => {
     if (numericHeight < 60) {
       return { top: 0, right: 0, left: 0, bottom: 0 };
     } else if (numericHeight < 150) {
-      return { top: 5, right: 5, left: 5, bottom: 5 };
+      return { top: ODLTheme.spacing[1], right: ODLTheme.spacing[1], left: ODLTheme.spacing[1], bottom: ODLTheme.spacing[1] };
     } else {
-      return { top: 5, right: 30, left: 20, bottom: 5 };
+      return { top: ODLTheme.spacing[1], right: ODLTheme.spacing[2], left: ODLTheme.spacing[5], bottom: ODLTheme.spacing[1] };
     }
   };
 
@@ -174,9 +174,9 @@ const Graph: React.FC<GraphProps> = ({
                   type={curved ? 'monotone' : 'linear'}
                   dataKey={key}
                   stroke={colors[index % colors.length]}
-                  strokeWidth={numericHeight < 100 ? 1.5 : 2}
-                  dot={numericHeight < 100 ? false : { r: 4 }}
-                  activeDot={numericHeight < 100 ? false : { r: 6 }}
+                  strokeWidth={numericHeight < 100 ? 1 : 2}
+                  dot={numericHeight < 100 ? false : { r: 3 }}
+                  activeDot={numericHeight < 100 ? false : { r: 5 }}
                   animationDuration={animationDuration}
                 />
               ))}
@@ -236,7 +236,7 @@ const Graph: React.FC<GraphProps> = ({
                   stackId={stacked ? '1' : undefined}
                   fill={colors[index % colors.length]}
                   animationDuration={animationDuration}
-                  radius={numericHeight < 100 ? [2, 2, 0, 0] : [4, 4, 0, 0]}
+                  radius={numericHeight < 100 ? [2, 2, 0, 0] : [3, 3, 0, 0]}
                 />
               ))}
             </BarChart>
@@ -246,7 +246,7 @@ const Graph: React.FC<GraphProps> = ({
       case 'pie':
         return (
           <ResponsiveContainer width={width} height={height}>
-            <PieChart margin={numericHeight < 150 ? { top: 0, right: 0, bottom: 0, left: 0 } : { top: 5, right: 5, bottom: 5, left: 5 }}>
+            <PieChart margin={numericHeight < 150 ? { top: 0, right: 0, bottom: 0, left: 0 } : { top: ODLTheme.spacing[1], right: ODLTheme.spacing[1], bottom: ODLTheme.spacing[1], left: ODLTheme.spacing[1] }}>
               <Pie
                 data={data}
                 cx={numericHeight < 150 && showLegend ? "35%" : "50%"}
@@ -254,7 +254,7 @@ const Graph: React.FC<GraphProps> = ({
                 labelLine={false}
                 label={numericHeight >= 150 && !showLegend ? ({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%` : false}
                 outerRadius={numericHeight < 150 ? '85%' : 80}
-                fill="#8884d8"
+                fill={ODLTheme.colors.primary}
                 dataKey={dataKeys[0] || 'value'}
                 animationDuration={animationDuration}
               >
@@ -264,19 +264,19 @@ const Graph: React.FC<GraphProps> = ({
               </Pie>
               {showTooltip && <Tooltip content={<CustomTooltip />} />}
               {showLegend && numericHeight < 150 && (
-                <Legend 
-                  layout="vertical" 
-                  align="right" 
+                <Legend
+                  layout="vertical"
+                  align="right"
                   verticalAlign="middle"
-                  iconSize={10}
+                  iconSize={8}
                   wrapperStyle={{
-                    fontSize: '10px',
-                    paddingLeft: '10px'
+                    fontSize: ODLTheme.typography.fontSize.xs,
+                    paddingLeft: ODLTheme.spacing[2]
                   }}
                 />
               )}
               {showLegend && numericHeight >= 150 && (
-                <Legend 
+                <Legend
                   wrapperStyle={legendStyle}
                 />
               )}
@@ -308,7 +308,7 @@ const Graph: React.FC<GraphProps> = ({
                     dataKey={key}
                     stroke={radarColors[index % radarColors.length]}
                     fill={radarColors[index % radarColors.length]}
-                    fillOpacity={0.25 + (index * 0.15)}  // Varying opacity for better distinction
+                    fillOpacity={0.2 + (index * 0.12)}
                     strokeWidth={2}
                     animationDuration={animationDuration}
                   />
@@ -336,7 +336,7 @@ const Graph: React.FC<GraphProps> = ({
       case 'composed':
         return (
           <ResponsiveContainer width={width} height={height}>
-            <ComposedChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <ComposedChart data={data} margin={{ top: ODLTheme.spacing[1], right: ODLTheme.spacing[2], left: ODLTheme.spacing[5], bottom: ODLTheme.spacing[1] }}>
               {showGrid && <CartesianGrid {...gridStyle} />}
               <XAxis dataKey={xAxisKey} tick={axisStyle} />
               <YAxis tick={axisStyle} />
@@ -358,17 +358,17 @@ const Graph: React.FC<GraphProps> = ({
       case 'radial':
         return (
           <ResponsiveContainer width={width} height={height}>
-            <RadialBarChart 
-              cx={numericHeight < 150 && showLegend ? "35%" : "50%"} 
-              cy="50%" 
-              innerRadius={numericHeight < 150 ? "15%" : "20%"} 
-              outerRadius={numericHeight < 150 ? "85%" : "90%"} 
+            <RadialBarChart
+              cx={numericHeight < 150 && showLegend ? "35%" : "50%"}
+              cy="50%"
+              innerRadius={numericHeight < 150 ? "15%" : "20%"}
+              outerRadius={numericHeight < 150 ? "85%" : "90%"}
               data={data}
-              margin={numericHeight < 150 ? { top: 0, right: 0, bottom: 0, left: 0 } : { top: 20, right: 20, bottom: 20, left: 20 }}
+              margin={numericHeight < 150 ? { top: 0, right: 0, bottom: 0, left: 0 } : { top: ODLTheme.spacing[5], right: ODLTheme.spacing[5], bottom: ODLTheme.spacing[5], left: ODLTheme.spacing[5] }}
             >
               <RadialBar
-                label={numericHeight >= 150 && !showLegend ? { position: 'insideStart', fill: '#fff', fontSize: 12 } : false}
-                background={{ fill: ODLTheme.colors.background }}
+                label={numericHeight >= 150 && !showLegend ? { position: 'insideStart', fill: ODLTheme.colors.background, fontSize: 12 } : false}
+                background={{ fill: ODLTheme.colors.surface }}
                 dataKey={dataKeys[0] || 'value'}
                 animationDuration={animationDuration}
               >
@@ -377,27 +377,27 @@ const Graph: React.FC<GraphProps> = ({
                 ))}
               </RadialBar>
               {showLegend && numericHeight < 150 && (
-                <Legend 
-                  layout="vertical" 
-                  align="right" 
+                <Legend
+                  layout="vertical"
+                  align="right"
                   verticalAlign="middle"
-                  iconSize={10}
+                  iconSize={8}
                   wrapperStyle={{
-                    fontSize: '10px',
-                    paddingLeft: '10px'
+                    fontSize: ODLTheme.typography.fontSize.xs,
+                    paddingLeft: ODLTheme.spacing[2]
                   }}
                 />
               )}
               {showLegend && numericHeight >= 150 && (
-                <Legend 
-                  iconSize={18} 
-                  layout="horizontal" 
-                  verticalAlign="bottom" 
+                <Legend
+                  iconSize={16}
+                  layout="horizontal"
+                  verticalAlign="bottom"
                   align="center"
                   wrapperStyle={{
                     ...legendStyle,
-                    paddingTop: '20px'
-                  }} 
+                    paddingTop: ODLTheme.spacing[5]
+                  }}
                 />
               )}
               {showTooltip && <Tooltip content={<CustomTooltip />} />}
@@ -412,7 +412,7 @@ const Graph: React.FC<GraphProps> = ({
               data={data}
               dataKey={dataKeys[0] || 'value'}
               aspectRatio={4 / 3}
-              stroke="#fff"
+              stroke={ODLTheme.colors.background}
               fill={colors[0]}
               animationDuration={animationDuration}
             >
