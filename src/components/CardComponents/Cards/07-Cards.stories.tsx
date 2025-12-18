@@ -15,13 +15,45 @@ const meta: Meta<typeof Cards> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    size: {
+    type: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: 'Size variant affecting typography and spacing',
+      options: ['compact', 'comfortable', 'metadata'],
+      description: 'Card type variant affecting layout and styling',
       table: {
         type: { summary: 'string' },
-        defaultValue: { summary: 'md' },
+        defaultValue: { summary: 'comfortable' },
+      },
+    },
+    iconGutter: {
+      control: 'boolean',
+      description: 'Whether to show the icon gutter (YellowFolder icon)',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+      },
+    },
+    gutterIcons: {
+      control: 'object',
+      description: 'Array of icon names to display in the gutter between YellowFolder and text content',
+      table: {
+        type: { summary: 'string[]' },
+        defaultValue: { summary: '[]' },
+      },
+    },
+    extensionSize: {
+      control: 'boolean',
+      description: 'Whether to show extension and file size text next to title',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    showMetadata: {
+      control: 'boolean',
+      description: 'Whether to show metadata card with chips section',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
     disabled: {
@@ -119,6 +151,7 @@ export const Default: Story = {
     title: 'Project Documentation',
     subtitle: 'Updated 2 hours ago',
     tag: 'v2.1.0',
+    extensionSize: true,
   },
 };
 
@@ -173,41 +206,53 @@ export const AllStates: Story = {
   ),
 };
 
-// Size variations
-export const Sizes: Story = {
-  name: '03 Sizes',
+// Type variations
+export const Types: Story = {
+  args: {
+    type: "compact"
+  },
+
+  name: '03 Types',
+
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       <div>
-        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Card Sizes</h4>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Card Types</h4>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <Cards
-            size="sm"
-            title="Small Card"
-            subtitle="Size: sm - Compact spacing"
-            tag="Small"
+            type="compact"
+            title="Compact Card"
+            subtitle="Type: compact - Dense spacing and smaller text"
+            tag="Compact"
           />
           <Cards
-            size="md"
-            title="Medium Card"
-            subtitle="Size: md - Default spacing"
-            tag="Medium"
+            type="comfortable"
+            title="Comfortable Card"
+            subtitle="Type: comfortable - Default spacing and sizing"
+            tag="Comfortable"
           />
           <Cards
-            size="lg"
-            title="Large Card"
-            subtitle="Size: lg - Generous spacing"
-            tag="Large"
+            type="metadata"
+            title="Metadata Card"
+            subtitle="Type: metadata - Designed for metadata display"
+            tag="Metadata"
+            extensionSize={true}
+            showMetadata={true}
           />
         </div>
       </div>
     </div>
-  ),
+  )
 };
 
 // Interactive features
 export const InteractiveFeatures: Story = {
+  args: {
+    type: "build"
+  },
+
   name: '04 Interactive Features',
+
   render: () => {
     const [selected1, setSelected1] = React.useState(false);
     const [selected2, setSelected2] = React.useState(true);
@@ -249,7 +294,7 @@ export const InteractiveFeatures: Story = {
         </div>
       </div>
     );
-  },
+  }
 };
 
 // Icon variations
@@ -262,8 +307,26 @@ export const IconVariations: Story = {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <Cards
             title="All icons visible"
-            subtitle="Info and menu icons shown"
+            subtitle="Folder icon and action icons shown"
             tag="Full"
+            iconGutter={true}
+            showInfoIcon={true}
+            showMenuIcon={true}
+          />
+          <Cards
+            title="With gutter icons"
+            subtitle="Folder icon with additional gutter icons"
+            tag="Gutter"
+            iconGutter={true}
+            gutterIcons={['star', 'bookmark', 'lock']}
+            showInfoIcon={true}
+            showMenuIcon={true}
+          />
+          <Cards
+            title="No folder icon"
+            subtitle="Action icons only, no icon gutter"
+            tag="No Gutter"
+            iconGutter={false}
             showInfoIcon={true}
             showMenuIcon={true}
           />
@@ -283,8 +346,16 @@ export const IconVariations: Story = {
           />
           <Cards
             title="No action icons"
-            subtitle="Clean card without icons"
+            subtitle="Only folder icon, no action icons"
+            tag="Minimal"
+            showInfoIcon={false}
+            showMenuIcon={false}
+          />
+          <Cards
+            title="No icons at all"
+            subtitle="Clean card without any icons"
             tag="Clean"
+            iconGutter={false}
             showInfoIcon={false}
             showMenuIcon={false}
           />
@@ -422,7 +493,10 @@ export const Playground: Story = {
     title: 'Playground Card',
     subtitle: 'Experiment with props',
     tag: 'v1.0',
-    size: 'md',
+    type: 'comfortable',
+    iconGutter: true,
+    gutterIcons: ['star', 'bookmark'],
+    extensionSize: true,
     disabled: false,
     error: false,
     selected: false,
