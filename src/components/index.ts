@@ -13,6 +13,7 @@ export { default as Breadcrumb } from './Breadcrumb/BreadcrumbTW';
 // Components already using Tailwind or need minimal changes
 export { default as Table } from './Table/Table';
 export { default as Icon } from './Icon/Icon';
+export { default as IconButton } from './IconButton/IconButton';
 
 // Components still using inline styles (to be migrated)
 export { default as Header } from './Header/Header';
@@ -42,3 +43,4 @@ export type { InputProps } from './Input/InputTW';
 export type { ChipProps } from './Chip/ChipTW';
 export type { BreadcrumbProps, BreadcrumbItem } from './Breadcrumb/BreadcrumbTW';
 export type { TableProps, TableColumn } from './Table/Table';
+export type { IconButtonProps } from './IconButton/IconButton';
