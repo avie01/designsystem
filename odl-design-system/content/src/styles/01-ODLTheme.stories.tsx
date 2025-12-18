@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 import ODLTheme from './ODLTheme';
 
 const meta: Meta = {
@@ -306,38 +306,113 @@ export const Shadows: Story = {
   ),
 };
 
+// Helper component for transition demonstrations
+const TransitionBox = ({
+  label,
+  transitionValue,
+  description,
+}: {
+  label: string;
+  transitionValue: string;
+  description: string;
+}) => {
+  const [isActive, setIsActive] = useState(false);
+
+  return (
+    <div style={{ marginBottom: '32px' }}>
+      <div style={{ marginBottom: '12px' }}>
+        <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', fontWeight: 600 }}>
+          {label}
+        </h4>
+        <p style={{ margin: 0, fontSize: '12px', color: ODLTheme.colors.text.secondary }}>
+          {transitionValue}
+        </p>
+        <p style={{ margin: '4px 0 0 0', fontSize: '11px', color: ODLTheme.colors.text.tertiary }}>
+          {description}
+        </p>
+      </div>
+
+      <div
+        onClick={() => setIsActive(!isActive)}
+        style={{
+          width: '100%',
+          height: '80px',
+          background: isActive ? ODLTheme.colors.primary : ODLTheme.colors.grey100,
+          color: isActive ? 'white' : ODLTheme.colors.text.primary,
+          border: `2px solid ${ODLTheme.colors.border}`,
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          transition: transitionValue,
+          transform: isActive ? 'scale(1.05) translateY(-4px)' : 'scale(1) translateY(0)',
+          userSelect: 'none',
+          fontWeight: 500,
+          fontSize: '14px',
+        }}
+      >
+        {isActive ? '✓ Active' : 'Click to animate'}
+      </div>
+    </div>
+  );
+};
+
 // Transitions
 export const Transitions: Story = {
   name: '06 Transitions',
   render: () => (
-    <div>
-      <h2 style={{ marginBottom: ODLTheme.spacing[6] }}>ODL Transitions</h2>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: ODLTheme.spacing[4] }}>
-        {Object.entries(ODLTheme.transitions).map(([name, value]) => (
-          <div key={name} style={{
-            padding: ODLTheme.spacing[4],
-            backgroundColor: ODLTheme.colors.white,
-            border: `1px solid ${ODLTheme.colors.border}`,
-            borderRadius: ODLTheme.borders.radius.md
-          }}>
-            <div style={{
-              fontSize: ODLTheme.typography.fontSize.base,
-              fontWeight: ODLTheme.typography.fontWeight.semibold,
-              marginBottom: ODLTheme.spacing[2]
-            }}>
-              {name}
-            </div>
-            <code style={{
-              fontSize: ODLTheme.typography.fontSize.xs,
-              color: ODLTheme.colors.text.secondary,
-              fontFamily: ODLTheme.typography.fontFamily.mono
-            }}>
-              {value}
-            </code>
-          </div>
-        ))}
+    <div style={{ maxWidth: '600px' }}>
+      <div style={{ marginBottom: '32px' }}>
+        <h2 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: 600 }}>
+          ODL Transitions
+        </h2>
+        <p style={{ margin: 0, color: ODLTheme.colors.text.secondary, fontSize: '14px' }}>
+          Click each box to trigger its transition animation. Watch how the timing and easing affect the movement.
+        </p>
       </div>
+
+      <TransitionBox
+        label="Fast (0.15s)"
+        transitionValue={ODLTheme.transitions.fast}
+        description="Quick feedback for UI interactions"
+      />
+
+      <TransitionBox
+        label="Base (0.2s)"
+        transitionValue={ODLTheme.transitions.base}
+        description="Default timing for most components"
+      />
+
+      <TransitionBox
+        label="Slow (0.3s)"
+        transitionValue={ODLTheme.transitions.slow}
+        description="Smooth, noticeable transitions for important state changes"
+      />
+
+      <TransitionBox
+        label="Color (0.2s)"
+        transitionValue={ODLTheme.transitions.color}
+        description="Specific transition for color, background-color, and border-color"
+      />
+
+      <TransitionBox
+        label="Transform (0.2s)"
+        transitionValue={ODLTheme.transitions.transform}
+        description="Optimized for 2D/3D transforms and positioning"
+      />
+
+      <TransitionBox
+        label="Opacity (0.2s)"
+        transitionValue={ODLTheme.transitions.opacity}
+        description="Fade in/out effects"
+      />
+
+      <TransitionBox
+        label="Input (0.15s cubic-bezier)"
+        transitionValue={ODLTheme.transitions.input}
+        description="Precise easing curve for form interactions"
+      />
     </div>
   ),
 };
