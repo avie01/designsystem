@@ -86,7 +86,7 @@ const Accordion: React.FC<AccordionProps> = ({
           id={`accordion-header-${item.id}`}
           disabled={!hasContent}
           style={{
-            padding: `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[5]}px`,
+            padding: `${ODLTheme.spacing[4]} ${ODLTheme.spacing[5]}`,
             background: variant === 'filled'
               ? isOpen
                 ? ODLTheme.colors.primary
@@ -114,7 +114,7 @@ const Accordion: React.FC<AccordionProps> = ({
             color: 'inherit'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: `${ODLTheme.spacing[3]}px` }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: ODLTheme.spacing[3] }}>
             {showIcons && item.icon && (
               <Icon
                 name={item.icon}
@@ -154,8 +154,8 @@ const Accordion: React.FC<AccordionProps> = ({
             aria-labelledby={`accordion-header-${item.id}`}
             style={{
               padding: variant === 'bordered'
-                ? `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[5]}px`
-                : `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[4]}px ${ODLTheme.spacing[4]}px ${ODLTheme.spacing[8]}px`,
+                ? `${ODLTheme.spacing[4]} ${ODLTheme.spacing[5]}`
+                : `${ODLTheme.spacing[4]} ${ODLTheme.spacing[4]} ${ODLTheme.spacing[4]} ${ODLTheme.spacing[8]}`,
               background: variant === 'bordered'
                 ? ODLTheme.colors.grey50
                 : level > 0
@@ -169,7 +169,7 @@ const Accordion: React.FC<AccordionProps> = ({
             }}
           >
             {item.content && (
-              <div style={{ marginBottom: hasChildren ? `${ODLTheme.spacing[3]}px` : 0 }}>
+              <div style={{ marginBottom: hasChildren ? ODLTheme.spacing[3] : 0 }}>
                 {item.content}
               </div>
             )}
