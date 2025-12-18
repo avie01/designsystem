@@ -46,21 +46,21 @@ const BackToTop: React.FC = () => {
           aria-label="Back to top"
           style={{
             position: 'fixed',
-            bottom: '2rem',
-            right: '2rem',
-            width: '48px',
-            height: '48px',
+            bottom: `${ODLTheme.spacing[8]}px`,
+            right: `${ODLTheme.spacing[8]}px`,
+            width: `${ODLTheme.spacing[12]}px`,
+            height: `${ODLTheme.spacing[12]}px`,
             borderRadius: '50%',
             background: `linear-gradient(135deg, ${ODLTheme.colors.primary}, ${ODLTheme.colors.primaryHover})`,
             color: 'white',
             border: 'none',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            boxShadow: ODLTheme.shadows.md,
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            zIndex: 1000,
-            transition: prefersReducedMotion ? 'none' : 'all 0.3s ease',
+            zIndex: ODLTheme.zIndex.dropdown,
+            transition: prefersReducedMotion ? 'none' : ODLTheme.transitions.base,
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'scale(1)' : 'scale(0.8)',
             outline: 'none'
@@ -68,18 +68,18 @@ const BackToTop: React.FC = () => {
           onMouseEnter={(e) => {
             if (!prefersReducedMotion) {
               e.currentTarget.style.transform = 'scale(1.1)';
-              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2)';
+              e.currentTarget.style.boxShadow = ODLTheme.shadows.lg;
             }
           }}
           onMouseLeave={(e) => {
             if (!prefersReducedMotion) {
               e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+              e.currentTarget.style.boxShadow = ODLTheme.shadows.md;
             }
           }}
           onFocus={(e) => {
-            e.currentTarget.style.outline = `2px solid ${ODLTheme.colors.primary}`;
-            e.currentTarget.style.outlineOffset = '2px';
+            e.currentTarget.style.outline = `${ODLTheme.borders.width.focus} solid ${ODLTheme.colors.primary}`;
+            e.currentTarget.style.outlineOffset = `${ODLTheme.spacing[1]}px`;
           }}
           onBlur={(e) => {
             e.currentTarget.style.outline = 'none';

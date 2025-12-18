@@ -71,8 +71,8 @@ const Accordion: React.FC<AccordionProps> = ({
       <div
         key={item.id}
         style={{
-          marginBottom: level === 0 && variant === 'default' ? '2px' : 0,
-          marginLeft: level > 0 ? '20px' : 0,
+          marginBottom: level === 0 && variant === 'default' ? `${ODLTheme.spacing[0]}px` : 0,
+          marginLeft: level > 0 ? `${ODLTheme.spacing[5]}px` : 0,
         }}
       >
         <button
@@ -86,7 +86,7 @@ const Accordion: React.FC<AccordionProps> = ({
           id={`accordion-header-${item.id}`}
           disabled={!hasContent}
           style={{
-            padding: variant === 'filled' ? '16px 20px' : '14px 16px',
+            padding: variant === 'filled' ? `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[5]}px` : `${ODLTheme.spacing[3]}px ${ODLTheme.spacing[4]}px`,
             background: variant === 'filled'
               ? isOpen
                 ? ODLTheme.colors.primary
@@ -97,14 +97,14 @@ const Accordion: React.FC<AccordionProps> = ({
                 ? ODLTheme.colors.surfaceHover
                 : 'white',
             border: variant === 'bordered'
-              ? `1px solid ${ODLTheme.colors.grey200}`
+              ? `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.grey200}`
               : 'none',
             borderBottom: variant === 'default' && level === 0 && !isLast
-              ? `1px solid ${ODLTheme.colors.grey200}`
+              ? `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.grey200}`
               : 'none',
-            borderRadius: variant === 'bordered' ? '6px' : 0,
+            borderRadius: variant === 'bordered' ? ODLTheme.borders.radius.sm : 0,
             cursor: hasContent ? 'pointer' : 'default',
-            transition: 'all 0.4s ease-in-out',
+            transition: ODLTheme.transitions.slow,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -114,7 +114,7 @@ const Accordion: React.FC<AccordionProps> = ({
             color: 'inherit'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: `${ODLTheme.spacing[3]}px` }}>
             {showIcons && item.icon && (
               <Icon
                 name={item.icon}
@@ -125,21 +125,21 @@ const Accordion: React.FC<AccordionProps> = ({
             <span
               style={{
                 fontSize: level === 0 ? ODLTheme.typography.fontSize.base : ODLTheme.typography.fontSize.sm,
-                fontWeight: level === 0 ? 500 : 400,
+                fontWeight: level === 0 ? ODLTheme.typography.fontWeight.medium : ODLTheme.typography.fontWeight.normal,
                 color: variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.text.primary
               }}
             >
               {item.title}
             </span>
           </div>
-          
+
           {hasContent && (
             <Icon
               name="chevron-right"
               size={16}
               color={variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.grey700}
               style={{
-                transition: 'transform 0.4s ease-in-out',
+                transition: ODLTheme.transitions.slow,
                 transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)'
               }}
             />
@@ -154,16 +154,16 @@ const Accordion: React.FC<AccordionProps> = ({
             aria-labelledby={`accordion-header-${item.id}`}
             style={{
               padding: variant === 'bordered'
-                ? '16px 20px'
+                ? `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[5]}px`
                 : level > 0
-                  ? '12px 16px 12px 32px'
-                  : '16px 16px 16px 32px',
+                  ? `${ODLTheme.spacing[3]}px ${ODLTheme.spacing[4]}px ${ODLTheme.spacing[3]}px ${ODLTheme.spacing[8]}px`
+                  : `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[4]}px ${ODLTheme.spacing[4]}px ${ODLTheme.spacing[8]}px`,
               background: variant === 'bordered'
                 ? ODLTheme.colors.grey50
                 : level > 0
                   ? ODLTheme.colors.grey50
                   : 'white',
-              borderTop: variant === 'bordered' ? `1px solid ${ODLTheme.colors.grey200}` : 'none',
+              borderTop: variant === 'bordered' ? `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.grey200}` : 'none',
               color: ODLTheme.colors.textLight,
               fontSize: ODLTheme.typography.fontSize.sm,
               lineHeight: 1.6,
@@ -171,11 +171,11 @@ const Accordion: React.FC<AccordionProps> = ({
             }}
           >
             {item.content && (
-              <div style={{ marginBottom: hasChildren ? '12px' : 0 }}>
+              <div style={{ marginBottom: hasChildren ? `${ODLTheme.spacing[3]}px` : 0 }}>
                 {item.content}
               </div>
             )}
-            
+
             {/* Nested Children */}
             {nested && hasChildren && (
               <div>
@@ -193,8 +193,8 @@ const Accordion: React.FC<AccordionProps> = ({
       className={className}
       style={{
         background: 'white',
-        borderRadius: variant === 'bordered' ? '8px' : '8px',
-        border: variant !== 'bordered' ? `1px solid ${ODLTheme.colors.grey200}` : 'none',
+        borderRadius: ODLTheme.borders.radius.md,
+        border: variant !== 'bordered' ? `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.grey200}` : 'none',
         overflow: 'hidden',
         ...style
       }}

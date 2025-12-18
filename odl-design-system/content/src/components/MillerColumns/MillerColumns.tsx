@@ -61,9 +61,9 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
       style={{
         display: 'flex',
         background: ODLTheme.colors.grey100,
-        borderRadius: '8px',
+        borderRadius: ODLTheme.borders.radius.md,
         overflow: 'hidden',
-        border: `1px solid ${ODLTheme.colors.grey200}`,
+        border: `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.grey200}`,
         height,
         ...style
       }}
@@ -75,7 +75,7 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
             width: columnWidth,
             minWidth: columnWidth,
             background: 'white',
-            borderRight: columnIndex < columnsData.length - 1 ? `1px solid ${ODLTheme.colors.grey200}` : 'none',
+            borderRight: columnIndex < columnsData.length - 1 ? `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.grey200}` : 'none',
             overflowY: 'auto',
             overflowX: 'hidden'
           }}
@@ -84,7 +84,7 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
             const isSelected = selectedPath[columnIndex]?.id === item.id;
             const isHovered = hoveredItem === `${columnIndex}-${item.id}`;
             const hasChildren = item.children && item.children.length > 0;
-            
+
             return (
               <div
                 key={item.id}
@@ -92,7 +92,7 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
                 onMouseEnter={() => setHoveredItem(`${columnIndex}-${item.id}`)}
                 onMouseLeave={() => setHoveredItem(null)}
                 style={{
-                  padding: '10px 16px',
+                  padding: `${ODLTheme.spacing[2]}px ${ODLTheme.spacing[4]}px`,
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
@@ -103,22 +103,21 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
                       ? ODLTheme.colors.grey50
                       : 'transparent',
                   color: isSelected ? 'white' : ODLTheme.colors.text.primary,
-                  transition: 'all 0.15s ease',
-                  borderBottom: `1px solid ${ODLTheme.colors.grey100}`,
+                  transition: ODLTheme.transitions.fast,
+                  borderBottom: `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.grey100}`,
                   fontSize: ODLTheme.typography.fontSize.base
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: `${ODLTheme.spacing[2]}px` }}>
                   {showIcons && (
-                    // Use Carbon icons for small sizes (< 24px)
                     <Icon
                       name={item.icon || (item.type === 'file' ? 'document' : 'folder')}
                       size={16}
-                      color={isSelected ? 'white' : item.type === 'file' ? ODLTheme.colors.grey400 : '#FF9800'}
+                      color={isSelected ? 'white' : item.type === 'file' ? ODLTheme.colors.grey400 : ODLTheme.colors.warning}
                     />
                   )}
-                  <span style={{ 
-                    fontWeight: isSelected ? 500 : 400,
+                  <span style={{
+                    fontWeight: isSelected ? ODLTheme.typography.fontWeight.medium : ODLTheme.typography.fontWeight.normal,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap'

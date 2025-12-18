@@ -142,7 +142,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
         border: `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.border}`,
         borderRadius: ODLTheme.borders.radius.md,
         overflow: 'hidden',
-        width: '280px',
+        width: `${280}px`,
         ...style,
       }}
     >
@@ -158,7 +158,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: ODLTheme.spacing[2] }}>
-          <FolderIcon size={18} />
+          <Icon name="folder" size={18} />
           <span
             style={{
               fontSize: ODLTheme.typography.fontSize.base,
@@ -183,7 +183,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
       {/* Tree Content */}
       <div
         style={{
-          maxHeight: '600px',
+          maxHeight: `${600}px`,
           overflowY: hideScrollbar ? 'hidden' : 'auto',
           overflowX: 'hidden',
         }}
