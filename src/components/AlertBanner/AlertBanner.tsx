@@ -86,11 +86,11 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
     
     switch (variant) {
       case 'success':
-        return <Icon name="checkmark-filled" size={iconSize} className={iconClasses} />;
+        return <Icon name="checkmark-outline" size={iconSize} className={iconClasses} />;
       case 'warning':
-        return <Icon name="warning" size={iconSize} className={iconClasses} />;
+        return <Icon name="warning-alt" size={iconSize} className={iconClasses} />;
       case 'error':
-        return <Icon name="error-filled" size={iconSize} className={iconClasses} />;
+        return <Icon name="error-outline" size={iconSize} className={iconClasses} />;
       default:
         return <Icon name="information" size={iconSize} className={iconClasses} />;
     }

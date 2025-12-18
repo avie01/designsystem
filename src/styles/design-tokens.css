@@ -26,13 +26,13 @@
   --odl-info: #0F62FE;
   
   /* Status Light Colors (10% opacity for backgrounds) */
-  --odl-success-light: rgba(36, 161, 72, 0.1);
+  --odl-success-light: #DFF6DF;
   --odl-success-border: rgba(36, 161, 72, 0.3);
-  --odl-warning-light: rgba(255, 131, 43, 0.1);
+  --odl-warning-light: #FDEED3;
   --odl-warning-border: rgba(255, 131, 43, 0.3);
-  --odl-info-light: rgba(15, 98, 254, 0.1);
+  --odl-info-light: #E0F3FF;
   --odl-info-border: rgba(15, 98, 254, 0.3);
-  --odl-error-light: rgba(218, 30, 40, 0.1);
+  --odl-error-light: #F7E4E6;
   --odl-error-border: rgba(218, 30, 40, 0.3);
   
   /* Dark Theme Colors (WCAG AA Compliant) */
