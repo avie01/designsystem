@@ -8,7 +8,7 @@
 
 .columnHeaders {
   display: grid;
-  gap: 1px;
+  gap: var(--odl-spacing-0);
   background: var(--odl-border, #e5e7eb);
   border-radius: var(--odl-border-radius-md, 8px);
   margin-bottom: var(--odl-spacing-4, 16px);
@@ -34,7 +34,7 @@
 
 .columnTitle {
   font-size: var(--odl-font-size-sm, 14px);
-  font-weight: 600;
+  font-weight: var(--odl-font-weight-semibold, 600);
   color: var(--odl-text-primary, #111827);
   margin: 0;
   flex: 1;
@@ -45,24 +45,24 @@
   padding: var(--odl-spacing-1, 4px) var(--odl-spacing-2, 8px);
   border-radius: var(--odl-border-radius-full, 9999px);
   font-size: var(--odl-font-size-xs, 12px);
-  font-weight: 700;
-  min-width: 24px;
+  font-weight: var(--odl-font-weight-bold, 700);
+  min-width: var(--odl-spacing-6, 24px);
   text-align: center;
 }
 
 .columnContent {
   display: grid;
-  gap: 1px;
+  gap: var(--odl-spacing-0);
   background: var(--odl-border, #e5e7eb);
   border-radius: var(--odl-border-radius-md, 8px);
-  min-height: 400px;
+  min-height: var(--odl-spacing-96, 400px);
 }
 
 .column {
   background: var(--odl-white, #ffffff);
   padding: var(--odl-spacing-3, 12px);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  min-height: 200px;
+  transition: var(--odl-transition-base, all 0.2s cubic-bezier(0.4, 0, 0.2, 1));
+  min-height: var(--odl-spacing-50, 200px);
 }
 
 .column:first-child {
@@ -78,29 +78,29 @@
 .columnDragOver {
   background: var(--odl-primary-light, #EBF5FF);
   transform: scale(1.02);
-  box-shadow: inset 0 0 0 2px var(--odl-primary, #0F62FE);
+  box-shadow: inset 0 0 0 var(--odl-focus-border-width, 2px) var(--odl-primary, #0F62FE);
 }
 
 .taskCard {
   background: var(--odl-white, #ffffff);
-  border: 1px solid var(--odl-border, #e5e7eb);
+  border: var(--odl-spacing-0) solid var(--odl-border, #e5e7eb);
   border-radius: var(--odl-border-radius-md, 8px);
   padding: var(--odl-spacing-3, 12px);
   margin-bottom: var(--odl-spacing-2, 8px);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--odl-transition-base, all 0.2s cubic-bezier(0.4, 0, 0.2, 1));
   box-shadow: var(--odl-shadow-sm, 0 1px 2px rgba(0,0,0,0.05));
 }
 
 .taskCard:hover {
   box-shadow: var(--odl-shadow-md, 0 4px 6px rgba(0,0,0,0.1));
-  transform: translateY(-2px);
+  transform: translateY(calc(-1 * var(--odl-spacing-0)));
 }
 
 .taskCardDragging {
   transform: rotate(2deg) scale(1.02);
   opacity: 0.8;
-  z-index: 1000;
+  z-index: var(--odl-z-index-dropdown, 1000);
   box-shadow: var(--odl-shadow-lg, 0 10px 15px rgba(0,0,0,0.1));
 }
 
@@ -147,7 +147,7 @@
   font-size: var(--odl-font-size-xs, 12px);
   background: var(--odl-primary-light, #EBF5FF);
   color: var(--odl-primary, #0F62FE);
-  padding: 0 var(--odl-spacing-2, 8px);
+  padding: var(--odl-spacing-0) var(--odl-spacing-2, 8px);
   border-radius: var(--odl-border-radius-sm, 4px);
 }
 
@@ -158,7 +158,7 @@
 
 .progressBar {
   background: var(--odl-surface, #f9fafb);
-  height: 4px;
+  height: var(--odl-spacing-1, 4px);
   border-radius: var(--odl-border-radius-sm, 4px);
   margin-bottom: var(--odl-spacing-2, 8px);
   overflow: hidden;
@@ -166,7 +166,7 @@
 
 .progressFill {
   height: 100%;
-  transition: width 0.3s ease;
+  transition: width var(--odl-transition-color, 0.3s ease);
 }
 
 .taskFooter {
@@ -183,8 +183,8 @@
 }
 
 .assigneeAvatar {
-  width: 24px;
-  height: 24px;
+  width: var(--odl-spacing-6, 24px);
+  height: var(--odl-spacing-6, 24px);
   border-radius: var(--odl-border-radius-full, 9999px);
   background: var(--odl-primary, #0F62FE);
   color: var(--odl-white, #ffffff);
@@ -192,7 +192,7 @@
   align-items: center;
   justify-content: center;
   font-size: var(--odl-font-size-xs, 12px);
-  font-weight: 600;
+  font-weight: var(--odl-font-weight-semibold, 600);
 }
 
 .assigneeName {
@@ -226,7 +226,7 @@
 }
 
 .dropZone {
-  border: 2px dashed var(--odl-primary, #0F62FE);
+  border: var(--odl-focus-border-width, 2px) dashed var(--odl-primary, #0F62FE);
   border-radius: var(--odl-border-radius-md, 8px);
   padding: var(--odl-spacing-6, 24px);
   text-align: center;
@@ -277,8 +277,8 @@
 }
 
 .tableAssigneeAvatar {
-  width: 20px;
-  height: 20px;
+  width: var(--odl-spacing-5, 20px);
+  height: var(--odl-spacing-5, 20px);
   border-radius: var(--odl-border-radius-full, 9999px);
   background: var(--odl-primary, #0F62FE);
   color: var(--odl-white, #ffffff);
@@ -286,7 +286,7 @@
   align-items: center;
   justify-content: center;
   font-size: var(--odl-font-size-xs, 12px);
-  font-weight: 600;
+  font-weight: var(--odl-font-weight-semibold, 600);
 }
 
 .tableAssigneeName {
@@ -302,16 +302,16 @@
 
 .tableProgressBar {
   background: var(--odl-surface, #f9fafb);
-  height: 4px;
+  height: var(--odl-spacing-1, 4px);
   border-radius: var(--odl-border-radius-sm, 4px);
-  width: 40px;
+  width: var(--odl-spacing-10, 40px);
   overflow: hidden;
 }
 
 .tableProgressText {
   font-size: var(--odl-font-size-xs, 12px);
   color: var(--odl-text-secondary, #6b7280);
-  min-width: 30px;
+  min-width: var(--odl-spacing-8, 30px);
 }
 
 .tableDueDate {
@@ -334,6 +334,6 @@
   font-size: var(--odl-font-size-xs, 12px);
   background: var(--odl-primary-light, #EBF5FF);
   color: var(--odl-primary, #0F62FE);
-  padding: 0 var(--odl-spacing-1, 4px);
+  padding: var(--odl-spacing-0) var(--odl-spacing-1, 4px);
   border-radius: var(--odl-border-radius-sm, 4px);
 }
