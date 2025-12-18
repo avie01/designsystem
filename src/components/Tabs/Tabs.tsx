@@ -11,6 +11,8 @@ export interface TabItem {
   label: string;
   content?: React.ReactNode;
   disabled?: boolean;
+  iconLeft?: React.ReactNode;
+  iconRight?: React.ReactNode;
 }
 
 export interface TabsProps {
@@ -20,6 +22,7 @@ export interface TabsProps {
   variant?: 'default' | 'compact';
   className?: string;
   showContent?: boolean;
+  fullWidth?: boolean;
 }
 
 const Tabs: React.FC<TabsProps> = ({
@@ -28,7 +31,8 @@ const Tabs: React.FC<TabsProps> = ({
   onTabChange,
   variant = 'default',
   className = '',
-  showContent = true
+  showContent = true,
+  fullWidth = false
 }) => {
   const [internalActiveTab, setInternalActiveTab] = useState(activeTab || tabs[0]?.id || '');
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -104,7 +108,9 @@ const Tabs: React.FC<TabsProps> = ({
   const containerStyles = 'w-full';
   const navigationStyles = 'flex border-b border-gray-200 gap-0';
   const tabItemStyles = classNames(
-    'relative bg-none border-none cursor-pointer transition-all duration-200 rounded-none outline-none whitespace-nowrap min-w-0 flex-shrink-0',
+    'relative bg-none border-none cursor-pointer transition-all duration-200 rounded-none outline-none whitespace-nowrap min-w-0',
+    fullWidth ? 'flex-1' : 'flex-shrink-0',
+    'flex items-center justify-center gap-2',
     variant === 'default' ? 'px-4 py-3' : 'px-3 py-2',
     'hover:bg-[var(--grey-400-obj-hover-grey,#E8E8E8)]',
     'focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'
@@ -150,7 +156,17 @@ const Tabs: React.FC<TabsProps> = ({
                 '--after-bg-color': isActive ? ODLTheme.colors.primary : 'transparent'
               } as React.CSSProperties}
             >
-              {tab.label}
+              {tab.iconLeft && (
+                <span className="flex-shrink-0" style={{ color: isActive ? ODLTheme.colors.primary : 'var(--secondary-obj-twilight, #525965)' }}>
+                  {tab.iconLeft}
+                </span>
+              )}
+              <span className="truncate">{tab.label}</span>
+              {tab.iconRight && (
+                <span className="flex-shrink-0" style={{ color: isActive ? ODLTheme.colors.primary : 'var(--secondary-obj-twilight, #525965)' }}>
+                  {tab.iconRight}
+                </span>
+              )}
             </button>
           );
         })}
