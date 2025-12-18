@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import Icon from '../../Icon/Icon';
+import IconButton from '../../IconButton/IconButton';
 import YellowFolder from '../../YellowFolder/YellowFolder';
+import Checkbox from '../../Checkbox/Checkbox';
+import Icon from '../../Icon/Icon';
+import Chip from '../../Chip/Chip';
 import './Cards.css';
 
 // Self-contained utility function to replace clsx
@@ -11,8 +14,16 @@ const classNames = (...classes: (string | boolean | undefined | null)[]): string
 
 
 export interface CardsProps {
-  /** Size variant - affects typography and spacing */
-  size?: 'sm' | 'md' | 'lg';
+  /** Card type variant - affects layout and styling */
+  type?: 'compact' | 'comfortable' | 'metadata';
+  /** Whether to show the icon gutter (YellowFolder icon) */
+  iconGutter?: boolean;
+  /** Icons to display in the gutter between YellowFolder and text content */
+  gutterIcons?: string[];
+  /** Whether to show extension and file size text next to title */
+  extensionSize?: boolean;
+  /** Whether to show metadata card with chips section */
+  showMetadata?: boolean;
   /** Disabled state - affects colors and interaction */
   disabled?: boolean;
   /** Error state - uses error colors */
@@ -48,7 +59,11 @@ export interface CardsProps {
 }
 
 const Cards: React.FC<CardsProps> = ({
-  size = 'md',
+  type = 'comfortable',
+  iconGutter = true,
+  gutterIcons = [],
+  extensionSize = false,
+  showMetadata = false,
   disabled = false,
   error = false,
   selected = false,
@@ -72,10 +87,11 @@ const Cards: React.FC<CardsProps> = ({
   // Generate component classes
   const componentClasses = classNames(
     'cards-container',
-    `cards-container--${size}`,
+    `cards-container--${type}`,
     selected && 'cards-container--selected',
     disabled && 'cards-container--disabled',
     error && 'cards-container--error',
+    showMetadata && 'cards-container--with-metadata',
     className
   );
 
@@ -106,33 +122,56 @@ const Cards: React.FC<CardsProps> = ({
       onKeyDown={handleKeyDown}
     >
       {/* Checkbox */}
-      <div className="cards-container__checkbox">
-        <input
-          type="checkbox"
+      <div className="cards-container__checkbox" onClick={(e) => e.stopPropagation()}>
+        <Checkbox
           checked={selected}
-          aria-checked={selected}
-          onChange={(e) => onSelect?.(e.target.checked)}
-          onClick={(e) => e.stopPropagation()}
+          onChange={onSelect}
           disabled={disabled}
-          aria-label={`Select ${title}`}
-          aria-describedby={ariaDescribedBy}
+          size="md"
+          id={`card-checkbox-${title?.replace(/\s+/g, '-').toLowerCase()}`}
         />
       </div>
 
       {/* Yellow Folder Icon */}
-      <div className="cards-container__icon">
-        <YellowFolder size={size === 'sm' ? 20 : size === 'lg' ? 28 : 24} />
-      </div>
+      {iconGutter && (
+        <div className="cards-container__icon">
+          <YellowFolder size={type === 'compact' ? 24 : 36} />
+        </div>
+      )}
+
+      {/* Gutter Icons */}
+      {iconGutter && gutterIcons.length > 0 && (
+        <div className="cards-container__gutter-icons">
+          {gutterIcons.map((iconName, index) => (
+            <Icon
+              key={index}
+              name={iconName}
+              size={12}
+              color="#525965"
+            />
+          ))}
+        </div>
+      )}
 
       {/* Text Content */}
       <div className="cards-container__content">
-        <div className="cards-container__title">
-          {title}
+        <div className="cards-container__title-row">
+          <div className="cards-container__title">
+            {title}
+          </div>
+          {extensionSize && (
+            <div className="cards-container__extension-size">
+              .pdf (9.8kb)
+            </div>
+          )}
         </div>
-        <div className="cards-container__subtitle">
-          {subtitle}
-        </div>
+        {type !== 'compact' && (
+          <div className="cards-container__subtitle">
+            {subtitle}
+          </div>
+        )}
       </div>
+
 
       {/* Tag */}
       {tag && (
@@ -145,38 +184,63 @@ const Cards: React.FC<CardsProps> = ({
       <div className="cards-container__actions">
         {/* Information Icon */}
         {showInfoIcon && (
-          <button
-            className="cards-container__action"
-            onClick={(e) => {
-              e.stopPropagation();
-              onInfoClick?.();
-            }}
-            disabled={disabled}
-            aria-label={`More information about ${title}`}
-            type="button"
-          >
-            <Icon name="information" size={16} />
-          </button>
+          <div onClick={(e) => e.stopPropagation()}>
+            <IconButton
+              icon="information"
+              variant="ghost"
+              size="medium"
+              onClick={onInfoClick}
+              disabled={disabled}
+              aria-label={`More information about ${title}`}
+            />
+          </div>
         )}
 
         {/* Menu Icon */}
         {showMenuIcon && (
-          <button
-            className="cards-container__action"
-            onClick={(e) => {
-              e.stopPropagation();
-              onMenuClick?.();
-            }}
-            disabled={disabled}
-            aria-label={`Options for ${title}`}
-            type="button"
-          >
-            <Icon name="overflow-menu-vertical" size={16} />
-          </button>
+          <div onClick={(e) => e.stopPropagation()}>
+            <IconButton
+              icon="overflow-menu-vertical"
+              variant="ghost"
+              size="medium"
+              onClick={onMenuClick}
+              disabled={disabled}
+              aria-label={`Options for ${title}`}
+            />
+          </div>
         )}
       </div>
     </div>
   );
 };
 
-export default Cards; 
+const CardsWithMetadata: React.FC<CardsProps> = (props) => {
+  return (
+    <>
+      <Cards {...props} />
+      {props.showMetadata && (
+        <div className="cards-container__metadata-chips-section">
+          <div className="cards-container__metadata-chips">
+            <Chip 
+              label="creation date: 18 Dec 2024, 16:11:23"
+              variant="white"
+              size="sm"
+            />
+            <Chip 
+              label="date updated: 21 Oct 2025, 16:00:24"
+              variant="white"
+              size="sm"
+            />
+            <Chip 
+              label="Last updater: betaadmin1"
+              variant="white"
+              size="sm"
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default CardsWithMetadata; 
