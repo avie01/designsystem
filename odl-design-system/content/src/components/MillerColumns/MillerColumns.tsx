@@ -112,7 +112,7 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
                   {showIcons && (
                     <Icon
                       name={item.icon || (item.type === 'file' ? 'document' : 'folder')}
-                      size={16}
+                      size={parseInt(ODLTheme.spacing[4])}
                       color={isSelected ? 'white' : item.type === 'file' ? ODLTheme.colors.grey400 : ODLTheme.colors.warning}
                     />
                   )}
@@ -128,7 +128,7 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
                 {hasChildren && (
                   <Icon
                     name="chevron-right"
-                    size={14}
+                    size={parseInt(ODLTheme.spacing[3])}
                     color={isSelected ? 'white' : ODLTheme.colors.grey400}
                   />
                 )}

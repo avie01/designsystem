@@ -118,7 +118,7 @@ const Accordion: React.FC<AccordionProps> = ({
             {showIcons && item.icon && (
               <Icon
                 name={item.icon}
-                size={18}
+                size={parseInt(ODLTheme.spacing[4])}
                 color={variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.grey500}
               />
             )}
@@ -136,7 +136,7 @@ const Accordion: React.FC<AccordionProps> = ({
           {hasContent && (
             <Icon
               name="chevron-right"
-              size={16}
+              size={parseInt(ODLTheme.spacing[3])}
               color={variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.grey700}
               style={{
                 transition: ODLTheme.transitions.slow,

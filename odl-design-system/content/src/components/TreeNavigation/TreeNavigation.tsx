@@ -87,7 +87,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
           <div style={{ marginRight: ODLTheme.spacing[2], display: 'flex', alignItems: 'center' }}>
             <Icon
               name={isFolder ? 'folder' : 'document'}
-              size={16}
+              size={parseInt(ODLTheme.spacing[4])}
               color={isFolder ? ODLTheme.colors.warning : ODLTheme.colors.text.secondary}
               aria-hidden="true"
             />
@@ -110,7 +110,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
           {hasChildren && (
             <Icon
               name="chevron-right"
-              size={16}
+              size={parseInt(ODLTheme.spacing[4])}
               color={ODLTheme.colors.text.tertiary}
               style={{
                 marginLeft: ODLTheme.spacing[2],
@@ -158,7 +158,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: ODLTheme.spacing[2] }}>
-          <Icon name="folder" size={18} />
+          <Icon name="folder" size={parseInt(ODLTheme.spacing[4])} />
           <span
             style={{
               fontSize: ODLTheme.typography.fontSize.base,
@@ -173,7 +173,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
         {showFilter && (
           <Icon
             name="filter"
-            size={18}
+            size={parseInt(ODLTheme.spacing[4])}
             color={ODLTheme.colors.text.secondary}
             style={{ cursor: 'pointer' }}
           />

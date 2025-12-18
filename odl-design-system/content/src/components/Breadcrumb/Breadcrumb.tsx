@@ -1,6 +1,7 @@
 import React from 'react';
 import './Breadcrumb.css';
 import Icon from '../Icon/Icon';
+import ODLTheme from '../../styles/ODLTheme';
 
 // Self-contained utility function to replace clsx
 const classNames = (...classes: (string | boolean | undefined | null)[]): string => {
@@ -9,7 +10,7 @@ const classNames = (...classes: (string | boolean | undefined | null)[]): string
 
 // Preset separator styles
 const SEPARATOR_STYLES: { [key: string]: string | React.ReactNode } = {
-  chevron: <Icon name="chevron-right" size={16} className="breadcrumb__separator-icon" aria-hidden="true" />,
+  chevron: <Icon name="chevron-right" size={parseInt(ODLTheme.spacing[4])} className="breadcrumb__separator-icon" aria-hidden="true" />,
   slash: '/',
   arrow: '→',
   pipe: '|',
@@ -21,9 +22,9 @@ const SEPARATOR_STYLES: { [key: string]: string | React.ReactNode } = {
 
 // Preset spacing variants
 const SPACING_VARIANTS: { [key: string]: { gap: string; padding: string } } = {
-  compact: { gap: '4px', padding: '4px 0' },
-  comfortable: { gap: '8px', padding: '8px 0' },
-  spacious: { gap: '12px', padding: '12px 0' },
+  compact: { gap: ODLTheme.spacing[1], padding: `${ODLTheme.spacing[1]} 0` },
+  comfortable: { gap: ODLTheme.spacing[2], padding: `${ODLTheme.spacing[2]} 0` },
+  spacious: { gap: ODLTheme.spacing[3], padding: `${ODLTheme.spacing[3]} 0` },
 };
 
 // Preset color schemes
@@ -35,9 +36,9 @@ const COLOR_SCHEMES: { [key: string]: string } = {
 
 // Icon size presets based on breadcrumb size
 const ICON_SIZES: { [key: string]: number } = {
-  small: 14,
-  default: 16,
-  large: 18,
+  small: parseInt(ODLTheme.spacing[3]),
+  default: parseInt(ODLTheme.spacing[4]),
+  large: parseInt(ODLTheme.spacing[4]),
 };
 
 // Icon style variants (for Carbon icons)

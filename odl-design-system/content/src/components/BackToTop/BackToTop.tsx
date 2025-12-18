@@ -85,7 +85,7 @@ const BackToTop: React.FC = () => {
             e.currentTarget.style.outline = 'none';
           }}
         >
-          <Icon name="arrow-up" size={20} />
+          <Icon name="arrow-up" size={parseInt(ODLTheme.spacing[5])} />
         </button>
       )}
     </>

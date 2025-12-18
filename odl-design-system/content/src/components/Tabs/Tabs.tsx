@@ -95,13 +95,13 @@ const Tabs: React.FC<TabsProps> = ({
     minWidth: 0,
     flexShrink: 0,
     opacity: isDisabled ? 0.6 : 1,
-    paddingBottom: isActive ? `calc(${ODLTheme.spacing[3]}px - 2px)` : ODLTheme.spacing[3] + 'px',
-    borderBottom: isActive ? `2px solid ${ODLTheme.colors.primary}` : 'none',
+    paddingBottom: isActive ? `calc(${ODLTheme.spacing[3]}px - ${ODLTheme.borders.width.base})` : ODLTheme.spacing[3] + 'px',
+    borderBottom: isActive ? `${ODLTheme.borders.width.base} solid ${ODLTheme.colors.primary}` : 'none',
   });
 
   const navigationStyles: CSSProperties = {
     display: 'flex',
-    borderBottom: `1px solid ${ODLTheme.colors.border}`,
+    borderBottom: `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.border}`,
     gap: 0,
     width: '100%',
   };
@@ -152,7 +152,7 @@ const Tabs: React.FC<TabsProps> = ({
                 }
               }}
               onFocus={(e) => {
-                e.currentTarget.style.outlineWidth = '2px';
+                e.currentTarget.style.outlineWidth = ODLTheme.borders.width.base;
                 e.currentTarget.style.outlineStyle = 'solid';
                 e.currentTarget.style.outlineColor = ODLTheme.colors.primary;
                 e.currentTarget.style.outlineOffset = ODLTheme.spacing[1] + 'px';
