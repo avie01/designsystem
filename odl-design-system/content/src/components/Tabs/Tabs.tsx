@@ -1,4 +1,5 @@
-import React, { useState, useRef, useCallback, KeyboardEvent } from 'react';
+import React, { useState, useRef, useCallback, KeyboardEvent, CSSProperties } from 'react';
+import ODLTheme from '../../styles/ODLTheme';
 
 // Self-contained utility function to replace clsx
 const classNames = (...classes: (string | boolean | undefined | null)[]): string => {
@@ -76,28 +77,50 @@ const Tabs: React.FC<TabsProps> = ({
 
   const activeTabData = tabs.find(tab => tab.id === currentActiveTab);
 
-  // Self-contained styles
-  // DESIGN RULE: Tabs must maintain consistent spacing across all implementations
-  // - Always use 'px-4 py-3 text-sm' for default variant (standard tabs)
-  // - Always use 'px-3 py-2 text-xs' for compact variant (space-constrained areas)
-  // - Tab container should have proper padding/margin from parent elements (p-4 or equivalent)
-  // - Content area should have consistent 'py-4' padding
-  const containerStyles = 'w-full';
-  const navigationStyles = 'flex border-b border-gray-200 gap-0';
-  const tabItemStyles = classNames(
-    'relative bg-none border-none font-normal text-gray-600 cursor-pointer transition-all duration-200 rounded-none outline-none whitespace-nowrap min-w-0 flex-shrink-0',
-    variant === 'default' ? 'px-4 py-3 text-sm' : 'px-3 py-2 text-xs',
-    'hover:not-disabled:bg-gray-100 hover:not-disabled:text-gray-600',
-    'focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'
-  );
-  const activeTabStyles = 'text-blue-600 font-medium after:content-[""] after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-0.5 after:bg-blue-600 after:rounded-sm';
-  const disabledTabStyles = 'text-gray-400 cursor-not-allowed opacity-60 hover:bg-transparent';
-  const contentStyles = 'py-4';
+  // Style functions using ODL theme
+  const getTabItemStyles = (isActive: boolean, isDisabled: boolean): CSSProperties => ({
+    position: 'relative',
+    background: 'transparent',
+    border: 'none',
+    fontFamily: ODLTheme.typography.fontFamily.sans,
+    fontSize: variant === 'default' ? ODLTheme.typography.fontSize.sm : ODLTheme.typography.fontSize.xs,
+    fontWeight: isActive ? ODLTheme.typography.fontWeight.semibold : ODLTheme.typography.fontWeight.medium,
+    color: isActive ? ODLTheme.colors.primary : isDisabled ? ODLTheme.colors.text.disabled : ODLTheme.colors.text.secondary,
+    cursor: isDisabled ? 'not-allowed' : 'pointer',
+    padding: variant === 'default' ? `${ODLTheme.spacing[3]}px ${ODLTheme.spacing[4]}px` : `${ODLTheme.spacing[2]}px ${ODLTheme.spacing[3]}px`,
+    transition: ODLTheme.transitions.base,
+    borderRadius: 0,
+    outline: 'none',
+    whiteSpace: 'nowrap',
+    minWidth: 0,
+    flexShrink: 0,
+    opacity: isDisabled ? 0.6 : 1,
+    paddingBottom: isActive ? `calc(${ODLTheme.spacing[3]}px - 2px)` : ODLTheme.spacing[3] + 'px',
+    borderBottom: isActive ? `2px solid ${ODLTheme.colors.primary}` : 'none',
+  });
+
+  const navigationStyles: CSSProperties = {
+    display: 'flex',
+    borderBottom: `1px solid ${ODLTheme.colors.border}`,
+    gap: 0,
+    width: '100%',
+  };
+
+  const containerStyles: CSSProperties = {
+    width: '100%',
+  };
+
+  const contentStyles: CSSProperties = {
+    padding: `${ODLTheme.spacing[4]}px 0`,
+    color: ODLTheme.colors.text.primary,
+    fontSize: ODLTheme.typography.fontSize.base,
+    fontFamily: ODLTheme.typography.fontFamily.sans,
+  };
 
   return (
-    <div className={classNames(containerStyles, className)}>
+    <div style={containerStyles} className={className}>
       {/* Tab Navigation */}
-      <div className={navigationStyles} role="tablist">
+      <div style={navigationStyles} role="tablist">
         {tabs.map((tab, index) => {
           const isActive = tab.id === currentActiveTab;
           const isDisabled = tab.disabled;
@@ -115,11 +138,28 @@ const Tabs: React.FC<TabsProps> = ({
               tabIndex={isActive ? 0 : -1}
               onClick={() => !isDisabled && handleTabClick(tab.id)}
               onKeyDown={(event) => handleKeyDown(event, index)}
-              className={classNames(
-                tabItemStyles,
-                isActive && activeTabStyles,
-                isDisabled && disabledTabStyles
-              )}
+              style={{
+                ...getTabItemStyles(isActive, isDisabled),
+              }}
+              onMouseEnter={(e) => {
+                if (!isDisabled && !isActive) {
+                  e.currentTarget.style.backgroundColor = ODLTheme.colors.wave;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isDisabled && !isActive) {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.outlineWidth = '2px';
+                e.currentTarget.style.outlineStyle = 'solid';
+                e.currentTarget.style.outlineColor = ODLTheme.colors.primary;
+                e.currentTarget.style.outlineOffset = ODLTheme.spacing[1] + 'px';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.outline = 'none';
+              }}
             >
               {tab.label}
             </button>
@@ -129,8 +169,8 @@ const Tabs: React.FC<TabsProps> = ({
 
       {/* Tab Content */}
       {showContent && activeTabData && (
-        <div 
-          className={contentStyles} 
+        <div
+          style={contentStyles}
           role="tabpanel"
           id={`tabpanel-${activeTabData.id}`}
           aria-labelledby={`tab-${activeTabData.id}`}
