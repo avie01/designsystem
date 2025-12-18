@@ -17,37 +17,64 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Helper component for color swatches
+const ColorSwatch = ({ name, color }: { name: string; color: string }) => (
+  <div>
+    <div
+      style={{
+        width: '100%',
+        height: '120px',
+        backgroundColor: color,
+        borderRadius: ODLTheme.borders.radius.md,
+        border: `1px solid ${ODLTheme.colors.border}`,
+        marginBottom: ODLTheme.spacing[2],
+        boxShadow: ODLTheme.shadows.sm,
+      }}
+    />
+    <div>
+      <p
+        style={{
+          fontSize: ODLTheme.typography.fontSize.sm,
+          fontWeight: ODLTheme.typography.fontWeight.semibold,
+          color: ODLTheme.colors.text.primary,
+          margin: 0,
+          marginBottom: ODLTheme.spacing[1],
+        }}
+      >
+        {name}
+      </p>
+      <p
+        style={{
+          fontSize: ODLTheme.typography.fontSize.xs,
+          color: ODLTheme.colors.text.secondary,
+          margin: 0,
+          fontFamily: ODLTheme.typography.fontFamily.mono,
+        }}
+      >
+        {color.toUpperCase()}
+      </p>
+    </div>
+  </div>
+);
+
 // Color Palette
 export const ColorPalette: Story = {
   name: '01 Color Palette',
   render: () => (
     <div>
       <h2 style={{ marginBottom: ODLTheme.spacing[6] }}>ODL Color Palette</h2>
-      
+
       {/* Primary Colors */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
         <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Primary Colors</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[4] }}>
           {Object.entries({
             'Primary': ODLTheme.colors.primary,
             'Primary Hover': ODLTheme.colors.primaryHover,
             'Primary Light': ODLTheme.colors.primaryLight,
             'Primary Dark': ODLTheme.colors.primaryDark,
           }).map(([name, color]) => (
-            <div key={name}>
-              <div 
-                style={{ 
-                  backgroundColor: color,
-                  height: '80px',
-                  borderRadius: ODLTheme.borders.radius.md,
-                  marginBottom: ODLTheme.spacing[2]
-                }}
-              />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-                <strong>{name}</strong><br />
-                {color}
-              </div>
-            </div>
+            <ColorSwatch key={name} name={name} color={color} />
           ))}
         </div>
       </div>
@@ -55,28 +82,15 @@ export const ColorPalette: Story = {
       {/* Secondary Color */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
         <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Secondary Color</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
-          <div>
-            <div
-              style={{
-                backgroundColor: ODLTheme.colors.secondary,
-                height: '80px',
-                borderRadius: ODLTheme.borders.radius.md,
-                marginBottom: ODLTheme.spacing[2]
-              }}
-            />
-            <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-              <strong>Secondary</strong><br />
-              {ODLTheme.colors.secondary}
-            </div>
-          </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[4] }}>
+          <ColorSwatch name="Secondary" color={ODLTheme.colors.secondary} />
         </div>
       </div>
 
       {/* Neutral Colors */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
         <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Neutral Colors</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[4] }}>
           {Object.entries({
             'White': ODLTheme.colors.white,
             'Background': ODLTheme.colors.background,
@@ -85,21 +99,7 @@ export const ColorPalette: Story = {
             'Surface Hover': ODLTheme.colors.surfaceHover,
             'Border': ODLTheme.colors.border,
           }).map(([name, color]) => (
-            <div key={name}>
-              <div
-                style={{
-                  backgroundColor: color,
-                  height: '60px',
-                  borderRadius: ODLTheme.borders.radius.md,
-                  marginBottom: ODLTheme.spacing[2],
-                  border: `1px solid ${ODLTheme.colors.border}`
-                }}
-              />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-                <strong>{name}</strong><br />
-                {color}
-              </div>
-            </div>
+            <ColorSwatch key={name} name={name} color={color} />
           ))}
         </div>
       </div>
@@ -107,7 +107,7 @@ export const ColorPalette: Story = {
       {/* Grey Scale */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
         <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Grey Scale</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[3] }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[4] }}>
           {Object.entries({
             'Grey 50': ODLTheme.colors.grey50,
             'Grey 100': ODLTheme.colors.grey100,
@@ -117,21 +117,7 @@ export const ColorPalette: Story = {
             'Grey 500': ODLTheme.colors.grey500,
             'Grey 600': ODLTheme.colors.grey600,
           }).map(([name, color]) => (
-            <div key={name}>
-              <div
-                style={{
-                  backgroundColor: color,
-                  height: '50px',
-                  borderRadius: ODLTheme.borders.radius.base,
-                  marginBottom: ODLTheme.spacing[1],
-                  border: `1px solid ${ODLTheme.colors.border}`
-                }}
-              />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.xs }}>
-                <strong>{name}</strong><br />
-                {color}
-              </div>
-            </div>
+            <ColorSwatch key={name} name={name} color={color} />
           ))}
         </div>
       </div>
@@ -139,56 +125,24 @@ export const ColorPalette: Story = {
       {/* Text Colors */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
         <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Text Colors</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[4] }}>
           {Object.entries({
             'Text Primary': ODLTheme.colors.text.primary,
             'Text Secondary': ODLTheme.colors.text.secondary,
             'Text Tertiary': ODLTheme.colors.text.tertiary,
             'Text Disabled': ODLTheme.colors.text.disabled,
-            'Text Light (shorthand)': ODLTheme.colors.textLight,
+            'Text Inverse': ODLTheme.colors.text.inverse,
+            'Text Light': ODLTheme.colors.textLight,
           }).map(([name, color]) => (
-            <div key={name}>
-              <div
-                style={{
-                  backgroundColor: color,
-                  height: '50px',
-                  borderRadius: ODLTheme.borders.radius.md,
-                  marginBottom: ODLTheme.spacing[2]
-                }}
-              />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-                <strong>{name}</strong><br />
-                {color}
-              </div>
-            </div>
+            <ColorSwatch key={name} name={name} color={color} />
           ))}
-          <div>
-            <div
-              style={{
-                backgroundColor: ODLTheme.colors.primary,
-                height: '50px',
-                borderRadius: ODLTheme.borders.radius.md,
-                marginBottom: ODLTheme.spacing[2],
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: ODLTheme.colors.text.inverse
-              }}
-            >
-              Inverse Text
-            </div>
-            <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-              <strong>Text Inverse</strong><br />
-              {ODLTheme.colors.text.inverse}
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Status Colors */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
         <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Status Colors</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[4] }}>
           {Object.entries({
             'Success': ODLTheme.colors.success,
             'Success Light': ODLTheme.colors.successLight,
@@ -200,20 +154,7 @@ export const ColorPalette: Story = {
             'Info': ODLTheme.colors.info,
             'Info Light': ODLTheme.colors.infoLight,
           }).map(([name, color]) => (
-            <div key={name}>
-              <div 
-                style={{ 
-                  backgroundColor: color,
-                  height: '60px',
-                  borderRadius: ODLTheme.borders.radius.md,
-                  marginBottom: ODLTheme.spacing[2]
-                }}
-              />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-                <strong>{name}</strong><br />
-                {color}
-              </div>
-            </div>
+            <ColorSwatch key={name} name={name} color={color} />
           ))}
         </div>
       </div>
@@ -221,22 +162,9 @@ export const ColorPalette: Story = {
       {/* Chart Colors */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
         <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Chart Colors</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[3] }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[4] }}>
           {Object.entries(ODLTheme.colors.charts).map(([name, color]) => (
-            <div key={name}>
-              <div 
-                style={{ 
-                  backgroundColor: color,
-                  height: '50px',
-                  borderRadius: ODLTheme.borders.radius.base,
-                  marginBottom: ODLTheme.spacing[1]
-                }}
-              />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.xs }}>
-                <strong>{name}</strong><br />
-                {color}
-              </div>
-            </div>
+            <ColorSwatch key={name} name={name} color={color} />
           ))}
         </div>
       </div>
