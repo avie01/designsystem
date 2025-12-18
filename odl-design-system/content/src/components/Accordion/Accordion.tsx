@@ -86,7 +86,7 @@ const Accordion: React.FC<AccordionProps> = ({
           id={`accordion-header-${item.id}`}
           disabled={!hasContent}
           style={{
-            padding: variant === 'filled' ? `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[5]}px` : `${ODLTheme.spacing[3]}px ${ODLTheme.spacing[4]}px`,
+            padding: `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[5]}px`,
             background: variant === 'filled'
               ? isOpen
                 ? ODLTheme.colors.primary
@@ -155,9 +155,7 @@ const Accordion: React.FC<AccordionProps> = ({
             style={{
               padding: variant === 'bordered'
                 ? `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[5]}px`
-                : level > 0
-                  ? `${ODLTheme.spacing[3]}px ${ODLTheme.spacing[4]}px ${ODLTheme.spacing[3]}px ${ODLTheme.spacing[8]}px`
-                  : `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[4]}px ${ODLTheme.spacing[4]}px ${ODLTheme.spacing[8]}px`,
+                : `${ODLTheme.spacing[4]}px ${ODLTheme.spacing[4]}px ${ODLTheme.spacing[4]}px ${ODLTheme.spacing[8]}px`,
               background: variant === 'bordered'
                 ? ODLTheme.colors.grey50
                 : level > 0
