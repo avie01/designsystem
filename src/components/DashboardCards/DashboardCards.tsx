@@ -136,7 +136,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
               <div 
                 className="skeleton-box"
                 style={{
-                  fontSize: ODLTheme.typography.fontSize.sm,
+                  fontSize: ODLTheme.typography.fontSize.base,
                   lineHeight: ODLTheme.typography.lineHeight.normal,
                   height: '16px',
                   borderRadius: '4px',
@@ -147,7 +147,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
               <div 
                 className="skeleton-box"
                 style={{
-                  fontSize: ODLTheme.typography.fontSize.sm,
+                  fontSize: ODLTheme.typography.fontSize.base,
                   lineHeight: ODLTheme.typography.lineHeight.normal,
                   height: '16px',
                   borderRadius: '4px',
@@ -158,7 +158,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
               <div 
                 className="skeleton-box"
                 style={{
-                  fontSize: ODLTheme.typography.fontSize.sm,
+                  fontSize: ODLTheme.typography.fontSize.base,
                   lineHeight: ODLTheme.typography.lineHeight.normal,
                   height: '16px',
                   borderRadius: '4px',
@@ -177,7 +177,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
             bottom: '12px',
             left: '12px',
             right: '12px',
-            fontSize: ODLTheme.typography.fontSize.sm,
+            fontSize: ODLTheme.typography.fontSize.base,
             lineHeight: ODLTheme.typography.lineHeight.normal,
             height: '14px',
             borderRadius: '4px',
@@ -256,7 +256,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
         </div>
         {subtitle && (
           <div style={{
-            fontSize: ODLTheme.typography.fontSize.sm,
+            fontSize: ODLTheme.typography.fontSize.base,
             color: '#525965',
             lineHeight: ODLTheme.typography.lineHeight.normal
           }}>
@@ -271,7 +271,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
         bottom: '12px',
         left: '12px',
         right: '12px',
-        fontSize: ODLTheme.typography.fontSize.sm,
+        fontSize: ODLTheme.typography.fontSize.base,
         color: '#707070',
         lineHeight: ODLTheme.typography.lineHeight.normal
       }}>

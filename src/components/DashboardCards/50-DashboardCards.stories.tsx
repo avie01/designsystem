@@ -86,7 +86,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     value: 'Security Operations Center',
-    subtitle: 'Centralized monitoring and management of security events, threat detection, and incident response across the organization\'s infrastructure.',
+    subtitle: 'Centralised monitoring and management of security events, threat detection, and incident response.',
     icon: 'user',
   },
 };
@@ -290,7 +290,7 @@ export const Playground: Story = {
   name: '06 Playground',
   args: {
     value: 'Security Operations Center',
-    subtitle: 'Centralized monitoring and management of security events, threat detection, and incident response across the organization\'s infrastructure.',
+    subtitle: 'Centralised monitoring and management of security events, threat detection, and incident response.',
     icon: 'user',
     variant: 'default',
     loading: false,
