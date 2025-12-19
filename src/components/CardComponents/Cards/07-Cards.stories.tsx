@@ -209,7 +209,8 @@ export const AllStates: Story = {
 // Type variations
 export const Types: Story = {
   args: {
-    type: "compact"
+    type: "compact",
+    selected: true
   },
 
   name: '03 Types',

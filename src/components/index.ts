@@ -30,6 +30,7 @@ export { default as Popover } from './Popover/Popover';
 export { default as BackToTop } from './BackToTop/BackToTop';
 export { default as UserAvatar } from './UserAvatar/UserAvatar';
 export { default as AlertBanner } from './AlertBanner/AlertBanner';
+export { default as RadioButton, RadioButtonGroup } from './RadioButton/RadioButton';
 
 // Demo Components
 export { default as DemoBreadcrumb } from './DemoBreadcrumb/DemoBreadcrumb';
@@ -46,3 +47,4 @@ export type { BreadcrumbProps, BreadcrumbItem } from './Breadcrumb/BreadcrumbTW'
 export type { TableProps, TableColumn } from './Table/Table';
 export type { IconButtonProps } from './IconButton/IconButton';
 export type { DashboardCardProps } from './DashboardCards/DashboardCards';
+export type { RadioButtonProps, RadioButtonGroupProps } from './RadioButton/RadioButton';

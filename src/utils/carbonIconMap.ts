@@ -221,6 +221,7 @@ export const carbonIconMapping: Record<string, string> = {
   
   // R
   'radio-button': 'RadioButton',
+  'radio-button-checked': 'RadioButtonChecked',
   'recent': 'UpdateNow',
   'redo': 'Redo',
   'refresh': 'Renew',
