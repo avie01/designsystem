@@ -19,7 +19,7 @@ import {
   Box
 } from '@mui/material';
 import ODLTheme from '../styles/ODLTheme';
-import YellowFolder from '../components/YellowFolder/YellowFolder';
+import FileType from '../components/FileType/FileType';
 import styles from './TableDemo.module.css';
 
 // MUI Card Component with ODL Styling
@@ -131,9 +131,9 @@ const MUICardComponent: React.FC<MUICardProps> = ({
         />
       </Box>
 
-      {/* Yellow Folder Icon */}
+      {/* FileType Icon */}
       <Box sx={{ marginRight: '12px', display: 'flex', alignItems: 'center' }}>
-        <YellowFolder size={sizeStyles.iconSize} />
+        <FileType type="folder" size={sizeStyles.iconSize} />
       </Box>
 
       {/* Text Content */}

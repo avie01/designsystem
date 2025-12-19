@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import IconButton from '../../IconButton/IconButton';
-import YellowFolder from '../../YellowFolder/YellowFolder';
+import FileType, { FileTypeVariant } from '../../FileType/FileType';
 import Checkbox from '../../Checkbox/Checkbox';
 import Icon from '../../Icon/Icon';
 import Chip from '../../Chip/Chip';
@@ -16,10 +16,12 @@ const classNames = (...classes: (string | boolean | undefined | null)[]): string
 export interface CardsProps {
   /** Card type variant - affects layout and styling */
   type?: 'compact' | 'comfortable' | 'metadata';
-  /** Whether to show the icon gutter (YellowFolder icon) */
+  /** Whether to show the icon gutter (FileType icon) */
   iconGutter?: boolean;
-  /** Icons to display in the gutter between YellowFolder and text content */
+  /** Icons to display in the gutter between FileType and text content */
   gutterIcons?: string[];
+  /** File type to display in the icon gutter */
+  fileType?: FileTypeVariant;
   /** Whether to show extension and file size text next to title */
   extensionSize?: boolean;
   /** Whether to show metadata card with chips section */
@@ -62,6 +64,7 @@ const Cards: React.FC<CardsProps> = ({
   type = 'comfortable',
   iconGutter = true,
   gutterIcons = [],
+  fileType = 'folder',
   extensionSize = false,
   showMetadata = false,
   disabled = false,
@@ -135,7 +138,7 @@ const Cards: React.FC<CardsProps> = ({
       {/* Yellow Folder Icon */}
       {iconGutter && (
         <div className="cards-container__icon">
-          <YellowFolder size={type === 'compact' ? 24 : 36} />
+          <FileType type={fileType} size={type === 'compact' ? 24 : 36} />
         </div>
       )}
 

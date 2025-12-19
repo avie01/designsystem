@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import Cards from './Cards';
+import { getAvailableFileTypes } from '../../FileType/fileTypeSvgs';
 
 const meta: Meta<typeof Cards> = {
   title: 'Design System/Components/Cards',
@@ -26,7 +27,7 @@ const meta: Meta<typeof Cards> = {
     },
     iconGutter: {
       control: 'boolean',
-      description: 'Whether to show the icon gutter (YellowFolder icon)',
+      description: 'Whether to show the icon gutter (FileType icon)',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'true' },
@@ -34,10 +35,19 @@ const meta: Meta<typeof Cards> = {
     },
     gutterIcons: {
       control: 'object',
-      description: 'Array of icon names to display in the gutter between YellowFolder and text content',
+      description: 'Array of icon names to display in the gutter between FileType and text content',
       table: {
         type: { summary: 'string[]' },
         defaultValue: { summary: '[]' },
+      },
+    },
+    fileType: {
+      control: { type: 'select' },
+      options: getAvailableFileTypes(),
+      description: 'File type to display in the icon gutter',
+      table: {
+        type: { summary: 'FileTypeVariant' },
+        defaultValue: { summary: 'folder' },
       },
     },
     extensionSize: {

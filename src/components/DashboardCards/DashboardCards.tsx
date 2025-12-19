@@ -1,6 +1,6 @@
 import React from 'react';
 import { ODLTheme } from '../../styles/ODLTheme';
-import YellowFolder from '../YellowFolder/YellowFolder';
+import FileType from '../FileType/FileType';
 import IconButton from '../IconButton/IconButton';
 
 export interface DashboardCardProps {
@@ -80,7 +80,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
           marginBottom: variant === 'compact' ? ODLTheme.spacing[2] : ODLTheme.spacing[3],
           width: '100%'
         }}>
-          {/* Left side - YellowFolder skeleton */}
+          {/* Left side - FileType skeleton */}
           <div 
             className="skeleton-box"
             style={{
@@ -217,8 +217,8 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
         marginBottom: variant === 'compact' ? ODLTheme.spacing[2] : ODLTheme.spacing[3],
         width: '100%'
       }}>
-        {/* Left side - YellowFolder */}
-        <YellowFolder size={36} />
+        {/* Left side - FileType */}
+        <FileType type="folder" size={36} />
         
         {/* Right side - IconButton and additional actions */}
         <div 

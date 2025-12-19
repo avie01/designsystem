@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Icon from '../../Icon/Icon';
-import YellowFolder from '../../YellowFolder/YellowFolder';
+import FileType from '../../FileType/FileType';
 import './Cards.css';
 
 // Self-contained utility function to replace clsx
@@ -119,9 +119,9 @@ const Cards: React.FC<CardsProps> = ({
         />
       </div>
 
-      {/* Yellow Folder Icon */}
+      {/* FileType Icon */}
       <div className="cards-container__icon">
-        <YellowFolder size={size === 'sm' ? 20 : size === 'lg' ? 28 : 24} />
+        <FileType type="folder" size={size === 'sm' ? 20 : size === 'lg' ? 28 : 24} />
       </div>
 
       {/* Text Content */}
