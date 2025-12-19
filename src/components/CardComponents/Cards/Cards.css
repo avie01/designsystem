@@ -284,8 +284,9 @@
   background-color: var(--cards-white);
   border: var(--cards-border-width-thin) solid var(--cards-border);
   border-top: none;
-  padding: var(--cards-spacing-1) var(--cards-spacing-4) var(--cards-spacing-2) var(--cards-spacing-4);
+  padding: 0 var(--cards-spacing-4) var(--cards-spacing-2) var(--cards-spacing-4);
   margin-top: -12px; /* Negative margin to remove storybook gap */
+  transition: var(--cards-transition-color);
 }
 
 /* Keep chips section background consistent across states */
@@ -296,7 +297,12 @@
 
 /* Hover state for chips section */
 .cards-container:hover + .cards-container__metadata-chips-section {
-  background-color: #e8e8e8;
+  background-color: var(--cards-surface-hover);
+}
+
+/* Selected state hover for chips section */
+.cards-container--selected:hover + .cards-container__metadata-chips-section {
+  background-color: var(--cards-primary-hover);
 }
 
 /* Metadata chips styling */

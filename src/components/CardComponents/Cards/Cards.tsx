@@ -120,18 +120,16 @@ const Cards: React.FC<CardsProps> = ({
       role="article"
       aria-label={ariaLabel || `${title}${selected ? ', selected' : ''}`}
       aria-describedby={ariaDescribedBy}
-      tabIndex={disabled ? -1 : 0}
-      onClick={() => !disabled && onSelect?.(!selected)}
-      onKeyDown={handleKeyDown}
     >
       {/* Checkbox */}
-      <div className="cards-container__checkbox" onClick={(e) => e.stopPropagation()}>
+      <div className="cards-container__checkbox">
         <Checkbox
           checked={selected}
           onChange={onSelect}
           disabled={disabled}
           size="md"
           id={`card-checkbox-${title?.replace(/\s+/g, '-').toLowerCase()}`}
+          aria-label={`Select ${title}`}
         />
       </div>
 

@@ -23,6 +23,8 @@ export interface CheckboxProps {
   id?: string;
   /** Name attribute for the checkbox input */
   name?: string;
+  /** ARIA label for accessibility when no visible label is provided */
+  'aria-label'?: string;
 }
 
 export interface CheckboxGroupProps {
@@ -53,6 +55,7 @@ export default function Checkbox({
   size = 'md',
   id,
   name,
+  'aria-label': ariaLabel,
 }: CheckboxProps) {
   const [isPressed, setIsPressed] = React.useState(false);
 
@@ -134,19 +137,6 @@ export default function Checkbox({
     gap: ODLTheme.spacing[2],
   };
 
-  const hiddenInputStyle: React.CSSProperties = {
-    position: 'absolute',
-    opacity: 0,
-    width: 0,
-    height: 0,
-    margin: 0,
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!disabled && onChange) {
-      onChange(e.target.checked);
-    }
-  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === ' ' || e.key === 'Enter') {
@@ -221,33 +211,19 @@ export default function Checkbox({
         aria-checked={indeterminate ? 'mixed' : checked}
         aria-disabled={disabled ? 'true' : 'false'}
         aria-labelledby={label ? `${id}-label` : undefined}
+        aria-label={!label ? ariaLabel : undefined}
         {...(error && { 'aria-invalid': true })}
       >
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={handleChange}
-          disabled={disabled}
-          style={hiddenInputStyle}
-          id={id}
-          name={name}
-          ref={(input) => {
-            if (input) {
-              input.indeterminate = indeterminate;
-            }
-          }}
-        />
         {renderCheckboxIcon()}
       </div>
       {label && (
-        <label
-          htmlFor={id}
+        <div
           id={`${id}-label`}
           style={labelStyle}
           onClick={() => !disabled && onChange?.(!checked)}
         >
           {label}
-        </label>
+        </div>
       )}
     </div>
   );
