@@ -296,7 +296,7 @@ const List: React.FC<ListProps> = ({
                     name={item.icon} 
                     size={size === 'sm' ? parseInt(ODLTypography.fontSize.sm) : 
                           size === 'lg' ? parseInt(ODLTypography.fontSize.md) : 
-                          parseInt(ODLTypography.fontSize.base)} 
+                          20} 
                   />
                 )
               ) : (
@@ -372,7 +372,7 @@ const List: React.FC<ListProps> = ({
                 name={isExpanded ? "chevron-down" : "chevron-right"}
                 size={size === 'sm' ? parseInt(ODLTypography.fontSize.xs) :
                       size === 'lg' ? parseInt(ODLTypography.fontSize.base) :
-                      parseInt(ODLTypography.fontSize.sm)}
+                      20}
                 aria-hidden="true"
               />
             </button>
