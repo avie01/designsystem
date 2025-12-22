@@ -75,7 +75,6 @@ const List: React.FC<ListProps> = ({
       .list-item--selected {
         background-color: ${colors.selectedLight} !important;
         border-left: 4px solid ${colors.primaryMain} !important;
-        padding-left: calc(${size === 'sm' ? '8px' : size === 'lg' ? '16px' : '8px'} - 4px) !important;
       }
       .list-item--selected:hover {
         background-color: ${colors.grey400} !important;
@@ -203,7 +202,7 @@ const List: React.FC<ListProps> = ({
       color: item.disabled ? colors.textDisabled : colors.textPrimary,
       transition: 'all 0.2s ease',
       boxSizing: 'border-box',
-      paddingLeft: `${level * parseInt(ODLSpacing['5']) + 16 - 4}px`,
+      paddingLeft: isSelected ? `${level * parseInt(ODLSpacing['5']) + 16 - 4}px` : `${level * parseInt(ODLSpacing['5']) + 16}px`,
       paddingRight: '16px',
       paddingTop: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
       paddingBottom: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
