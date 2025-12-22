@@ -43,6 +43,23 @@ const meta: Meta<typeof MillerColumns> = {
         disable: true,
       },
       description: 'Callback when a node is selected'
+    },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+      description: 'Size variant of the component',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'md' },
+      },
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Whether the component is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     }
   }
 };
@@ -421,4 +438,65 @@ export const TallView: Story = {
     height: 600,
     showIcons: true
   }
+};
+
+export const SizeVariants: Story = {
+  name: '08 Size Variants',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Small</h4>
+        <MillerColumns
+          data={fileSystemData.slice(0, 2)}
+          size="sm"
+          height={300}
+          columnWidth={200}
+          maxColumns={3}
+        />
+      </div>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Medium (Default)</h4>
+        <MillerColumns
+          data={fileSystemData.slice(0, 2)}
+          size="md"
+          height={350}
+          columnWidth={250}
+          maxColumns={3}
+        />
+      </div>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Large</h4>
+        <MillerColumns
+          data={fileSystemData.slice(0, 2)}
+          size="lg"
+          height={400}
+          columnWidth={300}
+          maxColumns={3}
+        />
+      </div>
+    </div>
+  ),
+};
+
+export const ThemeSupport: Story = {
+  name: '09 Theme Support',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Theme Adaptive MillerColumns
+        </h4>
+        <p style={{ marginBottom: '16px', fontSize: '14px', opacity: 0.7 }}>
+          Try switching between Light, Dark, and High Contrast themes using the toolbar above
+        </p>
+        <MillerColumns
+          data={organizationData}
+          maxColumns={4}
+          columnWidth={250}
+          height={400}
+          showIcons={true}
+        />
+      </div>
+    </div>
+  ),
 };
