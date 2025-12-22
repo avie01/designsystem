@@ -123,7 +123,7 @@ const Input: React.FC<InputProps> = ({
       .custom-input--readonly:focus,
       .custom-input--readonly:active {
         border: ${ODLTheme.borders.width.base} solid transparent !important;
-        border-bottom: ${ODLTheme.borders.width.base} solid ${colors.inputBorder} !important;
+        border-bottom: 1px solid ${colors.inputBorder} !important;
         outline: none !important;
       }
       .custom-input::placeholder {
@@ -238,7 +238,7 @@ const Input: React.FC<InputProps> = ({
         ? `${ODLTheme.spacing[3]} ${ODLTheme.spacing[4]}`
         : `${ODLTheme.spacing[3]} ${ODLTheme.spacing[4]}`,
       border: `${ODLTheme.borders.width.base} solid transparent`,
-      borderBottom: `${ODLTheme.borders.width.base} solid ${colors.inputBorder}`,
+      borderBottom: `1px solid ${colors.inputBorder}`,
       backgroundColor: colors.inputBackground,
       color: disabled ? colors.textDisabled : colors.textPrimary,
       fontSize: size === 'sm' 
