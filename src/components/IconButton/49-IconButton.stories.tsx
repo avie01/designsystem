@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 import IconButton from './IconButton';
+import Icon from '../Icon/Icon';
 
 const meta: Meta<typeof IconButton> = {
   title: 'Design System/Components/IconButton',
@@ -390,5 +391,140 @@ export const Playground: Story = {
     loading: false,
     selected: false,
     onClick: () => alert('IconButton clicked!'),
+  },
+};
+
+// IconButtons with Menu functionality
+export const WithMenu: Story = {
+  name: '10 With Menu',
+  render: () => {
+    const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+    const [hoveredMenuItem, setHoveredMenuItem] = useState<string | null>(null);
+    
+    const menuOptions = [
+      { value: 'edit', label: 'Edit', icon: <Icon name="edit" size={16} /> },
+      { value: 'copy', label: 'Copy', icon: <Icon name="copy" size={16} /> },
+      { value: 'share', label: 'Share', icon: <Icon name="share" size={16} /> },
+      { value: 'delete', label: 'Delete', icon: <Icon name="delete" size={16} /> },
+    ];
+
+    const toggleMenu = (menuId: number) => {
+      setOpenMenuId(openMenuId === menuId ? null : menuId);
+      setHoveredMenuItem(null); // Reset hover state when toggling menu
+    };
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+            IconButton with Dropdown Menu
+          </h4>
+          <p style={{ fontSize: '14px', color: '#6C757D', marginBottom: '16px' }}>
+            Ghost variant IconButtons that trigger dropdown menus when clicked
+          </p>
+          
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(5, 1fr)', 
+            gap: '16px',
+            maxWidth: '600px'
+          }}>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+              <div key={item} style={{ position: 'relative' }}>
+                <IconButton
+                  icon="overflow-menu-vertical"
+                  variant="ghost"
+                  size="medium"
+                  aria-label={`Open menu for item ${item}`}
+                  aria-expanded={openMenuId === item}
+                  onClick={() => toggleMenu(item)}
+                  selected={openMenuId === item}
+                />
+                
+                {openMenuId === item && (
+                  <>
+                    {/* Backdrop to close menu when clicking outside */}
+                    <div
+                      style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'transparent',
+                        zIndex: 999,
+                      }}
+                      onClick={() => setOpenMenuId(null)}
+                    />
+                    
+                    {/* Dropdown Menu */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '100%',
+                        right: 0,
+                        backgroundColor: 'var(--odl-white)',
+                        border: 'var(--odl-border-width-base) solid var(--odl-primary)',
+                        borderRadius: 'var(--odl-border-radius-base)',
+                        boxShadow: 'var(--odl-shadow-xl)',
+                        zIndex: 1000,
+                        minWidth: '160px',
+                        maxHeight: '20rem',
+                        overflowY: 'auto',
+                      }}
+                    >
+                      {menuOptions.map((option, index) => {
+                        const menuItemKey = `${item}-${option.value}`;
+                        const isHovered = hoveredMenuItem === menuItemKey;
+                        
+                        return (
+                          <div
+                            key={option.value}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 'var(--odl-spacing-2)',
+                              padding: 'var(--odl-spacing-2) var(--odl-spacing-3)',
+                              cursor: 'pointer',
+                              fontSize: 'var(--odl-font-size-base)',
+                              color: 'var(--odl-text-primary)',
+                              backgroundColor: isHovered ? 'var(--odl-surface-hover)' : 'transparent',
+                              borderBottom: index < menuOptions.length - 1 ? 'var(--odl-border-width-thin) solid var(--odl-border)' : 'none',
+                              transition: 'var(--odl-transition-color)',
+                              fontFamily: 'var(--odl-font-family-sans)',
+                            }}
+                            onMouseEnter={() => setHoveredMenuItem(menuItemKey)}
+                            onMouseLeave={() => setHoveredMenuItem(null)}
+                            onClick={() => {
+                              console.log(`${option.label} clicked for item ${item}`);
+                              setOpenMenuId(null);
+                              setHoveredMenuItem(null);
+                            }}
+                          >
+                            {option.icon}
+                            {option.label}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+          
+          <div style={{ 
+            marginTop: '16px', 
+            padding: '12px', 
+            backgroundColor: 'var(--odl-grey-100)', 
+            borderRadius: '8px', 
+            fontSize: '14px' 
+          }}>
+            <strong>Try it:</strong> Click any of the menu icons above to open the dropdown menu. 
+            The menu will close when you click an option or click outside the menu area.
+          </div>
+        </div>
+      </div>
+    );
   },
 };
