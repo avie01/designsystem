@@ -66,7 +66,7 @@ const List: React.FC<ListProps> = ({
     const style = document.createElement('style');
     style.textContent = `
       .list-item:hover:not(.list-item--disabled) {
-        background-color: ${colors.selectedLight} !important;
+        background-color: ${colors.grey400} !important;
       }
       .list-item:focus-visible {
         outline: 2px solid ${colors.primaryMain} !important;
@@ -74,13 +74,11 @@ const List: React.FC<ListProps> = ({
       }
       .list-item--selected {
         background-color: ${colors.selectedLight} !important;
+        border-left: 4px solid ${colors.primaryMain} !important;
+        padding-left: calc(${size === 'sm' ? '8px' : size === 'lg' ? '16px' : '8px'} - 4px) !important;
       }
       .list-item--selected:hover {
-        background-color: ${colors.primaryMain} !important;
-        color: ${colors.textInverse} !important;
-      }
-      .list-item--selected:hover .list-item-icon {
-        color: ${colors.textInverse} !important;
+        background-color: ${colors.grey400} !important;
       }
       .list-expand-icon:hover {
         color: ${colors.primaryMain} !important;
@@ -198,18 +196,19 @@ const List: React.FC<ListProps> = ({
       justifyContent: 'flex-start',
       position: 'relative',
       borderBottom: item._isLastChild ? 'none' : `1px solid ${colors.grey400}`,
+      borderLeft: isSelected ? `4px solid ${colors.primaryMain}` : '4px solid transparent',
       cursor: item.disabled ? 'not-allowed' : 'pointer',
       fontSize: size === 'sm' ? ODLTypography.fontSize.sm : size === 'lg' ? ODLTypography.fontSize.md : ODLTypography.fontSize.base,
       fontWeight: ODLTypography.fontWeight.normal,
       color: item.disabled ? colors.textDisabled : colors.textPrimary,
-      transition: 'color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease',
+      transition: 'all 0.2s ease',
       boxSizing: 'border-box',
-      paddingLeft: `${level * parseInt(ODLSpacing['5']) + parseInt(ODLSpacing['2'])}px`,
+      paddingLeft: `${level * parseInt(ODLSpacing['5']) + parseInt(ODLSpacing['2']) - 4}px`,
       paddingRight: size === 'sm' ? ODLSpacing['2'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
       paddingTop: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
       paddingBottom: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
       minHeight: size === 'sm' ? '30px' : size === 'lg' ? '52px' : '42px',
-      backgroundColor: item.disabled ? 'transparent' : isSelected && !hoveredItem ? colors.selectedLight : 'transparent',
+      backgroundColor: item.disabled ? 'transparent' : isSelected ? colors.selectedLight : 'transparent',
     };
 
     return (
