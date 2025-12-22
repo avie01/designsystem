@@ -48,7 +48,7 @@
 .input-label {
   display: block;
   font-size: var(--odl-font-size-base);
-  font-weight: var(--odl-font-weight-normal);
+  font-weight: 600;
   line-height: var(--odl-line-height-input-base);
   color: var(--odl-text-primary);
   margin-bottom: var(--odl-spacing-2);
@@ -86,12 +86,13 @@
 }
 
 .custom-input:hover:not(.custom-input--disabled):not(.custom-input--readonly) {
-  background-color: var(--odl-surface-hover);
+  background-color: #e8e8e8;
   border-bottom-color: var(--odl-primary);
 }
 
 .custom-input:focus:not(.custom-input--readonly),
 .custom-input:active:not(.custom-input--readonly) {
+  background-color: #e8e8e8;
   border: var(--odl-border-width-base) solid var(--odl-primary);
   outline: none;
 }

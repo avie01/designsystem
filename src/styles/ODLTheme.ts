@@ -34,6 +34,8 @@ export const ODLColors = {
   surface: '#F4F4F4',
   surfaceHover: '#EBEBEB',          // Hover state for surface elements (inputs, etc.)
   border: '#E0E0E0',
+  inputBackground: '#f5f5f5',   // Input field background
+  inputBorder: '#acacac',        // Input field border-bottom color
 
   // Grey scale
   grey50: '#F9FAFB',
@@ -46,7 +48,8 @@ export const ODLColors = {
 
   text: {
     primary: '#161616',         // Main text color
-    secondary: '#525252',       // Secondary text
+    primaryNight: '#32373F',     // Primary Night - for input labels
+    secondary: '#525252',         // Secondary text
     tertiary: '#6B6B6B',        // Tertiary/muted text (WCAG AA compliant - 4.5:1)
     disabled: '#A0A0A0',        // Disabled text (WCAG AA compliant - 4.5:1 contrast on light backgrounds)
     inverse: '#FFFFFF',         // White text

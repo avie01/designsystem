@@ -48,7 +48,7 @@
 .input-label {
   display: block;
   font-size: var(--odl-font-size-base);
-  font-weight: var(--odl-font-weight-normal);
+  font-weight: 600;
   line-height: var(--odl-line-height-input-base);
   color: var(--odl-text-primary);
   margin-bottom: var(--odl-spacing-2);
@@ -229,10 +229,11 @@
 }
 
 .input-helper-text {
-  margin-top: var(--odl-spacing-1);
-  font-size: var(--odl-font-size-xs);
-  line-height: var(--odl-line-height-input-sm);
+  margin-top: 0;
+  margin-bottom: var(--odl-spacing-3);
+  font-size: var(--odl-font-size-base);
+  line-height: 1.5;
   color: var(--odl-text-secondary);
-  font-weight: var(--odl-font-weight-normal);
+  font-weight: 400;
   font-family: var(--odl-font-family-sans);
 }

@@ -4,7 +4,7 @@ import type { Decorator } from '@storybook/react';
 // Define theme colors based on DESIGN_SYSTEM_COMPLETE.md
 export const themeColors = {
   light: {
-    // Primary Colors (from DESIGN_SYSTEM_COMPLETE.md)
+    // Primary Colors
     primaryNight: '#32373F',
     primaryTwilight: '#525965', 
     primaryMain: '#3560C1',
@@ -26,6 +26,9 @@ export const themeColors = {
     grey200: '#F7F7F7',
     grey100: '#F8F8F8',
     grey50: '#FAFAFA',
+    // Input specific colors
+    inputBackground: '#F5F5F5', // grey300
+    inputBorder: '#ACACAC',     // grey600
     // Text Colors  
     textPrimary: '#32373F',
     textSecondary: '#525965',
@@ -78,7 +81,7 @@ export const themeColors = {
     }
   },
   dark: {
-    // Primary Colors (from DESIGN_SYSTEM_COMPLETE.md)
+    // Primary Colors
     primaryNight: '#FFFFFF',
     primaryTwilight: '#E1E7F2',
     primaryMain: '#A7C2FD',
@@ -100,6 +103,9 @@ export const themeColors = {
     grey200: '#6F7073',
     grey100: '#88898C',
     grey50: '#CCCDCE',
+    // Input specific colors
+    inputBackground: '#3C3D3F', // grey300
+    inputBorder: '#6C7789',     // grey600
     // Text Colors
     textPrimary: '#FFFFFF',
     textSecondary: '#E1E7F2',
@@ -152,7 +158,7 @@ export const themeColors = {
     }
   },
   highContrast: {
-    // Primary Colors (from DESIGN_SYSTEM_COMPLETE.md)
+    // Primary Colors
     primaryNight: '#000000',
     primaryTwilight: '#000000', 
     primaryMain: '#000000',
@@ -174,6 +180,9 @@ export const themeColors = {
     grey200: '#F7F7F7', 
     grey100: '#F8F8F8',
     grey50: '#FAFAFA',
+    // Input specific colors
+    inputBackground: '#F5F5F5', // grey300
+    inputBorder: '#ACACAC',     // grey600
     // Text Colors
     textPrimary: '#000000',
     textSecondary: '#000000',

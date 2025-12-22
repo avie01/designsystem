@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
-// import ODLTheme from '../../styles/ODLTheme';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import './Modal.css';
 
 export type ModalVariant = 'standard' | 'with-file' | 'with-summary';
@@ -75,9 +75,97 @@ const Modal: React.FC<ModalProps> = ({
   'aria-describedby': ariaDescribedBy,
   'aria-live': ariaLive = 'polite'
 }) => {
+  const { colors } = useTheme();
   const modalRef = useRef<HTMLDivElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
   const titleId = useRef(`modal-title-${Math.random().toString(36).substr(2, 9)}`).current;
+  const styleRef = useRef<HTMLStyleElement | null>(null);
+
+  // Inject dynamic styles for theme-aware colors
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+      }
+      .modal-container {
+        background-color: ${colors.paper} !important;
+        border-color: ${colors.primaryMain} !important;
+      }
+      .modal-header {
+        border-bottom-color: ${colors.grey400} !important;
+      }
+      .modal-header--error {
+        background-color: ${colors.errorLight} !important;
+        border-bottom-color: ${colors.errorMain} !important;
+      }
+      .modal-icon-circle {
+        background-color: ${colors.primaryNight} !important;
+      }
+      .modal-icon-circle--error {
+        background-color: ${colors.errorMain} !important;
+      }
+      .modal-title {
+        color: ${colors.primaryNight} !important;
+      }
+      .modal-title--error {
+        color: ${colors.errorMain} !important;
+      }
+      .modal-close-button:hover {
+        background-color: ${colors.grey300} !important;
+      }
+      .modal-close-button:focus-visible {
+        outline-color: ${colors.primaryMain} !important;
+      }
+      .modal-close-icon {
+        color: ${colors.primaryNight} !important;
+      }
+      .modal-body-text {
+        color: ${colors.primaryTwilight} !important;
+      }
+      .modal-selected-label {
+        color: ${colors.primaryTwilight} !important;
+      }
+      .modal-file-item {
+        background-color: ${colors.grey300} !important;
+      }
+      .modal-file-icon {
+        color: ${colors.errorMain} !important;
+      }
+      .modal-file-title {
+        color: ${colors.primaryNight} !important;
+      }
+      .modal-summary-section {
+        background-color: ${colors.grey300} !important;
+      }
+      .modal-summary-text {
+        color: ${colors.primaryTwilight} !important;
+      }
+      .modal-footer {
+        background-color: ${colors.default} !important;
+        border-top-color: ${colors.grey400} !important;
+      }
+      .modal-container--error {
+        border-color: ${colors.errorMain} !important;
+        background-color: ${colors.errorLight} !important;
+      }
+      .modal-content::-webkit-scrollbar-thumb {
+        background: ${colors.grey600} !important;
+      }
+      .modal-content::-webkit-scrollbar-thumb:hover {
+        background: ${colors.grey700} !important;
+      }
+    `;
+    document.head.appendChild(style);
+    styleRef.current = style;
+
+    return () => {
+      if (styleRef.current) {
+        document.head.removeChild(styleRef.current);
+        styleRef.current = null;
+      }
+    };
+  }, [colors]);
 
   // Focus trap and keyboard navigation management
   const handleKeyboardNavigation = useCallback((e: KeyboardEvent) => {
