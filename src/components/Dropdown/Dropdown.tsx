@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Icon from '../Icon/Icon';
 import List, { ListItem } from '../List/List';
+import { ODLTheme } from '../../styles/ODLTheme';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import './Dropdown.css';
 
 export interface DropdownOption {
@@ -81,6 +83,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   invalid,
   invalidText,
 }) => {
+  const { colors } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -88,11 +91,77 @@ const Dropdown: React.FC<DropdownProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const styleRef = useRef<HTMLStyleElement | null>(null);
 
   // Handle legacy API compatibility
   const actualLabel = label || labelText;
   const actualError = error || invalid || false;
   const actualErrorMessage = errorMessage || invalidText;
+
+  // Inject dynamic styles for theme-aware colors
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .custom-dropdown:hover:not(.custom-dropdown--disabled) {
+        background-color: ${colors.grey400} !important;
+        border-bottom: none !important;
+        border: 2px solid ${colors.primaryMain} !important;
+      }
+      .custom-dropdown:focus:not(.custom-dropdown--disabled),
+      .custom-dropdown--open:not(.custom-dropdown--disabled) {
+        background-color: ${colors.grey400} !important;
+        border: 1px solid transparent !important;
+        box-shadow: inset 0 0 0 1px ${colors.primaryMain} !important;
+        outline: none !important;
+      }
+      .custom-dropdown--error {
+        border-bottom: ${ODLTheme.borders.width.base} solid ${colors.errorMain} !important;
+      }
+      .custom-dropdown--error:focus,
+      .custom-dropdown--error.custom-dropdown--open {
+        background-color: ${colors.grey400} !important;
+        border: ${ODLTheme.borders.width.base} solid transparent !important;
+        box-shadow: inset 0 0 0 ${ODLTheme.borders.width.base} ${colors.errorMain} !important;
+        outline: none !important;
+      }
+      .dropdown-content {
+        background-color: ${colors.paper} !important;
+        border-color: ${colors.primaryMain} !important;
+      }
+      .dropdown-search-input {
+        background-color: ${colors.inputBackground} !important;
+        border-bottom-color: ${colors.inputBorder} !important;
+      }
+      .dropdown-search-input:focus {
+        border-bottom-color: ${colors.primaryMain} !important;
+      }
+      .dropdown-list .list-item:hover:not(.list-item--disabled) {
+        background-color: ${colors.grey300} !important;
+      }
+      .dropdown-list .list-item--selected {
+        background-color: ${colors.info} !important;
+      }
+      .dropdown-list .list-item--selected:hover {
+        background-color: ${colors.primaryMain} !important;
+        color: ${colors.textInverse} !important;
+      }
+      .dropdown-list::-webkit-scrollbar-thumb {
+        background: ${colors.grey600} !important;
+      }
+      .dropdown-list::-webkit-scrollbar-thumb:hover {
+        background: ${colors.grey700} !important;
+      }
+    `;
+    document.head.appendChild(style);
+    styleRef.current = style;
+
+    return () => {
+      if (styleRef.current) {
+        document.head.removeChild(styleRef.current);
+        styleRef.current = null;
+      }
+    };
+  }, [colors]);
 
   // Get the selected option
   const selectedOption = options.find(opt => opt.value === value);
@@ -352,21 +421,148 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   const dropdownId = id || `dropdown-${Math.random().toString(36).substr(2, 9)}`;
 
+  // Dynamic styles using theme colors
+  const getDropdownStyles = (): React.CSSProperties => {
+    const baseStyles: React.CSSProperties = {
+      width: '100%',
+      padding: size === 'sm' 
+        ? `${ODLTheme.spacing[2]} ${ODLTheme.spacing[3]}`
+        : size === 'lg'
+        ? `${ODLTheme.spacing[3]} ${ODLTheme.spacing[4]}`
+        : `${ODLTheme.spacing[3]} ${ODLTheme.spacing[4]}`,
+      border: `${ODLTheme.borders.width.base} solid transparent`,
+      borderBottom: `1px solid ${colors.inputBorder}`,
+      backgroundColor: colors.inputBackground,
+      color: disabled ? colors.textDisabled : colors.textPrimary,
+      fontSize: size === 'sm' 
+        ? ODLTheme.typography.fontSize.xs
+        : ODLTheme.typography.fontSize.base,
+      fontWeight: ODLTheme.typography.fontWeight.normal,
+      lineHeight: size === 'sm'
+        ? ODLTheme.typography.lineHeight.inputSm
+        : ODLTheme.typography.lineHeight.inputBase,
+      fontFamily: ODLTheme.typography.fontFamily.sans,
+      outline: 'none',
+      transition: ODLTheme.transitions.input,
+      borderRadius: 0,
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      textAlign: 'left',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      boxSizing: 'border-box',
+    };
+
+    if (icon) {
+      baseStyles.paddingLeft = ODLTheme.spacing[10];
+    }
+    if ((clearable && value) || actualError || isOpen) {
+      baseStyles.paddingRight = ODLTheme.spacing[10];
+    }
+    if (size === 'lg') {
+      baseStyles.minHeight = ODLTheme.spacing[11];
+      baseStyles.height = ODLTheme.spacing[11];
+    } else if (size === 'sm') {
+      baseStyles.minHeight = ODLTheme.spacing[8];
+    } else {
+      baseStyles.minHeight = ODLTheme.spacing[10];
+    }
+    if (actualError) {
+      baseStyles.border = `${ODLTheme.borders.width.base} solid ${colors.errorMain}`;
+      baseStyles.borderBottom = `${ODLTheme.borders.width.base} solid ${colors.errorMain}`;
+      baseStyles.backgroundColor = colors.grey400;
+    }
+    if (disabled) {
+      baseStyles.borderBottom = `1px solid transparent`;
+      baseStyles.cursor = 'not-allowed';
+    }
+
+    return baseStyles;
+  };
+
+  const labelStyles: React.CSSProperties = {
+    display: 'block',
+    fontSize: ODLTheme.typography.fontSize.base,
+    fontWeight: ODLTheme.typography.fontWeight.semibold,
+    lineHeight: ODLTheme.typography.lineHeight.inputBase,
+    color: colors.primaryNight,
+    marginBottom: ODLTheme.spacing[2],
+    fontFamily: ODLTheme.typography.fontFamily.sans,
+  };
+
+  const helperTextStyles: React.CSSProperties = {
+    marginTop: 0,
+    marginBottom: ODLTheme.spacing[3],
+    fontSize: ODLTheme.typography.fontSize.base,
+    lineHeight: 1.5,
+    color: colors.primaryTwilight,
+    fontWeight: ODLTheme.typography.fontWeight.normal,
+    fontFamily: ODLTheme.typography.fontFamily.sans,
+  };
+
+  const errorMessageStyles: React.CSSProperties = {
+    marginTop: ODLTheme.spacing[1],
+    fontSize: ODLTheme.typography.fontSize.xs,
+    lineHeight: ODLTheme.typography.lineHeight.inputSm,
+    color: colors.errorMain,
+    fontWeight: ODLTheme.typography.fontWeight.normal,
+    fontFamily: ODLTheme.typography.fontFamily.sans,
+  };
+
+  const iconStyles: React.CSSProperties = {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
+
+  const leftIconStyles: React.CSSProperties = {
+    ...iconStyles,
+    left: ODLTheme.spacing[3],
+    color: colors.primaryTwilight,
+  };
+
+  const rightIconStyles: React.CSSProperties = {
+    ...iconStyles,
+    right: ODLTheme.spacing[3],
+    color: colors.primaryTwilight,
+  };
+
+  const errorIconStyles: React.CSSProperties = {
+    ...iconStyles,
+    right: ODLTheme.spacing[3],
+    color: colors.errorMain,
+  };
+
+  const placeholderStyles: React.CSSProperties = {
+    color: colors.textMuted,
+  };
+
   return (
     <div className="dropdown-wrapper" ref={dropdownRef}>
       {actualLabel && !hideLabel && (
         <label 
           htmlFor={dropdownId} 
           className="dropdown-label"
+          style={labelStyles}
         >
           {actualLabel}
-          {required && <span className="dropdown-label--required"> *</span>}
+          {required && <span className="dropdown-label--required" style={{ color: colors.errorMain }}> *</span>}
         </label>
+      )}
+      
+      {helperText && !actualError && actualLabel && !hideLabel && (
+        <div id={`${dropdownId}-helper`} className="dropdown-helper-text" style={helperTextStyles}>
+          {helperText}
+        </div>
       )}
       
       <div className="dropdown-field-wrapper">
         {icon && (
-          <div className="dropdown-icon dropdown-icon--left">
+          <div className="dropdown-icon dropdown-icon--left" style={leftIconStyles}>
             {icon}
           </div>
         )}
@@ -390,8 +586,12 @@ const Dropdown: React.FC<DropdownProps> = ({
               helperText ? `${dropdownId}-helper` : null
             ].filter(Boolean).join(' ') || undefined
           }
+          style={getDropdownStyles()}
         >
-          <span className={`dropdown-value ${!selectedOption ? 'dropdown-placeholder' : ''}`}>
+          <span 
+            className={`dropdown-value ${!selectedOption ? 'dropdown-placeholder' : ''}`}
+            style={!selectedOption ? placeholderStyles : undefined}
+          >
             {selectedOption?.icon && (
               <span className="dropdown-value-icon">
                 {typeof selectedOption.icon === 'string' ? (
@@ -412,26 +612,37 @@ const Dropdown: React.FC<DropdownProps> = ({
             onClick={handleClear}
             aria-label="Clear selection"
             tabIndex={-1}
+            style={rightIconStyles}
           >
             <Icon name="close" size={16} />
           </button>
         )}
         
         {actualError && (
-          <div className="dropdown-icon dropdown-icon--right dropdown-error-icon">
+          <div className="dropdown-icon dropdown-icon--right dropdown-error-icon" style={errorIconStyles}>
             <Icon name="warning" size={16} />
           </div>
         )}
         
         {!actualError && !clearable && (
-          <div className={`dropdown-icon dropdown-icon--right dropdown-chevron ${isOpen ? 'dropdown-chevron--open' : ''}`}>
+          <div 
+            className={`dropdown-icon dropdown-icon--right dropdown-chevron ${isOpen ? 'dropdown-chevron--open' : ''}`}
+            style={rightIconStyles}
+          >
             <Icon name="chevron-down" size={16} />
           </div>
         )}
 
         {/* Dropdown menu */}
         {isOpen && (
-          <div className="dropdown-content" role="listbox">
+          <div 
+            className="dropdown-content" 
+            role="listbox"
+            style={{
+              backgroundColor: colors.paper,
+              borderColor: colors.primaryMain,
+            }}
+          >
             {searchable && (
               <div className="dropdown-search">
                 <input
@@ -448,13 +659,29 @@ const Dropdown: React.FC<DropdownProps> = ({
                   aria-controls={`${dropdownId}-listbox`}
                   aria-activedescendant={focusedIndex >= 0 ? `${dropdownId}-option-${focusedIndex}` : undefined}
                   autoFocus
+                  style={{
+                    backgroundColor: colors.inputBackground,
+                    borderBottomColor: colors.inputBorder,
+                    color: colors.textPrimary,
+                    fontFamily: ODLTheme.typography.fontFamily.sans,
+                    fontSize: ODLTheme.typography.fontSize.base,
+                  }}
                 />
               </div>
             )}
             
             <div className="dropdown-options" id={`${dropdownId}-listbox`} role="listbox">
               {filteredOptions.length === 0 ? (
-                <div className="dropdown-no-options" role="status" aria-live="polite">
+                <div 
+                  className="dropdown-no-options" 
+                  role="status" 
+                  aria-live="polite"
+                  style={{
+                    color: colors.primaryTwilight,
+                    fontFamily: ODLTheme.typography.fontFamily.sans,
+                    fontSize: ODLTheme.typography.fontSize.base,
+                  }}
+                >
                   No options found
                 </div>
               ) : (
@@ -475,14 +702,8 @@ const Dropdown: React.FC<DropdownProps> = ({
       </div>
       
       {actualErrorMessage && actualError && (
-        <div id={`${dropdownId}-error`} className="dropdown-error-message">
+        <div id={`${dropdownId}-error`} className="dropdown-error-message" style={errorMessageStyles}>
           {actualErrorMessage}
-        </div>
-      )}
-      
-      {helperText && !actualError && (
-        <div id={`${dropdownId}-helper`} className="dropdown-helper-text">
-          {helperText}
         </div>
       )}
     </div>
