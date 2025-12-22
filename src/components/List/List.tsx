@@ -306,7 +306,7 @@ const List: React.FC<ListProps> = ({
                 className="list-item-caption"
                 style={{
                   display: 'block',
-                  fontSize: ODLTypography.fontSize.sm,
+                  fontSize: ODLTypography.fontSize.base,
                   color: colors.textSecondary,
                   marginTop: ODLSpacing['1'],
                   whiteSpace: 'nowrap',
