@@ -36,7 +36,7 @@ const StatsCard: React.FC<StatsCardProps> = ({
     backgroundColor: colors.paper,
     borderRadius: ODLTheme.borders.radius.base,
     padding: size === 'sm' ? ODLSpacing[3] : size === 'lg' ? ODLSpacing[6] : ODLSpacing[4],
-    border: `1px solid ${colors.grey400}`,
+    border: `1px solid ${colors.grey500}`,
     opacity: disabled ? 0.6 : 1,
     cursor: disabled ? 'not-allowed' : 'default',
     transition: 'all 0.2s ease',
