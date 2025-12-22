@@ -308,7 +308,7 @@ const List: React.FC<ListProps> = ({
                   display: 'block',
                   fontSize: ODLTypography.fontSize.base,
                   color: colors.textSecondary,
-                  marginTop: '4px',
+                  marginTop: '0px',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
