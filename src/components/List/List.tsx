@@ -203,8 +203,8 @@ const List: React.FC<ListProps> = ({
       color: item.disabled ? colors.textDisabled : colors.textPrimary,
       transition: 'all 0.2s ease',
       boxSizing: 'border-box',
-      paddingLeft: `${level * parseInt(ODLSpacing['5']) + parseInt(ODLSpacing['2']) - 4}px`,
-      paddingRight: size === 'sm' ? ODLSpacing['2'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
+      paddingLeft: `${level * parseInt(ODLSpacing['5']) + 16 - 4}px`,
+      paddingRight: '16px',
       paddingTop: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
       paddingBottom: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
       minHeight: size === 'sm' ? '30px' : size === 'lg' ? '52px' : '42px',
@@ -332,7 +332,7 @@ const List: React.FC<ListProps> = ({
                 position: 'absolute',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                right: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['3'] : ODLSpacing['2'],
+                right: '16px',
                 color: colors.textSecondary,
                 cursor: 'pointer',
                 display: 'inline-flex',
@@ -376,11 +376,13 @@ const List: React.FC<ListProps> = ({
     fontFamily: ODLTypography.fontFamily.sans,
     overflow: 'hidden',
     listStyle: 'none',
+    paddingLeft: '16px',
+    paddingRight: '16px',
   };
 
   const itemsContainerStyles: React.CSSProperties = {
     listStyle: 'none',
-    margin: 0,
+    margin: '0 -16px',
     padding: 0,
   };
 
