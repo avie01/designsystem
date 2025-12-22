@@ -202,7 +202,7 @@ const List: React.FC<ListProps> = ({
       color: item.disabled ? colors.textDisabled : colors.textPrimary,
       transition: 'all 0.2s ease',
       boxSizing: 'border-box',
-      paddingLeft: isSelected ? `${level * parseInt(ODLSpacing['5']) + 16 - 4}px` : `${level * parseInt(ODLSpacing['5']) + 16}px`,
+      paddingLeft: isSelected ? `${level * parseInt(ODLSpacing['5']) + 20 - 4}px` : `${level * parseInt(ODLSpacing['5']) + 16}px`,
       paddingRight: '16px',
       paddingTop: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
       paddingBottom: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
