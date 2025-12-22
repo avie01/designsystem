@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import Cards from './Cards';
+import { useTheme } from '../../../../.storybook/theme-decorator';
+import { getAvailableFileTypes } from '../../FileType/fileTypeSvgs';
 
 const meta: Meta<typeof Cards> = {
   title: 'Design System/Components/Cards',
@@ -26,7 +28,7 @@ const meta: Meta<typeof Cards> = {
     },
     iconGutter: {
       control: 'boolean',
-      description: 'Whether to show the icon gutter (YellowFolder icon)',
+      description: 'Whether to show the icon gutter (FileType icon)',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'true' },
@@ -34,10 +36,19 @@ const meta: Meta<typeof Cards> = {
     },
     gutterIcons: {
       control: 'object',
-      description: 'Array of icon names to display in the gutter between YellowFolder and text content',
+      description: 'Array of icon names to display in the gutter between FileType and text content',
       table: {
         type: { summary: 'string[]' },
         defaultValue: { summary: '[]' },
+      },
+    },
+    fileType: {
+      control: { type: 'select' },
+      options: getAvailableFileTypes(),
+      description: 'File type to display in the icon gutter',
+      table: {
+        type: { summary: 'FileTypeVariant' },
+        defaultValue: { summary: 'folder' },
       },
     },
     extensionSize: {
@@ -158,52 +169,55 @@ export const Default: Story = {
 // All States showcase
 export const AllStates: Story = {
   name: '02 All States',
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div>
-        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Card States</h4>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <Cards
-            title="Default State"
-            subtitle="This is the default card state"
-            tag="Default"
-          />
-          <Cards
-            title="Selected State"
-            subtitle="This card is selected"
-            tag="Selected"
-            selected={true}
-          />
-          <Cards
-            title="Disabled State"
-            subtitle="This card is disabled"
-            tag="Disabled"
-            disabled={true}
-          />
-          <Cards
-            title="Error State"
-            subtitle="This card has an error"
-            tag="Error"
-            error={true}
-          />
-          <Cards
-            title="Selected + Disabled"
-            subtitle="This card is selected and disabled"
-            tag="Multi"
-            selected={true}
-            disabled={true}
-          />
-          <Cards
-            title="Error + Selected"
-            subtitle="This card has error and is selected"
-            tag="Multi"
-            error={true}
-            selected={true}
-          />
+  render: () => {
+    const { colors } = useTheme();
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Card States</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
+            <Cards
+              title="Default State"
+              subtitle="This is the default card state"
+              tag="Default"
+            />
+            <Cards
+              title="Selected State"
+              subtitle="This card is selected"
+              tag="Selected"
+              selected={true}
+            />
+            <Cards
+              title="Disabled State"
+              subtitle="This card is disabled"
+              tag="Disabled"
+              disabled={true}
+            />
+            <Cards
+              title="Error State"
+              subtitle="This card has an error"
+              tag="Error"
+              error={true}
+            />
+            <Cards
+              title="Selected + Disabled"
+              subtitle="This card is selected and disabled"
+              tag="Multi"
+              selected={true}
+              disabled={true}
+            />
+            <Cards
+              title="Error + Selected"
+              subtitle="This card has error and is selected"
+              tag="Multi"
+              error={true}
+              selected={true}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  ),
+    );
+  },
 };
 
 // Type variations
@@ -215,35 +229,38 @@ export const Types: Story = {
 
   name: '03 Types',
 
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div>
-        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Card Types</h4>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <Cards
-            type="compact"
-            title="Compact Card"
-            subtitle="Type: compact - Dense spacing and smaller text"
-            tag="Compact"
-          />
-          <Cards
-            type="comfortable"
-            title="Comfortable Card"
-            subtitle="Type: comfortable - Default spacing and sizing"
-            tag="Comfortable"
-          />
-          <Cards
-            type="metadata"
-            title="Metadata Card"
-            subtitle="Type: metadata - Designed for metadata display"
-            tag="Metadata"
-            extensionSize={true}
-            showMetadata={true}
-          />
+  render: () => {
+    const { colors } = useTheme();
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Card Types</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
+            <Cards
+              type="compact"
+              title="Compact Card"
+              subtitle="Type: compact - Dense spacing and smaller text"
+              tag="Compact"
+            />
+            <Cards
+              type="comfortable"
+              title="Comfortable Card"
+              subtitle="Type: comfortable - Default spacing and sizing"
+              tag="Comfortable"
+            />
+            <Cards
+              type="metadata"
+              title="Metadata Card"
+              subtitle="Type: metadata - Designed for metadata display"
+              tag="Metadata"
+              extensionSize={true}
+              showMetadata={true}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  )
+    );
+  }
 };
 
 // Interactive features
@@ -255,15 +272,16 @@ export const InteractiveFeatures: Story = {
   name: '04 Interactive Features',
 
   render: () => {
+    const { colors } = useTheme();
     const [selected1, setSelected1] = React.useState(false);
     const [selected2, setSelected2] = React.useState(true);
     const [selected3, setSelected3] = React.useState(false);
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
         <div>
-          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Interactive Cards</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Interactive Cards</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
             <Cards
               title="Click to select"
               subtitle="Try clicking the checkbox or the card"
@@ -301,11 +319,13 @@ export const InteractiveFeatures: Story = {
 // Icon variations
 export const IconVariations: Story = {
   name: '05 Icon Variations',
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div>
-        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Icon Configurations</h4>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+  render: () => {
+    const { colors } = useTheme();
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Icon Configurations</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
           <Cards
             title="All icons visible"
             subtitle="Folder icon and action icons shown"
@@ -363,7 +383,8 @@ export const IconVariations: Story = {
         </div>
       </div>
     </div>
-  ),
+    );
+  },
 };
 
 // Real-world examples
@@ -388,14 +409,15 @@ export const RealWorldExamples: Story = {
       );
     };
 
+    const { colors } = useTheme();
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
         <div>
-          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>File Manager Example</h4>
-          <p style={{ marginBottom: '16px', fontSize: '14px', color: '#525252' }}>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>File Manager Example</h4>
+          <p style={{ marginBottom: colors.spacing[4] || '16px', fontSize: colors.fontSize?.sm || '14px', color: colors.textSecondary }}>
             {selectedFiles.length} file(s) selected
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[2] || '8px' }}>
             {files.map(file => (
               <Cards
                 key={file.id}
@@ -418,14 +440,16 @@ export const RealWorldExamples: Story = {
 // Accessibility example
 export const AccessibilityFocus: Story = {
   name: '07 Accessibility Focus',
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div>
-        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Accessibility Features</h4>
-        <p style={{ marginBottom: '16px', fontSize: '14px', color: '#525252' }}>
-          Cards are fully keyboard accessible. Try tabbing through and using Space/Enter to select.
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+  render: () => {
+    const { colors } = useTheme();
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Accessibility Features</h4>
+          <p style={{ marginBottom: colors.spacing[4] || '16px', fontSize: colors.fontSize?.sm || '14px', color: colors.textSecondary }}>
+            Cards are fully keyboard accessible. Try tabbing through and using Space/Enter to select.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
           <Cards
             title="Keyboard Accessible"
             subtitle="Press Tab to focus, Space to select"
@@ -445,22 +469,25 @@ export const AccessibilityFocus: Story = {
             tag="Focus"
           />
         </div>
-        <p id="card-help-text" style={{ marginTop: '16px', fontSize: '12px', color: '#8D8D8D' }}>
+        <p id="card-help-text" style={{ marginTop: colors.spacing[4] || '16px', fontSize: colors.fontSize?.xs || '12px', color: colors.textMuted }}>
           Use arrow keys to navigate between cards, Space or Enter to select/deselect
         </p>
       </div>
     </div>
-  ),
+    );
+  },
 };
 
 // Edge cases
 export const EdgeCases: Story = {
   name: '08 Edge Cases',
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div>
-        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Edge Cases</h4>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+  render: () => {
+    const { colors } = useTheme();
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Edge Cases</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
           <Cards
             title="Very long title that might overflow the available space in the card component"
             subtitle="Similarly long subtitle text that could potentially wrap to multiple lines depending on the container width"
@@ -484,7 +511,8 @@ export const EdgeCases: Story = {
         </div>
       </div>
     </div>
-  ),
+    );
+  },
 };
 
 // Playground

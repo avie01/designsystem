@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, KeyboardEvent } from 'react';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import Icon from '../Icon/Icon';
 import './AlertBanner.css';
 
@@ -49,6 +50,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
   actions,
   'aria-label': ariaLabel,
 }) => {
+  const { colors } = useTheme();
   const [isVisible, setIsVisible] = useState(visible);
   const [isDismissed, setIsDismissed] = useState(false);
 
@@ -80,23 +82,76 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
     setIsVisible(visible);
   }, [visible]);
 
-  const getDefaultIcon = () => {
-    const iconSize = size === 'small' ? 16 : size === 'large' ? 24 : 20;
-    const iconClasses = `alert-banner__icon alert-banner__icon--${variant}`;
+  // Get variant-specific colors from theme
+  const getVariantColors = () => {
+    const iconColor = disabled ? colors.textDisabled : colors.textPrimary;
     
     switch (variant) {
       case 'success':
-        return <Icon name="checkmark-outline" size={iconSize} className={iconClasses} />;
+        return {
+          backgroundColor: colors.successLight,
+          iconColor: disabled ? colors.textDisabled : colors.successMain,
+        };
       case 'warning':
-        return <Icon name="warning-alt" size={iconSize} className={iconClasses} />;
+        return {
+          backgroundColor: colors.warningLight,
+          iconColor: disabled ? colors.textDisabled : colors.warningMain,
+        };
       case 'error':
-        return <Icon name="error-outline" size={iconSize} className={iconClasses} />;
+        return {
+          backgroundColor: colors.errorLight,
+          iconColor: disabled ? colors.textDisabled : colors.errorMain,
+        };
+      case 'info':
       default:
-        return <Icon name="information" size={iconSize} className={iconClasses} />;
+        return {
+          backgroundColor: colors.info,
+          iconColor: disabled ? colors.textDisabled : colors.primaryMain,
+        };
     }
   };
 
-  // Build CSS classes using BEM methodology
+  const getDefaultIcon = () => {
+    const iconSize = size === 'small' ? 16 : size === 'large' ? 24 : 20;
+    const { iconColor } = getVariantColors();
+    
+    switch (variant) {
+      case 'success':
+        return <Icon name="checkmark-outline" size={iconSize} color={iconColor} />;
+      case 'warning':
+        return <Icon name="warning-alt" size={iconSize} color={iconColor} />;
+      case 'error':
+        return <Icon name="error-outline" size={iconSize} color={iconColor} />;
+      default:
+        return <Icon name="information" size={iconSize} color={iconColor} />;
+    }
+  };
+
+  // Get dynamic styles based on theme
+  const getDynamicStyles = () => {
+    const { backgroundColor } = getVariantColors();
+    const spacing = {
+      small: { padding: colors.spacing[3], gap: colors.spacing[2] },
+      medium: { padding: colors.spacing[4], gap: colors.spacing[3] },
+      large: { padding: colors.spacing[6], gap: colors.spacing[4] },
+    };
+    
+    return {
+      backgroundColor,
+      color: disabled ? colors.textDisabled : colors.textPrimary,
+      ...spacing[size],
+      borderRadius: '2px',
+      marginBottom: colors.spacing[3],
+      transition: 'all 0.2s ease',
+      fontFamily: '"Noto Sans", sans-serif',
+      display: 'flex',
+      alignItems: 'flex-start',
+      transform: isVisible && !isDismissed ? 'translateY(0px)' : 'translateY(-20px)',
+      opacity: disabled ? 0.6 : (isVisible && !isDismissed ? 1 : 0),
+    };
+  };
+
+  // Build CSS classes using BEM methodology (keeping for additional CSS features)
   const alertClasses = [
     'alert-banner',
     `alert-banner--${variant}`,
@@ -111,6 +166,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
   return (
     <section
       className={alertClasses}
+      style={getDynamicStyles()}
       role="alert"
       aria-live="assertive"
       aria-label={ariaLabel}
@@ -146,10 +202,38 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
           className="alert-banner__close-button"
           aria-label="Close alert"
           type="button"
+          style={{
+            color: colors.textPrimary,
+            backgroundColor: 'transparent',
+            border: 'none',
+            padding: colors.spacing[1],
+            borderRadius: '4px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'background-color 0.2s ease',
+            alignSelf: 'flex-start',
+            marginTop: '-3px',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = colors.grey400;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.outline = `2px solid ${colors.primaryMain}`;
+            e.currentTarget.style.outlineOffset = '2px';
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.outline = 'none';
+          }}
         >
           <Icon 
             name="close" 
             size={size === 'small' ? 14 : size === 'large' ? 18 : 16}
+            color={colors.textPrimary}
           />
         </button>
       )}

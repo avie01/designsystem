@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import { ODLTheme } from '../../styles/ODLTheme';
 import Icon from '../Icon/Icon';
 
@@ -68,6 +69,7 @@ export default function RadioButton({
   name,
   value,
 }: RadioButtonProps) {
+  const { colors } = useTheme();
   const [isPressed, setIsPressed] = React.useState(false);
 
   // Add hover and pressed state CSS
@@ -89,11 +91,11 @@ export default function RadioButton({
       }
       
       .odl-radio-wrapper:hover:not([aria-disabled="true"]) {
-        background-color: #E8E8E8 !important;
+        background-color: ${colors.grey400} !important;
       }
       
       .odl-radio-wrapper.pressed:not([aria-disabled="true"]) {
-        background-color: #d1d1d1 !important;
+        background-color: ${colors.grey500} !important;
       }
       
       .odl-radio-wrapper[aria-disabled="true"]:hover,
@@ -109,7 +111,7 @@ export default function RadioButton({
         document.head.removeChild(styleElement);
       }
     };
-  }, []);
+  }, [colors]);
 
   const sizeMap = {
     sm: { iconSize: 16, fontSize: '14px' },
@@ -136,7 +138,7 @@ export default function RadioButton({
 
   const labelStyle: React.CSSProperties = {
     fontSize: dimensions.fontSize,
-    color: disabled ? ODLTheme.colors.text.disabled : (error ? '#D0000A' : ODLTheme.colors.text.primary),
+    color: disabled ? colors.textDisabled : (error ? colors.errorMain : colors.textPrimary),
     cursor: disabled ? 'not-allowed' : 'pointer',
     userSelect: 'none',
     lineHeight: '1.4',
@@ -145,7 +147,7 @@ export default function RadioButton({
   const containerStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: ODLTheme.spacing[2],
+    gap: colors.spacing[2],
   };
 
   const hiddenInputStyle: React.CSSProperties = {
@@ -186,7 +188,7 @@ export default function RadioButton({
   };
 
   const renderRadioIcon = () => {
-    const iconColor = disabled ? '#ACACAC' : (error ? '#D0000A' : (checked ? '#3560C1' : '#525965'));
+    const iconColor = disabled ? colors.textDisabled : (error ? colors.errorMain : (checked ? colors.primaryMain : colors.textSecondary));
     
     if (checked) {
       return (
@@ -266,6 +268,8 @@ export function RadioButtonGroup({
   name,
   disabled = false,
 }: RadioButtonGroupProps) {
+  const { colors } = useTheme();
+  
   const groupStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: orientation === 'vertical' ? 'column' : 'row',
@@ -275,13 +279,13 @@ export function RadioButtonGroup({
   const labelStyle: React.CSSProperties = {
     fontSize: '16px',
     fontWeight: 600,
-    color: error ? '#D0000A' : ODLTheme.colors.text.primary,
+    color: error ? colors.errorMain : colors.textPrimary,
     marginBottom: '8px',
   };
 
   const errorStyle: React.CSSProperties = {
     fontSize: '14px',
-    color: '#D0000A',
+    color: colors.errorMain,
     marginTop: '4px',
   };
 

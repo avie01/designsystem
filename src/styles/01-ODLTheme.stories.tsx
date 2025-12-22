@@ -1,6 +1,193 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 import ODLTheme from './ODLTheme';
+
+// Define theme modes
+type ThemeMode = 'light' | 'dark' | 'highContrast';
+
+// Define the complete color palette with all theme modes
+const themeColors = {
+  light: {
+    // Primary Colors
+    primaryNight: '#32373F',
+    primaryTwilight: '#525965',
+    primaryMain: '#3560C1',
+    primaryLight: '#0037B1',
+    primaryDark: '#00277F',
+    // Secondary Colors
+    secondaryLight: '#DAE8FF',
+    secondaryMain: '#CCDBFE',
+    secondaryDark: '#B2CAFE',
+    // Base Colors
+    paper: '#FFFFFF',
+    default: '#EDF1F5',
+    // Grey Scale
+    grey700: '#707070',
+    grey600: '#ACACAC',
+    grey500: '#D1D1D1',
+    grey400: '#E8E8E8',
+    grey300: '#F5F5F5',
+    grey200: '#F7F7F7',
+    grey100: '#F8F8F8',
+    grey50: '#FAFAFA',
+    // Text Colors
+    textPrimary: '#32373F',
+    textSecondary: '#525965',
+    textMuted: '#707070',
+    textDisabled: '#ACACAC',
+    // State Colors
+    successLight: '#DFF8DF',
+    successMain: '#2A7D2A',
+    warningLight: '#FDEED3',
+    warningMain: '#F3AD2E',
+    errorLight: '#F7E4E6',
+    errorMain: '#D0000A',
+    info: '#E0F3FF',
+    // Chip Colors
+    chipBlue: '#E5F5FE',
+    chipPink: '#F7E2F9',
+    chipRed: '#F8E8EA',
+    chipOrange: '#FCEEDA',
+    chipYellow: '#FFFBCE',
+    chipOlive: '#DAE3BF',
+    chipMint: '#D0FAF7',
+    chipBrown: '#E1D5C7',
+    chipPurple: '#D6C8F6',
+    chipGreen: '#E4F7E4',
+  },
+  dark: {
+    // Primary Colors
+    primaryNight: '#FFFFFF',
+    primaryTwilight: '#E1E7F2',
+    primaryMain: '#A7C2FD',
+    primaryLight: '#D3E1FE',
+    primaryDark: '#7C9FFC',
+    // Secondary Colors
+    secondaryLight: '#464F62',
+    secondaryMain: '#62697A',
+    secondaryDark: '#7C9FFC',
+    // Base Colors
+    paper: '#28292B',
+    default: '#1D1D1D',
+    // Grey Scale
+    grey700: '#96A5BD',
+    grey600: '#6C7789',
+    grey500: '#8A9AB3',
+    grey400: '#38393B',
+    grey300: '#3C3D3F',
+    grey200: '#6F7073',
+    grey100: '#88898C',
+    grey50: '#CCCDCE',
+    // Text Colors
+    textPrimary: '#FFFFFF',
+    textSecondary: '#E1E7F2',
+    textMuted: '#96A5BD',
+    textDisabled: '#6C7789',
+    // State Colors
+    successLight: '#1B4A25',
+    successMain: '#40D6BD',
+    warningLight: '#4A481B',
+    warningMain: '#F3BE5F',
+    errorLight: '#4A1B18',
+    errorMain: '#FC98A5',
+    info: '#1B2E4A',
+    // Chip Colors
+    chipBlue: '#082A78',
+    chipPink: '#9C27B0',
+    chipRed: '#C2185B',
+    chipOrange: '#C93713',
+    chipYellow: '#A15202',
+    chipOlive: '#54622C',
+    chipMint: '#1F787A',
+    chipBrown: '#4F3E34',
+    chipPurple: '#381A93',
+    chipGreen: '#31622C',
+  },
+  highContrast: {
+    // Primary Colors
+    primaryNight: '#000000',
+    primaryTwilight: '#000000',
+    primaryMain: '#000000',
+    primaryLight: '#0037B1',
+    primaryDark: '#00277F',
+    // Secondary Colors
+    secondaryLight: '#DAE8FF',
+    secondaryMain: '#CCDBFE',
+    secondaryDark: '#B2CAFE',
+    // Base Colors
+    paper: '#FFFFFF',
+    default: '#EDF1F5',
+    // Grey Scale
+    grey700: '#000000',
+    grey600: '#ACACAC',
+    grey500: '#000000',
+    grey400: '#E8E8E8',
+    grey300: '#F5F5F5',
+    grey200: '#F7F7F7',
+    grey100: '#F8F8F8',
+    grey50: '#FAFAFA',
+    // Text Colors
+    textPrimary: '#000000',
+    textSecondary: '#000000',
+    textMuted: '#000000',
+    textDisabled: '#ACACAC',
+    // State Colors
+    successLight: '#DFF8DF',
+    successMain: '#2A7D2A',
+    warningLight: '#FDEED3',
+    warningMain: '#F3AD2E',
+    errorLight: '#F7E4E6',
+    errorMain: '#D0000A',
+    info: '#E0F3FF',
+    // Chip Colors
+    chipBlue: '#E5F5FE',
+    chipPink: '#F7E2F9',
+    chipRed: '#F8E8EA',
+    chipOrange: '#FCEEDA',
+    chipYellow: '#FFFBCE',
+    chipOlive: '#DAE3BF',
+    chipMint: '#D0FAF7',
+    chipBrown: '#E1D5C7',
+    chipPurple: '#D6C8F6',
+    chipGreen: '#E4F7E4',
+  }
+};
+
+// Static colors that don't change with theme
+const staticColors = {
+  // Folder Colors
+  folderYellow: '#FF9B00',
+  folderRed: '#E91E63',
+  folderBurgundy: '#C2185B',
+  folderPurple: '#9C27B0',
+  folderLavender: '#6A31D4',
+  folderDeepBlue: '#5255F3',
+  folderOcean: '#2769B0',
+  folderSky: '#57ACDC',
+  folderTeal: '#57DCBE',
+  folderGreen: '#60C689',
+  folderGrey: '#CFD8DC',
+  // Brand Colors
+  brandOffice: '#D83B00',
+  brandPerform: '#BD2841',
+  brandTeams: '#5558AF',
+  brandBuild: '#5DA10C',
+  brandContentSolutions: '#0B77D8',
+  brandRegtech: '#00928F',
+  // Chart Colors - Nivo Rocks
+  chartLightGreen: '#B3DE8E',
+  chartCrimson: '#E11F27',
+  chartThistle: '#CAB3D5',
+  chartSienna: '#B0592F',
+  chartSteelBlue: '#2679B2',
+  chartLightCoral: '#F99B9B',
+  chartDarkOrange: '#FD7F23',
+  chartGoldenrod: '#F1E15B',
+  chartLightBlue: '#A8CEE2',
+  chartForestGreen: '#399F34',
+  chartSandyBrown: '#FCBE75',
+  chartDarkSlateBlue: '#6A4198',
+};
 
 const meta: Meta = {
   title: 'Design System/ODLTheme',
@@ -17,119 +204,224 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Theme Switcher Component
+const ThemeSwitcher: React.FC<{ theme: ThemeMode; onChange: (theme: ThemeMode) => void }> = ({ theme, onChange }) => (
+  <div style={{
+    position: 'sticky',
+    top: 0,
+    zIndex: 10,
+    backgroundColor: '#fff',
+    padding: ODLTheme.spacing[4],
+    marginBottom: ODLTheme.spacing[4],
+    borderBottom: `1px solid ${ODLTheme.colors.border}`,
+    display: 'flex',
+    alignItems: 'center',
+    gap: ODLTheme.spacing[4]
+  }}>
+    <label style={{ fontSize: ODLTheme.typography.fontSize.base, fontWeight: ODLTheme.typography.fontWeight.medium }}>
+      Theme Mode:
+    </label>
+    <select
+      value={theme}
+      onChange={(e) => onChange(e.target.value as ThemeMode)}
+      style={{
+        ...ODLTheme.formStyles.select,
+        minWidth: '150px'
+      }}
+    >
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+      <option value="highContrast">High Contrast</option>
+    </select>
+  </div>
+);
+
 // Color Palette
 export const ColorPalette: Story = {
   name: '01 Color Palette',
-  render: () => (
-    <div>
-      <h2 style={{ marginBottom: ODLTheme.spacing[6] }}>ODL Color Palette</h2>
+  render: () => {
+    const [selectedTheme, setSelectedTheme] = useState<ThemeMode>('light');
+    const colors = themeColors[selectedTheme];
+    const backgroundColor = selectedTheme === 'dark' ? '#1D1D1D' : '#FFFFFF';
+    const textColor = selectedTheme === 'dark' ? '#FFFFFF' : '#161616';
+    
+    return (
+    <div style={{ backgroundColor, color: textColor, minHeight: '100vh', margin: '-1rem', padding: '1rem' }}>
+      <ThemeSwitcher theme={selectedTheme} onChange={setSelectedTheme} />
+      <div style={{ padding: ODLTheme.spacing[4] }}>
+        <h2 style={{ marginBottom: ODLTheme.spacing[6], color: textColor }}>ODL Color Palette - {selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1)} Mode</h2>
+        <div style={{ marginBottom: ODLTheme.spacing[4], padding: ODLTheme.spacing[4], backgroundColor: colors.info, borderRadius: ODLTheme.borders.radius.md }}>
+          <p style={{ margin: 0, fontSize: ODLTheme.typography.fontSize.sm, color: selectedTheme === 'dark' ? '#fff' : '#000' }}>
+            <strong>Note:</strong> Use the theme switcher above to view colors in different modes. The design system adapts all colors based on the selected theme.
+          </p>
+        </div>
       
-      {/* Primary Colors */}
-      <div style={{ marginBottom: ODLTheme.spacing[8] }}>
-        <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Primary Colors</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
-          {Object.entries({
-            'Primary': ODLTheme.colors.primary,
-            'Primary Hover': ODLTheme.colors.primaryHover,
-            'Primary Light': ODLTheme.colors.primaryLight,
-            'Primary Dark': ODLTheme.colors.primaryDark,
-          }).map(([name, color]) => (
-            <div key={name}>
-              <div 
-                style={{ 
-                  backgroundColor: color,
-                  height: '80px',
-                  borderRadius: ODLTheme.borders.radius.md,
-                  marginBottom: ODLTheme.spacing[2]
-                }}
-              />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-                <strong>{name}</strong><br />
-                {color}
+        {/* Primary Colors - All Variants */}
+        <div style={{ marginBottom: ODLTheme.spacing[8] }}>
+          <h3 style={{ marginBottom: ODLTheme.spacing[4], color: textColor }}>Primary Colors</h3>
+          <div style={{ marginBottom: ODLTheme.spacing[4] }}>
+            <h4 style={{ marginBottom: ODLTheme.spacing[2], fontSize: ODLTheme.typography.fontSize.base, color: textColor }}>Primary Base Colors</h4>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+              <div>
+                <div 
+                  style={{ 
+                    backgroundColor: colors.primaryNight,
+                    height: '80px',
+                    borderRadius: ODLTheme.borders.radius.md,
+                    marginBottom: ODLTheme.spacing[2],
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: selectedTheme === 'dark' ? '#000' : '#fff',
+                    border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
+                  }}
+                >
+                  Primary Night
+                </div>
+                <div style={{ fontSize: ODLTheme.typography.fontSize.sm, color: textColor }}>
+                  <strong>Primary Night</strong><br />
+                  {colors.primaryNight}
+                </div>
+              </div>
+              <div>
+                <div 
+                  style={{ 
+                    backgroundColor: colors.primaryTwilight,
+                    height: '80px',
+                    borderRadius: ODLTheme.borders.radius.md,
+                    marginBottom: ODLTheme.spacing[2],
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: selectedTheme === 'dark' ? '#000' : '#fff',
+                    border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
+                  }}
+                >
+                  Primary Twilight
+                </div>
+                <div style={{ fontSize: ODLTheme.typography.fontSize.sm, color: textColor }}>
+                  <strong>Primary Twilight</strong><br />
+                  {colors.primaryTwilight}
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Secondary Color */}
-      <div style={{ marginBottom: ODLTheme.spacing[8] }}>
-        <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Secondary Color</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
-          <div>
-            <div
-              style={{
-                backgroundColor: ODLTheme.colors.secondary,
-                height: '80px',
-                borderRadius: ODLTheme.borders.radius.md,
-                marginBottom: ODLTheme.spacing[2]
-              }}
-            />
-            <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-              <strong>Secondary</strong><br />
-              {ODLTheme.colors.secondary}
+          </div>
+          <div style={{ marginBottom: ODLTheme.spacing[4] }}>
+            <h4 style={{ marginBottom: ODLTheme.spacing[2], fontSize: ODLTheme.typography.fontSize.base, color: textColor }}>Primary Theme Colors</h4>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+              {[
+                { name: 'Primary Main', key: 'primaryMain' },
+                { name: 'Primary Light', key: 'primaryLight' },
+                { name: 'Primary Dark', key: 'primaryDark' },
+              ].map(({ name, key }) => (
+                <div key={key}>
+                  <div 
+                    style={{ 
+                      backgroundColor: colors[key],
+                      height: '80px',
+                      borderRadius: ODLTheme.borders.radius.md,
+                      marginBottom: ODLTheme.spacing[2],
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: selectedTheme === 'dark' ? '#000' : '#fff',
+                      border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
+                    }}
+                  >
+                    {name}
+                  </div>
+                  <div style={{ fontSize: ODLTheme.typography.fontSize.sm, color: textColor }}>
+                    <strong>{name}</strong><br />
+                    {colors[key]}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Neutral Colors */}
-      <div style={{ marginBottom: ODLTheme.spacing[8] }}>
-        <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Neutral Colors</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
-          {Object.entries({
-            'White': ODLTheme.colors.white,
-            'Background': ODLTheme.colors.background,
-            'Wave': ODLTheme.colors.wave,
-            'Surface': ODLTheme.colors.surface,
-            'Surface Hover': ODLTheme.colors.surfaceHover,
-            'Border': ODLTheme.colors.border,
-          }).map(([name, color]) => (
-            <div key={name}>
-              <div
-                style={{
-                  backgroundColor: color,
-                  height: '60px',
-                  borderRadius: ODLTheme.borders.radius.md,
-                  marginBottom: ODLTheme.spacing[2],
-                  border: `1px solid ${ODLTheme.colors.border}`
-                }}
-              />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-                <strong>{name}</strong><br />
-                {color}
+        {/* Secondary Colors */}
+        <div style={{ marginBottom: ODLTheme.spacing[8] }}>
+          <h3 style={{ marginBottom: ODLTheme.spacing[4], color: textColor }}>Secondary Colors</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+            {[
+              { name: 'Secondary Light', key: 'secondaryLight' },
+              { name: 'Secondary Main', key: 'secondaryMain' },
+              { name: 'Secondary Dark', key: 'secondaryDark' },
+            ].map(({ name, key }) => (
+              <div key={key}>
+                <div
+                  style={{
+                    backgroundColor: colors[key],
+                    height: '80px',
+                    borderRadius: ODLTheme.borders.radius.md,
+                    marginBottom: ODLTheme.spacing[2],
+                    border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
+                  }}
+                />
+                <div style={{ fontSize: ODLTheme.typography.fontSize.sm, color: textColor }}>
+                  <strong>{name}</strong><br />
+                  {colors[key]}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+
+        {/* Base Colors */}
+        <div style={{ marginBottom: ODLTheme.spacing[8] }}>
+          <h3 style={{ marginBottom: ODLTheme.spacing[4], color: textColor }}>Base Colors</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+            {[
+              { name: 'Paper', key: 'paper' },
+              { name: 'Default', key: 'default' },
+            ].map(({ name, key }) => (
+              <div key={key}>
+                <div
+                  style={{
+                    backgroundColor: colors[key],
+                    height: '60px',
+                    borderRadius: ODLTheme.borders.radius.md,
+                    marginBottom: ODLTheme.spacing[2],
+                    border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
+                  }}
+                />
+                <div style={{ fontSize: ODLTheme.typography.fontSize.sm, color: textColor }}>
+                  <strong>{name}</strong><br />
+                  {colors[key]}
+                </div>
+              </div>
+            ))}
         </div>
       </div>
 
       {/* Grey Scale */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
-        <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Grey Scale</h3>
+        <h3 style={{ marginBottom: ODLTheme.spacing[4], color: textColor }}>Grey Scale</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[3] }}>
-          {Object.entries({
-            'Grey 50': ODLTheme.colors.grey50,
-            'Grey 100': ODLTheme.colors.grey100,
-            'Grey 200': ODLTheme.colors.grey200,
-            'Grey 300': ODLTheme.colors.grey300,
-            'Grey 400': ODLTheme.colors.grey400,
-            'Grey 500': ODLTheme.colors.grey500,
-            'Grey 600': ODLTheme.colors.grey600,
-          }).map(([name, color]) => (
-            <div key={name}>
+          {[
+            { name: 'Grey 700', key: 'grey700' },
+            { name: 'Grey 600', key: 'grey600' },
+            { name: 'Grey 500', key: 'grey500' },
+            { name: 'Grey 400', key: 'grey400' },
+            { name: 'Grey 300', key: 'grey300' },
+            { name: 'Grey 200', key: 'grey200' },
+            { name: 'Grey 100', key: 'grey100' },
+            { name: 'Grey 50', key: 'grey50' },
+          ].map(({ name, key }) => (
+            <div key={key}>
               <div
                 style={{
-                  backgroundColor: color,
+                  backgroundColor: colors[key],
                   height: '50px',
                   borderRadius: ODLTheme.borders.radius.base,
                   marginBottom: ODLTheme.spacing[1],
-                  border: `1px solid ${ODLTheme.colors.border}`
+                  border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
                 }}
               />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.xs }}>
+              <div style={{ fontSize: ODLTheme.typography.fontSize.xs, color: textColor }}>
                 <strong>{name}</strong><br />
-                {color}
+                {colors[key]}
               </div>
             </div>
           ))}
@@ -138,110 +430,309 @@ export const ColorPalette: Story = {
 
       {/* Text Colors */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
-        <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Text Colors</h3>
+        <h3 style={{ marginBottom: ODLTheme.spacing[4], color: textColor }}>Text Colors</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
-          {Object.entries({
-            'Text Primary': ODLTheme.colors.text.primary,
-            'Text Secondary': ODLTheme.colors.text.secondary,
-            'Text Tertiary': ODLTheme.colors.text.tertiary,
-            'Text Disabled': ODLTheme.colors.text.disabled,
-            'Text Light (shorthand)': ODLTheme.colors.textLight,
-          }).map(([name, color]) => (
-            <div key={name}>
+          {[
+            { name: 'Text Primary', key: 'textPrimary' },
+            { name: 'Text Secondary', key: 'textSecondary' },
+            { name: 'Text Muted', key: 'textMuted' },
+            { name: 'Text Disabled', key: 'textDisabled' },
+          ].map(({ name, key }) => (
+            <div key={key}>
               <div
                 style={{
-                  backgroundColor: color,
+                  backgroundColor: colors[key],
                   height: '50px',
                   borderRadius: ODLTheme.borders.radius.md,
-                  marginBottom: ODLTheme.spacing[2]
+                  marginBottom: ODLTheme.spacing[2],
+                  border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
                 }}
               />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
+              <div style={{ fontSize: ODLTheme.typography.fontSize.sm, color: textColor }}>
                 <strong>{name}</strong><br />
-                {color}
+                {colors[key]}
               </div>
             </div>
           ))}
-          <div>
-            <div
-              style={{
-                backgroundColor: ODLTheme.colors.primary,
-                height: '50px',
-                borderRadius: ODLTheme.borders.radius.md,
-                marginBottom: ODLTheme.spacing[2],
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: ODLTheme.colors.text.inverse
-              }}
-            >
-              Inverse Text
-            </div>
-            <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-              <strong>Text Inverse</strong><br />
-              {ODLTheme.colors.text.inverse}
+        </div>
+      </div>
+
+      {/* State Colors */}
+      <div style={{ marginBottom: ODLTheme.spacing[8] }}>
+        <h3 style={{ marginBottom: ODLTheme.spacing[4], color: textColor }}>State Colors</h3>
+        <div style={{ marginBottom: ODLTheme.spacing[4] }}>
+          <h4 style={{ marginBottom: ODLTheme.spacing[2], fontSize: ODLTheme.typography.fontSize.base, color: textColor }}>Success</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+            {[
+              { name: 'Success Light', key: 'successLight' },
+              { name: 'Success Main', key: 'successMain' },
+            ].map(({ name, key }) => (
+              <div key={key}>
+                <div 
+                  style={{ 
+                    backgroundColor: colors[key],
+                    height: '60px',
+                    borderRadius: ODLTheme.borders.radius.md,
+                    marginBottom: ODLTheme.spacing[2],
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: name.includes('Main') ? '#fff' : (selectedTheme === 'dark' ? '#fff' : '#000'),
+                    border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
+                  }}
+                >
+                  {name}
+                </div>
+                <div style={{ fontSize: ODLTheme.typography.fontSize.xs, color: textColor }}>
+                  <strong>{name}</strong><br />
+                  {colors[key]}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ marginBottom: ODLTheme.spacing[4] }}>
+          <h4 style={{ marginBottom: ODLTheme.spacing[2], fontSize: ODLTheme.typography.fontSize.base, color: textColor }}>Warning</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+            {[
+              { name: 'Warning Light', key: 'warningLight' },
+              { name: 'Warning Main', key: 'warningMain' },
+            ].map(({ name, key }) => (
+              <div key={key}>
+                <div 
+                  style={{ 
+                    backgroundColor: colors[key],
+                    height: '60px',
+                    borderRadius: ODLTheme.borders.radius.md,
+                    marginBottom: ODLTheme.spacing[2],
+                    border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
+                  }}
+                />
+                <div style={{ fontSize: ODLTheme.typography.fontSize.xs, color: textColor }}>
+                  <strong>{name}</strong><br />
+                  {colors[key]}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ marginBottom: ODLTheme.spacing[4] }}>
+          <h4 style={{ marginBottom: ODLTheme.spacing[2], fontSize: ODLTheme.typography.fontSize.base, color: textColor }}>Error</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+            {[
+              { name: 'Error Light', key: 'errorLight' },
+              { name: 'Error Main', key: 'errorMain' },
+            ].map(({ name, key }) => (
+              <div key={key}>
+                <div 
+                  style={{ 
+                    backgroundColor: colors[key],
+                    height: '60px',
+                    borderRadius: ODLTheme.borders.radius.md,
+                    marginBottom: ODLTheme.spacing[2],
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: name.includes('Main') ? '#fff' : (selectedTheme === 'dark' ? '#fff' : '#000'),
+                    border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
+                  }}
+                >
+                  {name}
+                </div>
+                <div style={{ fontSize: ODLTheme.typography.fontSize.xs, color: textColor }}>
+                  <strong>{name}</strong><br />
+                  {colors[key]}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h4 style={{ marginBottom: ODLTheme.spacing[2], fontSize: ODLTheme.typography.fontSize.base, color: textColor }}>Info</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
+            <div>
+              <div 
+                style={{ 
+                  backgroundColor: colors.info,
+                  height: '60px',
+                  borderRadius: ODLTheme.borders.radius.md,
+                  marginBottom: ODLTheme.spacing[2],
+                  border: `1px solid ${selectedTheme === 'dark' ? '#444' : '#ddd'}`
+                }}
+              />
+              <div style={{ fontSize: ODLTheme.typography.fontSize.xs, color: textColor }}>
+                <strong>Info</strong><br />
+                {colors.info}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Status Colors */}
+      {/* Chip Colors */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
-        <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Status Colors</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: ODLTheme.spacing[4] }}>
-          {Object.entries({
-            'Success': ODLTheme.colors.success,
-            'Success Light': ODLTheme.colors.successLight,
-            'Error': ODLTheme.colors.error,
-            'Error Light': ODLTheme.colors.errorLight,
-            'Warning': ODLTheme.colors.warning,
-            'Warning Background': ODLTheme.colors.warningBackground,
-            'Warning Light': ODLTheme.colors.warningLight,
-            'Info': ODLTheme.colors.info,
-            'Info Light': ODLTheme.colors.infoLight,
-          }).map(([name, color]) => (
-            <div key={name}>
+        <h3 style={{ marginBottom: ODLTheme.spacing[4], color: textColor }}>Chip Colors</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[3] }}>
+          {[
+            { name: 'Chip Blue', key: 'chipBlue' },
+            { name: 'Chip Pink', key: 'chipPink' },
+            { name: 'Chip Red', key: 'chipRed' },
+            { name: 'Chip Orange', key: 'chipOrange' },
+            { name: 'Chip Yellow', key: 'chipYellow' },
+            { name: 'Chip Olive', key: 'chipOlive' },
+            { name: 'Chip Mint', key: 'chipMint' },
+            { name: 'Chip Brown', key: 'chipBrown' },
+            { name: 'Chip Purple', key: 'chipPurple' },
+            { name: 'Chip Green', key: 'chipGreen' },
+          ].map(({ name, key }) => (
+            <div key={key}>
               <div 
                 style={{ 
-                  backgroundColor: color,
-                  height: '60px',
-                  borderRadius: ODLTheme.borders.radius.md,
-                  marginBottom: ODLTheme.spacing[2]
+                  backgroundColor: colors[key],
+                  height: '40px',
+                  borderRadius: '999px',
+                  marginBottom: ODLTheme.spacing[1],
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: ODLTheme.typography.fontSize.xs,
+                  padding: `0 ${ODLTheme.spacing[3]}`,
+                  color: selectedTheme === 'dark' ? '#fff' : '#000'
                 }}
-              />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.sm }}>
-                <strong>{name}</strong><br />
-                {color}
+              >
+                {name.replace('Chip ', '')}
+              </div>
+              <div style={{ fontSize: '10px', textAlign: 'center', color: textColor }}>
+                <strong>{name.replace('Chip ', '')}</strong><br />
+                {colors[key]}
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Chart Colors */}
+      {/* Static Colors */}
       <div style={{ marginBottom: ODLTheme.spacing[8] }}>
-        <h3 style={{ marginBottom: ODLTheme.spacing[4] }}>Chart Colors</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[3] }}>
-          {Object.entries(ODLTheme.colors.charts).map(([name, color]) => (
-            <div key={name}>
-              <div 
-                style={{ 
-                  backgroundColor: color,
-                  height: '50px',
-                  borderRadius: ODLTheme.borders.radius.base,
-                  marginBottom: ODLTheme.spacing[1]
-                }}
-              />
-              <div style={{ fontSize: ODLTheme.typography.fontSize.xs }}>
-                <strong>{name}</strong><br />
-                {color}
+        <h3 style={{ marginBottom: ODLTheme.spacing[4], color: textColor }}>Static Colors (Do not change with theme)</h3>
+        
+        {/* Folder Colors */}
+        <div style={{ marginBottom: ODLTheme.spacing[4] }}>
+          <h4 style={{ marginBottom: ODLTheme.spacing[2], fontSize: ODLTheme.typography.fontSize.base, color: textColor }}>Folder Colors</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: ODLTheme.spacing[3] }}>
+            {Object.entries({
+              'Yellow': '#FF9B00',
+              'Red': '#E91E63',
+              'Burgundy': '#C2185B',
+              'Purple': '#9C27B0',
+              'Lavender': '#6A31D4',
+              'Deep Blue': '#5255F3',
+              'Ocean': '#2769B0',
+              'Sky': '#57ACDC',
+              'Teal': '#57DCBE',
+              'Green': '#60C689',
+              'Grey': '#CFD8DC',
+            }).map(([name, color]) => (
+              <div key={name}>
+                <div 
+                  style={{ 
+                    backgroundColor: color,
+                    height: '50px',
+                    borderRadius: ODLTheme.borders.radius.base,
+                    marginBottom: ODLTheme.spacing[1],
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <span style={{ color: '#fff', fontSize: ODLTheme.typography.fontSize.xs }}>
+                    {name}
+                  </span>
+                </div>
+                <div style={{ fontSize: '10px', textAlign: 'center', color: textColor }}>
+                  {color}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+
+        {/* Brand Colors */}
+        <div style={{ marginBottom: ODLTheme.spacing[4] }}>
+          <h4 style={{ marginBottom: ODLTheme.spacing[2], fontSize: ODLTheme.typography.fontSize.base, color: textColor }}>Brand Colors</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: ODLTheme.spacing[3] }}>
+            {Object.entries({
+              'Office': '#D83B00',
+              'Perform': '#BD2841',
+              'Teams': '#5558AF',
+              'Build': '#5DA10C',
+              'Content Solutions': '#0B77D8',
+              'Regtech': '#00928F',
+            }).map(([name, color]) => (
+              <div key={name}>
+                <div 
+                  style={{ 
+                    backgroundColor: color,
+                    height: '60px',
+                    borderRadius: ODLTheme.borders.radius.md,
+                    marginBottom: ODLTheme.spacing[1],
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <span style={{ color: '#fff', fontSize: ODLTheme.typography.fontSize.xs }}>
+                    {name}
+                  </span>
+                </div>
+                <div style={{ fontSize: ODLTheme.typography.fontSize.xs, textAlign: 'center', color: textColor }}>
+                  <strong>{name}</strong><br />
+                  {color}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Chart Colors - Nivo Rocks */}
+        <div>
+          <h4 style={{ marginBottom: ODLTheme.spacing[2], fontSize: ODLTheme.typography.fontSize.base, color: textColor }}>Chart Colors - Nivo Rocks</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: ODLTheme.spacing[2] }}>
+            {Object.entries({
+              'Light Green': '#B3DE8E',
+              'Crimson': '#E11F27',
+              'Thistle': '#CAB3D5',
+              'Sienna': '#B0592F',
+              'Steel Blue': '#2679B2',
+              'Light Coral': '#F99B9B',
+              'Dark Orange': '#FD7F23',
+              'Goldenrod': '#F1E15B',
+              'Light Blue': '#A8CEE2',
+              'Forest Green': '#399F34',
+              'Sandy Brown': '#FCBE75',
+              'Dark Slate Blue': '#6A4198',
+            }).map(([name, color]) => (
+              <div key={name}>
+                <div 
+                  style={{ 
+                    backgroundColor: color,
+                    height: '40px',
+                    borderRadius: ODLTheme.borders.radius.base,
+                    marginBottom: ODLTheme.spacing[1]
+                  }}
+                />
+                <div style={{ fontSize: '10px', color: textColor }}>
+                  <strong>{name}</strong><br />
+                  {color}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+      </div>
     </div>
-  ),
+    );
+  },
 };
 
 // Typography

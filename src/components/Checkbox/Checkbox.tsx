@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import { ODLTheme } from '../../styles/ODLTheme';
 import Icon from '../Icon/Icon';
 
@@ -23,6 +24,8 @@ export interface CheckboxProps {
   id?: string;
   /** Name attribute for the checkbox input */
   name?: string;
+  /** ARIA label for accessibility when no visible label is provided */
+  'aria-label'?: string;
 }
 
 export interface CheckboxGroupProps {
@@ -53,7 +56,9 @@ export default function Checkbox({
   size = 'md',
   id,
   name,
+  'aria-label': ariaLabel,
 }: CheckboxProps) {
+  const { colors } = useTheme();
   const [isPressed, setIsPressed] = React.useState(false);
 
   // Add hover and pressed state CSS
@@ -75,11 +80,11 @@ export default function Checkbox({
       }
       
       .odl-checkbox-wrapper:hover:not([aria-disabled="true"]) {
-        background-color: #E8E8E8 !important;
+        background-color: ${colors.grey400} !important;
       }
       
       .odl-checkbox-wrapper.pressed:not([aria-disabled="true"]) {
-        background-color: #d1d1d1 !important;
+        background-color: ${colors.grey500} !important;
       }
       
       .odl-checkbox-wrapper[aria-disabled="true"]:hover,
@@ -95,7 +100,7 @@ export default function Checkbox({
         document.head.removeChild(styleElement);
       }
     };
-  }, []);
+  }, [colors]);
 
   const sizeMap = {
     sm: { iconSize: 16, fontSize: '14px' },
@@ -122,7 +127,7 @@ export default function Checkbox({
 
   const labelStyle: React.CSSProperties = {
     fontSize: dimensions.fontSize,
-    color: disabled ? ODLTheme.colors.text.disabled : (error ? '#D0000A' : ODLTheme.colors.text.primary),
+    color: disabled ? colors.textDisabled : (error ? colors.errorMain : colors.textPrimary),
     cursor: disabled ? 'not-allowed' : 'pointer',
     userSelect: 'none',
     lineHeight: '1.4',
@@ -131,22 +136,9 @@ export default function Checkbox({
   const containerStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: ODLTheme.spacing[2],
+    gap: colors.spacing[2],
   };
 
-  const hiddenInputStyle: React.CSSProperties = {
-    position: 'absolute',
-    opacity: 0,
-    width: 0,
-    height: 0,
-    margin: 0,
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!disabled && onChange) {
-      onChange(e.target.checked);
-    }
-  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === ' ' || e.key === 'Enter') {
@@ -172,7 +164,7 @@ export default function Checkbox({
   };
 
   const renderCheckboxIcon = () => {
-    const iconColor = error ? '#D0000A' : (checked || indeterminate ? '#3560C1' : '#525965');
+    const iconColor = error ? colors.errorMain : (checked || indeterminate ? colors.primaryMain : colors.textSecondary);
     
     if (indeterminate) {
       return (
@@ -221,33 +213,19 @@ export default function Checkbox({
         aria-checked={indeterminate ? 'mixed' : checked}
         aria-disabled={disabled ? 'true' : 'false'}
         aria-labelledby={label ? `${id}-label` : undefined}
+        aria-label={!label ? ariaLabel : undefined}
         {...(error && { 'aria-invalid': true })}
       >
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={handleChange}
-          disabled={disabled}
-          style={hiddenInputStyle}
-          id={id}
-          name={name}
-          ref={(input) => {
-            if (input) {
-              input.indeterminate = indeterminate;
-            }
-          }}
-        />
         {renderCheckboxIcon()}
       </div>
       {label && (
-        <label
-          htmlFor={id}
+        <div
           id={`${id}-label`}
           style={labelStyle}
           onClick={() => !disabled && onChange?.(!checked)}
         >
           {label}
-        </label>
+        </div>
       )}
     </div>
   );
@@ -262,6 +240,8 @@ export function CheckboxGroup({
   error = false,
   errorMessage,
 }: CheckboxGroupProps) {
+  const { colors } = useTheme();
+  
   const groupStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: orientation === 'vertical' ? 'column' : 'row',
@@ -271,13 +251,13 @@ export function CheckboxGroup({
   const labelStyle: React.CSSProperties = {
     fontSize: '16px',
     fontWeight: 600,
-    color: error ? '#D0000A' : ODLTheme.colors.text.primary,
+    color: error ? colors.errorMain : colors.textPrimary,
     marginBottom: '8px',
   };
 
   const errorStyle: React.CSSProperties = {
     fontSize: '14px',
-    color: '#D0000A',
+    color: colors.errorMain,
     marginTop: '4px',
   };
 

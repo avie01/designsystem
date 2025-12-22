@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import Icon from '../Icon/Icon';
 import { ODLTheme } from '../../styles/ODLTheme';
 
@@ -55,6 +56,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   'aria-expanded': ariaExpanded,
   title,
 }) => {
+  const { colors } = useTheme();
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -98,48 +100,48 @@ const IconButton: React.FC<IconButtonProps> = ({
 
   // Get button colors based on variant
   const getButtonColors = () => {
-    const colors = {
+    const buttonColors = {
       primary: {
-        background: ODLTheme.colors.primary,
-        color: '#FFFFFF',
-        hover: '#0037B1',
-        active: '#00277F',
+        background: colors.primaryMain,
+        color: colors.textInverse,
+        hover: colors.primaryLight,
+        active: colors.primaryDark,
         border: 'transparent'
       },
       secondary: {
-        background: '#FFFFFF',
-        color: ODLTheme.colors.primary,
-        hover: '#e8e8e8',
-        active: '#d1d1d1',
-        hoverColor: '#3560C1',
-        activeColor: '#3560C1',
-        border: ODLTheme.colors.primary
+        background: colors.paper,
+        color: colors.primaryMain,
+        hover: colors.grey400,
+        active: colors.grey500,
+        hoverColor: colors.primaryMain,
+        activeColor: colors.primaryMain,
+        border: colors.primaryMain
       },
       tertiary: {
-        background: '#DAE8FF',
-        color: '#525965',
-        hover: '#CCDBFE',
-        active: '#B2CAFE',
+        background: colors.secondaryLight,
+        color: colors.textSecondary,
+        hover: colors.secondaryMain,
+        active: colors.secondaryDark,
         border: 'transparent'
       },
       ghost: {
         background: 'transparent',
-        color: ODLTheme.colors.text.primary,
-        hover: customHoverBg || '#e8e8e8',
-        active: '#d1d1d1',
-        hoverColor: '#3560C1',
-        activeColor: '#3560C1',
+        color: colors.textPrimary,
+        hover: customHoverBg || colors.grey400,
+        active: colors.grey500,
+        hoverColor: colors.primaryMain,
+        activeColor: colors.primaryMain,
         border: 'transparent'
       },
       destructive: {
-        background: ODLTheme.colors.error,
-        color: '#FFFFFF',
+        background: colors.errorMain,
+        color: colors.textInverse,
         hover: '#C53030',
         active: '#A53030',
         border: 'transparent'
       }
     };
-    return colors[variant];
+    return buttonColors[variant];
   };
 
   // Handle custom hover background for ghost variant
@@ -167,7 +169,7 @@ const IconButton: React.FC<IconButtonProps> = ({
 
   // Get the appropriate color for the current state
   const getCurrentColor = () => {
-    if (isDisabled) return '#acacac';
+    if (isDisabled) return colors.textDisabled;
     if (isPressed && !isDisabled && buttonColors.activeColor) return buttonColors.activeColor;
     if (isHovered && !isDisabled && buttonColors.hoverColor) return buttonColors.hoverColor;
     if (selected && buttonColors.activeColor) return buttonColors.activeColor;
@@ -204,7 +206,7 @@ const IconButton: React.FC<IconButtonProps> = ({
 
   // Focus styles
   const focusStyles = {
-    boxShadow: `0 0 0 2px ${ODLTheme.colors.primary}33`,
+    boxShadow: `0 0 0 2px ${colors.primaryMain}33`,
   };
 
   return (

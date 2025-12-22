@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import './Button.css';
 
 export interface ButtonProps {
@@ -57,6 +58,7 @@ const Button: React.FC<ButtonProps> = ({
   'aria-pressed': ariaPressed,
   'aria-expanded': ariaExpanded,
 }) => {
+  const { colors } = useTheme();
   const [_isPressed, setIsPressed] = useState(false);
   const [_isHovered, setIsHovered] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -67,7 +69,124 @@ const Button: React.FC<ButtonProps> = ({
                         size === 'medium' || size === 'md' ? 'md' :
                         size === 'large' || size === 'lg' ? 'lg' : 'md';
 
-  // Build CSS classes
+  // Get theme-based styles for each variant
+  const getVariantStyles = () => {
+    const baseStyles = {
+      borderRadius: '2px',
+      fontWeight: 500,
+      border: 'none',
+      cursor: disabled || loading ? 'not-allowed' : 'pointer',
+      opacity: disabled ? 0.6 : 1,
+    };
+
+    switch (variant) {
+      case 'primary':
+        return {
+          ...baseStyles,
+          backgroundColor: colors.primaryMain,
+          color: colors.textInverse,
+          border: 'none',
+        };
+      case 'secondary':
+        return {
+          ...baseStyles,
+          backgroundColor: colors.paper,
+          color: colors.textSecondary,
+          border: `1px solid ${colors.border}`,
+        };
+      case 'tertiary':
+        return {
+          ...baseStyles,
+          backgroundColor: colors.secondaryLight,
+          color: colors.textSecondary,
+          border: 'none',
+        };
+      case 'text':
+        return {
+          ...baseStyles,
+          backgroundColor: 'transparent',
+          color: colors.textSecondary,
+          border: 'none',
+        };
+      case 'destructive':
+        return {
+          ...baseStyles,
+          backgroundColor: colors.errorLight,
+          color: colors.errorMain,
+          border: `1px solid ${colors.errorMain}`,
+        };
+      case 'ghost':
+        return {
+          ...baseStyles,
+          backgroundColor: 'transparent',
+          color: colors.textSecondary,
+          border: 'none',
+        };
+      default:
+        return {
+          ...baseStyles,
+          backgroundColor: colors.primaryMain,
+          color: colors.textInverse,
+        };
+    }
+  };
+
+  // Get size-based styles
+  const getSizeStyles = () => {
+    switch (normalizedSize) {
+      case 'xs':
+        return {
+          padding: `${colors.spacing[1]} ${colors.spacing[3]}`,
+          fontSize: '11px',
+          minHeight: '32px',
+          gap: colors.spacing[1],
+        };
+      case 'sm':
+        return {
+          padding: `${colors.spacing[2]} ${colors.spacing[4]}`,
+          fontSize: '12px',
+          minHeight: '36px',
+          gap: colors.spacing[2],
+        };
+      case 'md':
+        return {
+          padding: `${colors.spacing[3]} ${colors.spacing[4]}`,
+          fontSize: '14px',
+          minHeight: '44px',
+          gap: colors.spacing[2],
+        };
+      case 'lg':
+        return {
+          padding: `${colors.spacing[4]} ${colors.spacing[5]}`,
+          fontSize: '16px',
+          minHeight: '48px',
+          gap: colors.spacing[2],
+        };
+      default:
+        return {
+          padding: `${colors.spacing[3]} ${colors.spacing[4]}`,
+          fontSize: '14px',
+          minHeight: '44px',
+          gap: colors.spacing[2],
+        };
+    }
+  };
+
+  // Combine all dynamic styles
+  const dynamicStyles = {
+    ...getVariantStyles(),
+    ...getSizeStyles(),
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: '"Noto Sans", sans-serif',
+    textDecoration: 'none',
+    boxSizing: 'border-box' as const,
+    transition: 'all 0.2s ease',
+    ...style,
+  };
+
+  // Build CSS classes (keeping base classes for animations and focus states)
   const buttonClasses = [
     'button',
     `button--${variant}`,
@@ -121,7 +240,7 @@ const Button: React.FC<ButtonProps> = ({
       aria-pressed={ariaPressed}
       aria-expanded={ariaExpanded}
       aria-disabled={isDisabled}
-      style={style}
+      style={dynamicStyles}
     >
       {loading && (
         <svg 
@@ -147,7 +266,7 @@ const Button: React.FC<ButtonProps> = ({
         </svg>
       )}
       {!loading && icon && (
-        <span className="button-icon button-icon--left">
+        <span className="button-icon button-icon--left" style={{ marginRight: colors.spacing[2] }}>
           {icon}
         </span>
       )}
@@ -155,7 +274,7 @@ const Button: React.FC<ButtonProps> = ({
         {children}
       </span>
       {!loading && iconRight && (
-        <span className="button-icon button-icon--right">
+        <span className="button-icon button-icon--right" style={{ marginLeft: colors.spacing[2] }}>
           {iconRight}
         </span>
       )}

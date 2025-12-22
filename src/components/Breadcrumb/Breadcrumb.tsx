@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import './Breadcrumb.css';
 import Icon from '../Icon/Icon';
 
@@ -8,12 +9,17 @@ const classNames = (...classes: (string | boolean | undefined | null)[]): string
 };
 
 // Simple chevron icon component
-const ChevronIcon: React.FC<{ className?: string }> = ({ className }) => (
+const ChevronIcon: React.FC<{ className?: string; color?: string }> = ({ className, color }) => (
   <svg
     className={className || 'breadcrumb__separator-icon'}
     fill="none"
-    stroke="currentColor"
+    stroke={color || "currentColor"}
     viewBox="0 0 24 24"
+    style={{
+      width: '12px',
+      height: '12px',
+      color: color || 'currentColor',
+    }}
   >
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
   </svg>
@@ -107,6 +113,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   className,
   style,
 }) => {
+  const { colors } = useTheme();
   const handleClick = (item: BreadcrumbItem) => {
     if (item.path && onNavigate) {
       onNavigate(item.path);
@@ -114,7 +121,11 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   };
 
   // Use explicit separator prop if provided, otherwise use separatorStyle
-  const resolvedSeparator = separator !== undefined ? separator : SEPARATOR_STYLES[separatorStyle];
+  const resolvedSeparator = separator !== undefined 
+    ? separator 
+    : separatorStyle === 'chevron' 
+      ? <ChevronIcon color={colors.textMuted} />
+      : SEPARATOR_STYLES[separatorStyle];
 
   const sizeClass = size !== 'default' ? `breadcrumb--${size}` : '';
   const colorSchemeClass = colorScheme ? COLOR_SCHEMES[colorScheme] : '';
@@ -124,35 +135,93 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   const resolvedIconSize = iconSize === 'auto' ? ICON_SIZES[size] : (typeof iconSize === 'number' ? iconSize : ICON_SIZES.default);
   const iconStyleProps = ICON_STYLES[iconStyle];
 
+  // Get dynamic styles based on theme and color scheme
+  const getDynamicStyles = () => {
+    const baseFontSize = {
+      small: colors.fontSize?.xs || '12px',
+      default: colors.fontSize?.sm || '14px',
+      large: colors.fontSize?.base || '16px'
+    };
+
+    let breadcrumbColor = colors.textSecondary;
+    let backgroundColor = 'transparent';
+    let breadcrumbPadding = `${colors.spacing[2]} ${colors.spacing[3]}`;
+
+    // Apply color scheme overrides
+    if (colorScheme === 'dark') {
+      backgroundColor = colors.grey300;
+      breadcrumbColor = colors.textPrimary;
+      breadcrumbPadding = colors.spacing[2];
+    } else if (colorScheme === 'primary') {
+      backgroundColor = colors.secondaryLight;
+      breadcrumbColor = colors.primaryMain;
+      breadcrumbPadding = colors.spacing[2];
+    }
+
+    return {
+      display: 'flex',
+      alignItems: 'center',
+      gap: spacingStyles.gap,
+      fontFamily: '"Noto Sans", sans-serif',
+      fontSize: baseFontSize[size],
+      color: breadcrumbColor,
+      backgroundColor,
+      padding: breadcrumbPadding,
+      borderRadius: backgroundColor !== 'transparent' ? '4px' : '0',
+      ...style,
+    };
+  };
+
   return (
     <nav
       className={classNames('breadcrumb', sizeClass, colorSchemeClass, className)}
-      style={{
-        gap: spacingStyles.gap,
-        padding: spacingStyles.padding,
-        ...style,
-      }}
+      style={getDynamicStyles()}
       aria-label="Breadcrumb"
     >
       {items.map((item, index) => (
         <React.Fragment key={index}>
           {index > 0 && showSeparator && (
             typeof resolvedSeparator === 'string' ? (
-              <span className="breadcrumb__separator">{resolvedSeparator}</span>
+              <span 
+                className="breadcrumb__separator"
+                style={{
+                  color: colors.textMuted,
+                  margin: `0 ${colors.spacing[2]}`,
+                }}
+              >
+                {resolvedSeparator}
+              </span>
             ) : (
-              resolvedSeparator
+              <span style={{ color: colors.textMuted }}>
+                {resolvedSeparator}
+              </span>
             )
           )}
-          <div className="breadcrumb__item">
+          <div 
+            className="breadcrumb__item"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: colors.spacing[1],
+            }}
+          >
             {item.icon && (
-              <span className="breadcrumb__icon">
+              <span 
+                className="breadcrumb__icon"
+                style={{
+                  width: `${resolvedIconSize}px`,
+                  height: `${resolvedIconSize}px`,
+                  flexShrink: 0,
+                  color: colors.textSecondary,
+                }}
+              >
                 {React.isValidElement(item.icon)
                   ? React.cloneElement(item.icon as React.ReactElement<any>, {
                       size: resolvedIconSize,
                       ...iconStyleProps,
                     })
                   : typeof item.icon === 'string'
-                  ? <Icon name={item.icon} size={resolvedIconSize} {...iconStyleProps} />
+                  ? <Icon name={item.icon} size={resolvedIconSize} color={colors.textSecondary} {...iconStyleProps} />
                   : item.icon}
               </span>
             )}
@@ -161,14 +230,48 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
                 onClick={() => handleClick(item)}
                 className="breadcrumb__link"
                 aria-current={index === items.length - 1 ? 'page' : undefined}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  color: colorScheme === 'primary' ? colors.primaryMain : colors.primaryMain,
+                  cursor: 'pointer',
+                  fontSize: 'inherit',
+                  fontFamily: 'inherit',
+                  textDecoration: 'none',
+                  transition: 'color 0.15s ease',
+                  position: 'relative',
+                  borderRadius: '2px',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = colors.primaryLight;
+                  e.currentTarget.style.textDecoration = 'underline';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = colorScheme === 'primary' ? colors.primaryMain : colors.primaryMain;
+                  e.currentTarget.style.textDecoration = 'none';
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.outline = `2px solid ${colors.primaryMain}`;
+                  e.currentTarget.style.outlineOffset = '2px';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.outline = 'none';
+                }}
               >
                 {item.label}
               </button>
             ) : (
-              <span className={classNames(
-                'breadcrumb__text',
-                index === items.length - 1 && 'breadcrumb__text--current'
-              )}>
+              <span 
+                className={classNames(
+                  'breadcrumb__text',
+                  index === items.length - 1 && 'breadcrumb__text--current'
+                )}
+                style={{
+                  color: index === items.length - 1 ? colors.textPrimary : colors.textSecondary,
+                  fontWeight: index === items.length - 1 ? 500 : 400,
+                }}
+              >
                 {item.label}
               </span>
             )}
