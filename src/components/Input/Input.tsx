@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Icon from '../Icon/Icon';
+import { ODLTheme } from '../../styles/ODLTheme';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import './Input.css';
 
 export interface InputProps {
@@ -85,10 +87,98 @@ const Input: React.FC<InputProps> = ({
   invalid,
   invalidText,
 }) => {
+  // Get theme colors
+  const { colors } = useTheme();
+  
   // Handle legacy API compatibility
   const actualLabel = label || labelText;
   const actualError = error || invalid || false;
   const actualErrorMessage = errorMessage || invalidText;
+  const styleRef = useRef<HTMLStyleElement | null>(null);
+
+  // Inject dynamic styles for hover, focus, and placeholder states
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .custom-input:hover:not(.custom-input--disabled):not(.custom-input--readonly) {
+        background-color: ${colors.grey400} !important;
+        border-bottom: none !important;
+        border: ${ODLTheme.borders.width.base} solid ${colors.primaryMain} !important;
+      }
+      .custom-input:focus:not(.custom-input--readonly),
+      .custom-input:active:not(.custom-input--readonly) {
+        background-color: ${colors.grey400} !important;
+        border-bottom: none !important;
+        border: 1px solid ${colors.primaryMain} !important;
+        box-shadow: inset 0 0 0 1px ${colors.primaryMain} !important;
+        outline: none !important;
+      }
+      .custom-input:focus-visible:not(.custom-input--readonly) {
+        background-color: ${colors.grey400} !important;
+        border-bottom: none !important;
+        border: 1px solid ${colors.primaryMain} !important;
+        box-shadow: inset 0 0 0 1px ${colors.primaryMain} !important;
+        outline: none !important;
+      }
+      .custom-input--readonly:focus,
+      .custom-input--readonly:active {
+        border: ${ODLTheme.borders.width.base} solid transparent !important;
+        border-bottom: ${ODLTheme.borders.width.base} solid ${colors.inputBorder} !important;
+        outline: none !important;
+      }
+      .custom-input::placeholder {
+        color: ${colors.textMuted} !important;
+        opacity: 1 !important;
+      }
+      .custom-input--disabled::placeholder {
+        color: ${colors.textDisabled} !important;
+      }
+      .custom-input--error {
+        background-color: ${colors.grey400} !important;
+      }
+      .custom-input--error:focus,
+      .custom-input--error:active {
+        background-color: ${colors.grey400} !important;
+        border: ${ODLTheme.borders.width.base} solid transparent !important;
+        box-shadow: inset 0 0 0 ${ODLTheme.borders.width.base} ${colors.errorMain} !important;
+        outline: none !important;
+      }
+      /* Date input calendar icon styling - hide native icon */
+      input[type="date"]::-webkit-calendar-picker-indicator {
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+      input[type="date"]::-moz-calendar-picker-indicator {
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+      input[type="date"]::-ms-calendar-picker-indicator {
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+    `;
+    document.head.appendChild(style);
+    styleRef.current = style;
+
+    return () => {
+      if (styleRef.current) {
+        document.head.removeChild(styleRef.current);
+        styleRef.current = null;
+      }
+    };
+  }, [colors]);
 
   // Determine aria-label: use provided one, or fallback to label if hidden
   const finalAriaLabel = ariaLabel || (hideLabel && actualLabel ? actualLabel : undefined);
@@ -113,6 +203,9 @@ const Input: React.FC<InputProps> = ({
     lg: 'input-size--lg'
   };
 
+  // Automatically add calendar icon for date inputs if no iconRight is provided
+  const shouldShowDateIcon = type === 'date' && !iconRight && !actualError;
+
   const inputClasses = [
     'custom-input',
     sizeClasses[size],
@@ -120,7 +213,7 @@ const Input: React.FC<InputProps> = ({
     disabled ? 'custom-input--disabled' : '',
     readOnly ? 'custom-input--readonly' : '',
     icon ? 'custom-input--with-icon' : '',
-    (iconRight || actualError) ? 'custom-input--with-right-elements' : '',
+    (iconRight || actualError || shouldShowDateIcon) ? 'custom-input--with-right-elements' : '',
     className
   ].filter(Boolean).join(' ');
 
@@ -135,21 +228,147 @@ const Input: React.FC<InputProps> = ({
     className
   ].filter(Boolean).join(' ');
 
+  // Dynamic styles using ODLTheme
+  const getInputStyles = (): React.CSSProperties => {
+    const baseStyles: React.CSSProperties = {
+      width: '100%',
+      padding: size === 'sm' 
+        ? `${ODLTheme.spacing[2]} ${ODLTheme.spacing[3]}`
+        : size === 'lg'
+        ? `${ODLTheme.spacing[3]} ${ODLTheme.spacing[4]}`
+        : `${ODLTheme.spacing[3]} ${ODLTheme.spacing[4]}`,
+      border: `${ODLTheme.borders.width.base} solid transparent`,
+      borderBottom: `${ODLTheme.borders.width.base} solid ${colors.inputBorder}`,
+      backgroundColor: colors.inputBackground,
+      color: disabled ? colors.textDisabled : colors.textPrimary,
+      fontSize: size === 'sm' 
+        ? ODLTheme.typography.fontSize.xs
+        : ODLTheme.typography.fontSize.base,
+      fontWeight: ODLTheme.typography.fontWeight.normal,
+      lineHeight: size === 'sm'
+        ? ODLTheme.typography.lineHeight.inputSm
+        : ODLTheme.typography.lineHeight.inputBase,
+      fontFamily: ODLTheme.typography.fontFamily.sans,
+      outline: 'none',
+      transition: ODLTheme.transitions.input,
+      borderRadius: 0,
+    };
+
+    if (icon && type !== 'textarea') {
+      baseStyles.paddingLeft = ODLTheme.spacing[10];
+    }
+    if ((iconRight || actualError) && type !== 'textarea') {
+      baseStyles.paddingRight = ODLTheme.spacing[10];
+    }
+    if (actualError && type === 'textarea') {
+      baseStyles.paddingRight = ODLTheme.spacing[10];
+    }
+    if (size === 'lg') {
+      baseStyles.minHeight = ODLTheme.spacing[11];
+      baseStyles.height = ODLTheme.spacing[11];
+    }
+    if (actualError) {
+      baseStyles.backgroundColor = colors.grey400;
+      baseStyles.border = `${ODLTheme.borders.width.base} solid ${colors.errorMain}`;
+      baseStyles.borderBottom = `${ODLTheme.borders.width.base} solid ${colors.errorMain}`;
+    }
+    if (disabled) {
+      baseStyles.borderBottom = `${ODLTheme.borders.width.base} solid transparent`;
+      baseStyles.cursor = 'not-allowed';
+    }
+    if (readOnly) {
+      baseStyles.cursor = 'default';
+    }
+
+    return baseStyles;
+  };
+
+  const labelStyles: React.CSSProperties = {
+    display: 'block',
+    fontSize: ODLTheme.typography.fontSize.base,
+    fontWeight: ODLTheme.typography.fontWeight.semibold,
+    lineHeight: ODLTheme.typography.lineHeight.inputBase,
+    color: colors.primaryNight,
+    marginBottom: ODLTheme.spacing[2],
+    fontFamily: ODLTheme.typography.fontFamily.sans,
+  };
+
+  const helperTextStyles: React.CSSProperties = {
+    marginTop: 0,
+    marginBottom: ODLTheme.spacing[3],
+    fontSize: ODLTheme.typography.fontSize.base,
+    lineHeight: 1.5,
+    color: colors.primaryTwilight,
+    fontWeight: ODLTheme.typography.fontWeight.normal,
+    fontFamily: ODLTheme.typography.fontFamily.sans,
+  };
+
+  const errorMessageStyles: React.CSSProperties = {
+    marginTop: ODLTheme.spacing[1],
+    fontSize: ODLTheme.typography.fontSize.xs,
+    lineHeight: ODLTheme.typography.lineHeight.inputSm,
+    color: colors.errorMain,
+    fontWeight: ODLTheme.typography.fontWeight.normal,
+    fontFamily: ODLTheme.typography.fontFamily.sans,
+  };
+
+  const iconStyles: React.CSSProperties = {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
+
+  const leftIconStyles: React.CSSProperties = {
+    ...iconStyles,
+    left: ODLTheme.spacing[3],
+    color: colors.primaryTwilight,
+  };
+
+  const rightIconStyles: React.CSSProperties = {
+    ...iconStyles,
+    right: ODLTheme.spacing[3],
+    color: colors.primaryTwilight,
+  };
+
+  const dateIconStyles: React.CSSProperties = {
+    ...iconStyles,
+    right: ODLTheme.spacing[3],
+    color: colors.primaryNight,
+    pointerEvents: 'none', // Allow click to pass through to native date picker
+  };
+
+  const errorIconStyles: React.CSSProperties = {
+    ...rightIconStyles,
+    color: colors.errorMain,
+  };
+
   return (
-    <div className="input-wrapper">
+    <div className="input-wrapper" style={{ marginBottom: 0, width: '100%' }}>
       {actualLabel && !hideLabel && (
         <label 
           htmlFor={id} 
           className="input-label"
+          style={labelStyles}
         >
           {actualLabel}
-          {required && <span className="input-label--required"> *</span>}
+          {required && (
+            <span style={{ color: colors.errorMain }}> *</span>
+          )}
         </label>
       )}
+      {helperText && !actualError && actualLabel && !hideLabel && (
+        <div id={`${inputId}-helper`} className="input-helper-text" style={helperTextStyles}>
+          {helperText}
+        </div>
+      )}
       
-      <div className="input-field-wrapper">
+      <div className="input-field-wrapper" style={{ position: 'relative' }}>
         {icon && type !== 'textarea' && (
-          <div className="input-icon input-icon--left">
+          <div className="input-icon input-icon--left" style={leftIconStyles}>
             {icon}
           </div>
         )}
@@ -165,6 +384,7 @@ const Input: React.FC<InputProps> = ({
             readOnly={readOnly}
             required={required}
             className={textareaClasses}
+            style={getInputStyles()}
             aria-invalid={actualError}
             aria-label={finalAriaLabel}
             aria-describedby={describedByIds}
@@ -182,6 +402,7 @@ const Input: React.FC<InputProps> = ({
             readOnly={readOnly}
             required={required}
             className={inputClasses}
+            style={getInputStyles()}
             aria-invalid={actualError}
             aria-label={finalAriaLabel}
             aria-describedby={describedByIds}
@@ -189,27 +410,27 @@ const Input: React.FC<InputProps> = ({
         )}
         
         {iconRight && !actualError && type !== 'textarea' && (
-          <div className="input-icon input-icon--right">
+          <div className="input-icon input-icon--right" style={rightIconStyles}>
             {iconRight}
           </div>
         )}
         
+        {shouldShowDateIcon && (
+          <div className="input-icon input-icon--right" style={dateIconStyles}>
+            <Icon name="calendar" size={16} />
+          </div>
+        )}
+        
         {actualError && (
-          <div className="input-icon input-icon--right input-error-icon">
+          <div className="input-icon input-icon--right input-error-icon" style={errorIconStyles}>
             <Icon name="warning" size={16} />
           </div>
         )}
       </div>
       
       {actualErrorMessage && actualError && (
-        <div id={`${inputId}-error`} className="input-error-message">
+        <div id={`${inputId}-error`} className="input-error-message" style={errorMessageStyles}>
           {actualErrorMessage}
-        </div>
-      )}
-
-      {helperText && !actualError && (
-        <div id={`${inputId}-helper`} className="input-helper-text">
-          {helperText}
         </div>
       )}
     </div>
