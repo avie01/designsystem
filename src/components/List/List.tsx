@@ -199,7 +199,7 @@ const List: React.FC<ListProps> = ({
       cursor: item.disabled ? 'not-allowed' : 'pointer',
       fontSize: size === 'sm' ? ODLTypography.fontSize.sm : size === 'lg' ? ODLTypography.fontSize.md : ODLTypography.fontSize.base,
       fontWeight: ODLTypography.fontWeight.normal,
-      color: item.disabled ? colors.textDisabled : colors.textPrimary,
+      color: item.disabled ? colors.grey600 : colors.textPrimary,
       transition: 'all 0.2s ease',
       boxSizing: 'border-box',
       paddingLeft: isSelected ? `${level * parseInt(ODLSpacing['5']) + 20 - 4}px` : `${level * parseInt(ODLSpacing['5']) + 16}px`,
@@ -254,7 +254,7 @@ const List: React.FC<ListProps> = ({
             <span 
               className="list-item-icon"
               style={{
-                color: isSelected ? colors.primaryMain : colors.textSecondary,
+                color: item.disabled ? colors.grey600 : isSelected ? colors.primaryMain : colors.textSecondary,
                 display: 'inline-flex',
                 alignItems: 'center',
                 verticalAlign: 'middle',
@@ -307,7 +307,7 @@ const List: React.FC<ListProps> = ({
                 style={{
                   display: 'block',
                   fontSize: ODLTypography.fontSize.base,
-                  color: colors.textSecondary,
+                  color: item.disabled ? colors.grey600 : colors.textSecondary,
                   marginTop: '0px',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
@@ -332,8 +332,8 @@ const List: React.FC<ListProps> = ({
                 top: '50%',
                 transform: 'translateY(-50%)',
                 right: '16px',
-                color: colors.textSecondary,
-                cursor: 'pointer',
+                color: item.disabled ? colors.grey600 : colors.textSecondary,
+                cursor: item.disabled ? 'not-allowed' : 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
                 verticalAlign: 'middle',
