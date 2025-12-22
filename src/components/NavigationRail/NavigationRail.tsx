@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import Icon from '../Icon/Icon';
 import './NavigationRail.css';
@@ -81,6 +81,50 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
   const [chevronHovered, setChevronHovered] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const menuContainerRef = React.useRef<HTMLDivElement>(null);
+  const styleRef = useRef<HTMLStyleElement | null>(null);
+
+  // Inject dynamic styles for theme-aware colors
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .navigation-rail {
+        background-color: ${colors.paper} !important;
+        border-color: ${colors.grey400} !important;
+      }
+      .navigation-rail__item {
+        color: ${colors.primaryNight} !important;
+      }
+      .navigation-rail__item:hover:not(:disabled) {
+        background-color: ${colors.grey300} !important;
+      }
+      .navigation-rail__item--active {
+        background-color: ${colors.info} !important;
+        color: ${colors.primaryMain} !important;
+      }
+      .navigation-rail__indicator {
+        background-color: ${colors.primaryMain} !important;
+      }
+      .navigation-rail__tooltip {
+        background-color: ${colors.primaryNight} !important;
+        color: ${colors.textInverse} !important;
+      }
+      .navigation-rail__tooltip-shortcut {
+        color: ${colors.primaryTwilight} !important;
+      }
+      .navigation-rail--error {
+        border-color: ${colors.errorMain} !important;
+      }
+    `;
+    document.head.appendChild(style);
+    styleRef.current = style;
+
+    return () => {
+      if (styleRef.current) {
+        document.head.removeChild(styleRef.current);
+        styleRef.current = null;
+      }
+    };
+  }, [colors]);
 
   const handleItemClick = (item: MenuItem) => {
     if (!item.disabled && !disabled) {
@@ -153,18 +197,27 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
   const getIconColor = (isActive: boolean, isHovered: boolean, itemDisabled: boolean) => {
     if (itemDisabled) return colors.textDisabled;
     
-    if (currentTheme === 'dark') {
-      return isActive ? colors.textInverse : isHovered ? colors.textPrimary : colors.textSecondary;
-    } else if (currentTheme === 'highContrast') {
-      return isActive ? colors.primaryMain : isHovered ? colors.textPrimary : colors.textSecondary;
+    if (isActive) {
+      return colors.primaryMain;
     }
     
-    return isActive ? colors.primaryMain : isHovered ? colors.textPrimary : colors.textSecondary;
+    if (isHovered) {
+      return colors.primaryNight;
+    }
+    
+    return colors.primaryTwilight;
+  };
+
+  // Rail container styles with theme colors
+  const railStyles: React.CSSProperties = {
+    backgroundColor: colors.paper,
+    borderColor: colors.grey400,
   };
 
   return (
     <nav 
       className={railClasses}
+      style={railStyles}
       aria-label={ariaLabel || 'Main navigation'}
       role="navigation"
     >
