@@ -145,7 +145,7 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
               color: disabled ? colors.grey600 : colors.textPrimary,
               transition: 'all 0.2s ease',
               boxSizing: 'border-box',
-              paddingLeft: isSelected ? '12px' : '16px', // 16px - 4px for border compensation
+              paddingLeft: isSelected ? '16px' : '16px', // 20px - 4px for border compensation
               paddingRight: '16px',
               paddingTop: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
               paddingBottom: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
