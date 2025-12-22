@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import Icon from '../Icon/Icon';
 import './NavigationRail.css';
 
@@ -74,6 +75,7 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
   className = '',
   'aria-label': ariaLabel
 }) => {
+  const { colors, theme: currentTheme } = useTheme();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [helpHovered, setHelpHovered] = useState(false);
   const [chevronHovered, setChevronHovered] = useState(false);
@@ -149,11 +151,15 @@ const NavigationRail: React.FC<NavigationRailProps> = ({
   ].filter(Boolean).join(' ');
 
   const getIconColor = (isActive: boolean, isHovered: boolean, itemDisabled: boolean) => {
-    if (itemDisabled) return undefined;
-    if (theme === 'dark') {
-      return isActive ? 'var(--odl-white)' : isHovered ? 'var(--odl-text-primary-dark)' : 'var(--odl-text-secondary-dark)';
+    if (itemDisabled) return colors.textDisabled;
+    
+    if (currentTheme === 'dark') {
+      return isActive ? colors.textInverse : isHovered ? colors.textPrimary : colors.textSecondary;
+    } else if (currentTheme === 'highContrast') {
+      return isActive ? colors.primaryMain : isHovered ? colors.textPrimary : colors.textSecondary;
     }
-    return isActive ? 'var(--odl-primary)' : isHovered ? 'var(--odl-text-primary)' : 'var(--odl-text-secondary)';
+    
+    return isActive ? colors.primaryMain : isHovered ? colors.textPrimary : colors.textSecondary;
   };
 
   return (

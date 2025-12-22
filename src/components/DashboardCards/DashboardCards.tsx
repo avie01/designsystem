@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import { ODLTheme } from '../../styles/ODLTheme';
 import FileType from '../FileType/FileType';
 import IconButton from '../IconButton/IconButton';
@@ -38,6 +39,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
   className = '',
   style
 }) => {
+  const { colors } = useTheme();
   const [isHovered, setIsHovered] = React.useState(false);
   const [isPressed, setIsPressed] = React.useState(false);
   const [isValueHovered, setIsValueHovered] = React.useState(false);
@@ -51,8 +53,8 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     borderRadius: '8px',
-    border: isPressed ? '1px solid #3560C1' : '1px solid var(--grey-500-obj-light-deco, #D1D1D1)',
-    backgroundColor: isPressed ? '#E0F3FE' : (isHovered ? '#e8e8e8' : ODLTheme.colors.white),
+    border: isPressed ? `1px solid ${colors.primaryMain}` : `1px solid ${colors.border}`,
+    backgroundColor: isPressed ? colors.selectedLight : (isHovered ? colors.surfaceHover : colors.background),
     padding: '12px',
     transition: 'all 0.2s ease-in-out',
     cursor: isClickable ? 'pointer' : 'default',
@@ -243,7 +245,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
           style={{
             fontSize: ODLTheme.typography.fontSize.md,
             fontWeight: ODLTheme.typography.fontWeight.semibold,
-            color: isValueHovered ? '#0037B1' : ODLTheme.colors.text.primary,
+            color: isValueHovered ? colors.primaryLight : colors.textPrimary,
             lineHeight: ODLTheme.typography.lineHeight.tight,
             marginBottom: '4px',
             transition: 'color 0.2s ease-in-out',
@@ -257,7 +259,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
         {subtitle && (
           <div style={{
             fontSize: ODLTheme.typography.fontSize.base,
-            color: '#525965',
+            color: colors.textSecondary,
             lineHeight: ODLTheme.typography.lineHeight.normal
           }}>
             {subtitle}
@@ -272,7 +274,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
         left: '12px',
         right: '12px',
         fontSize: ODLTheme.typography.fontSize.base,
-        color: '#707070',
+        color: colors.textMuted,
         lineHeight: ODLTheme.typography.lineHeight.normal
       }}>
         fAF477726 • {modifiedText}

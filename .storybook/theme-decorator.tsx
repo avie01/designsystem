@@ -46,6 +46,17 @@ export const themeColors = {
     background: '#FFFFFF',
     surfaceHover: '#F5F5F5',
     border: '#D1D1D1',
+    // Chip Colors
+    chipBlue: '#E5F5FE',
+    chipPink: '#F7E2F9',
+    chipRed: '#F8E8EA',
+    chipOrange: '#FCEEDA',
+    chipYellow: '#FFFBCE',
+    chipOlive: '#DAE3BF',
+    chipMint: '#D0FAF7',
+    chipBrown: '#E1D5C7',
+    chipPurple: '#D6C8F6',
+    chipGreen: '#E4F7E4',
     // Spacing (mapped to px values from design system)
     spacing: {
       0: '0px',
@@ -109,6 +120,17 @@ export const themeColors = {
     background: '#1D1D1D',
     surfaceHover: '#3C3D3F',
     border: '#38393B',
+    // Chip Colors (Dark Mode)
+    chipBlue: '#082A78',
+    chipPink: '#9C27B0',
+    chipRed: '#C2185B',
+    chipOrange: '#C93713',
+    chipYellow: '#A15202',
+    chipOlive: '#54622C',
+    chipMint: '#1F787A',
+    chipBrown: '#4F3E34',
+    chipPurple: '#381A93',
+    chipGreen: '#31622C',
     // Spacing (same values for all themes)
     spacing: {
       0: '0px',
@@ -172,6 +194,17 @@ export const themeColors = {
     background: '#FFFFFF',
     surfaceHover: '#F5F5F5',
     border: '#000000',
+    // Chip Colors (High Contrast - same as light mode)
+    chipBlue: '#E5F5FE',
+    chipPink: '#F7E2F9',
+    chipRed: '#F8E8EA',
+    chipOrange: '#FCEEDA',
+    chipYellow: '#FFFBCE',
+    chipOlive: '#DAE3BF',
+    chipMint: '#D0FAF7',
+    chipBrown: '#E1D5C7',
+    chipPurple: '#D6C8F6',
+    chipGreen: '#E4F7E4',
     // Spacing (same values for all themes)
     spacing: {
       0: '0px',

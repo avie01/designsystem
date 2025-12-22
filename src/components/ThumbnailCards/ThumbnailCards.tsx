@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import { ODLTheme } from '../../styles/ODLTheme';
 import Checkbox from '../Checkbox/Checkbox';
 import IconButton from '../IconButton/IconButton';
@@ -47,6 +48,7 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
   iconName = 'overflow-menu-vertical',
   onIconClick,
 }) => {
+  const { colors } = useTheme();
   // Size configurations
   const sizeConfig = {
     small: {
@@ -85,13 +87,13 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
     padding: config.padding,
     gap: '4px',
     borderRadius: '4px',
-    border: '1px solid #d1d1d1',
-    boxShadow: selected ? 'inset 0 0 0 2px #3560C1' : 'none',
+    border: `1px solid ${colors.border}`,
+    boxShadow: selected ? `inset 0 0 0 2px ${colors.primaryMain}` : 'none',
     background: disabled 
-      ? '#F5F5F5' 
+      ? colors.surfaceHover 
       : selected 
-        ? '#E0F3FE'
-        : 'var(--paper-obj-white-ff, #FFF)',
+        ? colors.selectedLight
+        : colors.background,
     cursor: disabled ? 'not-allowed' : (onClick ? 'pointer' : 'default'),
     opacity: disabled ? 0.6 : 1,
     transition: 'all 0.2s ease',
@@ -101,9 +103,9 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
   const hoverStyle: React.CSSProperties = {
     ...cardStyle,
     border: selected 
-      ? '2px solid #3560C1' 
-      : '1px solid #B0B0B0',
-    background: '#e8e8e8',
+      ? `2px solid ${colors.primaryMain}` 
+      : `1px solid ${colors.grey500}`,
+    background: colors.surfaceHover,
   };
 
   const [isHovered, setIsHovered] = React.useState(false);
@@ -112,7 +114,7 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
     width: config.thumbnailSize,
     height: size === 'small' ? '120px' : size === 'medium' ? '180px' : '240px',
     borderRadius: '4px',
-    backgroundColor: '#F0F0F0',
+    backgroundColor: colors.surfaceHover,
     backgroundImage: thumbnailSrc ? `url(${thumbnailSrc})` : undefined,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -121,7 +123,7 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '12px',
-    color: '#666',
+    color: colors.textMuted,
     marginLeft: '0',
     marginRight: '0',
   };
@@ -154,7 +156,7 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
   const titleStyle: React.CSSProperties = {
     fontSize: '16px', // base size
     fontWeight: 500, // medium
-    color: disabled ? '#999' : ODLTheme.colors.text.primary,
+    color: disabled ? colors.textDisabled : colors.textPrimary,
     margin: 0,
     lineHeight: 1.3,
     overflow: 'hidden',
