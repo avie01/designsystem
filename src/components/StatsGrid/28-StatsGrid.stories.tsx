@@ -259,14 +259,71 @@ export const MultipleGrids: Story = {
   ),
 };
 
+export const SizeVariants: Story = {
+  name: '13 Size Variants',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Small</h4>
+        <StatsGrid columns={4}>
+          <StatsCard value={2845} label="Total Users" iconName="user" size="sm" />
+          <StatsCard value={156} label="Projects" iconName="folder" size="sm" />
+          <StatsCard value={892} label="Completed" iconName="checkmark-filled" size="sm" />
+          <StatsCard value={23} label="Pending" iconName="time" size="sm" />
+        </StatsGrid>
+      </div>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Medium (Default)</h4>
+        <StatsGrid columns={4}>
+          <StatsCard value={2845} label="Total Users" iconName="user" size="md" />
+          <StatsCard value={156} label="Projects" iconName="folder" size="md" />
+          <StatsCard value={892} label="Completed" iconName="checkmark-filled" size="md" />
+          <StatsCard value={23} label="Pending" iconName="time" size="md" />
+        </StatsGrid>
+      </div>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Large</h4>
+        <StatsGrid columns={4}>
+          <StatsCard value={2845} label="Total Users" iconName="user" size="lg" />
+          <StatsCard value={156} label="Projects" iconName="folder" size="lg" />
+          <StatsCard value={892} label="Completed" iconName="checkmark-filled" size="lg" />
+          <StatsCard value={23} label="Pending" iconName="time" size="lg" />
+        </StatsGrid>
+      </div>
+    </div>
+  ),
+};
+
+export const ThemeSupport: Story = {
+  name: '14 Theme Support',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Theme Adaptive StatsGrid
+        </h4>
+        <p style={{ marginBottom: '16px', fontSize: '14px', opacity: 0.7 }}>
+          Try switching between Light, Dark, and High Contrast themes using the toolbar above
+        </p>
+        <StatsGrid columns={4}>
+          <StatsCard value={2845} label="Total Users" iconName="user" />
+          <StatsCard value={156} label="Projects" iconName="folder" />
+          <StatsCard value={892} label="Completed" iconName="checkmark-filled" />
+          <StatsCard value={23} label="Disabled" iconName="time" disabled={true} />
+        </StatsGrid>
+      </div>
+    </div>
+  ),
+};
+
 export const Playground: Story = {
-  name: '13 Playground',
+  name: '15 Playground',
   render: (args) => (
     <StatsGrid {...args}>
-      <StatsCard value={2845} label="Total Users" iconName="user" iconColor="#0284c7" iconBackground="#e0f2fe" />
-      <StatsCard value={156} label="Projects" iconName="folder" iconColor="#7c3aed" iconBackground="#f3e8ff" />
-      <StatsCard value={892} label="Completed" iconName="checkmark-filled" iconColor="#059669" iconBackground="#d1fae5" />
-      <StatsCard value={23} label="Pending" iconName="time" iconColor="#ea580c" iconBackground="#fed7aa" />
+      <StatsCard value={2845} label="Total Users" iconName="user" />
+      <StatsCard value={156} label="Projects" iconName="folder" />
+      <StatsCard value={892} label="Completed" iconName="checkmark-filled" />
+      <StatsCard value={23} label="Pending" iconName="time" />
     </StatsGrid>
   ),
   args: {
