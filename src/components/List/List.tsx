@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Icon from '../Icon/Icon';
+import Checkbox from '../Checkbox/Checkbox';
 import { ODLTheme } from '../../styles/ODLTheme';
 import { useTheme } from '../../../.storybook/theme-decorator';
 
@@ -41,6 +42,8 @@ export interface ListProps {
   showExpandIcons?: boolean;
   /** ARIA label for the listbox - required for accessibility */
   ariaLabel?: string;
+  /** Whether to show checkboxes for multi-select mode */
+  showCheckboxes?: boolean;
 }
 
 const List: React.FC<ListProps> = ({
@@ -54,6 +57,7 @@ const List: React.FC<ListProps> = ({
   className = '',
   showExpandIcons = true,
   ariaLabel = 'List',
+  showCheckboxes = false,
 }) => {
   const { colors } = useTheme();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -250,6 +254,27 @@ const List: React.FC<ListProps> = ({
             }
           }}
         >
+          {showCheckboxes && multiSelect && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                marginRight: size === 'sm' ? ODLSpacing['2'] : ODLSpacing['3'],
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleItemClick(item);
+              }}
+            >
+              <Checkbox
+                checked={isSelected}
+                disabled={item.disabled}
+                onChange={() => handleItemClick(item)}
+                size={size}
+                aria-label={`Select ${item.label}`}
+              />
+            </span>
+          )}
           {item.icon && (
             <span 
               className="list-item-icon"

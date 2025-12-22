@@ -93,6 +93,14 @@ const meta: Meta<typeof List> = {
         disable: true,
       },
     },
+    showCheckboxes: {
+      control: 'boolean',
+      description: 'Whether to show checkboxes for multi-select mode',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
   },
 };
 
@@ -220,9 +228,9 @@ export const MultipleSelection: Story = {
   render: () => (
     <div style={{ maxWidth: '400px' }}>
       <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
-        Multiple Selection Enabled
+        Multiple Selection with Checkboxes
       </h4>
-      <List items={basicItems} multiSelect={true} />
+      <List items={basicItems} multiSelect={true} showCheckboxes={true} />
     </div>
   ),
 };
@@ -392,7 +400,7 @@ export const ThemeSupport: Story = {
             Try switching between Light, Dark, and High Contrast themes using the toolbar above
           </p>
           <div style={{ maxWidth: '400px' }}>
-            <List items={themeItems} hierarchical={true} multiSelect={true} />
+            <List items={themeItems} hierarchical={true} multiSelect={true} showCheckboxes={true} />
           </div>
         </div>
       </div>
