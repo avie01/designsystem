@@ -60,6 +60,7 @@ export const themeColors = {
     chipBrown: '#E1D5C7',
     chipPurple: '#D6C8F6',
     chipGreen: '#E4F7E4',
+    chipWhite: '#FFFFFF',
     // Spacing (mapped to px values from design system)
     spacing: {
       0: '0px',
@@ -137,6 +138,7 @@ export const themeColors = {
     chipBrown: '#4F3E34',
     chipPurple: '#381A93',
     chipGreen: '#31622C',
+    chipWhite: '#28292B',
     // Spacing (same values for all themes)
     spacing: {
       0: '0px',
@@ -214,6 +216,7 @@ export const themeColors = {
     chipBrown: '#E1D5C7',
     chipPurple: '#D6C8F6',
     chipGreen: '#E4F7E4',
+    chipWhite: '#FFFFFF',
     // Spacing (same values for all themes)
     spacing: {
       0: '0px',

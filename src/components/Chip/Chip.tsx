@@ -13,7 +13,7 @@ export interface ChipProps {
   /** The text content to display */
   label: string;
   /** The color variant of the chip */
-  variant?: 'blue' | 'pink' | 'red' | 'orange' | 'yellow' | 'olive' | 'mint' | 'brown' | 'purple' | 'green' | 'success' | 'error' | 'warning' | 'info' | 'neutral';
+  variant?: 'blue' | 'pink' | 'red' | 'orange' | 'yellow' | 'olive' | 'mint' | 'brown' | 'purple' | 'green' | 'success' | 'error' | 'warning' | 'info' | 'neutral' | 'white';
   /** Whether to show the document icon */
   showDocumentIcon?: boolean;
   /** Whether to show the info icon */
@@ -24,6 +24,12 @@ export interface ChipProps {
   clickable?: boolean;
   /** Callback when chip is clicked */
   onClick?: () => void;
+  /** Whether the chip can be toggled on/off */
+  toggle?: boolean;
+  /** Whether the chip is currently toggled on (for controlled mode) */
+  toggled?: boolean;
+  /** Callback when chip toggle state changes */
+  onToggle?: (toggled: boolean) => void;
   /** Additional CSS classes */
   className?: string;
   /** Additional inline styles */
@@ -47,6 +53,9 @@ const Chip: React.FC<ChipProps> = ({
   iconName,
   clickable = false,
   onClick,
+  toggle = false,
+  toggled: controlledToggled,
+  onToggle,
   className = "",
   style,
   'aria-label': ariaLabel,
@@ -55,6 +64,11 @@ const Chip: React.FC<ChipProps> = ({
 }) => {
   const { colors, theme } = useTheme();
   const [isHovered, setIsHovered] = useState(false);
+  const [internalToggled, setInternalToggled] = useState(false);
+  
+  // Use controlled mode if toggled prop is provided, otherwise use internal state
+  const isToggled = controlledToggled !== undefined ? controlledToggled : internalToggled;
+  const isInteractive = clickable || toggle;
 
   // Get contrasting text color based on current theme
   const getContrastingTextColor = (chipVariant: string) => {
@@ -71,6 +85,7 @@ const Chip: React.FC<ChipProps> = ({
         case 'brown': return themeColors.dark.chipBrown;
         case 'purple': return themeColors.dark.chipPurple;
         case 'green': return themeColors.dark.chipGreen;
+        case 'white': return '#525965';
         default: return ODLTheme.colors.text.primary;
       }
     } else if (theme === 'dark') {
@@ -86,6 +101,7 @@ const Chip: React.FC<ChipProps> = ({
         case 'brown': return themeColors.light.chipBrown;
         case 'purple': return themeColors.light.chipPurple;
         case 'green': return themeColors.light.chipGreen;
+        case 'white': return '#525965';
         default: return ODLTheme.colors.text.inverse;
       }
     } else {
@@ -101,6 +117,43 @@ const Chip: React.FC<ChipProps> = ({
         backgroundColor: colors.errorLight,
         color: ODLTheme.colors.text.primary,
       };
+    }
+    
+    // For toggled state, return inverted colors
+    if (isToggled && toggle) {
+      switch (variant) {
+        case 'blue':
+          return { backgroundColor: colors.primaryMain, color: '#FFFFFF' };
+        case 'pink':
+          return { backgroundColor: '#E91E63', color: '#FFFFFF' };
+        case 'red':
+          return { backgroundColor: '#D32F2F', color: '#FFFFFF' };
+        case 'orange':
+          return { backgroundColor: '#F57C00', color: '#FFFFFF' };
+        case 'yellow':
+          return { backgroundColor: '#FBC02D', color: '#000000' };
+        case 'olive':
+          return { backgroundColor: '#689F38', color: '#FFFFFF' };
+        case 'mint':
+          return { backgroundColor: '#00897B', color: '#FFFFFF' };
+        case 'brown':
+          return { backgroundColor: '#6D4C41', color: '#FFFFFF' };
+        case 'purple':
+          return { backgroundColor: '#7B1FA2', color: '#FFFFFF' };
+        case 'green':
+          return { backgroundColor: colors.successMain, color: '#FFFFFF' };
+        case 'white':
+          return { backgroundColor: '#E0F3FE', color: '#32373f' };
+        case 'success':
+          return { backgroundColor: colors.successMain, color: '#FFFFFF' };
+        case 'warning':
+          return { backgroundColor: colors.warningMain, color: '#000000' };
+        case 'info':
+          return { backgroundColor: colors.primaryMain, color: '#FFFFFF' };
+        case 'neutral':
+        default:
+          return { backgroundColor: colors.primaryMain, color: '#FFFFFF' };
+      }
     }
 
     switch (variant) {
@@ -124,6 +177,12 @@ const Chip: React.FC<ChipProps> = ({
         return { backgroundColor: colors.chipPurple, color: getContrastingTextColor('purple') };
       case 'green':
         return { backgroundColor: colors.chipGreen, color: getContrastingTextColor('green') };
+      case 'white':
+        return { 
+          backgroundColor: colors.chipWhite, 
+          color: '#525965',
+          border: '1px solid #D1D1D1'
+        };
       case 'success':
         return { backgroundColor: colors.successLight, color: ODLTheme.colors.text.primary };
       case 'warning':
@@ -138,7 +197,7 @@ const Chip: React.FC<ChipProps> = ({
 
   // Get ODL-compliant styles based on size and theme
   const getODLStyles = () => {
-    const { backgroundColor, color } = getVariantColors();
+    const { backgroundColor, color, border } = getVariantColors();
     
     // Use ODL Typography and Spacing
     const sizeConfig = {
@@ -172,7 +231,7 @@ const Chip: React.FC<ChipProps> = ({
       display: 'inline-flex',
       alignItems: 'center',
       gap: config.gap,
-      padding: config.padding,
+      padding: (isToggled && toggle) ? '4px 6px' : config.padding,
       height: config.height,
       
       // Typography (ODL Typography base/medium)
@@ -187,11 +246,11 @@ const Chip: React.FC<ChipProps> = ({
       
       // Border & Shape
       borderRadius: ODLTheme.borders.radius.base, // 4px
-      border: 'none',
+      border: border || 'none',
       
       // Interaction
-      cursor: clickable && !disabled ? 'pointer' : 'default',
-      opacity: disabled ? 0.6 : (clickable && isHovered && !disabled ? 0.8 : 1),
+      cursor: isInteractive && !disabled ? 'pointer' : 'default',
+      opacity: disabled ? 0.6 : (isInteractive && isHovered && !disabled ? 0.8 : 1),
       transition: ODLTheme.transitions.base,
       
       // Text behavior
@@ -221,7 +280,18 @@ const Chip: React.FC<ChipProps> = ({
   };
 
   const handleClick = () => {
-    if (!disabled && clickable && onClick) {
+    if (disabled) return;
+    
+    if (toggle) {
+      // Handle toggle mode
+      const newToggleState = !isToggled;
+      if (controlledToggled === undefined) {
+        // Uncontrolled mode - update internal state
+        setInternalToggled(newToggleState);
+      }
+      onToggle?.(newToggleState);
+    } else if (clickable && onClick) {
+      // Handle regular click mode
       onClick();
     }
   };
@@ -244,10 +314,11 @@ const Chip: React.FC<ChipProps> = ({
     <span
       className={className}
       style={chipStyles}
-      role={clickable ? 'button' : 'status'}
-      aria-label={ariaLabel || `${label} chip${clickable ? ', clickable' : ''}`}
+      role={toggle ? 'switch' : (clickable ? 'button' : 'status')}
+      aria-label={ariaLabel || `${label} chip${isInteractive ? ', clickable' : ''}${toggle ? `, ${isToggled ? 'on' : 'off'}` : ''}`}
       aria-describedby={ariaDescribedBy}
-      tabIndex={disabled ? -1 : clickable ? 0 : -1}
+      aria-checked={toggle ? isToggled : undefined}
+      tabIndex={disabled ? -1 : isInteractive ? 0 : -1}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       onMouseEnter={() => !disabled && setIsHovered(true)}
@@ -280,6 +351,16 @@ const Chip: React.FC<ChipProps> = ({
           name="information" 
           size={iconSize}
           color={iconColor}
+        />
+      )}
+      
+      {/* Close icon - shows when toggled */}
+      {isToggled && toggle && (
+        <Icon 
+          name="close" 
+          size={20}
+          color={iconColor}
+          style={{ marginLeft: '-2px' }}
         />
       )}
     </span>
