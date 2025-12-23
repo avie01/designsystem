@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 import Accordion from './Accordion';
 
 const meta: Meta<typeof Accordion> = {
@@ -33,6 +34,21 @@ const meta: Meta<typeof Accordion> = {
       options: ['default', 'bordered', 'filled'],
       description: 'Visual variant of the accordion',
     },
+    size: {
+      control: 'select',
+      options: ['small', 'medium', 'large'],
+      description: 'Typography size for the accordion labels',
+    },
+    color: {
+      control: 'select',
+      options: ['primary', 'secondary'],
+      description: 'Text color for the accordion labels',
+    },
+    expandPosition: {
+      control: 'select',
+      options: ['left', 'right'],
+      description: 'Position of the expand/collapse icon',
+    },
   },
 };
 
@@ -64,7 +80,7 @@ export const Default: Story = {
     ],
     allowMultiple: true,
     nested: true,
-    showIcons: true,
+    showIcons: false,
     variant: 'default',
   },
 };
@@ -325,4 +341,235 @@ export const LongContent: Story = {
     showIcons: true,
     variant: 'default',
   },
+};
+
+export const SizeVariants: Story = {
+  name: '09 Size Variants',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Large Size (Default)</h4>
+        <p style={{ fontSize: '12px', color: '#6C757D', marginBottom: '16px' }}>lg typography, semibold (600) weight</p>
+        <Accordion
+          items={[
+            {
+              id: '1',
+              title: 'Large Size Example',
+              content: 'This is the large size with lg typography and semibold (600) font weight.',
+            },
+          ]}
+          allowMultiple={true}
+          showIcons={false}
+          variant="default"
+          size="large"
+        />
+      </div>
+      
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Medium Size</h4>
+        <p style={{ fontSize: '12px', color: '#6C757D', marginBottom: '16px' }}>md typography, semibold (600) weight</p>
+        <Accordion
+          items={[
+            {
+              id: '2',
+              title: 'Medium Size Example',
+              content: 'This is the medium size with md typography and semibold (600) font weight.',
+            },
+          ]}
+          allowMultiple={true}
+          showIcons={false}
+          variant="default"
+          size="medium"
+        />
+      </div>
+      
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Small Size</h4>
+        <p style={{ fontSize: '12px', color: '#6C757D', marginBottom: '16px' }}>base typography, bold (700) weight</p>
+        <Accordion
+          items={[
+            {
+              id: '3',
+              title: 'Small Size Example',
+              content: 'This is the small size with base typography and bold (700) font weight.',
+            },
+          ]}
+          allowMultiple={true}
+          showIcons={false}
+          variant="default"
+          size="small"
+        />
+      </div>
+    </div>
+  ),
+};
+
+export const ColorVariants: Story = {
+  name: '10 Color Variants',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Primary Color</h4>
+        <p style={{ fontSize: '12px', color: '#6C757D', marginBottom: '16px' }}>Text color: #32373f</p>
+        <Accordion
+          items={[
+            {
+              id: '1',
+              title: 'Primary Color Example',
+              content: 'This accordion uses the primary text color (#32373f).',
+            },
+          ]}
+          allowMultiple={true}
+          showIcons={false}
+          variant="default"
+          color="primary"
+        />
+      </div>
+      
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Secondary Color</h4>
+        <p style={{ fontSize: '12px', color: '#6C757D', marginBottom: '16px' }}>Text color: #525965</p>
+        <Accordion
+          items={[
+            {
+              id: '2',
+              title: 'Secondary Color Example',
+              content: 'This accordion uses the secondary text color (#525965).',
+            },
+          ]}
+          allowMultiple={true}
+          showIcons={false}
+          variant="default"
+          color="secondary"
+        />
+      </div>
+    </div>
+  ),
+};
+
+export const ExpandIconPosition: Story = {
+  name: '11 Expand Icon Position',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Left Position</h4>
+        <p style={{ fontSize: '12px', color: '#6C757D', marginBottom: '16px' }}>Expand icon positioned to the left of the label</p>
+        <Accordion
+          items={[
+            {
+              id: '1',
+              title: 'Left Expand Icon Example',
+              content: 'The expand/collapse icon is positioned to the left of the accordion label.',
+            },
+          ]}
+          allowMultiple={true}
+          showIcons={false}
+          variant="default"
+          expandPosition="left"
+        />
+      </div>
+      
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Right Position (Default)</h4>
+        <p style={{ fontSize: '12px', color: '#6C757D', marginBottom: '16px' }}>Expand icon positioned to the right of the label</p>
+        <Accordion
+          items={[
+            {
+              id: '2',
+              title: 'Right Expand Icon Example',
+              content: 'The expand/collapse icon is positioned to the right of the accordion label (default behavior).',
+            },
+          ]}
+          allowMultiple={true}
+          showIcons={false}
+          variant="default"
+          expandPosition="right"
+        />
+      </div>
+    </div>
+  ),
+};
+
+export const ThemeSupport: Story = {
+  name: '12 ThemeSupport',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Theme Adaptive Accordion
+        </h4>
+        <p style={{ marginBottom: '16px', fontSize: '14px', opacity: 0.7 }}>
+          Try switching between Light, Dark, and High Contrast themes using the toolbar above
+        </p>
+        <Accordion
+          items={[
+            {
+              id: '1',
+              title: 'Theme Support Example',
+              content: 'This accordion adapts to light, dark, and high contrast themes automatically.',
+              icon: 'settings',
+            },
+            {
+              id: '2',
+              title: 'Dynamic Colors',
+              content: 'All colors, backgrounds, and borders adjust based on the current theme.',
+              icon: 'palette',
+              defaultOpen: true,
+            },
+            {
+              id: '3',
+              title: 'Accessibility Compliant',
+              content: 'Maintains proper contrast ratios across all theme variants.',
+              icon: 'accessibility',
+            },
+          ]}
+          allowMultiple={true}
+          showIcons={true}
+          variant="default"
+        />
+      </div>
+      
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Multiple Variants
+        </h4>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <Accordion
+            items={[
+              {
+                id: '4',
+                title: 'Default Variant',
+                content: 'Default accordion variant with theme colors.',
+              },
+            ]}
+            variant="default"
+            showIcons={false}
+          />
+          <Accordion
+            items={[
+              {
+                id: '5',
+                title: 'Bordered Variant',
+                content: 'Bordered accordion variant with theme colors.',
+              },
+            ]}
+            variant="bordered"
+            showIcons={false}
+          />
+          <Accordion
+            items={[
+              {
+                id: '6',
+                title: 'Filled Variant',
+                content: 'Filled accordion variant with theme colors.',
+                defaultOpen: true,
+              },
+            ]}
+            variant="filled"
+            showIcons={false}
+          />
+        </div>
+      </div>
+    </div>
+  ),
 };
