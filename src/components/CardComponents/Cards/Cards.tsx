@@ -6,6 +6,7 @@ import Checkbox from '../../Checkbox/Checkbox';
 import Icon from '../../Icon/Icon';
 import Chip from '../../Chip/Chip';
 import UserAvatar from '../../UserAvatar/UserAvatar';
+import buildIcon from '../../../assets/build-icon.svg';
 import './Cards.css';
 
 // Self-contained utility function to replace clsx
@@ -17,7 +18,7 @@ const classNames = (...classes: (string | boolean | undefined | null)[]): string
 
 export interface CardsProps {
   /** Card type variant - affects layout and styling */
-  type?: 'compact' | 'comfortable' | 'metadata' | 'user' | 'workspace' | 'build';
+  type?: 'compact' | 'comfortable' | 'metadata' | 'user' | 'workspace' | 'build' | '3Sixty';
   /** Whether to show the icon gutter (FileType icon) */
   iconGutter?: boolean;
   /** Icons to display in the gutter between FileType and text content */
@@ -38,8 +39,14 @@ export interface CardsProps {
   title?: string;
   /** Secondary text content */
   subtitle?: string;
+  /** Additional subtitle for 3Sixty type - appears below subtitle */
+  subtitle2?: string;
   /** Tag text to display */
   tag?: string;
+  /** Top secondary text (for build type) - appears above title */
+  topText?: string;
+  /** Bottom secondary text (for build type) - appears below subtitle */
+  bottomText?: string;
   /** Whether to show the information icon */
   showInfoIcon?: boolean;
   /** Whether to show the ellipsis menu icon */
@@ -50,6 +57,12 @@ export interface CardsProps {
   onInfoClick?: () => void;
   /** Callback when menu icon is clicked */
   onMenuClick?: () => void;
+  /** Callback when edit hover action is clicked */
+  onEditClick?: () => void;
+  /** Callback when text selection hover action is clicked */
+  onTextSelectionClick?: () => void;
+  /** Callback when copy hover action is clicked */
+  onCopyClick?: () => void;
   /** Additional CSS classes */
   className?: string;
   /** Additional inline styles */
@@ -80,12 +93,18 @@ const Cards: React.FC<CardsProps> = ({
   selected = false,
   title = "Title - h4 - Primary",
   subtitle = "Body - body2 - Secondary",
+  subtitle2,
   tag = "fA7985",
+  topText,
+  bottomText,
   showInfoIcon = true,
   showMenuIcon = true,
   onSelect,
   onInfoClick,
   onMenuClick,
+  onEditClick,
+  onTextSelectionClick,
+  onCopyClick,
   className = "",
   style,
   'aria-label': ariaLabel,
@@ -143,11 +162,16 @@ const Cards: React.FC<CardsProps> = ({
           };
         case 'build':
           return {
-            padding: `${colors.spacing[3]} ${colors.spacing[2]} ${colors.spacing[3]} ${colors.spacing[4]}`,
+            padding: `${colors.spacing[3]} ${colors.spacing[2]} ${colors.spacing[3]} ${colors.spacing[3]}`,
+            gap: colors.spacing[3],
+          };
+        case 'metadata':
+          return {
+            padding: `12px 8px 0px 16px`,
             gap: colors.spacing[3],
           };
         case 'comfortable':
-        case 'metadata':
+        case '3Sixty':
         default:
           return {
             padding: `${colors.spacing[3]} ${colors.spacing[2]} ${colors.spacing[3]} ${colors.spacing[4]}`,
@@ -160,16 +184,26 @@ const Cards: React.FC<CardsProps> = ({
       ...getSpacing(),
       backgroundColor,
       color: textColor,
-      border: `1px solid ${borderColor}`,
-      borderBottom: type === 'metadata' ? 'none' : `1px solid ${borderColor}`,
-      borderLeft: selected ? `4px solid ${colors.primaryMain}` : `1px solid ${borderColor}`,
-      paddingLeft: selected ? `calc(${colors.spacing[4]} - 3px)` : colors.spacing[4],
+      ...(type === 'metadata' ? {
+        borderTop: `1px solid ${borderColor}`,
+        borderRight: `1px solid ${borderColor}`,
+        borderBottom: 'none',
+        borderLeft: selected ? `4px solid ${colors.primaryMain}` : `1px solid ${borderColor}`,
+      } : {
+        border: `1px solid ${borderColor}`,
+        borderLeft: selected ? `4px solid ${colors.primaryMain}` : `1px solid ${borderColor}`,
+      }),
+      paddingLeft: type === 'build' ? 
+        (selected ? `calc(${colors.spacing[3]} - 3px)` : colors.spacing[3]) :
+        type === 'metadata' ?
+        (selected ? '13px' : '16px') :
+        (selected ? `calc(${colors.spacing[4]} - 3px)` : colors.spacing[4]),
       borderRadius: '0px',
       transition: 'all 0.2s ease',
       fontFamily: '"Noto Sans", sans-serif',
       display: 'flex',
       width: '100%',
-      alignItems: 'center',
+      alignItems: type === 'build' ? 'flex-start' : 'center',
       cursor: 'pointer',
       boxSizing: 'border-box' as const,
       ...style,
@@ -189,7 +223,7 @@ const Cards: React.FC<CardsProps> = ({
 
   // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (disabled) return;
+    if (disabled || type === 'build') return;
     
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -221,20 +255,22 @@ const Cards: React.FC<CardsProps> = ({
       }}
     >
       {/* Checkbox */}
-      <div className="cards-container__checkbox">
-        <Checkbox
-          checked={selected}
-          onChange={onSelect}
-          disabled={disabled}
-          size="md"
-          id={`card-checkbox-${title?.replace(/\s+/g, '-').toLowerCase()}`}
-          aria-label={`Select ${title}`}
-        />
-      </div>
+      {type !== 'build' && (
+        <div className="cards-container__checkbox">
+          <Checkbox
+            checked={selected}
+            onChange={onSelect}
+            disabled={disabled}
+            size="md"
+            id={`card-checkbox-${title?.replace(/\s+/g, '-').toLowerCase()}`}
+            aria-label={`Select ${title}`}
+          />
+        </div>
+      )}
 
       {/* FileType Icon */}
       {iconGutter && (
-        <div className="cards-container__icon">
+        <div className="cards-container__icon" style={{ alignSelf: type === 'build' ? 'flex-start' : 'center' }}>
           {type === 'user' ? (
             <UserAvatar
               user={{
@@ -244,7 +280,7 @@ const Cards: React.FC<CardsProps> = ({
               showPopup={false}
               disabled={disabled}
             />
-          ) : (type === 'workspace' || type === 'build') ? (
+          ) : type === 'workspace' ? (
             <UserAvatar
               user={{
                 name: title === "North Shire City Council" ? "North Shire" : title || "User",
@@ -252,6 +288,18 @@ const Cards: React.FC<CardsProps> = ({
               size="lg"
               showPopup={false}
               disabled={disabled}
+            />
+          ) : type === 'build' ? (
+            <img 
+              src={buildIcon} 
+              alt="Build icon"
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: '4px',
+                opacity: disabled ? 0.5 : 1,
+                marginTop: 0
+              }}
             />
           ) : (
             <FileType 
@@ -278,6 +326,23 @@ const Cards: React.FC<CardsProps> = ({
 
       {/* Text Content */}
       <div className="cards-container__content" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '-2px', minWidth: 0, overflow: 'hidden' }}>
+        {/* Top text for build type */}
+        {type === 'build' && topText && (
+          <div 
+            className="cards-container__top-text"
+            style={{
+              fontSize: '12px',
+              color: disabled ? colors.textDisabled : colors.textSecondary,
+              lineHeight: '1.5',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              marginBottom: '2px'
+            }}
+          >
+            {topText}
+          </div>
+        )}
         <div className="cards-container__title-row" style={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
           <div 
             className="cards-container__title"
@@ -322,10 +387,43 @@ const Cards: React.FC<CardsProps> = ({
             {subtitle}
           </div>
         )}
+        {/* Second subtitle for 3Sixty type */}
+        {type === '3Sixty' && subtitle2 && (
+          <div 
+            className="cards-container__subtitle2"
+            style={{
+              fontSize: '14px',
+              color: disabled ? colors.textDisabled : colors.textSecondary,
+              lineHeight: '1.5',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
+            }}
+          >
+            {subtitle2}
+          </div>
+        )}
+        {/* Bottom text for build type */}
+        {type === 'build' && bottomText && (
+          <div 
+            className="cards-container__bottom-text"
+            style={{
+              fontSize: '12px',
+              color: disabled ? colors.textDisabled : colors.textSecondary,
+              lineHeight: '1.5',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              marginTop: '2px'
+            }}
+          >
+            {bottomText}
+          </div>
+        )}
       </div>
 
-      {/* Tag */}
-      {tag && type !== 'workspace' && type !== 'build' && (
+      {/* Tag - hidden on hover/active for specific card types */}
+      {tag && type !== 'workspace' && (
         <div 
           className="cards-container__tag"
           style={{
@@ -337,15 +435,54 @@ const Cards: React.FC<CardsProps> = ({
             fontWeight: 500,
             whiteSpace: 'nowrap',
             border: `1px solid ${disabled ? colors.textDisabled : colors.border}`,
-            flexShrink: 0
+            flexShrink: 0,
+            alignSelf: type === 'build' ? 'flex-start' : 'center',
+            marginTop: type === 'build' ? '4px' : 0,
+            display: ((effectiveHoverState || selected) && (type === 'compact' || type === 'comfortable' || type === 'metadata')) ? 'none' : 'block'
           }}
         >
           {tag}
         </div>
       )}
 
+      {/* Action Icons - shown on hover/active for specific card types */}
+      {(effectiveHoverState || selected) && (type === 'compact' || type === 'comfortable' || type === 'metadata') && (
+        <div className="cards-container__hover-actions" style={{ display: 'flex', gap: colors.spacing[1], alignSelf: 'center' }}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <IconButton
+              icon="edit"
+              variant="ghost"
+              size="medium"
+              onClick={onEditClick || (() => alert('Edit action'))}
+              disabled={disabled}
+              aria-label="Edit"
+            />
+          </div>
+          <div onClick={(e) => e.stopPropagation()}>
+            <IconButton
+              icon="text"
+              variant="ghost"
+              size="medium"
+              onClick={onTextSelectionClick || (() => alert('Text selection action'))}
+              disabled={disabled}
+              aria-label="Text selection"
+            />
+          </div>
+          <div onClick={(e) => e.stopPropagation()}>
+            <IconButton
+              icon="copy"
+              variant="ghost"
+              size="medium"
+              onClick={onCopyClick || (() => alert('Copy action'))}
+              disabled={disabled}
+              aria-label="Copy"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Action Icons */}
-      <div className="cards-container__actions">
+      <div className="cards-container__actions" style={{ alignSelf: type === 'build' ? 'flex-start' : 'center' }}>
         {/* Information Icon */}
         {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && (
           <div onClick={(e) => e.stopPropagation()}>
@@ -364,7 +501,7 @@ const Cards: React.FC<CardsProps> = ({
         {showMenuIcon && (
           <div onClick={(e) => e.stopPropagation()}>
             <IconButton
-              icon={(type === 'workspace' || type === 'build') ? "star" : "overflow-menu-vertical"}
+              icon={type === 'workspace' ? "star" : "overflow-menu-vertical"}
               variant="ghost"
               size="medium"
               onClick={onMenuClick}
@@ -416,8 +553,9 @@ const CardsWithMetadata: React.FC<CardsProps> = (props) => {
           className="cards-container__metadata-chips-section"
           style={{
             backgroundColor: metadataStyles.backgroundColor,
-            border: `1px solid ${metadataStyles.borderColor}`,
             borderTop: 'none',
+            borderRight: `1px solid ${metadataStyles.borderColor}`,
+            borderBottom: `1px solid ${metadataStyles.borderColor}`,
             borderLeft: props.selected ? `4px solid ${colors.primaryMain}` : `1px solid ${metadataStyles.borderColor}`,
             padding: `12px ${colors.spacing[4]} ${colors.spacing[2]} ${colors.spacing[4]}`,
             paddingLeft: props.selected ? `calc(${colors.spacing[4]} - 3px)` : colors.spacing[4],

@@ -19,7 +19,7 @@ const meta: Meta<typeof Cards> = {
   argTypes: {
     type: {
       control: 'select',
-      options: ['compact', 'comfortable', 'metadata', 'user', 'workspace', 'build'],
+      options: ['compact', 'comfortable', 'metadata', 'user', 'workspace', 'build', '3Sixty'],
       description: 'Card type variant affecting layout and styling',
       table: {
         type: { summary: 'string' },
@@ -107,12 +107,33 @@ const meta: Meta<typeof Cards> = {
         defaultValue: { summary: 'Body - body2 - Secondary' },
       },
     },
+    subtitle2: {
+      control: 'text',
+      description: 'Additional subtitle for 3Sixty type - appears below subtitle',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     tag: {
       control: 'text',
       description: 'Tag text to display',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'fA7985' },
+      },
+    },
+    topText: {
+      control: 'text',
+      description: 'Top secondary text (for build type) - appears above title',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    bottomText: {
+      control: 'text',
+      description: 'Bottom secondary text (for build type) - appears below subtitle',
+      table: {
+        type: { summary: 'string' },
       },
     },
     showInfoIcon: {
@@ -146,6 +167,27 @@ const meta: Meta<typeof Cards> = {
     },
     onMenuClick: {
       description: 'Callback when menu icon is clicked',
+      table: {
+        type: { summary: '() => void' },
+      },
+    },
+    onEditClick: {
+      control: false,
+      description: 'Callback when edit hover action is clicked',
+      table: {
+        type: { summary: '() => void' },
+      },
+    },
+    onTextSelectionClick: {
+      control: false,
+      description: 'Callback when text selection hover action is clicked',
+      table: {
+        type: { summary: '() => void' },
+      },
+    },
+    onCopyClick: {
+      control: false,
+      description: 'Callback when copy hover action is clicked',
       table: {
         type: { summary: '() => void' },
       },
@@ -230,7 +272,17 @@ export const Types: Story = {
   name: '03 Types',
 
   render: () => {
+    const [selectedCards, setSelectedCards] = React.useState<string[]>([]);
     const { colors } = useTheme();
+
+    const toggleCardSelection = (cardType: string) => {
+      setSelectedCards(prev =>
+        prev.includes(cardType)
+          ? prev.filter(type => type !== cardType)
+          : [...prev, cardType]
+      );
+    };
+
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
         <div>
@@ -241,12 +293,16 @@ export const Types: Story = {
               title="Compact Card"
               subtitle="Type: compact - Dense spacing and smaller text"
               tag="Compact"
+              selected={selectedCards.includes('compact')}
+              onSelect={() => toggleCardSelection('compact')}
             />
             <Cards
               type="comfortable"
               title="Comfortable Card"
               subtitle="Type: comfortable - Default spacing and sizing"
               tag="Comfortable"
+              selected={selectedCards.includes('comfortable')}
+              onSelect={() => toggleCardSelection('comfortable')}
             />
             <Cards
               type="metadata"
@@ -255,6 +311,8 @@ export const Types: Story = {
               tag="Final"
               extensionSize={true}
               showMetadata={true}
+              selected={selectedCards.includes('metadata')}
+              onSelect={() => toggleCardSelection('metadata')}
             />
             <Cards
               type="user"
@@ -262,16 +320,35 @@ export const Types: Story = {
               subtitle="Type: user - Larger spacing and user icon display"
               tag="Admin"
               fileType="user"
+              selected={selectedCards.includes('user')}
+              onSelect={() => toggleCardSelection('user')}
             />
             <Cards
               type="workspace"
               title="North Shire City Council"
               subtitle="Type: workspace - Same styling as user cards for workspace display"
+              selected={selectedCards.includes('workspace')}
+              onSelect={() => toggleCardSelection('workspace')}
             />
             <Cards
               type="build"
-              title="Build Pipeline"
-              subtitle="Type: build - Same styling as workspace cards for build processes"
+              title="BLD2024081011"
+              subtitle="11A Palm Avenue, Hokowhitu, Palmerston North 4410"
+              topText="Building Consent - Form 2"
+              bottomText="Modified on 24 Jan 2026, 11:00 AM"
+              tag="BC-156"
+              selected={selectedCards.includes('build')}
+              onSelect={() => toggleCardSelection('build')}
+            />
+            <Cards
+              type="3Sixty"
+              title="3Sixty Document"
+              subtitle="Type: 3Sixty - Same styling as comfortable cards"
+              subtitle2="Encrypting sensitive data stored on portable devices is a critical security measure aimed at safeguarding against potential data breaches. When employees are required to encrypt such data, it ensures that even if the device falls into unauthorized hands, the information remains unintelligible and inaccessible to anyone without the proper decryption key."
+              tag="DOC-789"
+              fileType="pdf"
+              selected={selectedCards.includes('3Sixty')}
+              onSelect={() => toggleCardSelection('3Sixty')}
             />
           </div>
         </div>
@@ -280,9 +357,164 @@ export const Types: Story = {
   }
 };
 
+// Build Cards
+export const BuildCards: Story = {
+  name: '04 Build Cards',
+  render: () => {
+    const [selectedBuilds, setSelectedBuilds] = React.useState<number[]>([1]);
+    const { colors } = useTheme();
+
+    const builds = [
+      { 
+        id: 1, 
+        name: 'BC-2024-0156', 
+        status: 'Approved - Ready for issue',
+        topText: 'Building Consent - Form 2',
+        bottomText: 'Residential dwelling • 123 Main St • Approved: 15 Dec 2024',
+        tag: 'BC-156'
+      },
+      { 
+        id: 2, 
+        name: 'BC-2024-0155', 
+        status: 'Under review - Additional info required',
+        topText: 'Building Consent - Form 2',
+        bottomText: 'Commercial renovation • 45 Queen St • Requested: 10 Dec 2024',
+        tag: 'BC-155'
+      },
+      { 
+        id: 3, 
+        name: 'BC-2024-0154', 
+        status: 'Processing - Initial assessment',
+        topText: 'Building Consent - Form 2',
+        bottomText: 'Residential extension • 78 Park Ave • Submitted: 14 Dec 2024',
+        tag: 'BC-154'
+      },
+      { 
+        id: 4, 
+        name: 'BC-2024-0153', 
+        status: 'Declined - Does not meet standards',
+        topText: 'Building Consent - Form 2',
+        bottomText: 'Industrial warehouse • 99 Industrial Rd • Declined: 12 Dec 2024',
+        tag: 'BC-153'
+      },
+    ];
+
+    const toggleBuildSelection = (id: number) => {
+      setSelectedBuilds(prev =>
+        prev.includes(id)
+          ? prev.filter(buildId => buildId !== id)
+          : [...prev, id]
+      );
+    };
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Building Consent Cards</h4>
+          <p style={{ marginBottom: colors.spacing[4] || '16px', fontSize: colors.fontSize?.sm || '14px', color: colors.textSecondary }}>
+            Build cards with consent type above title and details below status. Perfect for consent management systems.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
+            {builds.map(build => (
+              <Cards
+                key={build.id}
+                type="build"
+                title={build.name}
+                subtitle={build.status}
+                topText={build.topText}
+                bottomText={build.bottomText}
+                tag={build.tag}
+                selected={selectedBuilds.includes(build.id)}
+                onSelect={() => toggleBuildSelection(build.id)}
+                onMenuClick={() => alert(`Build options for ${build.name}`)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+// 3Sixty Cards
+export const ThreeSixtyCards: Story = {
+  name: '05 3Sixty Cards',
+  render: () => {
+    const [selectedDocs, setSelectedDocs] = React.useState<number[]>([1]);
+    const { colors } = useTheme();
+
+    const documents = [
+      { 
+        id: 1, 
+        name: 'Annual Report 2024.pdf', 
+        description: 'Complete financial and operational report',
+        description2: 'Last modified: 15 Dec 2024 | Size: 2.3 MB',
+        tag: 'FIN-2024'
+      },
+      { 
+        id: 2, 
+        name: 'Strategic Plan 2025-2030.docx', 
+        description: 'Five-year strategic roadmap and goals',
+        description2: 'Last modified: 10 Dec 2024 | Size: 856 KB',
+        tag: 'STRAT-001'
+      },
+      { 
+        id: 3, 
+        name: 'Q4 Performance Review.xlsx', 
+        description: 'Quarterly metrics and KPI analysis',
+        description2: 'Last modified: 14 Dec 2024 | Size: 1.5 MB',
+        tag: 'PERF-Q4'
+      },
+      { 
+        id: 4, 
+        name: 'Compliance Audit Results.pdf', 
+        description: 'Internal audit findings and recommendations',
+        description2: 'Last modified: 12 Dec 2024 | Size: 4.2 MB',
+        tag: 'AUDIT-156'
+      },
+    ];
+
+    const toggleDocSelection = (id: number) => {
+      setSelectedDocs(prev =>
+        prev.includes(id)
+          ? prev.filter(docId => docId !== id)
+          : [...prev, id]
+      );
+    };
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>3Sixty Document Cards</h4>
+          <p style={{ marginBottom: colors.spacing[4] || '16px', fontSize: colors.fontSize?.sm || '14px', color: colors.textSecondary }}>
+            3Sixty cards use the same comfortable styling for document management.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
+            {documents.map(doc => (
+              <Cards
+                key={doc.id}
+                type="3Sixty"
+                title={doc.name}
+                subtitle={doc.description}
+                subtitle2={doc.description2}
+                tag={doc.tag}
+                selected={selectedDocs.includes(doc.id)}
+                onSelect={() => toggleDocSelection(doc.id)}
+                onInfoClick={() => alert(`View details for ${doc.name}`)}
+                onMenuClick={() => alert(`Document options for ${doc.name}`)}
+                fileType="pdf"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
 // User Cards
 export const UserCards: Story = {
-  name: '04 User Cards',
+  name: '06 User Cards',
   render: () => {
     const [selectedUsers, setSelectedUsers] = React.useState<number[]>([1]);
     const { colors } = useTheme();
@@ -337,7 +569,7 @@ export const InteractiveFeatures: Story = {
     type: "build"
   },
 
-  name: '05 Interactive Features',
+  name: '07 Interactive Features',
 
   render: () => {
     const { colors } = useTheme();
@@ -386,7 +618,7 @@ export const InteractiveFeatures: Story = {
 
 // Metadata with White Chips
 export const MetadataWithWhiteChips: Story = {
-  name: '06 Metadata Cards with White Chips',
+  name: '08 Metadata Cards with White Chips',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -434,7 +666,7 @@ export const MetadataWithWhiteChips: Story = {
 
 // Icon variations
 export const IconVariations: Story = {
-  name: '07 Icon Variations',
+  name: '09 Icon Variations',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -505,7 +737,7 @@ export const IconVariations: Story = {
 
 // Real-world examples
 export const RealWorldExamples: Story = {
-  name: '08 Real World Examples',
+  name: '10 Real World Examples',
   render: () => {
     const [selectedFiles, setSelectedFiles] = React.useState<number[]>([1, 3]);
 
@@ -555,7 +787,7 @@ export const RealWorldExamples: Story = {
 
 // Accessibility example
 export const AccessibilityFocus: Story = {
-  name: '09 Accessibility Focus',
+  name: '11 Accessibility Focus',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -596,7 +828,7 @@ export const AccessibilityFocus: Story = {
 
 // Edge cases
 export const EdgeCases: Story = {
-  name: '10 Edge Cases',
+  name: '12 Edge Cases',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -633,7 +865,7 @@ export const EdgeCases: Story = {
 
 // Playground
 export const Playground: Story = {
-  name: '11 Playground',
+  name: '13 Playground',
   args: {
     title: 'Playground Card',
     subtitle: 'Experiment with props',
@@ -647,5 +879,7 @@ export const Playground: Story = {
     selected: false,
     showInfoIcon: true,
     showMenuIcon: true,
+    topText: 'Top secondary text',
+    bottomText: 'Bottom secondary text',
   },
 };
