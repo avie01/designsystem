@@ -5,6 +5,7 @@ import FileType, { FileTypeVariant } from '../../FileType/FileType';
 import Checkbox from '../../Checkbox/Checkbox';
 import Icon from '../../Icon/Icon';
 import Chip from '../../Chip/Chip';
+import UserAvatar from '../../UserAvatar/UserAvatar';
 import './Cards.css';
 
 // Self-contained utility function to replace clsx
@@ -16,7 +17,7 @@ const classNames = (...classes: (string | boolean | undefined | null)[]): string
 
 export interface CardsProps {
   /** Card type variant - affects layout and styling */
-  type?: 'compact' | 'comfortable' | 'metadata';
+  type?: 'compact' | 'comfortable' | 'metadata' | 'user' | 'workspace' | 'build';
   /** Whether to show the icon gutter (FileType icon) */
   iconGutter?: boolean;
   /** Icons to display in the gutter between FileType and text content */
@@ -59,6 +60,12 @@ export interface CardsProps {
   'aria-describedby'?: string;
   /** Keyboard event handlers */
   onKeyDown?: (e: React.KeyboardEvent) => void;
+  /** External hover state for synchronized hover with metadata section */
+  externalHoverState?: boolean;
+  /** Mouse enter handler */
+  onMouseEnter?: () => void;
+  /** Mouse leave handler */
+  onMouseLeave?: () => void;
 }
 
 const Cards: React.FC<CardsProps> = ({
@@ -84,10 +91,16 @@ const Cards: React.FC<CardsProps> = ({
   'aria-label': ariaLabel,
   'aria-describedby': ariaDescribedBy,
   onKeyDown,
+  externalHoverState,
+  onMouseEnter,
+  onMouseLeave,
 }) => {
   const { colors } = useTheme();
   const [isHovered, setIsHovered] = useState(false);
   const [_isFocused, _setIsFocused] = useState(false);
+  
+  // Use external hover state if provided, otherwise use internal state
+  const effectiveHoverState = externalHoverState !== undefined ? externalHoverState : isHovered;
   
   // Get theme-based dynamic styles
   const getDynamicStyles = () => {
@@ -101,8 +114,8 @@ const Cards: React.FC<CardsProps> = ({
     } else if (selected) {
       backgroundColor = colors.selectedLight;
       borderColor = colors.primaryMain;
-    } else if (isHovered && !disabled) {
-      backgroundColor = colors.surfaceHover;
+    } else if (effectiveHoverState && !disabled) {
+      backgroundColor = colors.grey400;
     } else if (error) {
       borderColor = colors.errorMain;
     }
@@ -115,6 +128,23 @@ const Cards: React.FC<CardsProps> = ({
             padding: colors.spacing[2],
             gap: colors.spacing[2],
             minHeight: '40px',
+          };
+        case 'user':
+          return {
+            padding: `${colors.spacing[3]} ${colors.spacing[2]} ${colors.spacing[3]} ${colors.spacing[4]}`,
+            gap: colors.spacing[3],
+            maxHeight: '70px',
+          };
+        case 'workspace':
+          return {
+            padding: `${colors.spacing[3]} ${colors.spacing[2]} ${colors.spacing[3]} ${colors.spacing[4]}`,
+            gap: colors.spacing[3],
+            maxHeight: '70px',
+          };
+        case 'build':
+          return {
+            padding: `${colors.spacing[3]} ${colors.spacing[2]} ${colors.spacing[3]} ${colors.spacing[4]}`,
+            gap: colors.spacing[3],
           };
         case 'comfortable':
         case 'metadata':
@@ -179,8 +209,16 @@ const Cards: React.FC<CardsProps> = ({
       role="article"
       aria-label={ariaLabel || `${title}${selected ? ', selected' : ''}`}
       aria-describedby={ariaDescribedBy}
-      onMouseEnter={() => !disabled && setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => {
+        if (!disabled) {
+          setIsHovered(true);
+          onMouseEnter?.();
+        }
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        onMouseLeave?.();
+      }}
     >
       {/* Checkbox */}
       <div className="cards-container__checkbox">
@@ -194,10 +232,33 @@ const Cards: React.FC<CardsProps> = ({
         />
       </div>
 
-      {/* Yellow Folder Icon */}
+      {/* FileType Icon */}
       {iconGutter && (
         <div className="cards-container__icon">
-          <FileType type={fileType} size={type === 'compact' ? 24 : 36} />
+          {type === 'user' ? (
+            <UserAvatar
+              user={{
+                name: title || "User",
+              }}
+              size="lg"
+              showPopup={false}
+              disabled={disabled}
+            />
+          ) : (type === 'workspace' || type === 'build') ? (
+            <UserAvatar
+              user={{
+                name: title === "North Shire City Council" ? "North Shire" : title || "User",
+              }}
+              size="lg"
+              showPopup={false}
+              disabled={disabled}
+            />
+          ) : (
+            <FileType 
+              type={fileType} 
+              size={type === 'compact' ? 24 : 36} 
+            />
+          )}
         </div>
       )}
 
@@ -216,7 +277,7 @@ const Cards: React.FC<CardsProps> = ({
       )}
 
       {/* Text Content */}
-      <div className="cards-container__content" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: colors.spacing[1], minWidth: 0, overflow: 'hidden' }}>
+      <div className="cards-container__content" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '-2px', minWidth: 0, overflow: 'hidden' }}>
         <div className="cards-container__title-row" style={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
           <div 
             className="cards-container__title"
@@ -264,7 +325,7 @@ const Cards: React.FC<CardsProps> = ({
       </div>
 
       {/* Tag */}
-      {tag && (
+      {tag && type !== 'workspace' && type !== 'build' && (
         <div 
           className="cards-container__tag"
           style={{
@@ -286,7 +347,7 @@ const Cards: React.FC<CardsProps> = ({
       {/* Action Icons */}
       <div className="cards-container__actions">
         {/* Information Icon */}
-        {showInfoIcon && (
+        {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && (
           <div onClick={(e) => e.stopPropagation()}>
             <IconButton
               icon="information"
@@ -303,7 +364,7 @@ const Cards: React.FC<CardsProps> = ({
         {showMenuIcon && (
           <div onClick={(e) => e.stopPropagation()}>
             <IconButton
-              icon="overflow-menu-vertical"
+              icon={(type === 'workspace' || type === 'build') ? "star" : "overflow-menu-vertical"}
               variant="ghost"
               size="medium"
               onClick={onMenuClick}
@@ -319,18 +380,47 @@ const Cards: React.FC<CardsProps> = ({
 
 const CardsWithMetadata: React.FC<CardsProps> = (props) => {
   const { colors } = useTheme();
+  const [isHovered, setIsHovered] = useState(false);
+  
+  // Get the same background logic as the main card
+  const getMetadataBackground = () => {
+    let backgroundColor = colors.paper;
+    let borderColor = colors.border;
+
+    if (props.disabled) {
+      backgroundColor = colors.grey300;
+    } else if (props.selected) {
+      backgroundColor = colors.selectedLight;
+      borderColor = colors.primaryMain;
+    } else if (isHovered && !props.disabled) {
+      backgroundColor = colors.grey400;
+    } else if (props.error) {
+      borderColor = colors.errorMain;
+    }
+
+    return { backgroundColor, borderColor };
+  };
+
+  const metadataStyles = getMetadataBackground();
   
   return (
     <>
-      <Cards {...props} />
+      <Cards 
+        {...props} 
+        externalHoverState={isHovered}
+        onMouseEnter={() => !props.disabled && setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      />
       {props.showMetadata && (
         <div 
           className="cards-container__metadata-chips-section"
           style={{
-            backgroundColor: colors.paper,
-            border: `1px solid ${colors.border}`,
+            backgroundColor: metadataStyles.backgroundColor,
+            border: `1px solid ${metadataStyles.borderColor}`,
             borderTop: 'none',
-            padding: `0 ${colors.spacing[4]} ${colors.spacing[2]} ${colors.spacing[4]}`,
+            borderLeft: props.selected ? `4px solid ${colors.primaryMain}` : `1px solid ${metadataStyles.borderColor}`,
+            padding: `12px ${colors.spacing[4]} ${colors.spacing[2]} ${colors.spacing[4]}`,
+            paddingLeft: props.selected ? `calc(${colors.spacing[4]} - 3px)` : colors.spacing[4],
             marginTop: '-12px',
             transition: 'all 0.2s ease'
           }}
