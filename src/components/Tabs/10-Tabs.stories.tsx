@@ -29,7 +29,7 @@ const meta: Meta<typeof Tabs> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     variant: {
       control: 'select',

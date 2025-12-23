@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Icon from '../Icon/Icon';
 import Input from '../Input/Input';
 import UserAvatar from '../UserAvatar/UserAvatar';
+import { ODLTheme } from '../../styles/ODLTheme';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import './Header.css';
 
 export interface Alert {
@@ -177,6 +179,71 @@ const Header: React.FC<HeaderProps> = ({
   };
   
   const handleUserClick = onProfileClick || legacyOnUserClick;
+
+  const { colors } = useTheme();
+  const styleRef = useRef<HTMLStyleElement | null>(null);
+
+  // Inject dynamic styles for theme-aware colors
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .header {
+        background-color: ${colors.paper} !important;
+        border-bottom-color: ${colors.grey400} !important;
+      }
+      .header--error {
+        border-bottom-color: ${colors.errorMain} !important;
+      }
+      .header__logo-button:hover {
+        background-color: ${colors.grey300} !important;
+      }
+      .header__logo-button:focus {
+        outline-color: ${colors.primaryMain} !important;
+      }
+      .header__action-button {
+        color: ${colors.primaryTwilight} !important;
+      }
+      .header__action-button:hover:not(:disabled) {
+        color: ${colors.primaryNight} !important;
+        background-color: ${colors.grey300} !important;
+      }
+      .header__action-button:focus {
+        outline-color: ${colors.primaryMain} !important;
+      }
+      .header__action-button:disabled {
+        color: ${colors.textDisabled} !important;
+      }
+      .header__badge {
+        background-color: ${colors.errorMain} !important;
+        color: ${colors.textInverse} !important;
+      }
+      .header__user-name {
+        color: ${colors.primaryNight} !important;
+      }
+      .header__user-role {
+        color: ${colors.primaryTwilight} !important;
+      }
+      .header__avatar {
+        background-color: ${colors.primaryMain} !important;
+        color: ${colors.textInverse} !important;
+      }
+      .header__avatar:hover {
+        background-color: ${colors.primaryLight} !important;
+      }
+      .header__avatar:focus {
+        outline-color: ${colors.primaryMain} !important;
+      }
+    `;
+    document.head.appendChild(style);
+    styleRef.current = style;
+
+    return () => {
+      if (styleRef.current) {
+        document.head.removeChild(styleRef.current);
+        styleRef.current = null;
+      }
+    };
+  }, [colors]);
 
   const [localSearchValue, setLocalSearchValue] = useState(searchValue);
 

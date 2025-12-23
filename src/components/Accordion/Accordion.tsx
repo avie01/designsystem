@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import ODLTheme from '../../styles/ODLTheme';
 import Icon from '../Icon/Icon';
 
@@ -17,6 +18,9 @@ export interface AccordionProps {
   nested?: boolean;
   showIcons?: boolean;
   variant?: 'default' | 'bordered' | 'filled';
+  size?: 'small' | 'medium' | 'large';
+  color?: 'primary' | 'secondary';
+  expandPosition?: 'left' | 'right';
   className?: string;
   style?: React.CSSProperties;
 }
@@ -27,9 +31,13 @@ const Accordion: React.FC<AccordionProps> = ({
   nested = true,
   showIcons = true,
   variant = 'default',
+  size = 'large',
+  color = 'primary',
+  expandPosition = 'right',
   className = '',
   style
 }) => {
+  const { colors } = useTheme();
   const [openItems, setOpenItems] = useState<Set<string>>(
     new Set(items.filter(item => item.defaultOpen).map(item => item.id))
   );
@@ -88,55 +96,82 @@ const Accordion: React.FC<AccordionProps> = ({
             padding: variant === 'filled' ? '16px 20px' : '14px 16px',
             background: variant === 'filled'
               ? isOpen
-                ? ODLTheme.colors.primary
+                ? colors.primaryMain
                 : isHovered
-                  ? ODLTheme.colors.grey100
-                  : ODLTheme.colors.grey50
+                  ? colors.surfaceHover
+                  : colors.grey100
               : isHovered
-                ? ODLTheme.colors.grey50
-                : 'white',
+                ? colors.surfaceHover
+                : colors.paper,
             border: variant === 'bordered'
-              ? `1px solid ${ODLTheme.colors.grey200}`
+              ? `1px solid ${colors.border}`
               : 'none',
-            borderBottom: variant === 'default' && level === 0 && !isLast
-              ? `1px solid ${ODLTheme.colors.grey200}`
+            borderBottom: variant === 'default' && level === 0 && !isLast && !isOpen
+              ? `1px solid ${colors.border}`
               : 'none',
             borderRadius: variant === 'bordered' ? '6px' : 0,
             cursor: hasContent ? 'pointer' : 'default',
             transition: 'all 0.2s ease',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: expandPosition === 'left' ? 'flex-start' : 'space-between',
+            gap: expandPosition === 'left' ? '12px' : '0',
             width: '100%',
             textAlign: 'left',
             font: 'inherit',
             color: 'inherit'
           }}
         >
+          {/* Left expand icon */}
+          {hasContent && expandPosition === 'left' && (
+            <Icon
+              name={isOpen ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color={variant === 'filled' && isOpen ? colors.textInverse : colors.textSecondary}
+              style={{
+                transition: 'transform 0.5s ease',
+                transform: isOpen ? 'rotate(0deg)' : 'rotate(0deg)'
+              }}
+            />
+          )}
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {showIcons && item.icon && (
               <Icon
                 name={item.icon}
                 size={18}
-                color={variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.grey500}
+                color={variant === 'filled' && isOpen ? colors.textInverse : (
+                  color === 'primary' ? colors.textPrimary : colors.textSecondary
+                )}
               />
             )}
             <span
               style={{
-                fontSize: level === 0 ? ODLTheme.typography.fontSize.base : ODLTheme.typography.fontSize.sm,
-                fontWeight: level === 0 ? 500 : 400,
-                color: variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.text.primary
+                fontSize: level === 0 ? (
+                  size === 'large' ? ODLTheme.typography.fontSize.lg :
+                  size === 'medium' ? ODLTheme.typography.fontSize.md :
+                  ODLTheme.typography.fontSize.base
+                ) : ODLTheme.typography.fontSize.sm,
+                fontWeight: level === 0 ? (
+                  size === 'large' ? ODLTheme.typography.fontWeight.semibold :
+                  size === 'medium' ? ODLTheme.typography.fontWeight.semibold :
+                  ODLTheme.typography.fontWeight.bold
+                ) : 400,
+                color: variant === 'filled' && isOpen ? colors.textInverse : (
+                  color === 'primary' ? colors.textPrimary : colors.textSecondary
+                )
               }}
             >
               {item.title}
             </span>
           </div>
           
-          {hasContent && (
+          {/* Right expand icon (default) */}
+          {hasContent && expandPosition === 'right' && (
             <Icon
-              name={isOpen ? 'chevron-down' : 'chevron-right'}
-              size={16}
-              color={variant === 'filled' && isOpen ? 'white' : ODLTheme.colors.grey700}
+              name={isOpen ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color={variant === 'filled' && isOpen ? colors.textInverse : colors.textSecondary}
               style={{
                 transition: 'transform 0.5s ease',
                 transform: isOpen ? 'rotate(0deg)' : 'rotate(0deg)'
@@ -152,18 +187,15 @@ const Accordion: React.FC<AccordionProps> = ({
             role="region"
             aria-labelledby={`accordion-header-${item.id}`}
             style={{
-              padding: variant === 'bordered'
-                ? '16px 20px'
-                : level > 0
-                  ? '12px 16px 12px 32px'
-                  : '16px 16px 16px 32px',
+              padding: '16px',
               background: variant === 'bordered'
-                ? ODLTheme.colors.grey50
+                ? colors.grey100
                 : level > 0
-                  ? ODLTheme.colors.grey50
-                  : 'white',
-              borderTop: variant === 'bordered' ? `1px solid ${ODLTheme.colors.grey200}` : 'none',
-              color: ODLTheme.colors.textLight,
+                  ? colors.grey100
+                  : colors.paper,
+              borderTop: variant === 'bordered' ? `1px solid ${colors.border}` : 'none',
+              borderBottom: `1px solid ${colors.border}`,
+              color: colors.textSecondary,
               fontSize: ODLTheme.typography.fontSize.sm,
               lineHeight: 1.6
             }}
@@ -190,9 +222,9 @@ const Accordion: React.FC<AccordionProps> = ({
     <div
       className={className}
       style={{
-        background: 'white',
+        background: colors.paper,
         borderRadius: variant === 'bordered' ? '8px' : '8px',
-        border: variant !== 'bordered' ? `1px solid ${ODLTheme.colors.grey200}` : 'none',
+        border: variant !== 'bordered' ? `1px solid ${colors.border}` : 'none',
         overflow: 'hidden',
         ...style
       }}

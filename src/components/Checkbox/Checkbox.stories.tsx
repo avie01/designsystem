@@ -13,6 +13,7 @@ const meta: Meta<typeof Checkbox> = {
       }
     }
   },
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     size: {
       control: { type: 'select' },

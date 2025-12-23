@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import './List.css';
+import React, { useState, useRef, useEffect } from 'react';
 import Icon from '../Icon/Icon';
-import { ODLSpacing, ODLTypography } from '../../styles/ODLTheme';
+import Checkbox from '../Checkbox/Checkbox';
+import { ODLTheme } from '../../styles/ODLTheme';
+import { useTheme } from '../../../.storybook/theme-decorator';
+
+const ODLSpacing = ODLTheme.spacing;
+const ODLTypography = ODLTheme.typography;
 
 export interface ListItem {
   id: string;
@@ -38,6 +42,8 @@ export interface ListProps {
   showExpandIcons?: boolean;
   /** ARIA label for the listbox - required for accessibility */
   ariaLabel?: string;
+  /** Whether to show checkboxes for multi-select mode */
+  showCheckboxes?: boolean;
 }
 
 const List: React.FC<ListProps> = ({
@@ -51,9 +57,46 @@ const List: React.FC<ListProps> = ({
   className = '',
   showExpandIcons = true,
   ariaLabel = 'List',
+  showCheckboxes = false,
 }) => {
+  const { colors } = useTheme();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [focusedItemId, setFocusedItemId] = useState<string | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const styleRef = useRef<HTMLStyleElement | null>(null);
+
+  // Inject dynamic styles for theme-aware colors
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .list-item:hover:not(.list-item--disabled) {
+        background-color: ${colors.grey400} !important;
+      }
+      .list-item:focus-visible {
+        outline: 2px solid ${colors.primaryMain} !important;
+        outline-offset: 2px !important;
+      }
+      .list-item--selected {
+        background-color: ${colors.selectedLight} !important;
+        border-left: 4px solid ${colors.primaryMain} !important;
+      }
+      .list-item--selected:hover {
+        background-color: ${colors.grey400} !important;
+      }
+      .list-expand-icon:hover {
+        color: ${colors.primaryMain} !important;
+      }
+    `;
+    document.head.appendChild(style);
+    styleRef.current = style;
+    
+    return () => {
+      if (styleRef.current) {
+        document.head.removeChild(styleRef.current);
+        styleRef.current = null;
+      }
+    };
+  }, [colors]);
 
   // Initialize selected items from props
   const initialSelected = new Set(
@@ -118,7 +161,7 @@ const List: React.FC<ListProps> = ({
 
     // Handle selection
     if (selectable) {
-      const newSelected = new Set(selectedItems);
+      const newSelected = new Set<string>(selectedItems);
       
       if (multiSelect) {
         if (newSelected.has(item.id)) {
@@ -144,11 +187,32 @@ const List: React.FC<ListProps> = ({
     }
   };
 
-  const renderListItem = (item: ListItem, level: number = 0): React.ReactNode => {
+  const renderListItem = (item: ListItem & { _isLastChild?: boolean }, level: number = 0): React.ReactNode => {
     const isSelected = selectedItems.has(item.id);
     const isExpanded = expandedItems.has(item.id);
     const isFocused = focusedItemId === item.id;
     const hasChildren = hierarchical && item.children && item.children.length > 0;
+
+    const itemStyles: React.CSSProperties = {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      position: 'relative',
+      borderBottom: item._isLastChild ? 'none' : `1px solid ${colors.grey400}`,
+      borderLeft: isSelected ? `4px solid ${colors.primaryMain}` : '4px solid transparent',
+      cursor: item.disabled ? 'not-allowed' : 'pointer',
+      fontSize: size === 'sm' ? ODLTypography.fontSize.sm : size === 'lg' ? ODLTypography.fontSize.md : ODLTypography.fontSize.base,
+      fontWeight: ODLTypography.fontWeight.normal,
+      color: item.disabled ? colors.grey600 : colors.textPrimary,
+      transition: 'all 0.2s ease',
+      boxSizing: 'border-box',
+      paddingLeft: isSelected ? `${level * parseInt(ODLSpacing['5']) + 20 - 4}px` : `${level * parseInt(ODLSpacing['5']) + 16}px`,
+      paddingRight: '16px',
+      paddingTop: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
+      paddingBottom: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
+      minHeight: size === 'sm' ? '30px' : size === 'lg' ? '52px' : '42px',
+      backgroundColor: item.disabled ? 'transparent' : isSelected ? colors.selectedLight : 'transparent',
+    };
 
     return (
       <React.Fragment key={item.id}>
@@ -157,8 +221,10 @@ const List: React.FC<ListProps> = ({
           className={`list-item ${isSelected ? 'list-item--selected' : ''} ${
             item.disabled ? 'list-item--disabled' : ''
           }`}
-          style={{ paddingLeft: `${level * parseInt(ODLSpacing['5']) + parseInt(ODLSpacing['2'])}px` }}
+          style={itemStyles}
           onClick={() => handleItemClick(item)}
+          onMouseEnter={() => !item.disabled && setHoveredItem(item.id)}
+          onMouseLeave={() => setHoveredItem(null)}
           onKeyDown={(e) => {
             if (item.disabled) return;
             if (e.key === 'ArrowRight' && hasChildren) {
@@ -188,8 +254,39 @@ const List: React.FC<ListProps> = ({
             }
           }}
         >
+          {showCheckboxes && multiSelect && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                marginRight: size === 'sm' ? ODLSpacing['2'] : ODLSpacing['3'],
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleItemClick(item);
+              }}
+            >
+              <Checkbox
+                checked={isSelected}
+                disabled={item.disabled}
+                onChange={() => handleItemClick(item)}
+                size={size}
+                aria-label={`Select ${item.label}`}
+              />
+            </span>
+          )}
           {item.icon && (
-            <span className="list-item-icon">
+            <span 
+              className="list-item-icon"
+              style={{
+                color: item.disabled ? colors.grey600 : isSelected ? colors.primaryMain : colors.textSecondary,
+                display: 'inline-flex',
+                alignItems: 'center',
+                verticalAlign: 'middle',
+                flexShrink: 0,
+                marginRight: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['3'] : ODLSpacing['2'],
+              }}
+            >
               {typeof item.icon === 'string' ? (
                 // Check if it's an emoji/text or an icon name
                 /[\u{1F000}-\u{1F6FF}]|[\u{1F700}-\u{1F77F}]|[\u{1F780}-\u{1F7FF}]|[\u{1F800}-\u{1F8FF}]|[\u{1F900}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u.test(item.icon) ? (
@@ -199,7 +296,7 @@ const List: React.FC<ListProps> = ({
                     name={item.icon} 
                     size={size === 'sm' ? parseInt(ODLTypography.fontSize.sm) : 
                           size === 'lg' ? parseInt(ODLTypography.fontSize.md) : 
-                          parseInt(ODLTypography.fontSize.base)} 
+                          20} 
                   />
                 )
               ) : (
@@ -207,10 +304,42 @@ const List: React.FC<ListProps> = ({
               )}
             </span>
           )}
-          <div className="list-item-content">
-            <span className="list-item-label">{item.label}</span>
+          <div 
+            className="list-item-content"
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              verticalAlign: 'middle',
+              overflow: 'hidden',
+            }}
+          >
+            <span 
+              className="list-item-label"
+              style={{
+                display: 'inline',
+                verticalAlign: 'middle',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >{item.label}</span>
             {item.caption && size === 'lg' && (
-              <span className="list-item-caption">{item.caption}</span>
+              <span 
+                className="list-item-caption"
+                style={{
+                  display: 'block',
+                  fontSize: ODLTypography.fontSize.base,
+                  color: item.disabled ? colors.grey600 : colors.textSecondary,
+                  marginTop: '0px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  fontWeight: ODLTypography.fontWeight.normal,
+                }}
+              >{item.caption}</span>
             )}
           </div>
           {hasChildren && showExpandIcons && (
@@ -223,12 +352,27 @@ const List: React.FC<ListProps> = ({
                 e.stopPropagation();
                 toggleExpanded(item.id);
               }}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                right: '16px',
+                color: item.disabled ? colors.grey600 : colors.textSecondary,
+                cursor: item.disabled ? 'not-allowed' : 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                verticalAlign: 'middle',
+                flexShrink: 0,
+                background: 'none',
+                border: 'none',
+                padding: 0,
+              }}
             >
               <Icon
                 name={isExpanded ? "chevron-down" : "chevron-right"}
                 size={size === 'sm' ? parseInt(ODLTypography.fontSize.xs) :
                       size === 'lg' ? parseInt(ODLTypography.fontSize.base) :
-                      parseInt(ODLTypography.fontSize.sm)}
+                      20}
                 aria-hidden="true"
               />
             </button>
@@ -237,15 +381,37 @@ const List: React.FC<ListProps> = ({
 
         {hasChildren && isExpanded && (
           <div className="list-children">
-            {item.children!.map(child => renderListItem(child, level + 1))}
+            {item.children!.map((child, index) => {
+              // Remove border from last child item
+              const childWithNoBorder = index === item.children!.length - 1 ? 
+                { ...child, _isLastChild: true } : child;
+              return renderListItem(childWithNoBorder, level + 1);
+            })}
           </div>
         )}
       </React.Fragment>
     );
   };
 
+  const containerStyles: React.CSSProperties = {
+    backgroundColor: colors.paper,
+    border: `1px solid ${colors.grey400}`,
+    borderRadius: ODLTheme.borders.radius.base,
+    fontFamily: ODLTypography.fontFamily.sans,
+    overflow: 'hidden',
+    listStyle: 'none',
+    paddingLeft: '16px',
+    paddingRight: '16px',
+  };
+
+  const itemsContainerStyles: React.CSSProperties = {
+    listStyle: 'none',
+    margin: '0 -16px',
+    padding: 0,
+  };
+
   return (
-    <div className={`list-container list-container--${size} ${className}`}>
+    <div className={`list-container list-container--${size} ${className}`} style={containerStyles}>
       <div
         role="listbox"
         className="list-items"
@@ -258,8 +424,14 @@ const List: React.FC<ListProps> = ({
             setFocusedItemId(items[0].id);
           }
         }}
+        style={itemsContainerStyles}
       >
-        {items.map(item => renderListItem(item))}
+        {items.map((item, index) => {
+          // Remove border from last item
+          const itemWithNoBorder = index === items.length - 1 ? 
+            { ...item, _isLastChild: true } : item;
+          return renderListItem(itemWithNoBorder);
+        })}
       </div>
     </div>
   );

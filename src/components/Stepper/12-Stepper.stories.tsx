@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Stepper from './Stepper';
 import Button from '../Button/Button';
+import Input from '../Input/Input';
 
 const meta: Meta<typeof Stepper> = {
   title: 'Design System/Components/Stepper',
@@ -8,7 +9,7 @@ const meta: Meta<typeof Stepper> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     steps: {
       control: false,
@@ -275,89 +276,9 @@ export const Compact: Story = {
   },
 };
 
-export const WithExpandedContent: Story = {
-  name: '08 With Expanded Content',
-  args: {
-    orientation: 'vertical',
-    steps: [
-      {
-        id: 'step-1',
-        title: 'Account Setup',
-        description: 'Create your account credentials',
-        status: 'finished',
-      },
-      {
-        id: 'step-2',
-        title: 'Profile Details',
-        description: 'Fill in your profile information',
-        status: 'current',
-        content: (
-          <div style={{ padding: '16px 0' }}>
-            <p style={{ marginBottom: '12px', color: '#666' }}>
-              Please provide the following information to complete your profile.
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '4px', fontSize: '14px', fontWeight: 500 }}>
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter your name"
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '14px',
-                  }}
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '4px', fontSize: '14px', fontWeight: 500 }}>
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  placeholder="Enter your phone"
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '14px',
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        ),
-        actions: (
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <Button variant="secondary" size="sm">
-              Back
-            </Button>
-            <Button variant="primary" size="sm">
-              Continue
-            </Button>
-          </div>
-        ),
-      },
-      {
-        id: 'step-3',
-        title: 'Preferences',
-        description: 'Set your notification preferences',
-        status: 'waiting',
-      },
-    ],
-    showDescription: true,
-    expandedContent: true,
-    size: 'medium',
-  },
-};
 
 export const ClickableSteps: Story = {
-  name: '09 Clickable Steps',
+  name: '08 Clickable Steps',
   args: {
     orientation: 'horizontal',
     steps: [
@@ -389,7 +310,7 @@ export const ClickableSteps: Story = {
 };
 
 export const AllCompleted: Story = {
-  name: '10 All Completed',
+  name: '09 All Completed',
   args: {
     orientation: 'horizontal',
     steps: [
@@ -421,7 +342,7 @@ export const AllCompleted: Story = {
 };
 
 export const LongVerticalStepper: Story = {
-  name: '11 Long Vertical Stepper',
+  name: '10 Long Vertical Stepper',
   args: {
     orientation: 'vertical',
     steps: [
@@ -468,7 +389,7 @@ export const LongVerticalStepper: Story = {
 };
 
 export const Disabled: Story = {
-  name: '12 Disabled',
+  name: '11 Disabled',
   args: {
     orientation: 'horizontal',
     steps: [
@@ -495,4 +416,117 @@ export const Disabled: Story = {
     disabled: true,
     size: 'medium',
   },
+};
+
+export const ThemeSupport: Story = {
+  name: '12 Theme Support',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Theme Adaptive Stepper (Horizontal)
+        </h4>
+        <p style={{ marginBottom: '16px', fontSize: '14px', opacity: 0.7 }}>
+          Try switching between Light, Dark, and High Contrast themes using the toolbar above
+        </p>
+        <Stepper
+          orientation="horizontal"
+          steps={[
+            {
+              id: 'step-1',
+              title: 'Setup',
+              description: 'Initial configuration',
+              status: 'finished',
+              icon: 'settings',
+            },
+            {
+              id: 'step-2',
+              title: 'Processing',
+              description: 'Running tasks',
+              status: 'current',
+              icon: 'in-progress',
+            },
+            {
+              id: 'step-3',
+              title: 'Complete',
+              description: 'All done',
+              status: 'waiting',
+              icon: 'checkmark',
+            },
+          ]}
+          showDescription={true}
+          size="medium"
+        />
+      </div>
+
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Theme Adaptive Stepper (Vertical)
+        </h4>
+        <Stepper
+          orientation="vertical"
+          steps={[
+            {
+              id: 'step-1',
+              title: 'Account Created',
+              description: 'Your account is ready',
+              status: 'finished',
+            },
+            {
+              id: 'step-2',
+              title: 'Email Verification',
+              description: 'Check your inbox',
+              status: 'finished',
+            },
+            {
+              id: 'step-3',
+              title: 'Profile Setup',
+              description: 'Complete your profile',
+              status: 'current',
+            },
+            {
+              id: 'step-4',
+              title: 'Welcome',
+              description: 'Start using the platform',
+              status: 'waiting',
+            },
+          ]}
+          showDescription={true}
+          size="medium"
+        />
+      </div>
+
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          With Error State
+        </h4>
+        <Stepper
+          orientation="horizontal"
+          error="Verification step failed. Please retry."
+          steps={[
+            {
+              id: 'step-1',
+              title: 'Upload',
+              description: 'File uploaded',
+              status: 'finished',
+            },
+            {
+              id: 'step-2',
+              title: 'Verify',
+              description: 'Processing failed',
+              status: 'error',
+            },
+            {
+              id: 'step-3',
+              title: 'Complete',
+              description: 'Finish setup',
+              status: 'waiting',
+            },
+          ]}
+          showDescription={true}
+          size="medium"
+        />
+      </div>
+    </div>
+  ),
 };

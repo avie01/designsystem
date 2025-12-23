@@ -13,7 +13,7 @@ const meta: Meta<typeof List> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     items: {
       control: false,
@@ -91,6 +91,14 @@ const meta: Meta<typeof List> = {
       control: false,
       table: {
         disable: true,
+      },
+    },
+    showCheckboxes: {
+      control: 'boolean',
+      description: 'Whether to show checkboxes for multi-select mode',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
   },
@@ -220,9 +228,9 @@ export const MultipleSelection: Story = {
   render: () => (
     <div style={{ maxWidth: '400px' }}>
       <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
-        Multiple Selection Enabled
+        Multiple Selection with Checkboxes
       </h4>
-      <List items={basicItems} multiSelect={true} />
+      <List items={basicItems} multiSelect={true} showCheckboxes={true} />
     </div>
   ),
 };
@@ -361,5 +369,41 @@ export const Playground: Story = {
     multiSelect: false,
     hierarchical: false,
     showExpandIcons: true,
+  },
+};
+
+export const ThemeSupport: Story = {
+  name: '13 Theme Support',
+  render: () => {
+    const themeItems: ListItem[] = [
+      { id: '1', label: 'Primary Action', icon: 'star', selected: true },
+      { id: '2', label: 'Secondary Action', icon: 'settings' },
+      { id: '3', label: 'Disabled Option', icon: 'close', disabled: true },
+      { 
+        id: '4', 
+        label: 'Nested Options', 
+        icon: 'folder',
+        children: [
+          { id: '4-1', label: 'Sub Option 1', icon: 'document' },
+          { id: '4-2', label: 'Sub Option 2', icon: 'document' },
+        ]
+      },
+    ];
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+            The List component automatically adapts to the current theme
+          </h4>
+          <p style={{ marginBottom: '16px', fontSize: '14px', opacity: 0.7 }}>
+            Try switching between Light, Dark, and High Contrast themes using the toolbar above
+          </p>
+          <div style={{ maxWidth: '400px' }}>
+            <List items={themeItems} hierarchical={true} multiSelect={true} showCheckboxes={true} />
+          </div>
+        </div>
+      </div>
+    );
   },
 };
