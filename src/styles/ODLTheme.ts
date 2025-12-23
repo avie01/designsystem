@@ -51,6 +51,7 @@ export const ODLColors = {
     primaryNight: '#32373F',     // Primary Night - for input labels
     secondary: '#525252',         // Secondary text
     tertiary: '#6B6B6B',        // Tertiary/muted text (WCAG AA compliant - 4.5:1)
+    muted: '#707070',           // Muted text for secondary content (dynamic theme support)
     disabled: '#A0A0A0',        // Disabled text (WCAG AA compliant - 4.5:1 contrast on light backgrounds)
     inverse: '#FFFFFF',         // White text
   },

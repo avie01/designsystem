@@ -332,7 +332,7 @@ const Cards: React.FC<CardsProps> = ({
             className="cards-container__top-text"
             style={{
               fontSize: '12px',
-              color: disabled ? colors.textDisabled : colors.textSecondary,
+              color: disabled ? colors.textDisabled : colors.textMuted,
               lineHeight: '1.5',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -393,7 +393,7 @@ const Cards: React.FC<CardsProps> = ({
             className="cards-container__subtitle2"
             style={{
               fontSize: '14px',
-              color: disabled ? colors.textDisabled : colors.textSecondary,
+              color: disabled ? colors.textDisabled : colors.textMuted,
               lineHeight: '1.5',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -409,7 +409,7 @@ const Cards: React.FC<CardsProps> = ({
             className="cards-container__bottom-text"
             style={{
               fontSize: '12px',
-              color: disabled ? colors.textDisabled : colors.textSecondary,
+              color: disabled ? colors.textDisabled : colors.textMuted,
               lineHeight: '1.5',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
