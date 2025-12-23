@@ -32,6 +32,7 @@ export { default as UserAvatar } from './UserAvatar/UserAvatar';
 export { default as AlertBanner } from './AlertBanner/AlertBanner';
 export { default as FileType } from './FileType/FileType';
 export { default as RadioButton, RadioButtonGroup } from './RadioButton/RadioButton';
+export { default as Switch } from './Switch/Switch';
 export { default as ThumbnailCards } from './ThumbnailCards/ThumbnailCards';
 
 // Demo Components
@@ -50,5 +51,6 @@ export type { TableProps, TableColumn } from './Table/Table';
 export type { IconButtonProps } from './IconButton/IconButton';
 export type { DashboardCardProps } from './DashboardCards/DashboardCards';
 export type { RadioButtonProps, RadioButtonGroupProps } from './RadioButton/RadioButton';
+export type { SwitchProps } from './Switch/Switch';
 export type { FileTypeVariant } from './FileType/FileType';
 export type { ThumbnailCardsProps, ThumbnailCardSize } from './ThumbnailCards/ThumbnailCards';
