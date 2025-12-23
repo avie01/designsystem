@@ -85,7 +85,7 @@ const Chip: React.FC<ChipProps> = ({
         case 'brown': return themeColors.dark.chipBrown;
         case 'purple': return themeColors.dark.chipPurple;
         case 'green': return themeColors.dark.chipGreen;
-        case 'white': return '#525965';
+        case 'white': return themeColors.dark.primaryTwilight;
         default: return ODLTheme.colors.text.primary;
       }
     } else if (theme === 'dark') {
@@ -101,7 +101,7 @@ const Chip: React.FC<ChipProps> = ({
         case 'brown': return themeColors.light.chipBrown;
         case 'purple': return themeColors.light.chipPurple;
         case 'green': return themeColors.light.chipGreen;
-        case 'white': return '#525965';
+        case 'white': return themeColors.light.primaryTwilight;
         default: return ODLTheme.colors.text.inverse;
       }
     } else {
@@ -123,36 +123,39 @@ const Chip: React.FC<ChipProps> = ({
     if (isToggled && toggle) {
       switch (variant) {
         case 'blue':
-          return { backgroundColor: colors.primaryMain, color: '#FFFFFF' };
+          return { backgroundColor: colors.primaryMain, color: colors.textInverse };
         case 'pink':
-          return { backgroundColor: '#E91E63', color: '#FFFFFF' };
+          return { backgroundColor: theme === 'dark' ? '#E91E63' : '#E91E63', color: colors.textInverse };
         case 'red':
-          return { backgroundColor: '#D32F2F', color: '#FFFFFF' };
+          return { backgroundColor: colors.errorMain, color: colors.textInverse };
         case 'orange':
-          return { backgroundColor: '#F57C00', color: '#FFFFFF' };
+          return { backgroundColor: theme === 'dark' ? '#F57C00' : '#F57C00', color: colors.textInverse };
         case 'yellow':
-          return { backgroundColor: '#FBC02D', color: '#000000' };
+          return { backgroundColor: colors.warningMain, color: theme === 'dark' ? colors.textInverse : '#000000' };
         case 'olive':
-          return { backgroundColor: '#689F38', color: '#FFFFFF' };
+          return { backgroundColor: theme === 'dark' ? '#689F38' : '#689F38', color: colors.textInverse };
         case 'mint':
-          return { backgroundColor: '#00897B', color: '#FFFFFF' };
+          return { backgroundColor: theme === 'dark' ? '#00897B' : '#00897B', color: colors.textInverse };
         case 'brown':
-          return { backgroundColor: '#6D4C41', color: '#FFFFFF' };
+          return { backgroundColor: theme === 'dark' ? '#6D4C41' : '#6D4C41', color: colors.textInverse };
         case 'purple':
-          return { backgroundColor: '#7B1FA2', color: '#FFFFFF' };
+          return { backgroundColor: theme === 'dark' ? '#7B1FA2' : '#7B1FA2', color: colors.textInverse };
         case 'green':
-          return { backgroundColor: colors.successMain, color: '#FFFFFF' };
+          return { backgroundColor: colors.successMain, color: colors.textInverse };
         case 'white':
-          return { backgroundColor: '#E0F3FE', color: '#32373f' };
+          return { 
+            backgroundColor: colors.selectedLight, 
+            color: theme === 'dark' ? colors.textPrimary : colors.primaryNight 
+          };
         case 'success':
-          return { backgroundColor: colors.successMain, color: '#FFFFFF' };
+          return { backgroundColor: colors.successMain, color: colors.textInverse };
         case 'warning':
-          return { backgroundColor: colors.warningMain, color: '#000000' };
+          return { backgroundColor: colors.warningMain, color: theme === 'dark' ? colors.textInverse : '#000000' };
         case 'info':
-          return { backgroundColor: colors.primaryMain, color: '#FFFFFF' };
+          return { backgroundColor: colors.primaryMain, color: colors.textInverse };
         case 'neutral':
         default:
-          return { backgroundColor: colors.primaryMain, color: '#FFFFFF' };
+          return { backgroundColor: colors.primaryMain, color: colors.textInverse };
       }
     }
 
@@ -180,8 +183,8 @@ const Chip: React.FC<ChipProps> = ({
       case 'white':
         return { 
           backgroundColor: colors.chipWhite, 
-          color: '#525965',
-          border: '1px solid #D1D1D1'
+          color: colors.primaryTwilight,
+          border: `1px solid ${colors.grey500}`
         };
       case 'success':
         return { backgroundColor: colors.successLight, color: ODLTheme.colors.text.primary };
@@ -299,16 +302,9 @@ const Chip: React.FC<ChipProps> = ({
   const chipStyles = getODLStyles();
   const iconSize = chipStyles['--chip-icon-size'] ? parseInt(chipStyles['--chip-icon-size']) : 16;
   
-  // Use contrasting color for icons (same as text)
-  const getIconColor = () => {
-    if (disabled) return ODLTheme.colors.text.disabled;
-    if (error) return ODLTheme.colors.text.primary;
-    
-    // For non-error states, use the same contrasting color logic as text
-    return getContrastingTextColor(variant);
-  };
-  
-  const iconColor = getIconColor();
+  // Get the actual text color from variant colors (includes toggle state)
+  const variantColors = getVariantColors();
+  const iconColor = disabled ? ODLTheme.colors.text.disabled : variantColors.color;
 
   return (
     <span
