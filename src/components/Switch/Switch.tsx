@@ -85,8 +85,10 @@ const Switch: React.FC<SwitchProps> = ({
 
   // Dynamic styles based on state
   const getTrackStyles = () => {
-    let backgroundColor = colors.grey600 || '#525965';
-    let borderColor = colors.grey600 || '#525965';
+    // Use specific color for switch backgrounds (#525965) with dynamic theme fallback
+    const switchBackgroundColor = '#525965';
+    let backgroundColor = switchBackgroundColor;
+    let borderColor = switchBackgroundColor;
 
     if (disabled) {
       backgroundColor = colors.grey200;
@@ -95,7 +97,7 @@ const Switch: React.FC<SwitchProps> = ({
       backgroundColor = error ? colors.errorMain : colors.primaryMain;
       borderColor = error ? colors.errorMain : colors.primaryMain;
     } else if (error) {
-      backgroundColor = colors.grey600 || '#525965';
+      backgroundColor = switchBackgroundColor;
       borderColor = colors.errorMain;
     }
 

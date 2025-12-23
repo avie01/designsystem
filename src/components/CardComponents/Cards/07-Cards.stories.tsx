@@ -15,7 +15,7 @@ const meta: Meta<typeof Cards> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     type: {
       control: 'select',

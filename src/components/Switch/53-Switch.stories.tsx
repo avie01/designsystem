@@ -14,7 +14,7 @@ const meta: Meta<typeof Switch> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     checked: {
       control: 'boolean',
