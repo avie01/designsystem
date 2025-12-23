@@ -196,7 +196,7 @@ const Accordion: React.FC<AccordionProps> = ({
               borderTop: variant === 'bordered' ? `1px solid ${colors.border}` : 'none',
               borderBottom: `1px solid ${colors.border}`,
               color: colors.textSecondary,
-              fontSize: ODLTheme.typography.fontSize.sm,
+              fontSize: ODLTheme.typography.fontSize.base,
               lineHeight: 1.6
             }}
           >
