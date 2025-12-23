@@ -14,7 +14,7 @@ const meta: Meta<typeof IconButton> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     icon: {
       control: 'text',

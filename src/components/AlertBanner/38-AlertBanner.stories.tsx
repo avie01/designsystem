@@ -8,7 +8,7 @@ const meta: Meta<typeof AlertBanner> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     variant: {
       control: 'select',

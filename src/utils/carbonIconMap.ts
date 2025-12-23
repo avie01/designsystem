@@ -51,7 +51,7 @@ export const carbonIconMapping: Record<string, string> = {
   'bookmark-filled': 'StarFilled',
   'blueprint': 'Blueprint',
   'briefcase': 'Portfolio',
-  'build': 'Build',
+  'build': 'Building',
   'building': 'Building',
   'button': 'ButtonCentered',
   
@@ -88,6 +88,7 @@ export const carbonIconMapping: Record<string, string> = {
   'code-block': 'Code',
   'collaborate': 'Collaborate',
   'color-palette': 'ColorPalette',
+  'palette': 'ColorPalette',
   'column': 'Column',
   'comment': 'Chat',
   'copy': 'Copy',
@@ -119,6 +120,7 @@ export const carbonIconMapping: Record<string, string> = {
   // E
   'edit': 'Edit',
   'email': 'Email',
+  'enterprise': 'Enterprise',
   'error': 'Error',
   'error-filled': 'ErrorFilled',
   'event': 'Event',
@@ -245,6 +247,7 @@ export const carbonIconMapping: Record<string, string> = {
   'send': 'Send',
   'send-alt': 'SendAlt',
   'send-filled': 'SendFilled',
+  'server': 'Server',
   'settings': 'Settings',
   'status': 'WarningOther',
   'share': 'Share',

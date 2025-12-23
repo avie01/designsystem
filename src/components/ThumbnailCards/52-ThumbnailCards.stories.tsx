@@ -14,7 +14,7 @@ const meta: Meta<typeof ThumbnailCards> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     size: {
       control: { type: 'select' },

@@ -9,7 +9,7 @@ const meta: Meta<typeof NavigationRail> = {
   parameters: {
     layout: 'fullscreen',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     currentPath: {
       control: 'text',

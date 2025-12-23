@@ -13,7 +13,7 @@ const meta: Meta<typeof List> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     items: {
       control: false,

@@ -8,7 +8,7 @@ const meta: Meta<typeof Accordion> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     items: {
       control: false,
@@ -63,19 +63,19 @@ export const Default: Story = {
         id: '1',
         title: 'What is the ODL Design System?',
         content: 'The ODL Design System is a comprehensive library of reusable components designed to create consistent and accessible user interfaces.',
-        icon: 'information',
+        icon: 'checkmark',
       },
       {
         id: '2',
         title: 'How do I get started?',
         content: 'Simply install the package and import the components you need. Check out our documentation for detailed examples and API references.',
-        icon: 'rocket',
+        icon: 'checkmark',
       },
       {
         id: '3',
         title: 'Is it accessible?',
         content: 'Yes! All components follow WCAG 2.1 AA standards and include proper ARIA attributes, keyboard navigation, and screen reader support.',
-        icon: 'accessibility',
+        icon: 'checkmark',
       },
     ],
     allowMultiple: true,
@@ -520,7 +520,7 @@ export const ThemeSupport: Story = {
               id: '3',
               title: 'Accessibility Compliant',
               content: 'Maintains proper contrast ratios across all theme variants.',
-              icon: 'accessibility',
+              icon: 'checkmark',
             },
           ]}
           allowMultiple={true}

@@ -9,7 +9,7 @@ const meta: Meta<typeof Stepper> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     steps: {
       control: false,
