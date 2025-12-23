@@ -19,7 +19,7 @@ const meta: Meta<typeof Cards> = {
   argTypes: {
     type: {
       control: 'select',
-      options: ['compact', 'comfortable', 'metadata'],
+      options: ['compact', 'comfortable', 'metadata', 'user', 'workspace', 'build'],
       description: 'Card type variant affecting layout and styling',
       table: {
         type: { summary: 'string' },
@@ -250,11 +250,28 @@ export const Types: Story = {
             />
             <Cards
               type="metadata"
-              title="Metadata Card"
-              subtitle="Type: metadata - Designed for metadata display"
-              tag="Metadata"
+              title="Project Documentation.pdf"
+              subtitle="Type: metadata - Shows white chips with file metadata"
+              tag="Final"
               extensionSize={true}
               showMetadata={true}
+            />
+            <Cards
+              type="user"
+              title="Sarah Chen"
+              subtitle="Type: user - Larger spacing and user icon display"
+              tag="Admin"
+              fileType="user"
+            />
+            <Cards
+              type="workspace"
+              title="North Shire City Council"
+              subtitle="Type: workspace - Same styling as user cards for workspace display"
+            />
+            <Cards
+              type="build"
+              title="Build Pipeline"
+              subtitle="Type: build - Same styling as workspace cards for build processes"
             />
           </div>
         </div>
@@ -263,13 +280,64 @@ export const Types: Story = {
   }
 };
 
+// User Cards
+export const UserCards: Story = {
+  name: '04 User Cards',
+  render: () => {
+    const [selectedUsers, setSelectedUsers] = React.useState<number[]>([1]);
+    const { colors } = useTheme();
+
+    const users = [
+      { id: 1, name: 'Sarah Chen', role: 'Design Lead', tag: 'Admin' },
+      { id: 2, name: 'Mike Davis', role: 'Frontend Developer', tag: 'Developer' },
+      { id: 3, name: 'Alex Johnson', role: 'Product Manager', tag: 'Manager' },
+      { id: 4, name: 'Lisa Wang', role: 'UX Researcher', tag: 'Researcher' },
+    ];
+
+    const toggleUserSelection = (id: number) => {
+      setSelectedUsers(prev =>
+        prev.includes(id)
+          ? prev.filter(userId => userId !== id)
+          : [...prev, id]
+      );
+    };
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>User Profile Cards</h4>
+          <p style={{ marginBottom: colors.spacing[4] || '16px', fontSize: colors.fontSize?.sm || '14px', color: colors.textSecondary }}>
+            Larger user cards with enhanced spacing and user icons for team member selection.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
+            {users.map(user => (
+              <Cards
+                key={user.id}
+                type="user"
+                title={user.name}
+                subtitle={user.role}
+                tag={user.tag}
+                selected={selectedUsers.includes(user.id)}
+                onSelect={() => toggleUserSelection(user.id)}
+                onInfoClick={() => alert(`View ${user.name}'s profile`)}
+                onMenuClick={() => alert(`More options for ${user.name}`)}
+                fileType="user"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
 // Interactive features
 export const InteractiveFeatures: Story = {
   args: {
     type: "build"
   },
 
-  name: '04 Interactive Features',
+  name: '05 Interactive Features',
 
   render: () => {
     const { colors } = useTheme();
@@ -316,9 +384,57 @@ export const InteractiveFeatures: Story = {
   }
 };
 
+// Metadata with White Chips
+export const MetadataWithWhiteChips: Story = {
+  name: '06 Metadata Cards with White Chips',
+  render: () => {
+    const { colors } = useTheme();
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Metadata Cards with White Chips</h4>
+          <p style={{ marginBottom: colors.spacing[4] || '16px', fontSize: colors.fontSize?.sm || '14px', color: colors.textSecondary }}>
+            Metadata cards show file information using white chip variants with proper theme support.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
+            <Cards
+              type="metadata"
+              title="Design System Guidelines.pdf"
+              subtitle="Updated 2 hours ago by Sarah Chen"
+              tag="v3.2.1"
+              extensionSize={true}
+              showMetadata={true}
+              fileType="pdf"
+            />
+            <Cards
+              type="metadata"
+              title="Component Library.fig"
+              subtitle="Shared with design team"
+              tag="Draft"
+              extensionSize={true}
+              showMetadata={true}
+              fileType="figma"
+              selected={true}
+            />
+            <Cards
+              type="metadata"
+              title="User Research Data.xlsx"
+              subtitle="Q4 analytics and insights"
+              tag="Confidential"
+              extensionSize={true}
+              showMetadata={true}
+              fileType="excel"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
 // Icon variations
 export const IconVariations: Story = {
-  name: '05 Icon Variations',
+  name: '07 Icon Variations',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -389,7 +505,7 @@ export const IconVariations: Story = {
 
 // Real-world examples
 export const RealWorldExamples: Story = {
-  name: '06 Real World Examples',
+  name: '08 Real World Examples',
   render: () => {
     const [selectedFiles, setSelectedFiles] = React.useState<number[]>([1, 3]);
 
@@ -439,7 +555,7 @@ export const RealWorldExamples: Story = {
 
 // Accessibility example
 export const AccessibilityFocus: Story = {
-  name: '07 Accessibility Focus',
+  name: '09 Accessibility Focus',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -480,7 +596,7 @@ export const AccessibilityFocus: Story = {
 
 // Edge cases
 export const EdgeCases: Story = {
-  name: '08 Edge Cases',
+  name: '10 Edge Cases',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -517,7 +633,7 @@ export const EdgeCases: Story = {
 
 // Playground
 export const Playground: Story = {
-  name: '09 Playground',
+  name: '11 Playground',
   args: {
     title: 'Playground Card',
     subtitle: 'Experiment with props',
