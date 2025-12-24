@@ -1,169 +1,17 @@
 # ODL Design System
 
-A comprehensive, accessible React component library for building modern government and enterprise applications.
+A comprehensive, accessible, and modern design system built with React, TypeScript, and Tailwind CSS. The ODL Design System provides a consistent set of reusable components for building user interfaces across web applications.
 
-[![Storybook](https://img.shields.io/badge/Storybook-FF4785?logo=storybook&logoColor=white)](https://content-steamfrog2012s-projects.vercel.app)
-[![WCAG AA](https://img.shields.io/badge/WCAG-AA%20Compliant-green)](https://www.w3.org/WAI/WCAG21/quickref/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18+-61DAFB?logo=react)](https://reactjs.org/)
+## 🚀 Quick Start
 
-## Live Demo
-
-**Storybook:** [content-steamfrog2012s-projects.vercel.app](https://content-steamfrog2012s-projects.vercel.app)
-
-## Quick Start
+### Storybook Documentation
+- **Live:** [https://content-steamfrog2012s-projects.vercel.app](https://content-steamfrog2012s-projects.vercel.app)
+- **Local:** `http://localhost:6006`
 
 ```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Start Storybook
+cd content
 npm run storybook
-
-# Build for production
-npm run build
-
-# Build Storybook
-npm run build-storybook
 ```
-
-## Features
-
-- **51 Production-Ready Components** - Buttons, Tables, Cards, Graphs, FileUpload, and more
-- **41 Storybook Stories** - Interactive documentation for all components
-- **WCAG AA Compliant** - Full accessibility support with keyboard navigation and screen readers
-- **TypeScript** - Complete type safety with exported types
-- **Design Tokens** - Consistent theming via ODLTheme system
-- **Zero External CSS** - Self-contained styles, no global CSS conflicts
-- **Responsive** - Mobile-first design for all screen sizes
-
-## Component Categories
-
-### Data Display
-| Component | Description | Storybook |
-|-----------|-------------|-----------|
-| Table | Sorting, filtering, pagination, selection | Yes |
-| AdvancedTable | Virtual scrolling, column resize, export | Yes |
-| Cards | Grid/list layouts, selection, actions | Yes |
-| Graph | 9 chart types (area, bar, line, pie, etc.) | Yes |
-| StatsCard | KPI display with trends | Yes |
-| StatsGrid | Dashboard metrics layout | Yes |
-| ChartCard | Cards with embedded visualizations | Yes |
-| Treemap | Hierarchical data visualization | Yes |
-| DocumentTreemap | Document structure visualization | Yes |
-
-### Navigation
-| Component | Description | Storybook |
-|-----------|-------------|-----------|
-| NavigationRail | Collapsible side navigation | Yes |
-| Breadcrumb | Navigation trail with overflow | Yes |
-| Tabs / SimpleTabs | Tab navigation with icons | Yes |
-| TreeNavigation | Hierarchical tree navigation | Yes |
-| MillerColumns | Finder-style column browser | Yes |
-| Header | Product-branded app headers | - |
-
-### Forms & Input
-| Component | Description | Storybook |
-|-----------|-------------|-----------|
-| Input | Text, email, password, textarea, date | Yes |
-| Dropdown | Single/multi-select, search, groups | Yes |
-| Button | Primary, secondary, ghost, destructive | Yes |
-| Chip | Tags with actions | Yes |
-| FileUpload | Drag-drop, progress, AI analysis ready | - |
-| Stepper | Multi-step form wizard | Yes |
-
-### Feedback & Overlay
-| Component | Description | Storybook |
-|-----------|-------------|-----------|
-| Modal | Dialog overlays with sizes | Yes |
-| Drawer | Slide-out panels | Yes |
-| Popover | Contextual popovers | Yes |
-| AlertBanner | Status messages | Yes |
-| AlertPanel | Inline alerts | - |
-
-### Layout
-| Component | Description | Storybook |
-|-----------|-------------|-----------|
-| Accordion | Expandable sections | Yes |
-| CollapsibleCard | Cards with expand/collapse | Yes |
-| DualPaneExplorer | Split-pane layout | Yes |
-| PageTemplate | Page layout wrapper | - |
-| Kanban | Drag-drop board | Yes |
-
-## Design System
-
-All components use the ODLTheme system for consistent styling:
-
-```tsx
-import { ODLTheme } from '@odl/design-system';
-
-// Colors
-ODLTheme.colors.primary      // #3560C1
-ODLTheme.colors.success      // #24A148
-ODLTheme.colors.error        // #DA1E28
-ODLTheme.colors.warning      // #B07C0C (WCAG AA compliant)
-
-// Spacing (4px increments)
-ODLTheme.spacing[1]  // 4px
-ODLTheme.spacing[2]  // 8px
-ODLTheme.spacing[4]  // 16px
-
-// Typography
-ODLTheme.typography.fontSize.sm    // 12px
-ODLTheme.typography.fontSize.base  // 14px
-ODLTheme.typography.fontSize.lg    // 18px
-```
-
-### CSS Variables
-
-Components also expose CSS custom properties:
-
-```css
---odl-primary: #3560C1;
---odl-success: #24A148;
---odl-error: #DA1E28;
---odl-spacing-1: 4px;
---odl-spacing-2: 8px;
---odl-font-size-sm: 12px;
-```
-
-## Accessibility
-
-All components are built with accessibility in mind:
-
-- **Keyboard Navigation** - Full keyboard support for all interactive elements
-- **Screen Reader Support** - Proper ARIA labels and live regions
-- **Focus Management** - Visible focus indicators meeting WCAG 2.1 AA
-- **Color Contrast** - All text meets 4.5:1 contrast ratio
-- **Touch Targets** - Minimum 44px touch targets on mobile
-
-### Testing
-
-```bash
-# Run accessibility tests
-npm run test:a11y
-```
-
-## Project Structure
-
-```
-odl-design-system/
-├── src/
-│   ├── components/     # 51 React components
-│   ├── pages/          # Demo pages
-│   ├── styles/         # ODLTheme and global styles
-│   ├── hooks/          # Custom React hooks
-│   ├── templates/      # Page templates
-│   └── index.ts        # Main exports
-├── example/            # HTML entry points for demos
-├── .storybook/         # Storybook configuration
-└── package.json
-```
-
-## Usage
 
 ### Installation
 
@@ -171,84 +19,304 @@ odl-design-system/
 npm install @odl/design-system
 ```
 
-### Import Components
+## 📋 Component Categories
 
+### 🔧 Core Components (44 Total)
+The ODL Design System includes 44 fully documented components organized into the following categories:
+
+#### **Data Components**
+- **Table** - Advanced data tables with sorting, pagination, search, column resize, and selection
+- **Cards** - Multiple card variants (Compact, Comfortable, Metadata, User, Workspace, Build, 3Sixty)
+- **DashboardCards** - Specialized dashboard components
+- **ThumbnailCards** - Image-based card components
+
+#### **Navigation Components**
+- **Header** - Application headers with branding and navigation
+- **NavigationRail** - Sidebar navigation with collapsible sections
+- **Breadcrumb** - Hierarchical navigation breadcrumbs
+- **TreeNavigation** - Expandable tree-based navigation
+- **Tabs** - Tab-based content organization
+
+#### **Input Components**
+- **Button** - Primary, secondary, ghost, and destructive variants
+- **Input** - Text fields, textareas, and specialized input types
+- **Dropdown** - Select menus and option lists
+- **RadioButton** - Single selection radio groups
+- **Switch** - Toggle switches with Carbon icons
+- **Checkbox** - Selection checkboxes with indeterminate state
+
+#### **Display Components**
+- **Modal** - Dialog overlays and popups
+- **Popover** - Contextual information displays
+- **Chip** - Status indicators and tags with toggle functionality
+- **Icon** - 200+ Carbon Design System icons
+- **IconButton** - Interactive icon buttons
+- **UserAvatar** - User profile images and initials
+
+#### **Feedback Components**
+- **AlertBanner** - System notifications and alerts
+- **StatusCard** - Status indicators and information cards
+- **Graph** - Charts and data visualizations (Area, Bar, Pie)
+
+#### **Layout Components**
+- **Accordion** - Collapsible content sections with nested support
+- **Drawer** - Slide-out panels and sidebars
+- **Stepper** - Multi-step process indicators
+- **BackToTop** - Page navigation helper
+
+#### **Specialized Components**
+- **FileType** - File type icons and indicators
+- **Kanban** - Drag-and-drop task boards
+- **HierarchyVisualizations** - Organizational charts and tree views
+- **SimpleEditor** - Rich text editing capabilities
+
+## 🎨 Design Tokens & Theming
+
+### Color System
+```typescript
+// Primary Colors
+primary: '#3560C1'           // ODL Primary Blue
+primaryHover: '#2A4FA3'      // Hover states
+primaryLight: '#E0F3FE'      // Light backgrounds
+primaryDark: '#1E3A8A'       // Dark emphasis
+
+// Status Colors
+success: '#24A148'           // Success/positive actions
+error: '#DA1E28'             // Errors/negative actions  
+warning: '#B07C0C'           // Warning states
+info: '#0F62FE'              // Information
+
+// Text Colors
+textPrimary: '#161616'       // Main content
+textSecondary: '#525252'     // Secondary content
+textTertiary: '#6B6B6B'      // Tertiary/muted text
+textMuted: '#707070'         // Special muted text
+textDisabled: '#A0A0A0'      // Disabled states
+```
+
+### Typography Scale
+```typescript
+fontSize: {
+  xs: '11px',     // Small labels
+  sm: '12px',     // Secondary text
+  base: '14px',   // Body text
+  md: '16px',     // Large body
+  lg: '18px',     // Subheadings
+  xl: '20px',     // Headings
+  '2xl': '24px',  // Large headings
+  '3xl': '32px',  // Display text
+  '4xl': '40px'   // Hero text
+}
+```
+
+### Spacing System
+```typescript
+spacing: {
+  0: '0',      4: '16px',    10: '40px',
+  1: '4px',    5: '20px',    12: '48px',
+  2: '8px',    6: '24px',    16: '64px',
+  3: '12px',   8: '32px',    20: '80px'
+}
+```
+
+## 🌓 Theme Support
+
+### Available Themes
+- **Light Theme** - Default clean interface
+- **Dark Theme** - Dark mode for low-light environments  
+- **High Contrast** - Enhanced accessibility with increased contrast ratios
+
+### Dynamic Theme Features
+- Automatic color adaptation across themes
+- Maintains WCAG 2.1 AA compliance
+- Seamless theme switching
+- CSS variable-based implementation
+
+## 📁 Project Structure
+
+```
+ODL/
+├── content/                    # Storybook configuration and stories
+│   ├── .storybook/            # Storybook setup and theme decorator
+│   ├── src/
+│   │   ├── components/        # 44 components with .stories.tsx files
+│   │   ├── styles/            # Global styles and ODL theme
+│   │   ├── utils/             # Utility functions
+│   │   ├── hooks/             # Custom React hooks
+│   │   └── types/             # TypeScript definitions
+│   └── package.json
+├── src/
+│   ├── components/            # Source component implementations
+│   │   ├── Accordion/         # Collapsible content sections
+│   │   ├── AlertBanner/       # System notifications
+│   │   ├── BackToTop/         # Navigation helper
+│   │   ├── Breadcrumb/        # Hierarchical navigation
+│   │   ├── Button/            # Action buttons
+│   │   ├── CardComponents/    # Card variants and layouts
+│   │   ├── Checkbox/          # Selection inputs
+│   │   ├── Chip/              # Status and tag components
+│   │   ├── DashboardCards/    # Dashboard-specific components
+│   │   ├── Drawer/            # Slide-out panels
+│   │   ├── Dropdown/          # Select menus
+│   │   ├── FileType/          # File type indicators
+│   │   ├── Graph/             # Data visualization
+│   │   ├── Header/            # Application headers
+│   │   ├── HierarchyVisualizations/ # Org charts
+│   │   ├── Icon/              # Icon system
+│   │   ├── IconButton/        # Interactive icons
+│   │   ├── Input/             # Text inputs and forms
+│   │   ├── Kanban/            # Task board components
+│   │   ├── Modal/             # Dialog components
+│   │   ├── NavigationRail/    # Sidebar navigation
+│   │   ├── Popover/           # Contextual displays
+│   │   ├── RadioButton/       # Radio selection groups
+│   │   ├── SimpleEditor/      # Rich text editor
+│   │   ├── StatusCard/        # Status displays
+│   │   ├── Stepper/           # Multi-step indicators
+│   │   ├── Switch/            # Toggle switches
+│   │   ├── Table/             # Data tables
+│   │   ├── Tabs/              # Tab navigation
+│   │   ├── ThumbnailCards/    # Image-based cards
+│   │   ├── TreeNavigation/    # Tree-based navigation
+│   │   └── UserAvatar/        # User profile components
+│   ├── styles/
+│   │   ├── ODLTheme.ts        # Main theme configuration
+│   │   └── index.css          # Global styles
+│   └── utils/                 # Shared utilities
+└── package.json
+```
+
+## 🔧 Key Features
+
+### Accessibility First
+- WCAG 2.1 AA compliant
+- Full keyboard navigation support
+- Screen reader optimized
+- High contrast theme support
+- Proper ARIA attributes and roles
+
+### Developer Experience
+- **TypeScript** - Full type safety and IntelliSense
+- **Storybook** - Interactive component documentation
+- **Tree Shaking** - Import only what you need
+- **Hot Reload** - Fast development iteration
+- **ESLint/Prettier** - Code quality and formatting
+
+### Advanced Component Features
+- **Dynamic Theming** - Automatic adaptation to theme changes
+- **Responsive Design** - Mobile-first approach
+- **Performance Optimized** - Lazy loading and code splitting
+- **Internationalization Ready** - i18n support structure
+- **Carbon Icons** - 200+ professional icons
+
+### Data Components
+- **Advanced Tables** - Sorting, filtering, pagination, selection
+- **Search Integration** - Built-in search with SearchLocate icon
+- **Column Management** - Resize, reorder, hide/show columns
+- **Export Functionality** - Data export capabilities
+
+## 🎯 Component Status
+
+### Ready for Development
+Components marked with "Ready for dev" tag in Storybook:
+- **Switch** - Toggle switches with full accessibility
+- **Cards** - All card variants with enhanced functionality
+- **Accordion** - Collapsible sections with nested support
+- And more...
+
+### Component Maturity
+- **48 Storybook Stories** - Multiple variants per component
+- **100% Documentation** - Every component documented in Storybook
+- **Type Safe** - Full TypeScript coverage
+- **Tested** - Comprehensive testing coverage
+
+## 🚀 Getting Started
+
+### Basic Usage
 ```tsx
-import { Button, Table, Modal, Graph } from '@odl/design-system';
-import '@odl/design-system/styles.css';
+import { Button, Cards, Input, Modal } from '@odl/design-system';
+import '@odl/design-system/styles';
 
 function App() {
   return (
-    <Button variant="primary" size="md">
-      Click me
-    </Button>
+    <div>
+      <Button variant="primary" size="medium">
+        Click me
+      </Button>
+      <Cards 
+        type="comfortable"
+        title="Sample Card"
+        subtitle="Card description"
+        tag="v1.0"
+      />
+      <Input 
+        type="text"
+        label="Enter text"
+        placeholder="Type here..."
+      />
+    </div>
   );
 }
 ```
 
-### Import Theme
-
+### Advanced Usage with Theming
 ```tsx
-import { ODLTheme, ODLColors } from '@odl/design-system';
+import { useTheme } from '@odl/design-system';
 
-const customStyles = {
-  backgroundColor: ODLTheme.colors.primaryLight,
-  padding: ODLTheme.spacing[4],
-};
+function ThemedComponent() {
+  const { colors, spacing, typography } = useTheme();
+  
+  return (
+    <div style={{
+      color: colors.textPrimary,
+      padding: spacing[4],
+      fontSize: typography.fontSize.base
+    }}>
+      Themed content
+    </div>
+  );
+}
 ```
 
-## Recent Updates
+## 📚 Documentation
 
-### v1.3.0 (December 2024)
-- Added FileUpload component with drag-drop, progress tracking, and AI analysis support
-- Full WCAG AA accessibility compliance audit completed
-- Added 41 Storybook stories for interactive documentation
-- Deployed to Vercel for live preview
-- Fixed color contrast issues for warning states
-- Added keyboard navigation to all interactive components
+- **Storybook**: Interactive component playground and documentation
+- **TypeScript**: Full type definitions and IntelliSense support
+- **Examples**: Real-world usage examples in each story
+- **Best Practices**: Guidelines for accessibility and performance
 
-### v1.2.0
-- Added Stepper, Drawer, AlertBanner components
-- Added 9 chart types via Graph component
-- Improved responsive design across all components
+## 🔄 Development Workflow
 
-### v1.1.0
-- Added comprehensive Table with sorting/filtering
-- Added Modal component with multiple sizes
-- Added SimpleTabs with icon support
+```bash
+# Start Storybook for development
+npm run storybook
 
-## Scripts
+# Build components
+npm run build
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start Vite dev server |
-| `npm run storybook` | Start Storybook on port 6006 |
-| `npm run build` | Build component library |
-| `npm run build-storybook` | Build static Storybook |
-| `npm run type-check` | Run TypeScript compiler |
-| `npm run lint` | Run ESLint |
-| `npm run test` | Run tests |
+# Run tests
+npm test
 
-## Browser Support
+# Type checking
+npm run type-check
 
-- Chrome (last 2 versions)
-- Firefox (last 2 versions)
-- Safari (last 2 versions)
-- Edge (last 2 versions)
+# Linting
+npm run lint
+```
 
-## Contributing
+## 🤝 Contributing
 
-1. Follow the ODL Style Guide
-2. Use ODLTheme for all styling (no hardcoded colors)
-3. Ensure WCAG AA accessibility compliance
-4. Add TypeScript types for all props
-5. Create Storybook stories for new components
-6. Test keyboard navigation and screen reader support
+1. Follow the existing component structure
+2. Include comprehensive Storybook stories
+3. Ensure accessibility compliance
+4. Add TypeScript definitions
+5. Follow the existing naming conventions
+6. Use ODL theme tokens for styling
 
-## License
+## 📄 License
 
-MIT - Objective Corporation
+MIT License - See LICENSE file for details
 
 ---
 
-Built with React, TypeScript, and the ODL Design System
+**ODL Design System** - Building consistent, accessible, and beautiful user interfaces.
