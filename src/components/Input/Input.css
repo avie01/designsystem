@@ -82,6 +82,7 @@
 .custom-input::placeholder {
   color: var(--odl-text-tertiary);
   opacity: 1;
+  font-style: italic;
 }
 
 .custom-input:hover:not(.custom-input--disabled):not(.custom-input--readonly) {

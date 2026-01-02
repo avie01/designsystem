@@ -84,6 +84,7 @@ export const carbonIconMapping: Record<string, string> = {
   'close-filled': 'CloseFilled',
   'close-outline': 'CloseOutline',
   'cloud': 'Cloud',
+  'cloud-download': 'CloudDownload',
   'code': 'Code',
   'code-block': 'Code',
   'collaborate': 'Collaborate',
