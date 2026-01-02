@@ -9,7 +9,7 @@ import DemoBreadcrumb from '../components/DemoBreadcrumb/DemoBreadcrumb';
 import BackToTop from '../components/BackToTop/BackToTop';
 import { ODLThemeProvider } from '../theme/ODLThemeProvider';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { Box, Chip as MUIChip } from '@mui/material';
+import { Box } from '@mui/material';
 import { TableRowData } from '../types/common';
 import ODLTheme from '../styles/ODLTheme';
 import styles from './TableDemo.module.css';
@@ -77,26 +77,21 @@ const TableDemo: React.FC = () => {
       field: 'status',
       headerName: 'Status',
       width: 120,
-      renderCell: (params: GridRenderCellParams) => (
-        <MUIChip
-          label={params.value}
-          size="small"
-          sx={{
-            fontSize: '12px',
-            fontWeight: 500,
-            height: '24px',
-            backgroundColor: params.value === 'Active' ? '#d4f4dd' :
-                           params.value === 'Pending' ? '#fff3cd' : '#f8d7da',
-            color: params.value === 'Active' ? '#1e7e34' :
-                   params.value === 'Pending' ? '#856404' : '#721c24',
-            '& .MuiChip-label': {
-              px: 1.5,
-              fontSize: '12px',
-              fontWeight: 500
-            }
-          }}
-        />
-      )
+      renderCell: (params: GridRenderCellParams) => {
+        const statusVariants: { [key: string]: { variant: 'green' | 'neutral' | 'yellow' } } = {
+          'Active': { variant: 'green' },
+          'Inactive': { variant: 'neutral' },
+          'Pending': { variant: 'yellow' }
+        };
+        const config = statusVariants[params.value as string] || { variant: 'neutral' };
+        return (
+          <Chip
+            label={params.value as string}
+            variant={config.variant}
+            size="sm"
+          />
+        );
+      }
     },
     { field: 'joinDate', headerName: 'Join Date', width: 130, resizable: true },
     {
@@ -239,23 +234,22 @@ const TableDemo: React.FC = () => {
     { key: 'email', label: 'Email', sortable: true, width: '18%' },
     { key: 'role', label: 'Role', sortable: true, width: '12%' },
     { key: 'department', label: 'Department', sortable: true, width: '12%' },
-    { 
-      key: 'status', 
-      label: 'Status', 
+    {
+      key: 'status',
+      label: 'Status',
       sortable: true,
       width: '10%',
       render: (item: BasicTableData) => {
-        const statusVariants: { [key: string]: { variant: 'lightGreen' | 'red' | 'yellow' | 'grey', icon?: string } } = {
-          'Active': { variant: 'lightGreen', icon: 'checkmark-filled' },
-          'Inactive': { variant: 'red', icon: 'error-filled' },
-          'Pending': { variant: 'yellow', icon: 'warning' }
+        const statusVariants: { [key: string]: { variant: 'green' | 'neutral' | 'yellow' } } = {
+          'Active': { variant: 'green' },
+          'Inactive': { variant: 'neutral' },
+          'Pending': { variant: 'yellow' }
         };
-        const config = statusVariants[item.status] || { variant: 'grey' };
+        const config = statusVariants[item.status] || { variant: 'neutral' };
         return (
-          <Chip 
-            label={item.status} 
+          <Chip
+            label={item.status}
             variant={config.variant}
-            iconName={config.icon}
             size="sm"
           />
         );
