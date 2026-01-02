@@ -1,7 +1,7 @@
 .tableContainer {
   overflow: hidden;
-  border: 1px solid #e0e0e0;
-  border-radius: 0 0 8px 8px;
+  border: 1px solid var(--odl-border, #e0e0e0);
+  border-radius: 8px;
 }
 
 .scrollContainer {
@@ -10,28 +10,141 @@
 
 .table {
   width: 100%;
-  table-layout: auto;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  border-bottom: 1px solid #D1D1D1;
 }
 
 .headerCell {
   padding: 0;
   position: relative;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--odl-text-secondary, #525252);
+  border-right: 1px solid #EDF1F5;
+}
+
+.headerCell:last-child {
+  border-right: none;
 }
 
 .headerCellContent {
-  resize: horizontal;
-  overflow: hidden;
-  min-width: 100px;
-  width: 100%;
-  padding: 12px 24px;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
 }
 
+.headerCellSortable {
+  cursor: pointer;
+}
+
+.headerCellSortable:hover {
+  background-color: var(--odl-surface-hover, #EBEBEB);
+}
+
 .sortableLabel {
-  padding: 2px 4px;
-  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
   white-space: nowrap;
+}
+
+.sortIndicator {
+  font-size: 12px;
+  color: var(--odl-text-secondary, #525252);
+}
+
+.tableRow {
+  background-color: white;
+  transition: background-color 150ms ease;
+  border-bottom: 1px solid #EDF1F5;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableRow:hover {
+  background-color: var(--odl-surface-hover, #EBEBEB);
+}
+
+.tableRowSelected {
+  background-color: #E5F5FE;
+}
+
+.tableRowSelected:hover {
+  background-color: #D0EDFC;
+}
+
+.tableRowClickable {
+  cursor: pointer;
+}
+
+.tableCell {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--odl-text-primary, #161616);
+  vertical-align: middle;
+  border-right: 1px solid #EDF1F5;
+}
+
+.tableCell:last-child {
+  border-right: none;
+}
+
+.tableCellCompact {
+  padding: 8px 12px;
+}
+
+.checkboxCell {
+  width: 40px;
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--odl-primary, #3560C1);
+}
+
+.actionCell {
+  width: 60px;
+  padding: 8px;
+  text-align: center;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--odl-text-secondary, #525252);
+  transition: background-color 150ms ease;
+}
+
+.actionButton:hover {
+  background-color: var(--odl-surface-hover, #EBEBEB);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--odl-text-secondary, #525252);
+  font-size: 14px;
 }
 
 .pagination {
@@ -39,7 +152,7 @@
   align-items: center;
   padding: 0;
   background-color: white;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--odl-border, #e0e0e0);
   height: 48px;
 }
 
@@ -54,7 +167,7 @@
 .paginationDivider {
   width: 1px;
   height: 48px;
-  background-color: #e0e0e0;
+  background-color: var(--odl-border, #e0e0e0);
 }
 
 .paginationSelect {
@@ -73,7 +186,7 @@
 .paginationInfo {
   padding: 0 24px;
   font-size: 14px;
-  color: #161616;
+  color: var(--odl-text-primary, #161616);
 }
 
 .paginationSpacer {
@@ -95,7 +208,7 @@
 
 .paginationLabel {
   font-size: 14px;
-  color: #161616;
+  color: var(--odl-text-primary, #161616);
 }
 
 .paginationButton {
