@@ -44,7 +44,7 @@
 }
 
 .alert-banner--small .alert-banner__message {
-  font-size: var(--odl-font-size-xs);
+  font-size: var(--odl-font-size-sm);
 }
 
 .alert-banner--large {
@@ -57,7 +57,7 @@
 }
 
 .alert-banner--large .alert-banner__message {
-  font-size: var(--odl-font-size-base);
+  font-size: var(--odl-font-size-md);
 }
 
 /* State modifiers */
@@ -115,7 +115,7 @@
 }
 
 .alert-banner__message {
-  font-size: var(--odl-font-size-sm);
+  font-size: var(--odl-font-size-base);
   line-height: var(--odl-line-height-relaxed);
 }
 

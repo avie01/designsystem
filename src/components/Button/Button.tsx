@@ -6,9 +6,9 @@ export interface ButtonProps {
   /** The button text or content */
   children: React.ReactNode;
   /** Button variant */
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'text' | 'destructive' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'text' | 'destructive' | 'disabled';
   /** Button size */
-  size?: 'small' | 'medium' | 'large' | 'xs' | 'sm' | 'md' | 'lg';
+  size?: 'medium' | 'large' | 'md' | 'lg';
   /** Whether the button is disabled */
   disabled?: boolean;
   /** Whether the button is in error state */
@@ -59,22 +59,19 @@ const Button: React.FC<ButtonProps> = ({
   'aria-expanded': ariaExpanded,
 }) => {
   const { colors } = useTheme();
-  const [_isPressed, setIsPressed] = useState(false);
-  const [_isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   // Normalize size prop
-  const normalizedSize = size === 'xs' ? 'xs' : 
-                        size === 'small' || size === 'sm' ? 'sm' :
-                        size === 'medium' || size === 'md' ? 'md' :
+  const normalizedSize = size === 'medium' || size === 'md' ? 'md' :
                         size === 'large' || size === 'lg' ? 'lg' : 'md';
 
-  // Get theme-based styles for each variant
+  // Get theme-based styles for each variant (background colors handled by CSS)
   const getVariantStyles = () => {
     const baseStyles = {
       borderRadius: '2px',
       fontWeight: 500,
-      border: 'none',
       cursor: disabled || loading ? 'not-allowed' : 'pointer',
       opacity: disabled ? 0.6 : 1,
     };
@@ -83,50 +80,44 @@ const Button: React.FC<ButtonProps> = ({
       case 'primary':
         return {
           ...baseStyles,
-          backgroundColor: colors.primaryMain,
-          color: colors.textInverse,
+          color: disabled ? colors.textDisabled : colors.textInverse,
           border: 'none',
         };
       case 'secondary':
         return {
           ...baseStyles,
-          backgroundColor: colors.paper,
-          color: colors.textSecondary,
+          color: disabled ? colors.textDisabled : colors.textSecondary,
           border: `1px solid ${colors.border}`,
         };
       case 'tertiary':
         return {
           ...baseStyles,
-          backgroundColor: colors.secondaryLight,
-          color: colors.textSecondary,
+          color: disabled ? colors.textDisabled : colors.textSecondary,
           border: 'none',
         };
       case 'text':
         return {
           ...baseStyles,
-          backgroundColor: 'transparent',
-          color: colors.textSecondary,
+          color: disabled ? colors.textDisabled : colors.textSecondary,
           border: 'none',
         };
       case 'destructive':
         return {
           ...baseStyles,
-          backgroundColor: colors.errorLight,
-          color: colors.errorMain,
-          border: `1px solid ${colors.errorMain}`,
+          color: disabled ? colors.textDisabled : '#525965',
+          border: 'none',
         };
-      case 'ghost':
+      case 'disabled':
         return {
           ...baseStyles,
-          backgroundColor: 'transparent',
           color: colors.textSecondary,
           border: 'none',
         };
       default:
         return {
           ...baseStyles,
-          backgroundColor: colors.primaryMain,
-          color: colors.textInverse,
+          color: disabled ? colors.textDisabled : colors.textInverse,
+          border: 'none',
         };
     }
   };
@@ -134,40 +125,26 @@ const Button: React.FC<ButtonProps> = ({
   // Get size-based styles
   const getSizeStyles = () => {
     switch (normalizedSize) {
-      case 'xs':
-        return {
-          padding: `${colors.spacing[1]} ${colors.spacing[3]}`,
-          fontSize: '11px',
-          minHeight: '32px',
-          gap: colors.spacing[1],
-        };
-      case 'sm':
-        return {
-          padding: `${colors.spacing[2]} ${colors.spacing[4]}`,
-          fontSize: '12px',
-          minHeight: '36px',
-          gap: colors.spacing[2],
-        };
       case 'md':
         return {
-          padding: `${colors.spacing[3]} ${colors.spacing[4]}`,
+          padding: '6px 12px',
           fontSize: '14px',
-          minHeight: '44px',
-          gap: colors.spacing[2],
+          height: '32px',
+          gap: '6px',
         };
       case 'lg':
         return {
-          padding: `${colors.spacing[4]} ${colors.spacing[5]}`,
+          padding: '10px 14px',
           fontSize: '16px',
-          minHeight: '48px',
-          gap: colors.spacing[2],
+          height: '44px',
+          gap: '6px',
         };
       default:
         return {
-          padding: `${colors.spacing[3]} ${colors.spacing[4]}`,
+          padding: '6px 12px',
           fontSize: '14px',
-          minHeight: '44px',
-          gap: colors.spacing[2],
+          height: '32px',
+          gap: '6px',
         };
     }
   };
@@ -187,21 +164,22 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   // Build CSS classes (keeping base classes for animations and focus states)
+  const variantClass = variant === 'disabled' ? 'ghost' : variant;
   const buttonClasses = [
     'button',
-    `button--${variant}`,
+    `button--${variantClass}`,
     `button--${normalizedSize}`,
     disabled ? 'button--disabled' : '',
     error ? 'button--error' : '',
     loading ? 'button--loading' : '',
     selected ? 'button--selected' : '',
-    (variant === 'ghost' && customHoverBg) ? 'button--custom-hover' : '',
+    (variant === 'disabled' && customHoverBg) ? 'button--custom-hover' : '',
     className
   ].filter(Boolean).join(' ');
 
-  // Handle custom hover background for ghost variant
+  // Handle custom hover background for disabled variant
   useEffect(() => {
-    if (variant === 'ghost' && customHoverBg && buttonRef.current) {
+    if (variant === 'disabled' && customHoverBg && buttonRef.current) {
       buttonRef.current.style.setProperty('--custom-hover-bg', customHoverBg);
     }
   }, [variant, customHoverBg]);

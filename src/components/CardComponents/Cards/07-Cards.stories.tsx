@@ -3,6 +3,8 @@ import React from 'react';
 import Cards from './Cards';
 import { useTheme } from '../../../../.storybook/theme-decorator';
 import { getAvailableFileTypes } from '../../FileType/fileTypeSvgs';
+import Button from '../../Button/Button';
+import Icon from '../../Icon/Icon';
 
 const meta: Meta<typeof Cards> = {
   title: 'Design System/Components/Cards',
@@ -785,9 +787,101 @@ export const RealWorldExamples: Story = {
   },
 };
 
+// Card Lists
+export const CardLists: Story = {
+  name: '11 Card Lists',
+  render: () => {
+    const [selectedFiles, setSelectedFiles] = React.useState<number[]>([1, 3]);
+
+    const files = [
+      { id: 1, title: 'Design System.fig', subtitle: 'Modified by Sarah Chen', tag: 'v3.2.1' },
+      { id: 2, title: 'Component Library', subtitle: 'Updated yesterday', tag: 'Latest' },
+      { id: 3, title: 'User Research Notes.docx', subtitle: 'Shared by Mike Davis', tag: 'Draft' },
+      { id: 4, title: 'Q4 Analytics Report.pdf', subtitle: 'Created 3 days ago', tag: 'Final' },
+      { id: 5, title: 'Sprint Planning.xlsx', subtitle: 'Last edited 1 hour ago', tag: 'WIP' },
+    ];
+
+    const toggleSelection = (id: number) => {
+      setSelectedFiles(prev =>
+        prev.includes(id)
+          ? prev.filter(fileId => fileId !== id)
+          : [...prev, id]
+      );
+    };
+
+    const selectAll = () => {
+      setSelectedFiles(files.map(f => f.id));
+    };
+
+    const { colors } = useTheme();
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>File Manager Example</h4>
+          <div style={{ marginBottom: colors.spacing[4] || '16px', display: 'flex', gap: colors.spacing[3] || '12px', alignItems: 'center' }}>
+            {selectedFiles.length === 0 ? (
+              <>
+                <Button variant="text" size="md" onClick={selectAll}>
+                  <Icon name="checkmark" size={16} style={{ marginRight: colors.spacing?.[2] || '8px' }} />
+                  Select All
+                </Button>
+                <Button variant="text" size="md" onClick={() => alert('Share')}>
+                  <Icon name="share" size={16} style={{ marginRight: colors.spacing?.[2] || '8px' }} />
+                  Share
+                </Button>
+                <Button variant="text" size="md" onClick={() => alert('Delete')}>
+                  <Icon name="trash-can" size={16} style={{ marginRight: colors.spacing?.[2] || '8px' }} />
+                  Delete
+                </Button>
+                <Button variant="text" size="md" onClick={() => alert('Move')}>
+                  <Icon name="folder-move-to" size={16} style={{ marginRight: colors.spacing?.[2] || '8px' }} />
+                  Move
+                </Button>
+                <Button variant="text" size="md" onClick={() => alert('Download')}>
+                  <Icon name="download" size={16} style={{ marginRight: colors.spacing?.[2] || '8px' }} />
+                  Download
+                </Button>
+                <Button variant="text" size="md" onClick={() => alert('Publish')}>
+                  <Icon name="send" size={16} style={{ marginRight: colors.spacing?.[2] || '8px' }} />
+                  Publish
+                </Button>
+              </>
+            ) : (
+              <span style={{ fontSize: colors.fontSize?.sm || '14px', color: colors.textSecondary }}>
+                {selectedFiles.length} file(s) selected
+              </span>
+            )}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+            {files.map((file, index) => (
+              <Cards
+                key={file.id}
+                title={file.title}
+                subtitle={file.subtitle}
+                tag={file.tag}
+                selected={selectedFiles.includes(file.id)}
+                onSelect={() => toggleSelection(file.id)}
+                onInfoClick={() => alert(`Info for ${file.title}`)}
+                onMenuClick={() => alert(`Menu for ${file.title}`)}
+                style={index > 0 ? { 
+                  borderTop: 0,
+                  borderTopWidth: 0,
+                  borderBottom: '1px solid #E0E0E0',
+                  borderLeft: selectedFiles.includes(file.id) ? '4px solid #3560C1' : '1px solid #E0E0E0',
+                  borderRight: '1px solid #E0E0E0'
+                } : {}}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
 // Accessibility example
 export const AccessibilityFocus: Story = {
-  name: '11 Accessibility Focus',
+  name: '12 Accessibility Focus',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -828,7 +922,7 @@ export const AccessibilityFocus: Story = {
 
 // Edge cases
 export const EdgeCases: Story = {
-  name: '12 Edge Cases',
+  name: '13 Edge Cases',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -865,7 +959,7 @@ export const EdgeCases: Story = {
 
 // Playground
 export const Playground: Story = {
-  name: '13 Playground',
+  name: '14 Playground',
   args: {
     title: 'Playground Card',
     subtitle: 'Experiment with props',

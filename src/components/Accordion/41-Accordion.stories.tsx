@@ -87,58 +87,61 @@ export const Default: Story = {
 
 export const SingleExpand: Story = {
   name: '02 Single Expand',
-  args: {
-    items: [
-      {
-        id: '1',
-        title: 'Step 1: Installation',
-        content: 'Run npm install @odl/design-system to install the package.',
-        icon: 'download',
-      },
-      {
-        id: '2',
-        title: 'Step 2: Configuration',
-        content: 'Import the CSS file and configure your theme settings.',
-        icon: 'settings',
-        defaultOpen: true,
-      },
-      {
-        id: '3',
-        title: 'Step 3: Start Building',
-        content: 'Import components and start building your application.',
-        icon: 'build',
-      },
-    ],
-    allowMultiple: false,
-    showIcons: true,
-    variant: 'default',
-  },
+  render: () => (
+    <Accordion
+      items={[
+        {
+          id: '1',
+          title: 'Step 1: Installation',
+          content: 'Run npm install @odl/design-system to install the package.',
+          icon: 'download',
+        },
+        {
+          id: '2',
+          title: 'Step 2: Configuration',
+          content: 'Import the CSS file and configure your theme settings.',
+          icon: 'settings',
+        },
+        {
+          id: '3',
+          title: 'Step 3: Start Building',
+          content: 'Import components and start building your application.',
+          icon: 'build',
+        },
+      ]}
+      allowMultiple={false}
+      showIcons={true}
+      variant="default"
+    />
+  ),
 };
 
 export const WithoutIcons: Story = {
   name: '03 Without Icons',
-  args: {
-    items: [
-      {
-        id: '1',
-        title: 'Privacy Policy',
-        content: 'We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data.',
-      },
-      {
-        id: '2',
-        title: 'Terms of Service',
-        content: 'By accessing and using this service, you accept and agree to be bound by the terms and provision of this agreement.',
-      },
-      {
-        id: '3',
-        title: 'Cookie Policy',
-        content: 'We use cookies to improve your browsing experience. By continuing to use our site, you accept our use of cookies.',
-      },
-    ],
-    allowMultiple: true,
-    showIcons: false,
-    variant: 'default',
-  },
+  render: () => (
+    <Accordion
+      items={[
+        {
+          id: '1',
+          title: 'Privacy Policy',
+          content: 'We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data.',
+        },
+        {
+          id: '2',
+          title: 'Terms of Service',
+          content: 'By accessing and using this service, you accept and agree to be bound by the terms and provision of this agreement.',
+        },
+        {
+          id: '3',
+          title: 'Cookie Policy',
+          content: 'We use cookies to improve your browsing experience. By continuing to use our site, you accept our use of cookies.',
+        },
+      ]}
+      allowMultiple={true}
+      showIcons={false}
+      variant="default"
+    />
+  ),
 };
 
 export const BorderedVariant: Story = {
