@@ -7,7 +7,7 @@ export interface IconButtonProps {
   /** The name of the Carbon icon to display */
   icon: string;
   /** Button variant */
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'destructive';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'disabled' | 'destructive';
   /** Button size */
   size?: 'xs' | 'small' | 'medium' | 'large';
   /** Whether the button is disabled */
@@ -124,7 +124,7 @@ const IconButton: React.FC<IconButtonProps> = ({
         active: colors.secondaryDark,
         border: 'transparent'
       },
-      ghost: {
+      disabled: {
         background: 'transparent',
         color: colors.textPrimary,
         hover: customHoverBg || colors.grey400,
@@ -144,9 +144,9 @@ const IconButton: React.FC<IconButtonProps> = ({
     return buttonColors[variant];
   };
 
-  // Handle custom hover background for ghost variant
+  // Handle custom hover background for disabled variant
   useEffect(() => {
-    if (variant === 'ghost' && customHoverBg && buttonRef.current) {
+    if (variant === 'disabled' && customHoverBg && buttonRef.current) {
       buttonRef.current.style.setProperty('--custom-hover-bg', customHoverBg);
     }
   }, [variant, customHoverBg]);

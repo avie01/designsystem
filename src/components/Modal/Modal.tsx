@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
+import IconButton from '../IconButton/IconButton';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import './Modal.css';
 
@@ -397,27 +398,14 @@ const Modal: React.FC<ModalProps> = ({
               </h2>
             )}
           </div>
-          <button
-            className="modal-close-button"
+          <IconButton
+            icon="close"
+            variant="disabled"
+            size="medium"
             onClick={onClose}
             disabled={disabled}
             aria-label="Close modal"
-          >
-            <svg
-              className="modal-close-icon"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
+          />
         </div>
 
         {/* Content */}
