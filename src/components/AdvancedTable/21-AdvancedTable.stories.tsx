@@ -270,7 +270,7 @@ const employeeColumns: TableColumn<Employee>[] = [
     render: (item) => (
       <Chip
         label={item.department}
-        variant="info"
+        variant="blue"
         size="sm"
       />
     )
@@ -289,7 +289,7 @@ const employeeColumns: TableColumn<Employee>[] = [
     render: (item) => (
       <Chip
         label={item.status}
-        variant={item.status === 'active' ? 'success' : item.status === 'pending' ? 'warning' : 'error'}
+        variant={item.status === 'active' ? 'green' : item.status === 'pending' ? 'yellow' : 'red'}
         size="sm"
       />
     )
@@ -466,10 +466,10 @@ export const ProjectsTable: Story = {
         sortable: true,
         render: (item) => {
           const variantMap = {
-            'planning': 'default' as const,
-            'in-progress': 'info' as const,
-            'completed': 'success' as const,
-            'on-hold': 'warning' as const
+            'planning': 'neutral' as const,
+            'in-progress': 'blue' as const,
+            'completed': 'green' as const,
+            'on-hold': 'yellow' as const
           };
           return <Chip label={item.status} variant={variantMap[item.status]} size="sm" />;
         }
@@ -481,10 +481,10 @@ export const ProjectsTable: Story = {
         sortable: true,
         render: (item) => {
           const variantMap = {
-            'low': 'default' as const,
-            'medium': 'warning' as const,
-            'high': 'error' as const,
-            'critical': 'error' as const
+            'low': 'neutral' as const,
+            'medium': 'yellow' as const,
+            'high': 'orange' as const,
+            'critical': 'red' as const
           };
           return <Chip label={item.priority} variant={variantMap[item.priority]} size="sm" />;
         }
@@ -768,7 +768,7 @@ export const ResizableColumns: Story = {
         render: (item) => (
           <Chip
             label={item.status}
-            variant={item.status === 'active' ? 'success' : item.status === 'pending' ? 'warning' : 'error'}
+            variant={item.status === 'active' ? 'green' : item.status === 'pending' ? 'yellow' : 'red'}
             size="sm"
           />
         )

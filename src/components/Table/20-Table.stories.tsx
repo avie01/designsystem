@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Table from './Table';
 import Icon from '../Icon/Icon';
+import IconButton from '../IconButton/IconButton';
 import Chip from '../Chip/Chip';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
@@ -112,16 +113,16 @@ const documentData = [
   },
 ];
 
-const getStatusVariant = (status: string): 'success' | 'warning' | 'info' | 'grey' => {
+const getStatusVariant = (status: string): 'green' | 'yellow' | 'blue' | 'neutral' => {
   switch (status) {
     case 'Approved':
-      return 'success';
+      return 'green';
     case 'In Review':
-      return 'warning';
+      return 'yellow';
     case 'Draft':
-      return 'info';
+      return 'blue';
     default:
-      return 'grey';
+      return 'neutral';
   }
 };
 
@@ -204,79 +205,34 @@ const documentColumns = [
     render: (item: any) => (
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
         <Tooltip label="Download">
-          <button
+          <IconButton
+            icon="cloud-download"
+            variant="ghost"
+            size="small"
+            aria-label="Download"
             onClick={(e) => {
               e.stopPropagation();
               console.log('Download clicked for:', item);
             }}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '4px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '4px',
-            }}
-            aria-label="Download"
-          >
-            <Icon name="cloud-download" size={16} />
-          </button>
+          />
         </Tooltip>
         <Tooltip label="More actions">
-          <button
+          <IconButton
+            icon="overflow-menu-vertical"
+            variant="ghost"
+            size="small"
+            aria-label="More actions"
             onClick={(e) => {
               e.stopPropagation();
               console.log('Menu clicked for:', item);
             }}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '4px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '4px',
-            }}
-            aria-label="More actions"
-          >
-            <Icon name="overflow-menu-vertical" size={16} />
-          </button>
+          />
         </Tooltip>
       </div>
     ),
   },
 ];
 
-const IconButton = ({ onClick, label, iconName }: { onClick: () => void; label: string; iconName: string }) => {
-  const [isHovered, setIsHovered] = React.useState(false);
-
-  return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      style={{
-        background: isHovered ? '#EBEBEB' : 'none',
-        border: 'none',
-        cursor: 'pointer',
-        padding: '8px',
-        width: '36px',
-        height: '36px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '50%',
-        transition: 'background-color 0.15s ease',
-      }}
-      aria-label={label}
-    >
-      <Icon name={iconName} size={20} />
-    </button>
-  );
-};
 
 const FilterBar = () => {
   const [searchExpanded, setSearchExpanded] = React.useState(false);
@@ -313,31 +269,24 @@ const FilterBar = () => {
             size="sm"
             icon={<Icon name="search" size={16} color="#525252" />}
             iconRight={
-              <button
-                onClick={handleCloseSearch}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: '50%',
-                }}
+              <IconButton
+                icon="close"
+                variant="ghost"
+                size="small"
                 aria-label="Close search"
-              >
-                <Icon name="close" size={16} color="#525252" />
-              </button>
+                onClick={handleCloseSearch}
+              />
             }
             aria-label="Search table"
           />
         </div>
       ) : (
         <IconButton
+          icon="search"
+          variant="ghost"
+          size="medium"
+          aria-label="Search"
           onClick={handleSearchClick}
-          label="Search"
-          iconName="search"
         />
       )}
     </div>
@@ -716,46 +665,28 @@ const FilterableTable = () => {
       render: (item: any) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
           <Tooltip label="Download">
-            <button
+            <IconButton
+              icon="cloud-download"
+              variant="ghost"
+              size="small"
+              aria-label="Download"
               onClick={(e) => {
                 e.stopPropagation();
                 console.log('Download clicked for:', item);
               }}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '4px',
-              }}
-              aria-label="Download"
-            >
-              <Icon name="cloud-download" size={16} />
-            </button>
+            />
           </Tooltip>
           <Tooltip label="More actions">
-            <button
+            <IconButton
+              icon="overflow-menu-vertical"
+              variant="ghost"
+              size="small"
+              aria-label="More actions"
               onClick={(e) => {
                 e.stopPropagation();
                 console.log('Menu clicked for:', item);
               }}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '4px',
-              }}
-              aria-label="More actions"
-            >
-              <Icon name="overflow-menu-vertical" size={16} />
-            </button>
+            />
           </Tooltip>
         </div>
       ),

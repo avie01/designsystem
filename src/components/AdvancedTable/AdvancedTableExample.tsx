@@ -125,7 +125,7 @@ const AdvancedTableExample: React.FC = () => {
       render: (item) => (
         <Chip
           label={item.department}
-          variant="info"
+          variant="blue"
           size="sm"
         />
       )
@@ -143,7 +143,7 @@ const AdvancedTableExample: React.FC = () => {
       render: (item) => (
         <Chip
           label={item.status}
-          variant={item.status === 'active' ? 'success' : item.status === 'pending' ? 'warning' : 'error'}
+          variant={item.status === 'active' ? 'green' : item.status === 'pending' ? 'yellow' : 'red'}
           size="sm"
         />
       )

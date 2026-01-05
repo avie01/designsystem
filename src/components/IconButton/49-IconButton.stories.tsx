@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import IconButton from './IconButton';
 import Icon from '../Icon/Icon';
+import { useTheme } from '../../../.storybook/theme-decorator';
 
 const meta: Meta<typeof IconButton> = {
   title: 'Design System/Components/IconButton',
@@ -398,14 +399,15 @@ export const Playground: Story = {
 export const WithMenu: Story = {
   name: '10 With Menu',
   render: () => {
+    const { colors } = useTheme();
     const [openMenuId, setOpenMenuId] = useState<number | null>(null);
     const [hoveredMenuItem, setHoveredMenuItem] = useState<string | null>(null);
     
     const menuOptions = [
-      { value: 'edit', label: 'Edit', icon: <Icon name="edit" size={16} /> },
-      { value: 'copy', label: 'Copy', icon: <Icon name="copy" size={16} /> },
-      { value: 'share', label: 'Share', icon: <Icon name="share" size={16} /> },
-      { value: 'delete', label: 'Delete', icon: <Icon name="delete" size={16} /> },
+      { value: 'edit', label: 'Edit', icon: <Icon name="edit" size={16} color={colors.textPrimary} /> },
+      { value: 'copy', label: 'Copy', icon: <Icon name="copy" size={16} color={colors.textPrimary} /> },
+      { value: 'share', label: 'Share', icon: <Icon name="share" size={16} color={colors.textPrimary} /> },
+      { value: 'delete', label: 'Delete', icon: <Icon name="delete" size={16} color={colors.textPrimary} /> },
     ];
 
     const toggleMenu = (menuId: number) => {
@@ -463,10 +465,10 @@ export const WithMenu: Story = {
                         position: 'absolute',
                         top: '100%',
                         right: 0,
-                        backgroundColor: 'var(--odl-white)',
-                        border: 'var(--odl-border-width-base) solid var(--odl-primary)',
-                        borderRadius: 'var(--odl-border-radius-base)',
-                        boxShadow: 'var(--odl-shadow-xl)',
+                        backgroundColor: colors.paper,
+                        border: `1px solid ${colors.border}`,
+                        borderRadius: '4px',
+                        boxShadow: '0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px 0px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05)',
                         zIndex: 1000,
                         minWidth: '160px',
                         maxHeight: '20rem',
@@ -483,15 +485,15 @@ export const WithMenu: Story = {
                             style={{
                               display: 'flex',
                               alignItems: 'center',
-                              gap: 'var(--odl-spacing-2)',
-                              padding: 'var(--odl-spacing-2) var(--odl-spacing-3)',
+                              gap: '8px',
+                              padding: '8px 12px',
                               cursor: 'pointer',
-                              fontSize: 'var(--odl-font-size-base)',
-                              color: 'var(--odl-text-primary)',
-                              backgroundColor: isHovered ? 'var(--odl-surface-hover)' : 'transparent',
-                              borderBottom: index < menuOptions.length - 1 ? 'var(--odl-border-width-thin) solid var(--odl-border)' : 'none',
-                              transition: 'var(--odl-transition-color)',
-                              fontFamily: 'var(--odl-font-family-sans)',
+                              fontSize: '14px',
+                              color: colors.textPrimary,
+                              backgroundColor: isHovered ? colors.surfaceHover : 'transparent',
+                              borderBottom: index < menuOptions.length - 1 ? `1px solid ${colors.border}` : 'none',
+                              transition: 'background-color 0.15s ease',
+                              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
                             }}
                             onMouseEnter={() => setHoveredMenuItem(menuItemKey)}
                             onMouseLeave={() => setHoveredMenuItem(null)}
@@ -516,7 +518,7 @@ export const WithMenu: Story = {
           <div style={{ 
             marginTop: '16px', 
             padding: '12px', 
-            backgroundColor: 'var(--odl-grey-100)', 
+            backgroundColor: colors.grey100, 
             borderRadius: '8px', 
             fontSize: '14px' 
           }}>

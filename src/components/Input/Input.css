@@ -87,7 +87,7 @@
 
 .custom-input:hover:not(.custom-input--disabled):not(.custom-input--readonly) {
   background-color: var(--odl-surface-hover);
-  border-bottom-color: var(--odl-primary);
+  box-shadow: inset 0 0 0 1px var(--odl-primary);
 }
 
 .custom-input:focus:not(.custom-input--readonly),

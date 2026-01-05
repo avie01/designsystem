@@ -21,7 +21,7 @@ const meta: Meta<typeof Chip> = {
     },
     variant: {
       control: 'select',
-      options: ['blue', 'pink', 'red', 'orange', 'yellow', 'olive', 'mint', 'brown', 'purple', 'green', 'success', 'error', 'warning', 'info', 'neutral'],
+      options: ['blue', 'pink', 'red', 'orange', 'yellow', 'olive', 'mint', 'brown', 'purple', 'green', 'neutral', 'white'],
       description: 'Color variant of the chip',
     },
     size: {
@@ -75,9 +75,21 @@ export const AllColorVariants: Story = {
         <h4 style={{ marginBottom: '16px', fontSize: '16px', fontWeight: 600 }}>
           Chip Color Palette
         </h4>
-        <p style={{ marginBottom: '24px', fontSize: '14px', opacity: 0.7 }}>
+        <p style={{ marginBottom: '16px', fontSize: '14px', opacity: 0.7 }}>
           Try switching between Light, Dark, and High Contrast themes using the toolbar above to see dynamic color adaptation.
         </p>
+        <div style={{ 
+          padding: '16px', 
+          backgroundColor: 'var(--sb-color-bg)', 
+          border: '1px solid var(--sb-color-border)', 
+          borderRadius: '8px', 
+          marginBottom: '24px',
+          fontSize: '14px'
+        }}>
+          <strong>Color Behavior:</strong> In Light Mode, chip backgrounds use light colors with dark text. 
+          In Dark Mode, chip backgrounds use dark colors with light text. This creates consistent contrast 
+          and readability across all themes while maintaining visual identity.
+        </div>
         
         {/* Color Chips Grid */}
         <div style={{ 
@@ -134,37 +146,6 @@ export const AllColorVariants: Story = {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>
             <label style={{ fontSize: '12px', fontWeight: 500, opacity: 0.8 }}>Green</label>
             <Chip label="Green Chip" variant="green" />
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h4 style={{ marginBottom: '16px', fontSize: '16px', fontWeight: 600 }}>
-          System Status Colors
-        </h4>
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', 
-          gap: '16px'
-        }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>
-            <label style={{ fontSize: '12px', fontWeight: 500, opacity: 0.8 }}>Success</label>
-            <Chip label="Success" variant="success" />
-          </div>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>
-            <label style={{ fontSize: '12px', fontWeight: 500, opacity: 0.8 }}>Warning</label>
-            <Chip label="Warning" variant="warning" />
-          </div>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>
-            <label style={{ fontSize: '12px', fontWeight: 500, opacity: 0.8 }}>Error</label>
-            <Chip label="Error" variant="error" />
-          </div>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>
-            <label style={{ fontSize: '12px', fontWeight: 500, opacity: 0.8 }}>Info</label>
-            <Chip label="Info" variant="info" />
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TableRowData, SortConfig } from '../../types/common';
 import Icon from '../Icon/Icon';
+import Checkbox from '../Checkbox/Checkbox';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import ODLTheme from '../../styles/ODLTheme';
 import styles from './Table.module.css';
 
@@ -65,6 +67,8 @@ function Table<T extends TableRowData>({
   children,
   emptyMessage = 'No data available',
 }: TableProps<T>) {
+  const { colors, theme } = useTheme();
+  const [hoveredRow, setHoveredRow] = React.useState<string | null>(null);
   const [internalSelectedRows, setInternalSelectedRows] = useState<Set<string>>(new Set());
   const isControlled = selectedKeys !== undefined;
   const selectedRows = isControlled ? new Set(selectedKeys) : internalSelectedRows;
@@ -199,10 +203,68 @@ function Table<T extends TableRowData>({
 
   const totalColumns = columns.length + (selectable ? 1 : 0);
 
+  const tableContainerStyle: React.CSSProperties = {
+    border: `1px solid ${colors.border}`,
+    borderRadius: '8px',
+    overflow: 'hidden'
+  };
+
+  const theadStyle: React.CSSProperties = {
+    backgroundColor: colors.paper,
+    borderBottom: `1px solid ${colors.border}`
+  };
+
+  const getRowStyle = (key: string, isSelected: boolean): React.CSSProperties => {
+    const isHovered = hoveredRow === key;
+    
+    // Dynamic theme colors for selected rows
+    const selectedBorderColor = theme === 'dark' ? '#A7C2FD' : (theme === 'highContrast' ? colors.primaryMain : colors.primaryMain);
+    const selectedBackgroundColor = theme === 'dark' ? '#48494B' : (theme === 'highContrast' ? colors.selectedLight : colors.selectedLight);
+    
+    const backgroundColor = isSelected 
+      ? (isHovered ? selectedBackgroundColor : selectedBackgroundColor)
+      : (isHovered ? colors.surfaceHover : colors.paper);
+    
+    return {
+      backgroundColor: backgroundColor,
+      borderLeft: isSelected ? `4px solid ${selectedBorderColor}` : `4px solid ${backgroundColor}`,
+      borderBottom: `1px solid ${colors.grey400}`,
+      transition: 'background-color 150ms ease'
+    };
+  };
+
+  const tableCellStyle: React.CSSProperties = {
+    color: colors.textPrimary,
+    borderRight: `1px solid ${colors.grey400}`
+  };
+
+  const [hoveredHeader, setHoveredHeader] = React.useState<string | null>(null);
+
+  const getHeaderCellStyle = (columnKey: string, sortable: boolean, isLastColumn: boolean): React.CSSProperties => {
+    const isHovered = hoveredHeader === columnKey && sortable;
+    const headerBackground = isHovered ? colors.surfaceHover : 'transparent';
+    
+    return {
+      color: colors.textSecondary,
+      borderRight: isLastColumn ? 'none' : `1px solid ${colors.border}`,
+      backgroundColor: headerBackground,
+      transition: 'background-color 150ms ease'
+    };
+  };
+
+  const paginationStyle: React.CSSProperties = {
+    backgroundColor: colors.paper,
+    borderTop: `1px solid ${colors.border}`
+  };
+
+  const paginationDividerStyle: React.CSSProperties = {
+    backgroundColor: colors.border
+  };
+
   return (
-    <div className={classNames(styles.tableContainer, className)}>
+    <div className={classNames(styles.tableContainer, className)} style={tableContainerStyle}>
       {headerActions && (
-        <div style={{ padding: '12px 16px', backgroundColor: 'white', borderBottom: '1px solid var(--odl-border, #e0e0e0)' }}>
+        <div style={{ padding: '12px 16px', backgroundColor: colors.paper, borderBottom: `1px solid ${colors.border}` }}>
           {headerActions}
         </div>
       )}
@@ -215,20 +277,22 @@ function Table<T extends TableRowData>({
               <col key={column.key} style={column.width ? { width: column.width } : undefined} />
             ))}
           </colgroup>
-          <thead className={styles.thead}>
+          <thead className={styles.thead} style={theadStyle}>
             <tr>
               {selectable && (
-                <th className={styles.checkboxCell}>
-                  <input
-                    type="checkbox"
-                    className={styles.checkbox}
+                <th className={styles.checkboxCell} style={{
+                  backgroundColor: colors.paper
+                }}>
+                  <Checkbox
                     checked={selectedRows.size === paginatedData.length && paginatedData.length > 0}
+                    indeterminate={selectedRows.size > 0 && selectedRows.size < paginatedData.length}
                     onChange={handleSelectAll}
                     aria-label="Select all rows"
+                    size="md"
                   />
                 </th>
               )}
-              {columns.map((column) => (
+              {columns.map((column, index) => (
                 <th
                   key={column.key}
                   className={classNames(
@@ -236,7 +300,10 @@ function Table<T extends TableRowData>({
                     column.sortable && styles.headerCellSortable,
                     column.alignRight && 'text-right'
                   )}
+                  style={getHeaderCellStyle(column.key, column.sortable || false, index === columns.length - 1)}
                   onClick={column.sortable ? () => handleSort(column.key) : undefined}
+                  onMouseEnter={() => setHoveredHeader(column.key)}
+                  onMouseLeave={() => setHoveredHeader(null)}
                 >
                   <div className={styles.headerCellContent}>
                     <div className={styles.sortableLabel}>
@@ -272,29 +339,34 @@ function Table<T extends TableRowData>({
                   <tr
                     key={key}
                     className={getRowClasses(isSelected)}
+                    style={getRowStyle(key, isSelected)}
                     onClick={() => handleRowClick(item)}
                     onKeyDown={(e) => handleRowKeyDown(e, item)}
+                    onMouseEnter={() => setHoveredRow(key)}
+                    onMouseLeave={() => setHoveredRow(null)}
                     tabIndex={onRowActivate ? 0 : undefined}
                     role={onRowActivate ? "button" : undefined}
                     aria-selected={isSelected}
                   >
                     {selectable && (
                       <td className={styles.checkboxCell}>
-                        <input
-                          type="checkbox"
-                          className={styles.checkbox}
-                          checked={isSelected}
-                          onChange={(e) => {
+                        <div
+                          onClick={(e) => {
                             e.stopPropagation();
                             handleSelectRow(item, index);
                           }}
-                          onClick={(e) => e.stopPropagation()}
-                          aria-label={`Select row ${index + 1}`}
-                        />
+                        >
+                          <Checkbox
+                            checked={isSelected}
+                            onChange={() => handleSelectRow(item, index)}
+                            aria-label={`Select row ${index + 1}`}
+                            size="md"
+                          />
+                        </div>
                       </td>
                     )}
                     {columns.map((column) => (
-                      <td key={column.key} className={getCellClasses(column)}>
+                      <td key={column.key} className={getCellClasses(column)} style={tableCellStyle}>
                         {column.render ? column.render(item) : (item as any)[column.key]}
                       </td>
                     ))}
@@ -307,7 +379,7 @@ function Table<T extends TableRowData>({
       </div>
 
       {paginated && totalPages > 1 && (
-        <div className={styles.pagination}>
+        <div className={styles.pagination} style={paginationStyle}>
           <div className={styles.paginationSection}>
             <select
               value={actualItemsPerPage}
@@ -322,16 +394,16 @@ function Table<T extends TableRowData>({
             </select>
           </div>
 
-          <div className={styles.paginationDivider} />
+          <div className={styles.paginationDivider} style={paginationDividerStyle} />
 
-          <div className={styles.paginationInfo}>
+          <div className={styles.paginationInfo} style={{ color: colors.textPrimary }}>
             {startIndex + 1}–{Math.min(endIndex, sortedData.length)} of {sortedData.length} items
           </div>
 
           <div className={styles.paginationSpacer} />
 
           <div className={styles.paginationNavSection}>
-            <div className={styles.paginationDivider} />
+            <div className={styles.paginationDivider} style={paginationDividerStyle} />
 
             <div className={styles.pageDropdownSection}>
               <select
@@ -343,10 +415,10 @@ function Table<T extends TableRowData>({
                   <option key={i + 1} value={i + 1}>{i + 1}</option>
                 ))}
               </select>
-              <span className={styles.paginationLabel}>of {totalPages} pages</span>
+              <span className={styles.paginationLabel} style={{ color: colors.textPrimary }}>of {totalPages} pages</span>
             </div>
 
-            <div className={styles.paginationDivider} />
+            <div className={styles.paginationDivider} style={paginationDividerStyle} />
 
             <button
               onClick={() => handlePageChange(actualCurrentPage - 1)}
@@ -360,11 +432,11 @@ function Table<T extends TableRowData>({
               <Icon
                 name="chevron-left"
                 size={16}
-                color={actualCurrentPage === 1 ? ODLTheme.colors.text.disabled : ODLTheme.colors.text.primary}
+                color={actualCurrentPage === 1 ? colors.textDisabled : colors.textPrimary}
               />
             </button>
 
-            <div className={styles.paginationDivider} />
+            <div className={styles.paginationDivider} style={paginationDividerStyle} />
 
             <button
               onClick={() => handlePageChange(actualCurrentPage + 1)}
@@ -378,7 +450,7 @@ function Table<T extends TableRowData>({
               <Icon
                 name="chevron-right"
                 size={16}
-                color={actualCurrentPage === totalPages ? ODLTheme.colors.text.disabled : ODLTheme.colors.text.primary}
+                color={actualCurrentPage === totalPages ? colors.textDisabled : colors.textPrimary}
               />
             </button>
           </div>

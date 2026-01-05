@@ -1,33 +1,21 @@
 import React, { useState } from 'react';
 import { ODLTheme } from '../../styles/ODLTheme';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import Icon from '../Icon/Icon';
 
-const defaultColors = {
-  chipBlue: '#E3F2FD',
-  chipPink: '#FCE4EC',
-  chipRed: '#FFEBEE',
-  chipOrange: '#FFF3E0',
-  chipYellow: '#FFFDE7',
-  chipOlive: '#F1F8E9',
-  chipMint: '#E0F2F1',
-  chipBrown: '#EFEBE9',
-  chipPurple: '#F3E5F5',
-  chipGreen: '#E8F5E9',
-  chipWhite: '#FFFFFF',
-  successLight: '#E8F5E9',
-  warningLight: '#FFF8E1',
-  errorLight: '#FFEBEE',
-  info: '#E3F2FD',
-  primaryMain: '#3560C1',
-  successMain: '#2E7D32',
-  warningMain: '#F9A825',
-  errorMain: '#D32F2F',
-  textInverse: '#FFFFFF',
-  textPrimary: '#1A1A1A',
-  grey500: '#9E9E9E',
-  primaryTwilight: '#1E3A5F',
-  selectedLight: '#E3F2FD',
-  primaryNight: '#0D2137',
+// Define the base colors for each chip variant
+const baseChipColors = {
+  blue: { light: '#E5F5FE', dark: '#082A78' },
+  pink: { light: '#F7E2F9', dark: '#9C27B0' },
+  red: { light: '#F8E8EA', dark: '#C2185B' },
+  orange: { light: '#FCEEDA', dark: '#C93713' },
+  yellow: { light: '#FFFBCE', dark: '#A15202' },
+  olive: { light: '#DAE3BF', dark: '#54622C' },
+  mint: { light: '#D0FAF7', dark: '#1F787A' },
+  brown: { light: '#E1D5C7', dark: '#4F3E34' },
+  purple: { light: '#D6C8F6', dark: '#381A93' },
+  green: { light: '#E4F7E4', dark: '#31622C' },
+  neutral: { light: '#EDF1F5', dark: '#525965' },
 };
 
 export interface ChipProps {
@@ -89,7 +77,7 @@ const Chip: React.FC<ChipProps> = ({
   'aria-describedby': ariaDescribedBy,
   onKeyDown,
 }) => {
-  const colors = defaultColors;
+  const { theme, colors } = useTheme();
   const [isHovered, setIsHovered] = useState(false);
   const [internalToggled, setInternalToggled] = useState(false);
 
@@ -97,22 +85,39 @@ const Chip: React.FC<ChipProps> = ({
   const isToggled = controlledToggled !== undefined ? controlledToggled : internalToggled;
   const isInteractive = clickable || toggle;
 
-  // Get contrasting text color based on variant
-  const getContrastingTextColor = (chipVariant: string) => {
-    switch (chipVariant) {
-      case 'blue': return '#1565C0';
-      case 'pink': return '#C2185B';
-      case 'red': return '#C62828';
-      case 'orange': return '#EF6C00';
-      case 'yellow': return '#F9A825';
-      case 'olive': return '#558B2F';
-      case 'mint': return '#00796B';
-      case 'brown': return '#5D4037';
-      case 'purple': return '#7B1FA2';
-      case 'green': return '#2E7D32';
-      case 'white': return defaultColors.primaryTwilight;
-      default: return ODLTheme.colors.text.primary;
+  // Get chip colors based on current theme mode
+  const getChipColors = (chipVariant: string) => {
+    const colorDef = baseChipColors[chipVariant as keyof typeof baseChipColors];
+    
+    if (!colorDef) {
+      // Fallback for non-color variants
+      return {
+        bg: theme === 'dark' ? colors.surfaceDark : colors.surface,
+        text: theme === 'dark' ? colors.textInverse : colors.textPrimary
+      };
     }
+    
+    // High contrast mode - always use light background with black text
+    if (theme === 'highContrast') {
+      return {
+        bg: colorDef.light,
+        text: '#000000'
+      };
+    }
+    
+    // Light Mode: Light background + Dark text
+    if (theme === 'light') {
+      return {
+        bg: colorDef.light,  // e.g., #E5F5FE
+        text: colorDef.dark  // e.g., #082A78
+      };
+    }
+    
+    // Dark Mode: Dark background + Light text  
+    return {
+      bg: colorDef.dark,   // e.g., #082A78
+      text: colorDef.light // e.g., #E5F5FE
+    };
   };
 
   // Get variant-specific colors from theme
@@ -120,86 +125,47 @@ const Chip: React.FC<ChipProps> = ({
     if (error) {
       return {
         backgroundColor: colors.errorLight,
-        color: ODLTheme.colors.text.primary,
+        color: colors.textPrimary,
       };
     }
     
-    // For toggled state, return inverted colors
+    // For toggled state, use specific active background with theme support
     if (isToggled && toggle) {
-      switch (variant) {
-        case 'blue':
-          return { backgroundColor: colors.primaryMain, color: colors.textInverse };
-        case 'pink':
-          return { backgroundColor: '#E91E63', color: colors.textInverse };
-        case 'red':
-          return { backgroundColor: colors.errorMain, color: colors.textInverse };
-        case 'orange':
-          return { backgroundColor: '#F57C00', color: colors.textInverse };
-        case 'yellow':
-          return { backgroundColor: colors.warningMain, color: '#000000' };
-        case 'olive':
-          return { backgroundColor: '#689F38', color: colors.textInverse };
-        case 'mint':
-          return { backgroundColor: '#00897B', color: colors.textInverse };
-        case 'brown':
-          return { backgroundColor: '#6D4C41', color: colors.textInverse };
-        case 'purple':
-          return { backgroundColor: '#7B1FA2', color: colors.textInverse };
-        case 'green':
-          return { backgroundColor: colors.successMain, color: colors.textInverse };
-        case 'white':
-          return {
-            backgroundColor: colors.selectedLight,
-            color: colors.primaryNight
-          };
-        case 'success':
-          return { backgroundColor: colors.successMain, color: colors.textInverse };
-        case 'warning':
-          return { backgroundColor: colors.warningMain, color: '#000000' };
-        case 'info':
-          return { backgroundColor: colors.primaryMain, color: colors.textInverse };
-        case 'neutral':
-        default:
-          return { backgroundColor: colors.primaryMain, color: colors.textInverse };
-      }
+      // Theme-aware active background color
+      const activeBackground = theme === 'dark' ? '#48494B' : (theme === 'highContrast' ? '#E0F3FE' : '#E0F3FE');
+      const activeTextColor = theme === 'dark' ? '#E0F3FE' : (theme === 'highContrast' ? '#000000' : '#32373F');
+      
+      return { 
+        backgroundColor: activeBackground,
+        color: activeTextColor
+      };
     }
 
+    // Handle color variants with new theme-based colors
+    if (['blue', 'pink', 'red', 'orange', 'yellow', 'olive', 'mint', 'brown', 'purple', 'green', 'neutral'].includes(variant)) {
+      const chipColorSet = getChipColors(variant);
+      return { 
+        backgroundColor: chipColorSet.bg, 
+        color: chipColorSet.text 
+      };
+    }
+
+    // Handle other variants
     switch (variant) {
-      case 'blue':
-        return { backgroundColor: colors.chipBlue, color: getContrastingTextColor('blue') };
-      case 'pink':
-        return { backgroundColor: colors.chipPink, color: getContrastingTextColor('pink') };
-      case 'red':
-        return { backgroundColor: colors.chipRed, color: getContrastingTextColor('red') };
-      case 'orange':
-        return { backgroundColor: colors.chipOrange, color: getContrastingTextColor('orange') };
-      case 'yellow':
-        return { backgroundColor: colors.chipYellow, color: getContrastingTextColor('yellow') };
-      case 'olive':
-        return { backgroundColor: colors.chipOlive, color: getContrastingTextColor('olive') };
-      case 'mint':
-        return { backgroundColor: colors.chipMint, color: getContrastingTextColor('mint') };
-      case 'brown':
-        return { backgroundColor: colors.chipBrown, color: getContrastingTextColor('brown') };
-      case 'purple':
-        return { backgroundColor: colors.chipPurple, color: getContrastingTextColor('purple') };
-      case 'green':
-        return { backgroundColor: colors.chipGreen, color: getContrastingTextColor('green') };
       case 'white':
         return { 
-          backgroundColor: colors.chipWhite, 
-          color: colors.primaryTwilight,
-          border: `1px solid ${colors.grey500}`
+          backgroundColor: colors.paper, 
+          color: colors.textPrimary,
+          border: `1px solid ${colors.border}`
         };
       case 'success':
-        return { backgroundColor: colors.successLight, color: ODLTheme.colors.text.primary };
+        return { backgroundColor: colors.successLight, color: colors.textPrimary };
       case 'warning':
-        return { backgroundColor: colors.warningLight, color: ODLTheme.colors.text.primary };
+        return { backgroundColor: colors.warningLight, color: colors.textPrimary };
       case 'info':
-        return { backgroundColor: colors.info, color: ODLTheme.colors.text.primary };
-      case 'neutral':
+        return { backgroundColor: colors.infoLight, color: colors.textPrimary };
       default:
-        return { backgroundColor: ODLTheme.colors.surface, color: ODLTheme.colors.text.primary };
+        return { backgroundColor: colors.surface, color: colors.textSecondary };
     }
   };
 
