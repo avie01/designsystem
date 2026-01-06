@@ -141,7 +141,7 @@ const IconButton: React.FC<IconButtonProps> = ({
         border: 'transparent'
       }
     };
-    return buttonColors[variant];
+    return buttonColors[variant] || buttonColors.disabled;
   };
 
   // Handle custom hover background for disabled variant
@@ -169,6 +169,7 @@ const IconButton: React.FC<IconButtonProps> = ({
 
   // Get the appropriate color for the current state
   const getCurrentColor = () => {
+    if (!buttonColors) return colors.textDisabled;
     if (isDisabled) return colors.textDisabled;
     if (isPressed && !isDisabled && buttonColors.activeColor) return buttonColors.activeColor;
     if (isHovered && !isDisabled && buttonColors.hoverColor) return buttonColors.hoverColor;
@@ -186,12 +187,12 @@ const IconButton: React.FC<IconButtonProps> = ({
     alignItems: 'center',
     gap: '10px',
     backgroundColor: isDisabled ? 'transparent' : 
-                    (isPressed && !isDisabled) ? buttonColors.active :
-                    (isHovered && !isDisabled) ? buttonColors.hover :
-                    selected ? buttonColors.active :
-                    buttonColors.background,
+                    (isPressed && !isDisabled) ? (buttonColors?.active || 'transparent') :
+                    (isHovered && !isDisabled) ? (buttonColors?.hover || 'transparent') :
+                    selected ? (buttonColors?.active || 'transparent') :
+                    (buttonColors?.background || 'transparent'),
     color: getCurrentColor(),
-    border: `1px solid ${isDisabled ? 'transparent' : buttonColors.border}`,
+    border: `1px solid ${isDisabled ? 'transparent' : (buttonColors?.border || 'transparent')}`,
     borderRadius: '100px',
     cursor: isDisabled ? 'not-allowed' : 'pointer',
     transition: 'all 0.15s ease-in-out',
