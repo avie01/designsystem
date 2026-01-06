@@ -257,15 +257,43 @@ export const IconOnly: Story = {
 export const States: Story = {
   name: '07 States',
   render: () => {
-    const { colors } = useTheme();
+    const { colors, theme } = useTheme();
+    
+    // Get dynamic theme colors for states
+    const getThemeColors = () => {
+      // Access CSS custom properties that are set by the theme decorator
+      const root = document.documentElement;
+      const primaryHover = getComputedStyle(root).getPropertyValue('--theme-primary-hover').trim() || colors.primaryHover;
+      const primaryPressed = getComputedStyle(root).getPropertyValue('--theme-primary-pressed').trim() || colors.primaryPressed;
+      const grey400 = getComputedStyle(root).getPropertyValue('--theme-grey-400').trim() || colors.grey400;
+      const primaryLight = getComputedStyle(root).getPropertyValue('--theme-primary-light').trim() || colors.selectedLight;
+      const secondaryMain = getComputedStyle(root).getPropertyValue('--theme-secondary-main').trim() || colors.secondaryMain;
+      const secondaryDark = getComputedStyle(root).getPropertyValue('--theme-secondary-dark').trim() || colors.secondaryDark;
+      const errorMain = getComputedStyle(root).getPropertyValue('--theme-error-main').trim() || colors.errorMain;
+      const errorLight = getComputedStyle(root).getPropertyValue('--theme-error-light').trim() || colors.errorLight;
+      
+      return {
+        primaryHover,
+        primaryPressed,
+        grey400,
+        primaryLight,
+        secondaryMain,
+        secondaryDark,
+        errorMain,
+        errorLight
+      };
+    };
+    
+    const themeColors = getThemeColors();
+    
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing?.[6] || '24px' }}>
         <div>
           <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Primary Button States</h4>
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant="primary">Default</Button>
-            <Button variant="primary" style={{ backgroundColor: '#0037B1' }}>Hover</Button>
-            <Button variant="primary" style={{ backgroundColor: '#00277F' }}>Pressed</Button>
+            <Button variant="primary" style={{ backgroundColor: themeColors.primaryHover }}>Hover</Button>
+            <Button variant="primary" style={{ backgroundColor: themeColors.primaryPressed }}>Pressed</Button>
             <Button variant="primary" disabled>Disabled</Button>
           </div>
         </div>
@@ -273,8 +301,8 @@ export const States: Story = {
           <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Secondary Button States</h4>
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant="secondary">Default</Button>
-            <Button variant="secondary" style={{ backgroundColor: '#E8E8E8', color: '#3560C1' }}>Hover</Button>
-            <Button variant="secondary" style={{ backgroundColor: '#E0F3FE', color: '#32373f' }}>Pressed</Button>
+            <Button variant="secondary" style={{ backgroundColor: themeColors.grey400, color: colors.primaryMain }}>Hover</Button>
+            <Button variant="secondary" style={{ backgroundColor: themeColors.primaryLight, color: colors.primaryNight }}>Pressed</Button>
             <Button variant="secondary" disabled>Disabled</Button>
           </div>
         </div>
@@ -282,8 +310,8 @@ export const States: Story = {
           <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Tertiary Button States</h4>
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant="tertiary">Default</Button>
-            <Button variant="tertiary" style={{ backgroundColor: '#CCDBFE', color: '#32373f' }}>Hover</Button>
-            <Button variant="tertiary" style={{ backgroundColor: '#B2CAFE', color: '#32373f' }}>Pressed</Button>
+            <Button variant="tertiary" style={{ backgroundColor: themeColors.secondaryMain, color: colors.primaryNight }}>Hover</Button>
+            <Button variant="tertiary" style={{ backgroundColor: themeColors.secondaryDark, color: colors.primaryNight }}>Pressed</Button>
             <Button variant="tertiary" disabled>Disabled</Button>
           </div>
         </div>
@@ -291,8 +319,8 @@ export const States: Story = {
           <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Text Button States</h4>
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant="text">Default</Button>
-            <Button variant="text" style={{ backgroundColor: '#E8E8E8', color: '#3560C1' }}>Hover</Button>
-            <Button variant="text" style={{ backgroundColor: '#E0F3FE', color: '#32373f' }}>Pressed</Button>
+            <Button variant="text" style={{ backgroundColor: themeColors.grey400, color: colors.primaryMain }}>Hover</Button>
+            <Button variant="text" style={{ backgroundColor: themeColors.primaryLight, color: colors.primaryNight }}>Pressed</Button>
             <Button variant="text" disabled>Disabled</Button>
           </div>
         </div>
@@ -300,8 +328,8 @@ export const States: Story = {
           <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Destructive Button States</h4>
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant="destructive">Default</Button>
-            <Button variant="destructive" style={{ backgroundColor: '#D0000A', color: '#ffffff' }}>Hover</Button>
-            <Button variant="destructive" style={{ backgroundColor: '#F7E4E6', color: '#32373f' }}>Pressed</Button>
+            <Button variant="destructive" style={{ backgroundColor: themeColors.errorMain, color: colors.textInverse }}>Hover</Button>
+            <Button variant="destructive" style={{ backgroundColor: themeColors.errorLight, color: colors.primaryNight }}>Pressed</Button>
             <Button variant="destructive" disabled>Disabled</Button>
           </div>
         </div>
@@ -309,8 +337,8 @@ export const States: Story = {
           <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Disabled Variant Button States</h4>
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant="disabled">Default</Button>
-            <Button variant="disabled" style={{ backgroundColor: '#F4F4F4' }}>Hover</Button>
-            <Button variant="disabled" style={{ backgroundColor: '#EBEBEB' }}>Pressed</Button>
+            <Button variant="disabled" style={{ backgroundColor: colors.surfaceHover }}>Hover</Button>
+            <Button variant="disabled" style={{ backgroundColor: colors.grey400 }}>Pressed</Button>
             <Button variant="disabled" disabled>Disabled</Button>
           </div>
         </div>

@@ -104,8 +104,8 @@ const IconButton: React.FC<IconButtonProps> = ({
       primary: {
         background: colors.primaryMain,
         color: colors.textInverse,
-        hover: colors.primaryLight,
-        active: colors.primaryDark,
+        hover: colors.primaryHover,
+        active: colors.primaryPressed,
         border: 'transparent'
       },
       secondary: {
