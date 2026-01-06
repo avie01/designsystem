@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Icon from '../Icon/Icon';
 import FileType from '../FileType/FileType';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import ODLTheme from '../../styles/ODLTheme';
 
 export interface TreeNode {
@@ -35,6 +36,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
   style,
   hideScrollbar = false,
 }) => {
+  const { colors, theme } = useTheme();
   const [localExpandedIds, setLocalExpandedIds] = useState<Set<string>>(new Set(expandedNodeIds));
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
 
@@ -79,12 +81,12 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
             paddingLeft: `${parseInt(ODLTheme.spacing[3]) + level * parseInt(ODLTheme.spacing[5])}px`,
             cursor: 'pointer',
             backgroundColor: isSelected 
-              ? '#E0F3FE'
+              ? (theme === 'dark' ? '#1B2E4A' : '#E0F3FE')
               : isHovered 
-                ? '#e8e8e8'
+                ? colors.grey300
                 : 'transparent',
-            borderLeft: isSelected ? '4px solid #3560C1' : '4px solid transparent',
-            color: isSelected ? '#32373f' : ODLTheme.colors.text.primary,
+            borderLeft: isSelected ? `4px solid ${colors.primaryMain}` : '4px solid transparent',
+            color: isSelected ? colors.primaryNight : colors.textPrimary,
             transition: ODLTheme.transitions.fast,
             fontSize: ODLTheme.typography.fontSize.base,
           }}
@@ -98,7 +100,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
               <Icon
                 name={isExpanded ? 'caret-down' : 'caret-right'}
                 size={16}
-                color="#707070"
+                color={colors.grey700}
               />
             </div>
           )}
@@ -136,8 +138,8 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
     <div
       className={className}
       style={{
-        backgroundColor: ODLTheme.colors.white,
-        border: `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.border}`,
+        backgroundColor: colors.paper,
+        border: `${ODLTheme.borders.width.thin} solid ${colors.grey400}`,
         borderRadius: ODLTheme.borders.radius.md,
         overflow: 'hidden',
         width: '280px',
@@ -148,8 +150,8 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
       <div
         style={{
           padding: `${ODLTheme.spacing[3]} ${ODLTheme.spacing[4]}`,
-          borderBottom: `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.border}`,
-          backgroundColor: ODLTheme.colors.background,
+          borderBottom: `${ODLTheme.borders.width.thin} solid ${colors.grey400}`,
+          backgroundColor: colors.background,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -162,7 +164,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
               fontSize: ODLTheme.typography.fontSize.base,
               fontWeight: ODLTheme.typography.fontWeight.medium,
               fontFamily: ODLTheme.typography.fontFamily.sans,
-              color: ODLTheme.colors.text.primary,
+              color: colors.textPrimary,
             }}
           >
             {title}
@@ -172,7 +174,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
           <Icon
             name="filter"
             size={18}
-            color={ODLTheme.colors.text.secondary}
+            color={colors.textSecondary}
             style={{ cursor: 'pointer' }}
           />
         )}
@@ -193,7 +195,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
             style={{
               padding: ODLTheme.spacing[6],
               textAlign: 'center',
-              color: ODLTheme.colors.text.tertiary,
+              color: colors.textTertiary,
               fontSize: ODLTheme.typography.fontSize.base,
               fontFamily: ODLTheme.typography.fontFamily.sans,
             }}
