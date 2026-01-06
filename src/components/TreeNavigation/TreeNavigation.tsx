@@ -100,7 +100,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
               <Icon
                 name={isExpanded ? 'caret-down' : 'caret-right'}
                 size={16}
-                color={colors.grey700}
+                color={(theme === 'dark' && !isSelected) ? '#ffffff' : colors.grey700}
               />
             </div>
           )}

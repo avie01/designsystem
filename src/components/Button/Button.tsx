@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../../.storybook/theme-decorator';
+import ODLTheme from '../../styles/ODLTheme';
 import './Button.css';
 
 export interface ButtonProps {
@@ -70,8 +71,8 @@ const Button: React.FC<ButtonProps> = ({
   // Get theme-based styles for each variant (background colors handled by CSS)
   const getVariantStyles = () => {
     const baseStyles = {
-      borderRadius: '2px',
-      fontWeight: 500,
+      borderRadius: ODLTheme.borders.radius.sm,
+      fontWeight: ODLTheme.typography.fontWeight.medium,
       cursor: disabled || loading ? 'not-allowed' : 'pointer',
       opacity: disabled ? 0.6 : 1,
     };
@@ -87,7 +88,7 @@ const Button: React.FC<ButtonProps> = ({
         return {
           ...baseStyles,
           color: disabled ? colors.textDisabled : colors.textSecondary,
-          border: `1px solid ${colors.border}`,
+          border: `1px solid ${colors.grey400}`,
         };
       case 'tertiary':
         return {
@@ -127,24 +128,24 @@ const Button: React.FC<ButtonProps> = ({
     switch (normalizedSize) {
       case 'md':
         return {
-          padding: '6px 12px',
-          fontSize: '14px',
-          height: '32px',
-          gap: '6px',
+          padding: `${ODLTheme.spacing[2]} ${ODLTheme.spacing[3]}`,
+          fontSize: ODLTheme.typography.fontSize.base,
+          height: ODLTheme.spacing[8],
+          gap: ODLTheme.spacing[2],
         };
       case 'lg':
         return {
-          padding: '10px 14px',
-          fontSize: '16px',
-          height: '44px',
-          gap: '6px',
+          padding: `${ODLTheme.spacing[3]} ${ODLTheme.spacing[4]}`,
+          fontSize: ODLTheme.typography.fontSize.md,
+          height: ODLTheme.spacing[11],
+          gap: ODLTheme.spacing[2],
         };
       default:
         return {
-          padding: '6px 12px',
-          fontSize: '14px',
-          height: '32px',
-          gap: '6px',
+          padding: `${ODLTheme.spacing[2]} ${ODLTheme.spacing[3]}`,
+          fontSize: ODLTheme.typography.fontSize.base,
+          height: ODLTheme.spacing[8],
+          gap: ODLTheme.spacing[2],
         };
     }
   };
@@ -156,10 +157,10 @@ const Button: React.FC<ButtonProps> = ({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: '"Noto Sans", sans-serif',
+    fontFamily: ODLTheme.typography.fontFamily.sans,
     textDecoration: 'none',
     boxSizing: 'border-box' as const,
-    transition: 'all 0.2s ease',
+    transition: ODLTheme.transitions.base,
     ...style,
   };
 
@@ -244,7 +245,7 @@ const Button: React.FC<ButtonProps> = ({
         </svg>
       )}
       {!loading && icon && (
-        <span className="button-icon button-icon--left" style={{ marginRight: colors.spacing[2] }}>
+        <span className="button-icon button-icon--left" style={{ marginRight: ODLTheme.spacing[2] }}>
           {icon}
         </span>
       )}
@@ -252,7 +253,7 @@ const Button: React.FC<ButtonProps> = ({
         {children}
       </span>
       {!loading && iconRight && (
-        <span className="button-icon button-icon--right" style={{ marginLeft: colors.spacing[2] }}>
+        <span className="button-icon button-icon--right" style={{ marginLeft: ODLTheme.spacing[2] }}>
           {iconRight}
         </span>
       )}

@@ -127,33 +127,33 @@
 /* Size variants */
 .button--md,
 .button--medium {
-  padding: 6px 12px;
+  padding: var(--odl-spacing-2) var(--odl-spacing-3);
   font-size: var(--odl-font-size-base);
-  height: 32px;
-  gap: 6px;
+  height: var(--odl-spacing-8);
+  gap: var(--odl-spacing-2);
 }
 
 .button--lg,
 .button--large {
-  padding: 10px 14px;
+  padding: var(--odl-spacing-3) var(--odl-spacing-4);
   font-size: var(--odl-font-size-md);
-  height: 44px;
-  gap: 6px;
+  height: var(--odl-spacing-11);
+  gap: var(--odl-spacing-2);
 }
 
 /* Variant styles */
 .button--primary {
-  background-color: #3560C1;
+  background-color: var(--theme-primary-main, #3560C1);
   color: var(--odl-text-inverse);
   border: none;
 }
 
 .button--primary:hover:not(:disabled) {
-  background-color: #0037B1;
+  background-color: var(--theme-primary-hover, #0037B1);
 }
 
 .button--primary:active:not(:disabled) {
-  background-color: #00277F;
+  background-color: var(--theme-primary-pressed, #00277F);
 }
 
 .button--primary.button--selected {
@@ -162,19 +162,19 @@
 }
 
 .button--secondary {
-  background-color: #FFFFFF;
+  background-color: var(--theme-paper, #FFFFFF);
   color: var(--odl-text-secondary);
   border: var(--odl-border-width-thin) solid var(--odl-border);
 }
 
 .button--secondary:hover:not(:disabled) {
-  background-color: #E8E8E8;
-  color: #3560C1;
+  background-color: var(--theme-grey-400, #E8E8E8);
+  color: var(--theme-primary-main, #3560C1);
 }
 
 .button--secondary:active:not(:disabled) {
-  background-color: #E0F3FE;
-  color: #32373f;
+  background-color: var(--theme-primary-light, #E0F3FE);
+  color: var(--theme-primary-night, #32373f);
 }
 
 .button--secondary.button--selected {
@@ -184,19 +184,19 @@
 }
 
 .button--tertiary {
-  background-color: #DAE8FF;
+  background-color: var(--theme-secondary-light, #DAE8FF);
   color: var(--odl-text-secondary);
   border: none;
 }
 
 .button--tertiary:hover:not(:disabled) {
-  background-color: #CCDBFE;
-  color: #32373f;
+  background-color: var(--theme-secondary-main, #CCDBFE);
+  color: var(--theme-primary-night, #32373f);
 }
 
 .button--tertiary:active:not(:disabled) {
-  background-color: #B2CAFE;
-  color: #32373f;
+  background-color: var(--theme-secondary-dark, #B2CAFE);
+  color: var(--theme-primary-night, #32373f);
 }
 
 .button--tertiary.button--selected {
@@ -211,14 +211,14 @@
 }
 
 .button--text:hover:not(:disabled) {
-  background-color: #E8E8E8;
-  color: #3560C1;
+  background-color: var(--theme-grey-400, #E8E8E8);
+  color: var(--theme-primary-main, #3560C1);
   text-decoration: underline;
 }
 
 .button--text:active:not(:disabled) {
-  background-color: #E0F3FE;
-  color: #32373f;
+  background-color: var(--theme-primary-light, #E0F3FE);
+  color: var(--theme-primary-night, #32373f);
   text-decoration: none;
 }
 
@@ -228,19 +228,19 @@
 }
 
 .button--destructive {
-  background-color: #FFFFFF;
+  background-color: var(--theme-paper, #FFFFFF);
   color: #525965;
   border: none;
 }
 
 .button--destructive:hover:not(:disabled) {
-  background-color: #D0000A !important;
-  color: #ffffff !important;
+  background-color: var(--theme-error-main, #D0000A) !important;
+  color: var(--odl-text-inverse) !important;
 }
 
 .button--destructive:active:not(:disabled) {
-  background-color: #F7E4E6 !important;
-  color: #32373f !important;
+  background-color: var(--theme-error-light, #F7E4E6) !important;
+  color: var(--theme-primary-night, #32373f) !important;
 }
 
 .button--destructive.button--selected {
@@ -280,19 +280,19 @@
 
 .button--primary:disabled,
 .button--primary.button--disabled {
-  background-color: #F5F5F5;
+  background-color: var(--theme-grey-300, #F5F5F5);
   color: var(--odl-text-disabled);
 }
 
 .button--secondary:disabled,
 .button--secondary.button--disabled {
-  background-color: #FFFFFF;
+  background-color: var(--theme-paper, #FFFFFF);
   color: var(--odl-text-disabled);
 }
 
 .button--tertiary:disabled,
 .button--tertiary.button--disabled {
-  background-color: #F5F5F5;
+  background-color: var(--theme-grey-300, #F5F5F5);
   color: var(--odl-text-disabled);
 }
 
@@ -304,7 +304,7 @@
 
 .button--destructive:disabled,
 .button--destructive.button--disabled {
-  background-color: #F5F5F5;
+  background-color: var(--theme-grey-300, #F5F5F5);
   color: var(--odl-text-disabled);
 }
 
