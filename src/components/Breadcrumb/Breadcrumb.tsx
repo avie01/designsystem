@@ -247,7 +247,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
                   borderRadius: '2px',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = colors.primaryLight;
+                  e.currentTarget.style.color = colors.primaryHover;
                   e.currentTarget.style.textDecoration = 'underline';
                 }}
                 onMouseLeave={(e) => {
