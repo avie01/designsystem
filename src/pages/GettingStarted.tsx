@@ -17,7 +17,7 @@ export default function GettingStarted() {
       {/* Quick Links */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px', marginBottom: '60px' }}>
         <a
-          href="https://github.com/steamfrog2012/ODL-Library"
+          href="https://github.com/steamfrog2012/ODL"
           style={{
             padding: '24px',
             background: '#f5f5f5',
@@ -90,6 +90,44 @@ export default function GettingStarted() {
             WCAG 2.1 Level AA compliant
           </p>
         </div>
+
+        <a
+          href="https://www.figma.com/design/Fc1qODeQLKpSBKlbuiBTjD/Objective-Design-Language--In-Progress-?node-id=151-11771&m=dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            padding: '24px',
+            background: '#f5f5f5',
+            borderRadius: '8px',
+            textDecoration: 'none',
+            border: '1px solid #e0e0e0',
+            transition: 'all 0.3s',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = 'none';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <div style={{ width: '24px', height: '24px' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M7.5 7.5C6.11929 7.5 5 6.38071 5 5C5 3.61929 6.11929 2.5 7.5 2.5H12V7.5H7.5ZM12 7.5H16.5C17.8807 7.5 19 6.38071 19 5C19 3.61929 17.8807 2.5 16.5 2.5H12V7.5ZM12 12C12 13.3807 13.1193 14.5 14.5 14.5C15.8807 14.5 17 13.3807 17 12C17 10.6193 15.8807 9.5 14.5 9.5C13.1193 9.5 12 10.6193 12 12ZM7.5 9.5C6.11929 9.5 5 10.6193 5 12C5 13.3807 6.11929 14.5 7.5 14.5H12V9.5H7.5ZM7.5 16.5C6.11929 16.5 5 17.6193 5 19C5 20.3807 6.11929 21.5 7.5 21.5C8.88071 21.5 10 20.3807 10 19C10 17.6193 8.88071 16.5 7.5 16.5Z"
+                  fill="#F24E1E"
+                />
+              </svg>
+            </div>
+            <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Figma Design System</h3>
+          </div>
+          <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>
+            Access design files, tokens, and component specifications
+          </p>
+        </a>
       </div>
 
       {/* Using in Claude Code */}

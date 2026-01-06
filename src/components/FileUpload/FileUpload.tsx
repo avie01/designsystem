@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Icon from '../Icon/Icon';
-import Button from '../Button/ButtonTW';
+import Button from '../Button/Button';
 import Chip from '../Chip/ChipTW';
 import './FileUpload.css';
 
@@ -319,15 +319,15 @@ const FileUpload: React.FC<FileUploadProps> = ({
         {label && <label className="file-upload__label">{label}</label>}
         {hiddenInput}
         <Button
-          variant="secondary"
-          size={size === 'lg' ? 'md' : size}
-          leftIcon="upload"
+          variant="primary"
+          size="large"
           onClick={handleBrowseClick}
           disabled={disabled}
-          fullWidth={fullWidth}
           aria-describedby={getAriaDescribedBy()}
+          style={fullWidth ? { width: '100%' } : undefined}
         >
-          {buttonText}
+          <Icon name="upload" size={20} style={{ marginRight: '8px' }} />
+          Upload Documents
         </Button>
         {helperText && !errorMessage && <p id={helperId} className="file-upload__helper">{helperText}</p>}
         {errorMessage && <p id={errorId} className="file-upload__error">{errorMessage}</p>}

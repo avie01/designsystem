@@ -75,20 +75,14 @@ export const UploadModal: Story = {
 
     return (
       <div>
-        <button
+        <Button
+          variant="primary"
+          size="large"
           onClick={() => setIsOpen(true)}
-          style={{
-            padding: '0.75rem 1.5rem',
-            borderRadius: '8px',
-            border: 'none',
-            background: ODLTheme.colors.primary,
-            color: 'white',
-            fontSize: ODLTheme.typography.fontSize.base,
-            cursor: 'pointer'
-          }}
         >
+          <Icon name="upload" size={20} style={{ marginRight: '8px' }} />
           Upload Documents
-        </button>
+        </Button>
 
         <Modal
           isOpen={isOpen}
@@ -98,15 +92,15 @@ export const UploadModal: Story = {
           footer={
             <>
               <Button
-                variant="ghost"
-                size="small"
+                variant="disabled"
+                size="medium"
                 onClick={resetModal}
               >
                 Cancel
               </Button>
               <Button
                 variant="primary"
-                size="small"
+                size="medium"
                 disabled={uploadedFiles.length === 0}
                 onClick={() => {
                   alert('Files uploaded successfully!');

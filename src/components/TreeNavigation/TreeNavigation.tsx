@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import Icon from '../Icon/Icon';
+import FileType from '../FileType/FileType';
+import { useTheme } from '../../../.storybook/theme-decorator';
 import ODLTheme from '../../styles/ODLTheme';
-
-// Custom Folder Icon - filled version
-const FolderIcon: React.FC<{ size?: number }> = ({ size = 16 }) => (
-  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2 2C1.73478 2 1.48043 2.10536 1.29289 2.29289C1.10536 2.48043 1 2.73478 1 3V13C1 13.2652 1.10536 13.5196 1.29289 13.7071C1.48043 13.8946 1.73478 14 2 14H14C14.2652 14 14.5196 13.8946 14.7071 13.7071C14.8946 13.5196 15 13.2652 15 13V5C15 4.73478 14.8946 4.48043 14.7071 4.29289C14.5196 4.10536 14.2652 4 14 4H8L6.295 2.295C6.20197 2.20142 6.09134 2.12717 5.96948 2.07654C5.84763 2.02591 5.71696 1.9999 5.585 2H2Z" fill={ODLTheme.colors.warning}/>
-  </svg>
-);
 
 export interface TreeNode {
   id: string;
@@ -41,8 +36,11 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
   style,
   hideScrollbar = false,
 }) => {
+  const { colors, theme } = useTheme();
   const [localExpandedIds, setLocalExpandedIds] = useState<Set<string>>(new Set(expandedNodeIds));
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+
+  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
 
   const handleNodeClick = (node: TreeNode, event: React.MouseEvent) => {
     event.stopPropagation();
@@ -52,10 +50,15 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
       const newExpanded = new Set(localExpandedIds);
       if (newExpanded.has(node.id)) {
         newExpanded.delete(node.id);
+        setActiveNodeId(null); // Remove active state when collapsing
       } else {
         newExpanded.add(node.id);
+        setActiveNodeId(node.id); // Set as active when expanding
       }
       setLocalExpandedIds(newExpanded);
+    } else {
+      // For files, set as active
+      setActiveNodeId(node.id);
     }
     
     onNodeSelect?.(node);
@@ -63,7 +66,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
 
   const renderNode = (node: TreeNode, level: number = 0) => {
     const isExpanded = localExpandedIds.has(node.id);
-    const isSelected = selectedNodeId === node.id;
+    const isSelected = selectedNodeId === node.id || activeNodeId === node.id;
     const isHovered = hoveredNodeId === node.id;
     const hasChildren = node.children && node.children.length > 0;
     const isFolder = node.type === 'folder' || hasChildren;
@@ -78,11 +81,12 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
             paddingLeft: `${parseInt(ODLTheme.spacing[3]) + level * parseInt(ODLTheme.spacing[5])}px`,
             cursor: 'pointer',
             backgroundColor: isSelected 
-              ? ODLTheme.colors.primaryLight
+              ? (theme === 'dark' ? '#1B2E4A' : '#E0F3FE')
               : isHovered 
-                ? ODLTheme.colors.surface 
+                ? colors.grey300
                 : 'transparent',
-            color: isSelected ? ODLTheme.colors.primary : ODLTheme.colors.text.primary,
+            borderLeft: isSelected ? `4px solid ${colors.primaryMain}` : '4px solid transparent',
+            color: isSelected ? colors.primaryNight : colors.textPrimary,
             transition: ODLTheme.transitions.fast,
             fontSize: ODLTheme.typography.fontSize.base,
           }}
@@ -90,23 +94,26 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
           onMouseEnter={() => setHoveredNodeId(node.id)}
           onMouseLeave={() => setHoveredNodeId(null)}
         >
+          {/* Chevron for expandable items */}
+          {hasChildren && (
+            <div style={{ marginRight: ODLTheme.spacing[2] }}>
+              <Icon
+                name={isExpanded ? 'caret-down' : 'caret-right'}
+                size={16}
+                color={(theme === 'dark' && !isSelected) ? '#ffffff' : colors.grey700}
+              />
+            </div>
+          )}
+          
           {/* Folder/File Icon */}
           <div style={{ marginRight: ODLTheme.spacing[2], display: 'flex', alignItems: 'center' }}>
-            {isFolder ? (
-              <FolderIcon size={16} />
-            ) : (
-              <Icon
-                name="document"
-                size={16}
-                color={ODLTheme.colors.text.secondary}
-              />
-            )}
+            <FileType type={isFolder ? 'folder' : 'doc'} size={20} />
           </div>
           
           {/* Label */}
           <span
             style={{
-              fontWeight: isSelected ? ODLTheme.typography.fontWeight.medium : ODLTheme.typography.fontWeight.normal,
+              fontWeight: 400,
               flex: 1,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -115,28 +122,11 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
           >
             {node.label}
           </span>
-          
-          {/* Chevron for expandable items */}
-          {hasChildren && (
-            <Icon
-              name="chevron-right"
-              size={16}
-              color={ODLTheme.colors.text.tertiary}
-              style={{
-                marginLeft: ODLTheme.spacing[2],
-                transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                transition: ODLTheme.transitions.transform,
-              }}
-            />
-          )}
         </div>
         
         {/* Render children if expanded */}
         {hasChildren && isExpanded && (
-          <div style={{ 
-            borderLeft: level > 0 ? `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.border}` : 'none',
-            marginLeft: level > 0 ? ODLTheme.spacing[5] : '0',
-          }}>
+          <div>
             {node.children!.map(child => renderNode(child, level + 1))}
           </div>
         )}
@@ -148,8 +138,8 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
     <div
       className={className}
       style={{
-        backgroundColor: ODLTheme.colors.white,
-        border: `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.border}`,
+        backgroundColor: colors.paper,
+        border: `${ODLTheme.borders.width.thin} solid ${colors.grey400}`,
         borderRadius: ODLTheme.borders.radius.md,
         overflow: 'hidden',
         width: '280px',
@@ -160,21 +150,21 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
       <div
         style={{
           padding: `${ODLTheme.spacing[3]} ${ODLTheme.spacing[4]}`,
-          borderBottom: `${ODLTheme.borders.width.thin} solid ${ODLTheme.colors.border}`,
-          backgroundColor: ODLTheme.colors.background,
+          borderBottom: `${ODLTheme.borders.width.thin} solid ${colors.grey400}`,
+          backgroundColor: colors.background,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: ODLTheme.spacing[2] }}>
-          <FolderIcon size={18} />
+          <FileType type="folder" size={20} />
           <span
             style={{
               fontSize: ODLTheme.typography.fontSize.base,
               fontWeight: ODLTheme.typography.fontWeight.medium,
               fontFamily: ODLTheme.typography.fontFamily.sans,
-              color: ODLTheme.colors.text.primary,
+              color: colors.textPrimary,
             }}
           >
             {title}
@@ -184,7 +174,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
           <Icon
             name="filter"
             size={18}
-            color={ODLTheme.colors.text.secondary}
+            color={colors.textSecondary}
             style={{ cursor: 'pointer' }}
           />
         )}
@@ -205,7 +195,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
             style={{
               padding: ODLTheme.spacing[6],
               textAlign: 'center',
-              color: ODLTheme.colors.text.tertiary,
+              color: colors.textTertiary,
               fontSize: ODLTheme.typography.fontSize.base,
               fontFamily: ODLTheme.typography.fontFamily.sans,
             }}

@@ -46,7 +46,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'tertiary', 'text', 'destructive', 'ghost'],
+      options: ['primary', 'secondary', 'tertiary', 'text', 'destructive', 'disabled'],
       description: 'Button variant style',
       table: {
         type: { summary: 'string' },
@@ -55,7 +55,7 @@ const meta: Meta<typeof Button> = {
     },
     size: {
       control: 'select',
-      options: ['xs', 'small', 'medium', 'large'],
+      options: ['medium', 'large'],
       description: 'Button size',
       table: {
         type: { summary: 'string' },
@@ -113,7 +113,7 @@ export const AllVariants: Story = {
             <Button variant="secondary">Secondary</Button>
             <Button variant="tertiary">Tertiary</Button>
             <Button variant="text">Text</Button>
-            <Button variant="ghost">Ghost</Button>
+            <Button variant="disabled">Disabled</Button>
             <Button variant="destructive">Destructive</Button>
           </div>
         </div>
@@ -132,10 +132,8 @@ export const Sizes: Story = {
         <div>
           <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Button Sizes</h4>
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <Button size="xs">Extra Small</Button>
-            <Button size="small">Small</Button>
-            <Button size="medium">Medium</Button>
-            <Button size="large">Large</Button>
+            <Button size="medium">Medium (32px)</Button>
+            <Button size="large">Large (44px)</Button>
           </div>
         </div>
       </div>
@@ -228,7 +226,7 @@ export const IconOnly: Story = {
             <Button variant="tertiary" aria-label="Settings">
               <Settings size={20} />
             </Button>
-            <Button variant="ghost" aria-label="Search">
+            <Button variant="disabled" aria-label="Search">
               <Search size={20} />
             </Button>
             <Button variant="destructive" aria-label="Delete">
@@ -242,17 +240,11 @@ export const IconOnly: Story = {
         <div>
           <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Icon Only - Different Sizes</h4>
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
-            <Button size="xs" variant="primary" aria-label="Add">
-              <Add size={14} />
-            </Button>
-            <Button size="small" variant="primary" aria-label="Add">
+            <Button size="medium" variant="primary" aria-label="Add">
               <Add size={16} />
             </Button>
-            <Button size="medium" variant="primary" aria-label="Add">
-              <Add size={20} />
-            </Button>
             <Button size="large" variant="primary" aria-label="Add">
-              <Add size={24} />
+              <Add size={20} />
             </Button>
           </div>
         </div>
@@ -265,21 +257,94 @@ export const IconOnly: Story = {
 export const States: Story = {
   name: '07 States',
   render: () => {
-    const { colors } = useTheme();
+    const { colors, theme } = useTheme();
+    
+    // Get dynamic theme colors for states
+    const getThemeColors = () => {
+      // Access CSS custom properties that are set by the theme decorator
+      const root = document.documentElement;
+      const primaryHover = getComputedStyle(root).getPropertyValue('--theme-primary-hover').trim() || colors.primaryHover;
+      const primaryPressed = getComputedStyle(root).getPropertyValue('--theme-primary-pressed').trim() || colors.primaryPressed;
+      const grey400 = getComputedStyle(root).getPropertyValue('--theme-grey-400').trim() || colors.grey400;
+      const primaryLight = getComputedStyle(root).getPropertyValue('--theme-primary-light').trim() || colors.selectedLight;
+      const secondaryMain = getComputedStyle(root).getPropertyValue('--theme-secondary-main').trim() || colors.secondaryMain;
+      const secondaryDark = getComputedStyle(root).getPropertyValue('--theme-secondary-dark').trim() || colors.secondaryDark;
+      const errorMain = getComputedStyle(root).getPropertyValue('--theme-error-main').trim() || colors.errorMain;
+      const errorLight = getComputedStyle(root).getPropertyValue('--theme-error-light').trim() || colors.errorLight;
+      
+      return {
+        primaryHover,
+        primaryPressed,
+        grey400,
+        primaryLight,
+        secondaryMain,
+        secondaryDark,
+        errorMain,
+        errorLight
+      };
+    };
+    
+    const themeColors = getThemeColors();
+    
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing?.[6] || '24px' }}>
         <div>
-          <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Disabled State</h4>
-          <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap' }}>
-            <Button variant="primary" disabled>Primary Disabled</Button>
-            <Button variant="secondary" disabled>Secondary Disabled</Button>
-            <Button variant="tertiary" disabled>Tertiary Disabled</Button>
-            <Button variant="destructive" disabled>Destructive Disabled</Button>
+          <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Primary Button States</h4>
+          <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Button variant="primary">Default</Button>
+            <Button variant="primary" style={{ backgroundColor: themeColors.primaryHover }}>Hover</Button>
+            <Button variant="primary" style={{ backgroundColor: themeColors.primaryPressed }}>Pressed</Button>
+            <Button variant="primary" disabled>Disabled</Button>
           </div>
         </div>
         <div>
-          <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Loading State</h4>
-          <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap' }}>
+          <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Secondary Button States</h4>
+          <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Button variant="secondary">Default</Button>
+            <Button variant="secondary" style={{ backgroundColor: themeColors.grey400, color: colors.primaryMain }}>Hover</Button>
+            <Button variant="secondary" style={{ backgroundColor: themeColors.primaryLight, color: colors.primaryNight }}>Pressed</Button>
+            <Button variant="secondary" disabled>Disabled</Button>
+          </div>
+        </div>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Tertiary Button States</h4>
+          <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Button variant="tertiary">Default</Button>
+            <Button variant="tertiary" style={{ backgroundColor: themeColors.secondaryMain, color: colors.primaryNight }}>Hover</Button>
+            <Button variant="tertiary" style={{ backgroundColor: themeColors.secondaryDark, color: colors.primaryNight }}>Pressed</Button>
+            <Button variant="tertiary" disabled>Disabled</Button>
+          </div>
+        </div>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Text Button States</h4>
+          <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Button variant="text">Default</Button>
+            <Button variant="text" style={{ backgroundColor: themeColors.grey400, color: colors.primaryMain }}>Hover</Button>
+            <Button variant="text" style={{ backgroundColor: themeColors.primaryLight, color: colors.primaryNight }}>Pressed</Button>
+            <Button variant="text" disabled>Disabled</Button>
+          </div>
+        </div>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Destructive Button States</h4>
+          <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Button variant="destructive">Default</Button>
+            <Button variant="destructive" style={{ backgroundColor: themeColors.errorMain, color: colors.textInverse }}>Hover</Button>
+            <Button variant="destructive" style={{ backgroundColor: themeColors.errorLight, color: colors.primaryNight }}>Pressed</Button>
+            <Button variant="destructive" disabled>Disabled</Button>
+          </div>
+        </div>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Disabled Variant Button States</h4>
+          <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Button variant="disabled">Default</Button>
+            <Button variant="disabled" style={{ backgroundColor: colors.surfaceHover }}>Hover</Button>
+            <Button variant="disabled" style={{ backgroundColor: colors.grey400 }}>Pressed</Button>
+            <Button variant="disabled" disabled>Disabled</Button>
+          </div>
+        </div>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing?.[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Loading States</h4>
+          <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant="primary" loading>Loading...</Button>
             <Button variant="secondary" loading>Processing...</Button>
             <Button variant="tertiary" loading>Please wait...</Button>

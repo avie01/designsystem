@@ -245,7 +245,7 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
           style={{
             fontSize: ODLTheme.typography.fontSize.md,
             fontWeight: ODLTheme.typography.fontWeight.semibold,
-            color: isValueHovered ? colors.primaryLight : colors.textPrimary,
+            color: isValueHovered ? colors.primaryHover : colors.textPrimary,
             lineHeight: ODLTheme.typography.lineHeight.tight,
             marginBottom: '4px',
             transition: 'color 0.2s ease-in-out',

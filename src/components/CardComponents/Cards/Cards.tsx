@@ -317,7 +317,7 @@ const Cards: React.FC<CardsProps> = ({
             <Icon
               key={index}
               name={iconName}
-              size={12}
+              size={16}
               color={disabled ? colors.textDisabled : colors.textSecondary}
             />
           ))}

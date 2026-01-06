@@ -1,1 +1,0 @@
-// Storybook manager configuration - clean slate

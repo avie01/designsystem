@@ -8,8 +8,8 @@ export const themeColors = {
     primaryNight: '#32373F',
     primaryTwilight: '#525965', 
     primaryMain: '#3560C1',
-    primaryLight: '#0037B1', 
-    primaryDark: '#00277F',
+    primaryHover: '#0037B1', 
+    primaryPressed: '#00277F',
     // Secondary Colors
     secondaryLight: '#DAE8FF',
     secondaryMain: '#CCDBFE', 
@@ -86,8 +86,8 @@ export const themeColors = {
     primaryNight: '#FFFFFF',
     primaryTwilight: '#E1E7F2',
     primaryMain: '#A7C2FD',
-    primaryLight: '#D3E1FE',
-    primaryDark: '#7C9FFC', 
+    primaryHover: '#7C9FFC',
+    primaryPressed: '#5A7BF8', 
     // Secondary Colors
     secondaryLight: '#464F62',
     secondaryMain: '#62697A',
@@ -99,7 +99,7 @@ export const themeColors = {
     grey700: '#96A5BD',
     grey600: '#6C7789',
     grey500: '#8A9AB3',
-    grey400: '#38393B',
+    grey400: '#4A4B4D',
     grey300: '#3C3D3F', 
     grey200: '#6F7073',
     grey100: '#88898C',
@@ -122,7 +122,7 @@ export const themeColors = {
     errorMain: '#FC98A5',
     info: '#1B2E4A',
     // Selection colors
-    selectedLight: '#464F62',
+    selectedLight: '#1B2E4A',
     // Background
     background: '#1D1D1D',
     surfaceHover: '#3C3D3F',
@@ -164,8 +164,8 @@ export const themeColors = {
     primaryNight: '#000000',
     primaryTwilight: '#000000', 
     primaryMain: '#000000',
-    primaryLight: '#0037B1',
-    primaryDark: '#00277F',
+    primaryHover: '#000000',
+    primaryPressed: '#000000',
     // Secondary Colors
     secondaryLight: '#DAE8FF',
     secondaryMain: '#CCDBFE',
@@ -265,6 +265,22 @@ export const withTheme: Decorator = (Story, context) => {
       document.documentElement.setAttribute('data-theme', theme);
       document.documentElement.style.backgroundColor = colors.background;
       document.documentElement.style.color = colors.textPrimary;
+      
+      // Set CSS custom properties for theme variables
+      const root = document.documentElement;
+      root.style.setProperty('--theme-primary-main', colors.primaryMain);
+      root.style.setProperty('--theme-primary-hover', colors.primaryHover);
+      root.style.setProperty('--theme-primary-pressed', colors.primaryPressed);
+      root.style.setProperty('--theme-primary-night', colors.primaryNight);
+      root.style.setProperty('--theme-primary-light', colors.selectedLight);
+      root.style.setProperty('--theme-secondary-light', colors.secondaryLight);
+      root.style.setProperty('--theme-secondary-main', colors.secondaryMain);
+      root.style.setProperty('--theme-secondary-dark', colors.secondaryDark);
+      root.style.setProperty('--theme-paper', colors.paper);
+      root.style.setProperty('--theme-grey-300', colors.grey300);
+      root.style.setProperty('--theme-grey-400', colors.grey400);
+      root.style.setProperty('--theme-error-main', colors.errorMain);
+      root.style.setProperty('--theme-error-light', colors.errorLight);
     }
   }, [theme, colors]);
 

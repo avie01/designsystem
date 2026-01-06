@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Card from './Card';
+import IconButton from '../../IconButton/IconButton';
 import { ODLTheme } from '../../../styles/ODLTheme';
 
 const meta: Meta<typeof Card> = {
@@ -37,14 +38,14 @@ export const Default: Story = {
       <div>
         <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>Card Title</h3>
         <p style={{ margin: 0, color: ODLTheme.colors.text.secondary, fontSize: '14px' }}>
-          This is a simple card component for grouping related content. Hover to see animations!
+          This is a simple card component for grouping related content.
         </p>
       </div>
     ),
     padding: 'lg',
-    shadow: 'md',
+    shadow: 'none',
     bordered: true,
-    hoverable: true,
+    hoverable: false,
   },
 };
 
@@ -53,16 +54,16 @@ export const Hoverable: Story = {
   args: {
     children: (
       <div>
-        <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>Hoverable Card</h3>
+        <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>Static Card</h3>
         <p style={{ margin: 0, color: ODLTheme.colors.text.secondary, fontSize: '14px' }}>
-          Hover over this card to see the effect.
+          This card has no hover effects or shadow.
         </p>
       </div>
     ),
     padding: 'lg',
-    shadow: 'sm',
+    shadow: 'none',
     bordered: true,
-    hoverable: true,
+    hoverable: false,
   },
 };
 
@@ -78,9 +79,9 @@ export const Clickable: Story = {
       </div>
     ),
     padding: 'lg',
-    shadow: 'md',
+    shadow: 'none',
     bordered: true,
-    hoverable: true,
+    hoverable: false,
     onClick: () => alert('Card clicked!'),
   },
 };
@@ -92,14 +93,14 @@ export const NoBorder: Story = {
       <div>
         <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>No Border</h3>
         <p style={{ margin: 0, color: ODLTheme.colors.text.secondary, fontSize: '14px' }}>
-          Card without a border, only shadow. Hover to see lift effect!
+          Card without a border or shadow.
         </p>
       </div>
     ),
     padding: 'lg',
-    shadow: 'lg',
+    shadow: 'none',
     bordered: false,
-    hoverable: true,
+    hoverable: false,
   },
 };
 
@@ -110,14 +111,14 @@ export const SmallPadding: Story = {
       <div>
         <h3 style={{ margin: '0 0 4px 0', fontSize: '14px', fontWeight: 600 }}>Compact Card</h3>
         <p style={{ margin: 0, color: ODLTheme.colors.text.secondary, fontSize: '13px' }}>
-          Smaller padding for compact layouts. Hover for animation!
+          Smaller padding for compact layouts.
         </p>
       </div>
     ),
     padding: 'sm',
-    shadow: 'sm',
+    shadow: 'none',
     bordered: true,
-    hoverable: true,
+    hoverable: false,
   },
 };
 
@@ -129,18 +130,82 @@ export const CardGrid: Story = {
         <Card
           key={title}
           padding="lg"
-          shadow="sm"
+          shadow="none"
           bordered
-          hoverable
+          hoverable={false}
           onClick={() => alert(`Clicked: ${title}`)}
           ariaLabel={`${title} card - click to view details`}
         >
           <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>{title}</h3>
           <p style={{ margin: 0, color: ODLTheme.colors.text.secondary, fontSize: '14px' }}>
-            Card description goes here. Click or hover to see animations!
+            Card description goes here. Click for action!
           </p>
         </Card>
       ))}
     </div>
   ),
+};
+
+export const AISuggestion: Story = {
+  name: '07 AI Suggestion',
+  args: {
+    children: (
+      <div>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <img src="/src/assets/ai.svg" alt="AI" width="20" height="20" />
+              <h3 style={{ margin: '0', fontSize: '16px', fontWeight: 600 }}>Search assist</h3>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <IconButton 
+                icon="settings"
+                variant="ghost"
+                size="small"
+                aria-label="Settings"
+              />
+              <IconButton 
+                icon="edit"
+                variant="ghost"
+                size="small"
+                aria-label="Edit"
+              />
+              <IconButton 
+                icon="close"
+                variant="ghost"
+                size="small"
+                aria-label="Close"
+              />
+            </div>
+          </div>
+          <p style={{ margin: '0 0 0 0', color: ODLTheme.colors.text.secondary, fontSize: '14px', fontStyle: 'italic' }}>
+            We've curated these suggestions based on your preferences and browsing history.
+          </p>
+        </div>
+        <style>{`
+          @keyframes electricFlow {
+            0% { border-image-source: linear-gradient(45deg, #067BD6, #13ABA7 50%, #609F1E); }
+            25% { border-image-source: linear-gradient(135deg, #067BD6, #13ABA7 50%, #609F1E); }
+            50% { border-image-source: linear-gradient(225deg, #067BD6, #13ABA7 50%, #609F1E); }
+            75% { border-image-source: linear-gradient(315deg, #067BD6, #13ABA7 50%, #609F1E); }
+            100% { border-image-source: linear-gradient(45deg, #067BD6, #13ABA7 50%, #609F1E); }
+          }
+        `}</style>
+      </div>
+    ),
+    padding: 'none',
+    shadow: 'none',
+    bordered: false,
+    hoverable: false,
+    className: 'electric-border',
+    style: {
+      backgroundColor: '#F9FDF9',
+      padding: '16px',
+      position: 'relative',
+      border: '2px solid',
+      borderImage: 'linear-gradient(45deg, #067BD6, #13ABA7 50%, #609F1E) 1',
+      borderRadius: '4px',
+      animation: 'electricFlow 2.5s linear infinite'
+    },
+  },
 };

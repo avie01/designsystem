@@ -234,21 +234,26 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
                   background: 'none',
                   border: 'none',
                   padding: 0,
-                  color: colorScheme === 'primary' ? colors.primaryMain : colors.primaryMain,
+                  color: index === items.length - 1 
+                    ? colors.textPrimary 
+                    : (colorScheme === 'primary' ? colors.primaryMain : colors.textSecondary),
                   cursor: 'pointer',
                   fontSize: 'inherit',
                   fontFamily: 'inherit',
+                  fontWeight: index === items.length - 1 ? 600 : 400,
                   textDecoration: 'none',
                   transition: 'color 0.15s ease',
                   position: 'relative',
                   borderRadius: '2px',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = colors.primaryLight;
+                  e.currentTarget.style.color = colors.primaryHover;
                   e.currentTarget.style.textDecoration = 'underline';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = colorScheme === 'primary' ? colors.primaryMain : colors.primaryMain;
+                  e.currentTarget.style.color = index === items.length - 1 
+                    ? colors.textPrimary 
+                    : (colorScheme === 'primary' ? colors.primaryMain : colors.textSecondary);
                   e.currentTarget.style.textDecoration = 'none';
                 }}
                 onFocus={(e) => {
@@ -269,7 +274,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
                 )}
                 style={{
                   color: index === items.length - 1 ? colors.textPrimary : colors.textSecondary,
-                  fontWeight: index === items.length - 1 ? 500 : 400,
+                  fontWeight: index === items.length - 1 ? 600 : 400,
                 }}
               >
                 {item.label}
