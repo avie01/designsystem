@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback, KeyboardEvent } from 'react';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import Icon from '../Icon/Icon';
+import IconButton from '../IconButton/IconButton';
+import aiIcon from '../../assets/ai.svg';
 import './AlertBanner.css';
 
 export interface AlertBannerProps {
   /** The alert message content */
   children: React.ReactNode;
   /** Alert type/variant */
-  variant?: 'info' | 'success' | 'warning' | 'error';
+  variant?: 'info' | 'success' | 'warning' | 'error' | 'ai-suggestion';
   /** Component size */
   size?: 'small' | 'medium' | 'large';
   /** Whether the alert is dismissible */
@@ -102,6 +104,11 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
           backgroundColor: colors.errorLight,
           iconColor: disabled ? colors.textDisabled : colors.errorMain,
         };
+      case 'ai-suggestion':
+        return {
+          backgroundColor: '#F9FDF9',
+          iconColor: disabled ? colors.textDisabled : colors.primaryMain,
+        };
       case 'info':
       default:
         return {
@@ -122,6 +129,18 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
         return <Icon name="warning-alt" size={iconSize} color={iconColor} />;
       case 'error':
         return <Icon name="error-outline" size={iconSize} color={iconColor} />;
+      case 'ai-suggestion':
+        return (
+          <img 
+            src={aiIcon} 
+            alt="AI suggestion" 
+            style={{ 
+              width: iconSize, 
+              height: iconSize,
+              display: 'block'
+            }} 
+          />
+        );
       default:
         return <Icon name="information" size={iconSize} color={iconColor} />;
     }
@@ -140,7 +159,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
       backgroundColor,
       color: disabled ? colors.textDisabled : colors.textPrimary,
       ...spacing[size],
-      borderRadius: '2px',
+      borderRadius: variant === 'ai-suggestion' ? '0' : '2px',
       marginBottom: colors.spacing[3],
       transition: 'all 0.2s ease',
       fontFamily: '"Noto Sans", sans-serif',
@@ -197,45 +216,18 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
 
       {/* Close Button */}
       {dismissible && showCloseButton && !disabled && (
-        <button
+        <IconButton
+          icon="close"
           onClick={handleDismiss}
-          className="alert-banner__close-button"
           aria-label="Close alert"
-          type="button"
+          variant="disabled"
+          size={size === 'small' ? 'xs' : size === 'large' ? 'medium' : 'small'}
+          customHoverBg={colors.grey400}
           style={{
-            color: colors.textPrimary,
-            backgroundColor: 'transparent',
-            border: 'none',
-            padding: colors.spacing[1],
-            borderRadius: '4px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'background-color 0.2s ease',
             alignSelf: 'flex-start',
             marginTop: '-3px',
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = colors.grey400;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-          }}
-          onFocus={(e) => {
-            e.currentTarget.style.outline = `2px solid ${colors.primaryMain}`;
-            e.currentTarget.style.outlineOffset = '2px';
-          }}
-          onBlur={(e) => {
-            e.currentTarget.style.outline = 'none';
-          }}
-        >
-          <Icon 
-            name="close" 
-            size={size === 'small' ? 14 : size === 'large' ? 18 : 16}
-            color={colors.textPrimary}
-          />
-        </button>
+        />
       )}
     </section>
   );

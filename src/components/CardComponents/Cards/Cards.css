@@ -127,6 +127,84 @@
   border-color: var(--cards-error);
 }
 
+/* Loading state */
+.cards-container--loading {
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--cards-loading-bg, var(--cards-white));
+}
+
+.cards-container--loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    transparent 100%
+  );
+  animation: cards-shimmer 1.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+.cards-container--loading > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes cards-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Ghost skeleton element for loading state */
+.cards-container--loading .ghost.sizer {
+  background: linear-gradient(
+    90deg,
+    var(--cards-skeleton-base, #f0f0f0) 0%,
+    var(--cards-skeleton-highlight, #e0e0e0) 50%,
+    var(--cards-skeleton-base, #f0f0f0) 100%
+  );
+  background-size: 200% 100%;
+  animation: cards-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.cards-container__checkbox .ghost.sizer {
+  width: 20px;
+  height: 20px;
+}
+
+.cards-container__icon .ghost.sizer {
+  width: 36px;
+  height: 36px;
+}
+
+.cards-container--loading .cards-container__icon .ghost.sizer {
+  width: 36px;
+  height: 36px;
+}
+
+.cards-container--loading[class*="compact"] .cards-container__icon .ghost.sizer {
+  width: 24px;
+  height: 24px;
+}
+
+.cards-container--loading[class*="build"] .cards-container__icon .ghost.sizer {
+  width: 44px;
+  height: 44px;
+}
+
 /* Checkbox styling */
 .cards-container__checkbox {
   display: flex;

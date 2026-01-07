@@ -102,8 +102,8 @@ const Input: React.FC<InputProps> = ({
     style.textContent = `
       .custom-input:hover:not(.custom-input--disabled):not(.custom-input--readonly) {
         background-color: ${colors.grey400} !important;
-        border: ${ODLTheme.borders.width.base} solid transparent !important;
-        border-bottom: 1px solid ${colors.inputBorder} !important;
+        border-bottom: none !important;
+        border: 1px solid ${colors.primaryMain} !important;
         box-shadow: inset 0 0 0 1px ${colors.primaryMain} !important;
       }
       .custom-input:focus:not(.custom-input--readonly),

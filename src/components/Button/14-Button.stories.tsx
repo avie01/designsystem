@@ -266,21 +266,23 @@ export const States: Story = {
       const primaryHover = getComputedStyle(root).getPropertyValue('--theme-primary-hover').trim() || colors.primaryHover;
       const primaryPressed = getComputedStyle(root).getPropertyValue('--theme-primary-pressed').trim() || colors.primaryPressed;
       const grey400 = getComputedStyle(root).getPropertyValue('--theme-grey-400').trim() || colors.grey400;
+      const grey450 = getComputedStyle(root).getPropertyValue('--theme-grey-450').trim() || colors.grey450;
       const primaryLight = getComputedStyle(root).getPropertyValue('--theme-primary-light').trim() || colors.selectedLight;
       const secondaryMain = getComputedStyle(root).getPropertyValue('--theme-secondary-main').trim() || colors.secondaryMain;
       const secondaryDark = getComputedStyle(root).getPropertyValue('--theme-secondary-dark').trim() || colors.secondaryDark;
       const errorMain = getComputedStyle(root).getPropertyValue('--theme-error-main').trim() || colors.errorMain;
-      const errorLight = getComputedStyle(root).getPropertyValue('--theme-error-light').trim() || colors.errorLight;
+      const errorPressed = getComputedStyle(root).getPropertyValue('--theme-error-pressed').trim() || colors.errorPressed;
       
       return {
         primaryHover,
         primaryPressed,
         grey400,
+        grey450,
         primaryLight,
         secondaryMain,
         secondaryDark,
         errorMain,
-        errorLight
+        errorPressed
       };
     };
     
@@ -302,7 +304,7 @@ export const States: Story = {
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant="secondary">Default</Button>
             <Button variant="secondary" style={{ backgroundColor: themeColors.grey400, color: colors.primaryMain }}>Hover</Button>
-            <Button variant="secondary" style={{ backgroundColor: themeColors.primaryLight, color: colors.primaryNight }}>Pressed</Button>
+            <Button variant="secondary" style={{ backgroundColor: themeColors.grey450, color: colors.primaryNight }}>Pressed</Button>
             <Button variant="secondary" disabled>Disabled</Button>
           </div>
         </div>
@@ -320,7 +322,7 @@ export const States: Story = {
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant="text">Default</Button>
             <Button variant="text" style={{ backgroundColor: themeColors.grey400, color: colors.primaryMain }}>Hover</Button>
-            <Button variant="text" style={{ backgroundColor: themeColors.primaryLight, color: colors.primaryNight }}>Pressed</Button>
+            <Button variant="text" style={{ backgroundColor: themeColors.grey450, color: colors.primaryNight }}>Pressed</Button>
             <Button variant="text" disabled>Disabled</Button>
           </div>
         </div>
@@ -329,7 +331,7 @@ export const States: Story = {
           <div style={{ display: 'flex', gap: colors.spacing?.[3] || '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant="destructive">Default</Button>
             <Button variant="destructive" style={{ backgroundColor: themeColors.errorMain, color: colors.textInverse }}>Hover</Button>
-            <Button variant="destructive" style={{ backgroundColor: themeColors.errorLight, color: colors.primaryNight }}>Pressed</Button>
+            <Button variant="destructive" style={{ backgroundColor: themeColors.errorPressed, color: colors.primaryNight }}>Pressed</Button>
             <Button variant="destructive" disabled>Disabled</Button>
           </div>
         </div>

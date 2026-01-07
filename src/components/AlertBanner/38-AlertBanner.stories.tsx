@@ -12,10 +12,10 @@ const meta: Meta<typeof AlertBanner> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['info', 'success', 'warning', 'error'],
+      options: ['info', 'success', 'warning', 'error', 'ai-suggestion'],
       description: 'Alert variant/severity level',
       table: {
-        type: { summary: '"info" | "success" | "warning" | "error"' },
+        type: { summary: '"info" | "success" | "warning" | "error" | "ai-suggestion"' },
         defaultValue: { summary: 'info' },
       },
     },
@@ -133,6 +133,18 @@ export const Dismissible: Story = {
     variant: 'info',
     title: 'Dismissible Alert',
     children: 'Click the X to dismiss this alert.',
+    dismissible: true,
+    visible: true,
+  },
+};
+
+// AI Suggestion
+export const AISuggestion: Story = {
+  name: '06 AI Suggestion',
+  args: {
+    variant: 'ai-suggestion',
+    title: 'AI Suggestion',
+    children: "We've curated these suggestions based on your preferences and browsing history.",
     dismissible: true,
     visible: true,
   },

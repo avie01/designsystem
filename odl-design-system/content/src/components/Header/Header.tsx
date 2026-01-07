@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Icon from '../Icon/Icon';
 import Input from '../Input/Input';
 import UserAvatar from '../UserAvatar/UserAvatar';
+import IconButton from '../IconButton/IconButton';
 import './Header.css';
 
 export interface Alert {
@@ -248,32 +249,30 @@ const Header: React.FC<HeaderProps> = ({
 
         {/* Right Section - Actions and User */}
         <div className="header__right">
-          <button
-            className="header__action-button"
-            onClick={onNotificationClick}
-            onKeyDown={(e) => handleKeyDown(e, onNotificationClick)}
-            aria-label={`Notifications ${finalNotificationCount > 0 ? `(${finalNotificationCount} unread)` : ''}`}
-            tabIndex={disabled ? -1 : 0}
-            disabled={disabled}
-          >
-            <Icon name="notification" size={20} aria-hidden="true" />
+          <div className="header__notification-container">
+            <IconButton
+              icon="notification"
+              variant="disabled"
+              size="medium"
+              onClick={onNotificationClick}
+              aria-label={`Notifications ${finalNotificationCount > 0 ? `(${finalNotificationCount} unread)` : ''}`}
+              disabled={disabled}
+            />
             {finalNotificationCount > 0 && (
               <span className="header__badge" aria-hidden="true">
                 {finalNotificationCount > 99 ? '99+' : finalNotificationCount}
               </span>
             )}
-          </button>
+          </div>
 
-          <button
-            className="header__action-button"
+          <IconButton
+            icon="settings"
+            variant="disabled"
+            size="medium"
             onClick={onSettingsClick}
-            onKeyDown={(e) => handleKeyDown(e, onSettingsClick)}
             aria-label="Open settings"
-            tabIndex={disabled ? -1 : 0}
             disabled={disabled}
-          >
-            <Icon name="settings" size={20} aria-hidden="true" />
-          </button>
+          />
 
           {(currentUser.name || currentUser.initials) && (
             <div className="header__user-info">

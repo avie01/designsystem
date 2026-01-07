@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../../../.storybook/theme-decorator';
 import IconButton from '../../IconButton/IconButton';
 import FileType, { FileTypeVariant } from '../../FileType/FileType';
@@ -33,6 +33,8 @@ export interface CardsProps {
   disabled?: boolean;
   /** Error state - uses error colors */
   error?: boolean;
+  /** Loading state - shows loading animation */
+  loading?: boolean;
   /** Whether the card is selected (checkbox state) */
   selected?: boolean;
   /** Primary text content */
@@ -90,6 +92,7 @@ const Cards: React.FC<CardsProps> = ({
   showMetadata = false,
   disabled = false,
   error = false,
+  loading = false,
   selected = false,
   title = "Title - h4 - Primary",
   subtitle = "Body - body2 - Secondary",
@@ -129,6 +132,9 @@ const Cards: React.FC<CardsProps> = ({
 
     if (disabled) {
       backgroundColor = colors.grey300;
+      textColor = colors.textDisabled;
+    } else if (loading) {
+      backgroundColor = colors.paper || '#ffffff';
       textColor = colors.textDisabled;
     } else if (selected) {
       backgroundColor = colors.selectedLight;
@@ -204,7 +210,7 @@ const Cards: React.FC<CardsProps> = ({
       display: 'flex',
       width: '100%',
       alignItems: type === 'build' ? 'flex-start' : 'center',
-      cursor: 'pointer',
+      cursor: loading || disabled ? 'not-allowed' : 'pointer',
       boxSizing: 'border-box' as const,
       ...style,
     };
@@ -217,13 +223,14 @@ const Cards: React.FC<CardsProps> = ({
     selected && 'cards-container--selected',
     disabled && 'cards-container--disabled',
     error && 'cards-container--error',
+    loading && 'cards-container--loading',
     showMetadata && 'cards-container--with-metadata',
     className
   );
 
   // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (disabled || type === 'build') return;
+    if (disabled || loading || type === 'build') return;
     
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -236,6 +243,47 @@ const Cards: React.FC<CardsProps> = ({
     onKeyDown?.(e);
   };
 
+  // Inject dynamic theme colors for loading state skeleton elements
+  useEffect(() => {
+    // Calculate skeleton colors based on theme
+    const skeletonBase = colors.grey300 || colors.surface || '#F5F5F5';
+    const skeletonHighlight = colors.grey400 || colors.surfaceHover || '#EBEBEB';
+    const loadingBg = colors.paper || '#FFFFFF';
+    
+    // Set CSS custom properties for theme-aware loading state
+    const root = document.documentElement;
+    root.style.setProperty('--cards-loading-bg', loadingBg);
+    root.style.setProperty('--cards-skeleton-base', skeletonBase);
+    root.style.setProperty('--cards-skeleton-highlight', skeletonHighlight);
+    
+    // Determine if we're in dark mode for shimmer effect
+    const paperColor = typeof colors.paper === 'string' ? colors.paper : '#FFFFFF';
+    const isDark = paperColor.toLowerCase().startsWith('#') && 
+                   parseInt(paperColor.slice(1), 16) < 0x808080;
+    const shimmerOpacity = isDark ? 0.3 : 0.8;
+    
+    // Update shimmer overlay color
+    const styleId = 'cards-loading-shimmer';
+    let styleElement = document.getElementById(styleId) as HTMLStyleElement;
+    
+    if (!styleElement) {
+      styleElement = document.createElement('style');
+      styleElement.id = styleId;
+      document.head.appendChild(styleElement);
+    }
+    
+    styleElement.textContent = `
+      .cards-container--loading::after {
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(255, 255, 255, ${shimmerOpacity}) 50%,
+          transparent 100%
+        ) !important;
+      }
+    `;
+  }, [colors]);
+
   return (
     <div 
       className={componentClasses}
@@ -244,7 +292,7 @@ const Cards: React.FC<CardsProps> = ({
       aria-label={ariaLabel || `${title}${selected ? ', selected' : ''}`}
       aria-describedby={ariaDescribedBy}
       onMouseEnter={() => {
-        if (!disabled) {
+        if (!disabled && !loading) {
           setIsHovered(true);
           onMouseEnter?.();
         }
@@ -257,21 +305,27 @@ const Cards: React.FC<CardsProps> = ({
       {/* Checkbox */}
       {type !== 'build' && (
         <div className="cards-container__checkbox">
-          <Checkbox
-            checked={selected}
-            onChange={onSelect}
-            disabled={disabled}
-            size="md"
-            id={`card-checkbox-${title?.replace(/\s+/g, '-').toLowerCase()}`}
-            aria-label={`Select ${title}`}
-          />
+          {loading ? (
+            <div className="ghost sizer"></div>
+          ) : (
+            <Checkbox
+              checked={selected}
+              onChange={onSelect}
+              disabled={disabled}
+              size="md"
+              id={`card-checkbox-${title?.replace(/\s+/g, '-').toLowerCase()}`}
+              aria-label={`Select ${title}`}
+            />
+          )}
         </div>
       )}
 
       {/* FileType Icon */}
       {iconGutter && (
         <div className="cards-container__icon" style={{ alignSelf: type === 'build' ? 'flex-start' : 'center' }}>
-          {type === 'user' ? (
+          {loading ? (
+            <div className="ghost sizer"></div>
+          ) : type === 'user' ? (
             <UserAvatar
               user={{
                 name: title || "User",
@@ -313,14 +367,20 @@ const Cards: React.FC<CardsProps> = ({
       {/* Gutter Icons */}
       {iconGutter && gutterIcons.length > 0 && (
         <div className="cards-container__gutter-icons">
-          {gutterIcons.map((iconName, index) => (
-            <Icon
-              key={index}
-              name={iconName}
-              size={16}
-              color={disabled ? colors.textDisabled : colors.textSecondary}
-            />
-          ))}
+          {loading ? (
+            gutterIcons.map((_, index) => (
+              <div key={index} className="ghost sizer" style={{ width: '16px', height: '16px' }}></div>
+            ))
+          ) : (
+            gutterIcons.map((iconName, index) => (
+              <Icon
+                key={index}
+                name={iconName}
+                size={16}
+                color={disabled ? colors.textDisabled : colors.textSecondary}
+              />
+            ))
+          )}
         </div>
       )}
 
@@ -344,32 +404,38 @@ const Cards: React.FC<CardsProps> = ({
           </div>
         )}
         <div className="cards-container__title-row" style={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
-          <div 
-            className="cards-container__title"
-            style={{ 
-              fontSize: type === 'compact' ? '12px' : '14px',
-              fontWeight: 600,
-              color: disabled ? colors.textDisabled : colors.textPrimary,
-              lineHeight: '1.5',
-              whiteSpace: 'nowrap',
-              flexShrink: 0
-            }}
-          >
-            {title}
-          </div>
-          {extensionSize && (
-            <div 
-              className="cards-container__extension-size"
-              style={{
-                fontSize: '12px',
-                color: disabled ? colors.textDisabled : colors.textSecondary,
-                lineHeight: '1.5',
-                whiteSpace: 'nowrap',
-                flexShrink: 0
-              }}
-            >
-              .pdf (9.8kb)
-            </div>
+          {loading ? (
+            <div className="ghost sizer" style={{ width: '200px', height: type === 'compact' ? '14px' : '16px', lineHeight: '1.5' }}></div>
+          ) : (
+            <>
+              <div 
+                className="cards-container__title"
+                style={{ 
+                  fontSize: type === 'compact' ? '12px' : '14px',
+                  fontWeight: 600,
+                  color: disabled ? colors.textDisabled : colors.textPrimary,
+                  lineHeight: '1.5',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0
+                }}
+              >
+                {title}
+              </div>
+              {extensionSize && (
+                <div 
+                  className="cards-container__extension-size"
+                  style={{
+                    fontSize: '12px',
+                    color: disabled ? colors.textDisabled : colors.textSecondary,
+                    lineHeight: '1.5',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0
+                  }}
+                >
+                  .pdf (9.8kb)
+                </div>
+              )}
+            </>
           )}
         </div>
         {type !== 'compact' && (
@@ -384,7 +450,11 @@ const Cards: React.FC<CardsProps> = ({
               textOverflow: 'ellipsis'
             }}
           >
-            {subtitle}
+            {loading ? (
+              <div className="ghost sizer" style={{ width: '150px', height: '14px', lineHeight: '1.5' }}></div>
+            ) : (
+              subtitle
+            )}
           </div>
         )}
         {/* Second subtitle for 3Sixty type */}
@@ -427,88 +497,115 @@ const Cards: React.FC<CardsProps> = ({
         <div 
           className="cards-container__tag"
           style={{
-            backgroundColor: disabled ? colors.grey200 : colors.grey300,
+            backgroundColor: loading ? 'transparent' : (disabled ? colors.grey200 : colors.grey300),
             color: disabled ? colors.textDisabled : colors.textPrimary,
             padding: `${colors.spacing[1]} ${colors.spacing[2]}`,
             borderRadius: '4px',
             fontSize: type === 'compact' ? '11px' : '12px',
             fontWeight: 500,
             whiteSpace: 'nowrap',
-            border: `1px solid ${disabled ? colors.textDisabled : colors.border}`,
+            border: loading ? 'none' : `1px solid ${disabled ? colors.textDisabled : colors.border}`,
             flexShrink: 0,
             alignSelf: type === 'build' ? 'flex-start' : 'center',
             marginTop: type === 'build' ? '4px' : 0,
             display: ((effectiveHoverState || selected) && (type === 'compact' || type === 'comfortable' || type === 'metadata')) ? 'none' : 'block'
           }}
         >
-          {tag}
+          {loading ? (
+            <div className="ghost sizer" style={{ width: '60px', height: type === 'compact' ? '13px' : '14px' }}></div>
+          ) : (
+            tag
+          )}
         </div>
       )}
 
       {/* Action Icons - shown on hover/active for specific card types */}
       {(effectiveHoverState || selected) && (type === 'compact' || type === 'comfortable' || type === 'metadata') && (
         <div className="cards-container__hover-actions" style={{ display: 'flex', gap: colors.spacing[1], alignSelf: 'center' }}>
-          <div onClick={(e) => e.stopPropagation()}>
-            <IconButton
-              icon="edit"
-              variant="ghost"
-              size="medium"
-              onClick={onEditClick || (() => alert('Edit action'))}
-              disabled={disabled}
-              aria-label="Edit"
-            />
-          </div>
-          <div onClick={(e) => e.stopPropagation()}>
-            <IconButton
-              icon="text"
-              variant="ghost"
-              size="medium"
-              onClick={onTextSelectionClick || (() => alert('Text selection action'))}
-              disabled={disabled}
-              aria-label="Text selection"
-            />
-          </div>
-          <div onClick={(e) => e.stopPropagation()}>
-            <IconButton
-              icon="copy"
-              variant="ghost"
-              size="medium"
-              onClick={onCopyClick || (() => alert('Copy action'))}
-              disabled={disabled}
-              aria-label="Copy"
-            />
-          </div>
+          {loading ? (
+            <>
+              <div className="ghost sizer" style={{ width: '36px', height: '36px' }}></div>
+              <div className="ghost sizer" style={{ width: '36px', height: '36px' }}></div>
+              <div className="ghost sizer" style={{ width: '36px', height: '36px' }}></div>
+            </>
+          ) : (
+            <>
+              <div onClick={(e) => e.stopPropagation()}>
+                <IconButton
+                  icon="edit"
+                  variant="ghost"
+                  size="medium"
+                  onClick={onEditClick || (() => alert('Edit action'))}
+                  disabled={disabled}
+                  aria-label="Edit"
+                />
+              </div>
+              <div onClick={(e) => e.stopPropagation()}>
+                <IconButton
+                  icon="text"
+                  variant="ghost"
+                  size="medium"
+                  onClick={onTextSelectionClick || (() => alert('Text selection action'))}
+                  disabled={disabled}
+                  aria-label="Text selection"
+                />
+              </div>
+              <div onClick={(e) => e.stopPropagation()}>
+                <IconButton
+                  icon="copy"
+                  variant="ghost"
+                  size="medium"
+                  onClick={onCopyClick || (() => alert('Copy action'))}
+                  disabled={disabled}
+                  aria-label="Copy"
+                />
+              </div>
+            </>
+          )}
         </div>
       )}
 
       {/* Action Icons */}
       <div className="cards-container__actions" style={{ alignSelf: type === 'build' ? 'flex-start' : 'center' }}>
-        {/* Information Icon */}
-        {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && (
-          <div onClick={(e) => e.stopPropagation()}>
-            <IconButton
-              icon="information"
-              variant="ghost"
-              size="medium"
-              onClick={onInfoClick}
-              disabled={disabled}
-              aria-label={`More information about ${title}`}
-            />
-          </div>
-        )}
+        {loading ? (
+          <>
+            {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && (
+              <div className="ghost sizer" style={{ width: '36px', height: '36px' }}></div>
+            )}
+            {showMenuIcon && (
+              <div className="ghost sizer" style={{ width: '36px', height: '36px' }}></div>
+            )}
+          </>
+        ) : (
+          <>
+            {/* Information Icon */}
+            {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && (
+              <div onClick={(e) => e.stopPropagation()}>
+                <IconButton
+                  icon="information"
+                  variant="ghost"
+                  size="medium"
+                  onClick={onInfoClick}
+                  disabled={disabled}
+                  aria-label={`More information about ${title}`}
+                />
+              </div>
+            )}
 
-        {/* Menu Icon */}
-        {showMenuIcon && (
-          <div onClick={(e) => e.stopPropagation()}>
-            <IconButton
-              icon={type === 'workspace' ? "star" : "overflow-menu-vertical"}
-              variant="ghost"
-              size="medium"
-              onClick={onMenuClick}
-              disabled={disabled}
-              aria-label={`Options for ${title}`}
-            />
-          </div>
+            {/* Menu Icon */}
+            {showMenuIcon && (
+              <div onClick={(e) => e.stopPropagation()}>
+                <IconButton
+                  icon={type === 'workspace' ? "star" : "overflow-menu-vertical"}
+                  variant="ghost"
+                  size="medium"
+                  onClick={onMenuClick}
+                  disabled={disabled}
+                  aria-label={`Options for ${title}`}
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

@@ -85,6 +85,14 @@ const meta: Meta<typeof Cards> = {
         defaultValue: { summary: 'false' },
       },
     },
+    loading: {
+      control: 'boolean',
+      description: 'Loading state - shows loading animation',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     selected: {
       control: 'boolean',
       description: 'Whether the card is selected (checkbox state)',
@@ -242,6 +250,12 @@ export const AllStates: Story = {
               subtitle="This card has an error"
               tag="Error"
               error={true}
+            />
+            <Cards
+              title="Loading State"
+              subtitle="This card is loading"
+              tag="Loading"
+              loading={true}
             />
             <Cards
               title="Selected + Disabled"
