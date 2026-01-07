@@ -322,6 +322,12 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
     );
   }
 
+  // Generate component classes
+  const componentClasses = [
+    className,
+    loading ? 'thumbnail-card--loading' : '',
+  ].filter(Boolean).join(' ');
+
   return (
     <div
       style={isHovered && !disabled && !loading ? hoverStyle : cardStyle}
