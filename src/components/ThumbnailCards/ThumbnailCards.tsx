@@ -24,6 +24,8 @@ export interface ThumbnailCardsProps {
   selected?: boolean;
   /** Whether the card is disabled */
   disabled?: boolean;
+  /** Whether the card is in loading state */
+  loading?: boolean;
   /** Whether the checkbox is checked */
   checked?: boolean;
   /** Checkbox change handler */
@@ -43,6 +45,7 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
   onClick,
   selected = false,
   disabled = false,
+  loading = false,
   checked = false,
   onCheckboxChange,
   iconName = 'overflow-menu-vertical',
@@ -176,6 +179,95 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
       onClick();
     }
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div
+        style={cardStyle}
+        className={className}
+        role="article"
+        aria-label={`Loading ${title}...`}
+      >
+        {/* Header with skeleton elements */}
+        <div style={headerStyle}>
+          <div 
+            className="skeleton-box"
+            style={{
+              width: '20px',
+              height: '20px',
+              borderRadius: '4px',
+            }} 
+          />
+          <div 
+            className="skeleton-box"
+            style={{
+              width: size === 'small' ? '28px' : size === 'large' ? '44px' : '36px',
+              height: size === 'small' ? '28px' : size === 'large' ? '44px' : '36px',
+              borderRadius: '100px',
+            }} 
+          />
+        </div>
+
+        {/* Image skeleton */}
+        <div style={imageContainerStyle}>
+          <div 
+            className="skeleton-box"
+            style={{
+              ...thumbnailStyle,
+              backgroundColor: colors.surfaceHover,
+              borderRadius: '4px',
+            }} 
+          />
+        </div>
+
+        {/* Content skeleton */}
+        <div style={contentStyle}>
+          <div 
+            className="skeleton-box"
+            style={{
+              width: '24px',
+              height: '24px',
+              borderRadius: '4px',
+              flexShrink: 0,
+            }} 
+          />
+          <div 
+            className="skeleton-box"
+            style={{
+              height: '20px',
+              borderRadius: '4px',
+              flex: 1,
+            }} 
+          />
+        </div>
+
+        {/* Shimmer animation styles */}
+        <style>{`
+          @keyframes shimmer {
+            0% {
+              background-position: -468px 0;
+            }
+            100% {
+              background-position: 468px 0;
+            }
+          }
+          
+          .skeleton-box {
+            background-image: linear-gradient(
+              90deg,
+              #f0f0f0 25%,
+              #e0e0e0 50%,
+              #f0f0f0 75%
+            );
+            background-size: 468px 104px;
+            animation: shimmer 1.5s infinite;
+            overflow: hidden;
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   return (
     <div

@@ -65,6 +65,14 @@ const meta: Meta<typeof ThumbnailCards> = {
         defaultValue: { summary: 'false' },
       },
     },
+    loading: {
+      control: 'boolean',
+      description: 'Whether the card is in loading state',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     checked: {
       control: 'boolean',
       description: 'Whether the checkbox is checked',
@@ -170,6 +178,14 @@ export const Disabled: Story = {
   },
 };
 
+export const Loading: Story = {
+  args: {
+    size: 'large',
+    title: 'Loading Card',
+    loading: true,
+  },
+};
+
 export const LongText: Story = {
   args: {
     size: 'large',
@@ -248,13 +264,41 @@ export const InteractiveStates: Story = {
           thumbnailSrc="https://via.placeholder.com/56x56/CCCCCC/FFFFFF?text=DIS"
           onClick={() => alert('This should not fire!')}
         />
+        <ThumbnailCards
+          size="large"
+          title="Loading State"
+          loading={true}
+        />
+      </div>
+    </div>
+  ),
+};
+
+export const LoadingStates: Story = {
+  name: '10 Loading States',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>Loading States - All Sizes</h3>
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        <div style={{ textAlign: 'center' }}>
+          <ThumbnailCards size="small" title="Small Loading" loading={true} />
+          <div style={{ fontSize: '12px', marginTop: '8px', color: '#666' }}>Small Loading</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <ThumbnailCards size="medium" title="Medium Loading" loading={true} />
+          <div style={{ fontSize: '12px', marginTop: '8px', color: '#666' }}>Medium Loading</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <ThumbnailCards size="large" title="Large Loading" loading={true} />
+          <div style={{ fontSize: '12px', marginTop: '8px', color: '#666' }}>Large Loading</div>
+        </div>
       </div>
     </div>
   ),
 };
 
 export const ContentVariations: Story = {
-  name: '10 Content Variations',
+  name: '11 Content Variations',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>Content Variations</h3>
@@ -289,7 +333,7 @@ export const ContentVariations: Story = {
 };
 
 export const WithHeaderControls: Story = {
-  name: '11 With Header Controls',
+  name: '12 With Header Controls',
   render: function Component() {
     const [checked, setChecked] = React.useState(false);
     
@@ -330,7 +374,7 @@ export const WithHeaderControls: Story = {
 };
 
 export const GridLayout: Story = {
-  name: '12 Grid Layout Example',
+  name: '13 Grid Layout Example',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>Grid Layout</h3>
