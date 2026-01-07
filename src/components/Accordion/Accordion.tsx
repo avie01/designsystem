@@ -96,7 +96,7 @@ const Accordion: React.FC<AccordionProps> = ({
             padding: variant === 'filled' ? '16px 20px' : '14px 16px',
             background: variant === 'filled'
               ? isOpen
-                ? colors.primaryMain
+                ? '#E0F3FE'
                 : isHovered
                   ? colors.surfaceHover
                   : colors.grey100
@@ -105,6 +105,9 @@ const Accordion: React.FC<AccordionProps> = ({
                 : colors.paper,
             border: variant === 'bordered'
               ? `1px solid ${colors.border}`
+              : 'none',
+            borderLeft: variant === 'filled' && isOpen
+              ? '4px solid #3560C1'
               : 'none',
             borderBottom: variant === 'default' && level === 0 && !isLast && !isOpen
               ? `1px solid ${colors.border}`
@@ -127,7 +130,7 @@ const Accordion: React.FC<AccordionProps> = ({
             <Icon
               name={isOpen ? 'chevron-up' : 'chevron-down'}
               size={20}
-              color={variant === 'filled' && isOpen ? colors.textInverse : colors.textSecondary}
+              color={variant === 'filled' && isOpen ? '#32373f' : colors.textSecondary}
               style={{
                 transition: 'transform 0.5s ease',
                 transform: isOpen ? 'rotate(0deg)' : 'rotate(0deg)'
@@ -140,7 +143,7 @@ const Accordion: React.FC<AccordionProps> = ({
               <Icon
                 name={item.icon}
                 size={18}
-                color={variant === 'filled' && isOpen ? colors.textInverse : (
+                color={variant === 'filled' && isOpen ? '#32373f' : (
                   color === 'primary' ? colors.textPrimary : colors.textSecondary
                 )}
               />
@@ -157,7 +160,7 @@ const Accordion: React.FC<AccordionProps> = ({
                   size === 'medium' ? ODLTheme.typography.fontWeight.semibold :
                   ODLTheme.typography.fontWeight.bold
                 ) : 400,
-                color: variant === 'filled' && isOpen ? colors.textInverse : (
+                color: variant === 'filled' && isOpen ? '#32373f' : (
                   color === 'primary' ? colors.textPrimary : colors.textSecondary
                 )
               }}
@@ -171,7 +174,7 @@ const Accordion: React.FC<AccordionProps> = ({
             <Icon
               name={isOpen ? 'chevron-up' : 'chevron-down'}
               size={20}
-              color={variant === 'filled' && isOpen ? colors.textInverse : colors.textSecondary}
+              color={variant === 'filled' && isOpen ? '#32373f' : colors.textSecondary}
               style={{
                 transition: 'transform 0.5s ease',
                 transform: isOpen ? 'rotate(0deg)' : 'rotate(0deg)'
