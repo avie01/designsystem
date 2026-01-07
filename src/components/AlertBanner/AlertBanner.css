@@ -45,7 +45,13 @@
 
 .alert-banner--ai-suggestion .alert-banner__message {
   font-style: italic;
-  color: #525965;
+  /* Color is set dynamically via inline styles for theme support */
+}
+
+/* Dark mode override for AI Suggestion */
+[data-theme="dark"] .alert-banner--ai-suggestion,
+[data-odl-theme="dark"] .alert-banner--ai-suggestion {
+  background-color: #03260B;
 }
 
 @keyframes electricFlow {

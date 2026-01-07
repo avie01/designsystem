@@ -52,7 +52,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
   actions,
   'aria-label': ariaLabel,
 }) => {
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
   const [isVisible, setIsVisible] = useState(visible);
   const [isDismissed, setIsDismissed] = useState(false);
 
@@ -87,6 +87,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
   // Get variant-specific colors from theme
   const getVariantColors = () => {
     const iconColor = disabled ? colors.textDisabled : colors.textPrimary;
+    const isDarkMode = theme === 'dark';
     
     switch (variant) {
       case 'success':
@@ -106,7 +107,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
         };
       case 'ai-suggestion':
         return {
-          backgroundColor: '#F9FDF9',
+          backgroundColor: isDarkMode ? '#03260B' : '#F9FDF9',
           iconColor: disabled ? colors.textDisabled : colors.primaryMain,
         };
       case 'info':
@@ -204,7 +205,12 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
             {title}
           </div>
         )}
-        <div className="alert-banner__message">
+        <div 
+          className="alert-banner__message"
+          style={variant === 'ai-suggestion' ? {
+            color: colors.textSecondary
+          } : undefined}
+        >
           {children}
         </div>
         {actions && (
