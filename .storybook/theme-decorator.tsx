@@ -22,6 +22,7 @@ export const themeColors = {
     grey600: '#ACACAC',
     grey500: '#D1D1D1',
     grey400: '#E8E8E8', 
+    grey450: '#E0F3FE',
     grey300: '#F5F5F5',
     grey200: '#F7F7F7',
     grey100: '#F8F8F8',
@@ -42,6 +43,7 @@ export const themeColors = {
     warningMain: '#F3AD2E',
     errorLight: '#F7E4E6',
     errorMain: '#D0000A',
+    errorPressed: '#F7E4E6',
     info: '#E0F3FF',
     // Selection colors
     selectedLight: '#E0F3FE',
@@ -86,11 +88,12 @@ export const themeColors = {
     primaryNight: '#FFFFFF',
     primaryTwilight: '#E1E7F2',
     primaryMain: '#A7C2FD',
-    primaryHover: '#7C9FFC',
-    primaryPressed: '#5A7BF8', 
+    primaryHover: '#D3E1FE',
+    primaryDark: '#7C9FFC',
+    primaryPressed: '#7C9FFC', 
     // Secondary Colors
     secondaryLight: '#464F62',
-    secondaryMain: '#62697A',
+    secondaryMain: '#CCDBFE',
     secondaryDark: '#7C9FFC',
     // Base Colors
     paper: '#28292B',
@@ -99,7 +102,8 @@ export const themeColors = {
     grey700: '#96A5BD',
     grey600: '#6C7789',
     grey500: '#8A9AB3',
-    grey400: '#4A4B4D',
+    grey400: '#38393B',
+    grey450: '#48494B',
     grey300: '#3C3D3F', 
     grey200: '#6F7073',
     grey100: '#88898C',
@@ -118,8 +122,9 @@ export const themeColors = {
     successMain: '#40D6BD',
     warningLight: '#4A481B',
     warningMain: '#F3BE5F',
-    errorLight: '#4A1B18', 
-    errorMain: '#FC98A5',
+    errorLight: '#4A1B1B', 
+    errorMain: '#FC9BA5',
+    errorPressed: '#4A1B1B',
     info: '#1B2E4A',
     // Selection colors
     selectedLight: '#1B2E4A',
@@ -270,8 +275,10 @@ export const withTheme: Decorator = (Story, context) => {
       const root = document.documentElement;
       root.style.setProperty('--theme-primary-main', colors.primaryMain);
       root.style.setProperty('--theme-primary-hover', colors.primaryHover);
+      root.style.setProperty('--theme-primary-dark', colors.primaryDark || colors.primaryPressed);
       root.style.setProperty('--theme-primary-pressed', colors.primaryPressed);
       root.style.setProperty('--theme-primary-night', colors.primaryNight);
+      root.style.setProperty('--theme-primary-twilight', colors.primaryTwilight);
       root.style.setProperty('--theme-primary-light', colors.selectedLight);
       root.style.setProperty('--theme-secondary-light', colors.secondaryLight);
       root.style.setProperty('--theme-secondary-main', colors.secondaryMain);
@@ -279,8 +286,13 @@ export const withTheme: Decorator = (Story, context) => {
       root.style.setProperty('--theme-paper', colors.paper);
       root.style.setProperty('--theme-grey-300', colors.grey300);
       root.style.setProperty('--theme-grey-400', colors.grey400);
+      root.style.setProperty('--theme-grey-450', colors.grey450 || '#48494B');
+      root.style.setProperty('--theme-grey-600', colors.grey600);
       root.style.setProperty('--theme-error-main', colors.errorMain);
       root.style.setProperty('--theme-error-light', colors.errorLight);
+      root.style.setProperty('--theme-error-pressed', colors.errorPressed || '#F7E4E6');
+      root.style.setProperty('--theme-text-disabled', colors.textDisabled);
+      root.style.setProperty('--theme-text-secondary', colors.textSecondary);
     }
   }, [theme, colors]);
 

@@ -88,7 +88,7 @@ const Button: React.FC<ButtonProps> = ({
         return {
           ...baseStyles,
           color: disabled ? colors.textDisabled : colors.textSecondary,
-          border: `1px solid ${colors.grey400}`,
+          border: `1px solid ${disabled ? colors.textDisabled : colors.border}`,
         };
       case 'tertiary':
         return {
@@ -105,7 +105,7 @@ const Button: React.FC<ButtonProps> = ({
       case 'destructive':
         return {
           ...baseStyles,
-          color: disabled ? colors.textDisabled : '#525965',
+          color: disabled ? colors.textDisabled : colors.textSecondary,
           border: 'none',
         };
       case 'disabled':

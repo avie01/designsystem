@@ -6,7 +6,7 @@ export interface AlertBannerProps {
   /** The alert message content */
   children: React.ReactNode;
   /** Alert type/variant */
-  variant?: 'info' | 'success' | 'warning' | 'error';
+  variant?: 'info' | 'success' | 'warning' | 'error' | 'ai-suggestion';
   /** Component size */
   size?: 'small' | 'medium' | 'large';
   /** Whether the alert is dismissible */
@@ -91,6 +91,8 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
         return <Icon name="warning" size={iconSize} className={iconClasses} />;
       case 'error':
         return <Icon name="error-filled" size={iconSize} className={iconClasses} />;
+      case 'ai-suggestion':
+        return <Icon name="search" size={iconSize} className={iconClasses} />;
       default:
         return <Icon name="information" size={iconSize} className={iconClasses} />;
     }

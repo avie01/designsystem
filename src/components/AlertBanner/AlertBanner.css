@@ -33,6 +33,39 @@
   color: var(--odl-text-primary);
 }
 
+.alert-banner--ai-suggestion {
+  background-color: #F9FDF9;
+  color: var(--odl-text-primary);
+  border: 2px solid;
+  border-image-slice: 1;
+  border-radius: 0;
+  animation: electricFlow 2.5s linear infinite;
+  border-image-source: linear-gradient(330deg, #77BC4A 0.86%, #5DA10C 50%, #549809 75.55%, #488C07 99.14%);
+}
+
+.alert-banner--ai-suggestion .alert-banner__message {
+  font-style: italic;
+  color: #525965;
+}
+
+@keyframes electricFlow {
+  0% {
+    border-image-source: linear-gradient(330deg, #77BC4A 0.86%, #5DA10C 50%, #549809 75.55%, #488C07 99.14%);
+  }
+  25% {
+    border-image-source: linear-gradient(330deg, #5DA10C 0.86%, #549809 50%, #488C07 75.55%, #77BC4A 99.14%);
+  }
+  50% {
+    border-image-source: linear-gradient(330deg, #549809 0.86%, #488C07 50%, #77BC4A 75.55%, #5DA10C 99.14%);
+  }
+  75% {
+    border-image-source: linear-gradient(330deg, #488C07 0.86%, #77BC4A 50%, #5DA10C 75.55%, #549809 99.14%);
+  }
+  100% {
+    border-image-source: linear-gradient(330deg, #77BC4A 0.86%, #5DA10C 50%, #549809 75.55%, #488C07 99.14%);
+  }
+}
+
 /* Size variants */
 .alert-banner--small {
   padding: var(--odl-spacing-3);
@@ -80,9 +113,8 @@
 .alert-banner__icon {
   flex-shrink: 0;
   display: flex;
-  align-items: center;
-  /* Center icon with text baseline */
-  margin-top: 0px;
+  align-items: flex-start;
+  padding-top: 2px; /* Align with title baseline */
 }
 
 .alert-banner__icon--info {
