@@ -293,6 +293,7 @@ export const withTheme: Decorator = (Story, context) => {
       root.style.setProperty('--theme-error-pressed', colors.errorPressed || '#F7E4E6');
       root.style.setProperty('--theme-text-disabled', colors.textDisabled);
       root.style.setProperty('--theme-text-secondary', colors.textSecondary);
+      root.style.setProperty('--theme-text-inverse', colors.textInverse);
     }
   }, [theme, colors]);
 
