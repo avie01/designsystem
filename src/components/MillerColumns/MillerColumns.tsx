@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Icon from '../Icon/Icon';
+import Checkbox from '../Checkbox/Checkbox';
+import Badge from '../Badge/Badge';
 import { ODLTheme } from '../../styles/ODLTheme';
 import { useTheme } from '../../../.storybook/theme-decorator';
 
@@ -27,6 +29,12 @@ export interface MillerColumnsProps {
   size?: 'sm' | 'md' | 'lg';
   /** Whether items are disabled */
   disabled?: boolean;
+  /** Enable multi-select mode with checkboxes */
+  multiSelect?: boolean;
+  /** Selected items in multi-select mode */
+  selectedItems?: string[];
+  /** Callback when selection changes in multi-select mode */
+  onSelectionChange?: (selectedIds: string[]) => void;
 }
 
 const MillerColumns: React.FC<MillerColumnsProps> = ({
@@ -39,7 +47,10 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
   className = '',
   style,
   size = 'md',
-  disabled = false
+  disabled = false,
+  multiSelect = false,
+  selectedItems = [],
+  onSelectionChange
 }) => {
   const { colors } = useTheme();
   const [selectedPath, setSelectedPath] = useState<MillerNode[]>([]);
@@ -78,9 +89,30 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
 
   const handleItemClick = (item: MillerNode, columnIndex: number) => {
     if (disabled) return;
-    const newPath = [...selectedPath.slice(0, columnIndex), item];
-    setSelectedPath(newPath);
-    onSelect?.(newPath);
+    
+    if (multiSelect) {
+      // In multi-select mode, only expand/collapse folders on click
+      if (item.children && item.children.length > 0) {
+        const newPath = [...selectedPath.slice(0, columnIndex), item];
+        setSelectedPath(newPath);
+        onSelect?.(newPath);
+      }
+    } else {
+      // Normal single-select behavior
+      const newPath = [...selectedPath.slice(0, columnIndex), item];
+      setSelectedPath(newPath);
+      onSelect?.(newPath);
+    }
+  };
+
+  const handleCheckboxChange = (itemId: string, checked: boolean) => {
+    if (disabled || !onSelectionChange) return;
+    
+    const newSelection = checked 
+      ? [...selectedItems, itemId]
+      : selectedItems.filter(id => id !== itemId);
+    
+    onSelectionChange(newSelection);
   };
 
   const getColumnsData = (): MillerNode[][] => {
@@ -97,6 +129,20 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
   };
 
   const columnsData = getColumnsData();
+
+  // Helper function to count selected children recursively
+  const countSelectedChildren = (node: MillerNode): number => {
+    if (!node.children || node.children.length === 0) {
+      return selectedItems.includes(node.id) ? 1 : 0;
+    }
+    
+    let count = selectedItems.includes(node.id) ? 1 : 0;
+    node.children.forEach(child => {
+      count += countSelectedChildren(child);
+    });
+    
+    return count;
+  };
 
   const containerStyles: React.CSSProperties = {
     display: 'flex',
@@ -145,7 +191,7 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
               color: disabled ? colors.grey600 : colors.textPrimary,
               transition: 'all 0.2s ease',
               boxSizing: 'border-box',
-              paddingLeft: isSelected ? '16px' : '16px', // 20px - 4px for border compensation
+              paddingLeft: isSelected ? (multiSelect ? '12px' : '16px') : (multiSelect ? '12px' : '16px'), // Adjust for checkbox space
               paddingRight: '16px',
               paddingTop: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
               paddingBottom: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
@@ -168,6 +214,21 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
                   flex: 1,
                   overflow: 'hidden'
                 }}>
+                  {multiSelect && (
+                    <div style={{ 
+                      marginRight: size === 'sm' ? ODLSpacing['1'] : ODLSpacing['2'],
+                      display: 'inline-flex',
+                      alignItems: 'center'
+                    }}>
+                      <Checkbox
+                        checked={selectedItems.includes(item.id)}
+                        onChange={(checked) => handleCheckboxChange(item.id, checked)}
+                        disabled={disabled}
+                        size={size === 'sm' ? 'sm' : 'md'}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                  )}
                   {showIcons && (
                     <span 
                       style={{
@@ -203,10 +264,20 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
                       color: disabled ? colors.grey600 : colors.textSecondary,
                       display: 'inline-flex',
                       alignItems: 'center',
+                      gap: ODLSpacing['2'],
                       verticalAlign: 'middle',
                       flexShrink: 0,
                     }}
                   >
+                    {multiSelect && (() => {
+                      const selectedCount = countSelectedChildren(item) - (selectedItems.includes(item.id) ? 1 : 0);
+                      return selectedCount > 0 ? (
+                        <Badge 
+                          value={selectedCount} 
+                          variant="red-dark"
+                        />
+                      ) : null;
+                    })()}
                     <Icon
                       name="chevron-right"
                       size={size === 'sm' ? parseInt(ODLTypography.fontSize.xs) :

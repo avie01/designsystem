@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './List.css';
 import Icon from '../Icon/Icon';
+import Badge from '../Badge/Badge';
 import { ODLSpacing, ODLTypography } from '../../styles/ODLTheme';
 
 export interface ListItem {
@@ -13,6 +14,10 @@ export interface ListItem {
   expanded?: boolean;
   /** Optional caption/description text (shown in large size) */
   caption?: string;
+  /** Optional badge value to display */
+  badgeValue?: number | string;
+  /** Optional badge variant (defaults to 'blue-dark') */
+  badgeVariant?: 'brown-dark' | 'blue-dark' | 'pink-dark' | 'red-dark' | 'orange-dark' | 'yellow-dark' | 'olive-dark' | 'green-dark' | 'mint-dark' | 'purple-dark';
 }
 
 export interface ListProps {
@@ -38,6 +43,8 @@ export interface ListProps {
   showExpandIcons?: boolean;
   /** ARIA label for the listbox - required for accessibility */
   ariaLabel?: string;
+  /** Whether to show badges for items with badge values */
+  showBadges?: boolean;
 }
 
 const List: React.FC<ListProps> = ({
@@ -51,6 +58,7 @@ const List: React.FC<ListProps> = ({
   className = '',
   showExpandIcons = true,
   ariaLabel = 'List',
+  showBadges = false,
 }) => {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [focusedItemId, setFocusedItemId] = useState<string | null>(null);
@@ -213,6 +221,12 @@ const List: React.FC<ListProps> = ({
               <span className="list-item-caption">{item.caption}</span>
             )}
           </div>
+          {showBadges && item.badgeValue !== undefined && (
+            <Badge
+              value={item.badgeValue}
+              variant={item.badgeVariant || 'blue-dark'}
+            />
+          )}
           {hasChildren && showExpandIcons && (
             <button
               type="button"

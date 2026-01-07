@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 import MillerColumns, { MillerNode } from './MillerColumns';
 
 const meta: Meta<typeof MillerColumns> = {
@@ -60,6 +61,28 @@ const meta: Meta<typeof MillerColumns> = {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
+    },
+    multiSelect: {
+      control: 'boolean',
+      description: 'Enable multi-select mode with checkboxes',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' }
+      }
+    },
+    selectedItems: {
+      control: false,
+      table: {
+        disable: true
+      },
+      description: 'Array of selected item IDs in multi-select mode'
+    },
+    onSelectionChange: {
+      control: false,
+      table: {
+        disable: true
+      },
+      description: 'Callback when selection changes in multi-select mode'
     }
   }
 };
@@ -499,4 +522,54 @@ export const ThemeSupport: Story = {
       </div>
     </div>
   ),
+};
+
+export const MultiSelect: Story = {
+  name: '10 Multi-Select Mode',
+  render: () => {
+    const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
+    
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+            Multi-Select with Checkboxes
+          </h4>
+          <p style={{ marginBottom: '16px', fontSize: '14px', opacity: 0.7 }}>
+            Select multiple items using checkboxes. Click folders to expand them.
+          </p>
+          <MillerColumns
+            data={fileSystemData}
+            maxColumns={4}
+            columnWidth={250}
+            height={400}
+            showIcons={true}
+            multiSelect={true}
+            selectedItems={selectedItems}
+            onSelectionChange={setSelectedItems}
+          />
+        </div>
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+            Selected Items ({selectedItems.length}):
+          </h4>
+          <div style={{ 
+            padding: '12px', 
+            backgroundColor: '#f5f5f5', 
+            borderRadius: '4px',
+            fontSize: '12px',
+            fontFamily: 'monospace',
+            maxHeight: '100px',
+            overflowY: 'auto'
+          }}>
+            {selectedItems.length > 0 ? (
+              selectedItems.map(id => <div key={id}>{id}</div>)
+            ) : (
+              <span style={{ opacity: 0.5 }}>No items selected</span>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
