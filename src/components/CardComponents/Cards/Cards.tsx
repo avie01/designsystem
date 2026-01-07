@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../../../.storybook/theme-decorator';
 import IconButton from '../../IconButton/IconButton';
 import FileType, { FileTypeVariant } from '../../FileType/FileType';
@@ -134,7 +134,7 @@ const Cards: React.FC<CardsProps> = ({
       backgroundColor = colors.grey300;
       textColor = colors.textDisabled;
     } else if (loading) {
-      backgroundColor = '#ffffff';
+      backgroundColor = colors.paper || '#ffffff';
       textColor = colors.textDisabled;
     } else if (selected) {
       backgroundColor = colors.selectedLight;
@@ -243,6 +243,47 @@ const Cards: React.FC<CardsProps> = ({
     onKeyDown?.(e);
   };
 
+  // Inject dynamic theme colors for loading state skeleton elements
+  useEffect(() => {
+    // Calculate skeleton colors based on theme
+    const skeletonBase = colors.grey300 || colors.surface || '#F5F5F5';
+    const skeletonHighlight = colors.grey400 || colors.surfaceHover || '#EBEBEB';
+    const loadingBg = colors.paper || '#FFFFFF';
+    
+    // Set CSS custom properties for theme-aware loading state
+    const root = document.documentElement;
+    root.style.setProperty('--cards-loading-bg', loadingBg);
+    root.style.setProperty('--cards-skeleton-base', skeletonBase);
+    root.style.setProperty('--cards-skeleton-highlight', skeletonHighlight);
+    
+    // Determine if we're in dark mode for shimmer effect
+    const paperColor = typeof colors.paper === 'string' ? colors.paper : '#FFFFFF';
+    const isDark = paperColor.toLowerCase().startsWith('#') && 
+                   parseInt(paperColor.slice(1), 16) < 0x808080;
+    const shimmerOpacity = isDark ? 0.3 : 0.8;
+    
+    // Update shimmer overlay color
+    const styleId = 'cards-loading-shimmer';
+    let styleElement = document.getElementById(styleId) as HTMLStyleElement;
+    
+    if (!styleElement) {
+      styleElement = document.createElement('style');
+      styleElement.id = styleId;
+      document.head.appendChild(styleElement);
+    }
+    
+    styleElement.textContent = `
+      .cards-container--loading::after {
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(255, 255, 255, ${shimmerOpacity}) 50%,
+          transparent 100%
+        ) !important;
+      }
+    `;
+  }, [colors]);
+
   return (
     <div 
       className={componentClasses}
@@ -326,14 +367,20 @@ const Cards: React.FC<CardsProps> = ({
       {/* Gutter Icons */}
       {iconGutter && gutterIcons.length > 0 && (
         <div className="cards-container__gutter-icons">
-          {gutterIcons.map((iconName, index) => (
-            <Icon
-              key={index}
-              name={iconName}
-              size={16}
-              color={disabled ? colors.textDisabled : colors.textSecondary}
-            />
-          ))}
+          {loading ? (
+            gutterIcons.map((_, index) => (
+              <div key={index} className="ghost sizer" style={{ width: '16px', height: '16px' }}></div>
+            ))
+          ) : (
+            gutterIcons.map((iconName, index) => (
+              <Icon
+                key={index}
+                name={iconName}
+                size={16}
+                color={disabled ? colors.textDisabled : colors.textSecondary}
+              />
+            ))
+          )}
         </div>
       )}
 

@@ -132,7 +132,7 @@
   position: relative;
   overflow: hidden;
   pointer-events: none;
-  background: #ffffff;
+  background: var(--cards-loading-bg, var(--cards-white));
 }
 
 .cards-container--loading::after {
@@ -170,9 +170,9 @@
 .cards-container--loading .ghost.sizer {
   background: linear-gradient(
     90deg,
-    #f0f0f0 0%,
-    #e0e0e0 50%,
-    #f0f0f0 100%
+    var(--cards-skeleton-base, #f0f0f0) 0%,
+    var(--cards-skeleton-highlight, #e0e0e0) 50%,
+    var(--cards-skeleton-base, #f0f0f0) 100%
   );
   background-size: 200% 100%;
   animation: cards-shimmer 1.5s ease-in-out infinite;
