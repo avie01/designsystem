@@ -1,0 +1,55 @@
+/* ThumbnailCards Loading State Styles */
+
+/* Loading state */
+.thumbnail-card--loading {
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--theme-paper, #FFFFFF);
+}
+
+.thumbnail-card--loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    transparent 100%
+  );
+  animation: thumbnail-shimmer 1.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+.thumbnail-card--loading > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes thumbnail-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Ghost skeleton element for loading state */
+.thumbnail-card--loading .ghost.sizer {
+  background: linear-gradient(
+    90deg,
+    var(--theme-grey-300, #F5F5F5) 0%,
+    var(--theme-grey-400, #E8E8E8) 50%,
+    var(--theme-grey-300, #F5F5F5) 100%
+  );
+  background-size: 200% 100%;
+  animation: thumbnail-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+

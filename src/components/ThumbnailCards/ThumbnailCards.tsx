@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import { ODLTheme } from '../../styles/ODLTheme';
 import Checkbox from '../Checkbox/Checkbox';
 import IconButton from '../IconButton/IconButton';
 import FileType, { FileTypeVariant } from '../FileType/FileType';
+import './ThumbnailCards.css';
 
 export type ThumbnailCardSize = 'small' | 'medium' | 'large';
 
@@ -24,6 +25,8 @@ export interface ThumbnailCardsProps {
   selected?: boolean;
   /** Whether the card is disabled */
   disabled?: boolean;
+  /** Loading state - shows loading animation */
+  loading?: boolean;
   /** Whether the checkbox is checked */
   checked?: boolean;
   /** Checkbox change handler */
@@ -43,6 +46,7 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
   onClick,
   selected = false,
   disabled = false,
+  loading = false,
   checked = false,
   onCheckboxChange,
   iconName = 'overflow-menu-vertical',
@@ -89,12 +93,14 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
     borderRadius: '4px',
     border: `1px solid ${colors.border}`,
     boxShadow: selected ? `inset 0 0 0 2px ${colors.primaryMain}` : 'none',
-    background: disabled 
-      ? colors.surfaceHover 
-      : selected 
-        ? colors.selectedLight
-        : colors.background,
-    cursor: disabled ? 'not-allowed' : (onClick ? 'pointer' : 'default'),
+    background: loading
+      ? colors.paper || '#FFFFFF'
+      : disabled 
+        ? colors.surfaceHover 
+        : selected 
+          ? colors.selectedLight
+          : colors.background,
+    cursor: loading || disabled ? 'not-allowed' : (onClick ? 'pointer' : 'default'),
     opacity: disabled ? 0.6 : 1,
     transition: 'all 0.2s ease',
     boxSizing: 'border-box',
@@ -109,6 +115,56 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
   };
 
   const [isHovered, setIsHovered] = React.useState(false);
+
+  // Inject dynamic theme colors for loading state skeleton elements
+  useEffect(() => {
+    // Calculate skeleton colors based on theme
+    const skeletonBase = colors.grey300 || colors.surface || '#F5F5F5';
+    const skeletonHighlight = colors.grey400 || colors.surfaceHover || '#E8E8E8';
+    const loadingBg = colors.paper || '#FFFFFF';
+    
+    // Set CSS custom properties for theme-aware loading state
+    const root = document.documentElement;
+    root.style.setProperty('--thumbnail-loading-bg', loadingBg);
+    root.style.setProperty('--thumbnail-skeleton-base', skeletonBase);
+    root.style.setProperty('--thumbnail-skeleton-highlight', skeletonHighlight);
+    
+    // Determine if we're in dark mode for shimmer effect
+    const paperColor = typeof colors.paper === 'string' ? colors.paper : '#FFFFFF';
+    const isDark = paperColor.toLowerCase().startsWith('#') && 
+                   parseInt(paperColor.slice(1), 16) < 0x808080;
+    const shimmerOpacity = isDark ? 0.3 : 0.8;
+    
+    // Update shimmer overlay color
+    const styleId = 'thumbnail-loading-shimmer';
+    let styleElement = document.getElementById(styleId) as HTMLStyleElement;
+    
+    if (!styleElement) {
+      styleElement = document.createElement('style');
+      styleElement.id = styleId;
+      document.head.appendChild(styleElement);
+    }
+    
+    styleElement.textContent = `
+      .thumbnail-card--loading::after {
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(255, 255, 255, ${shimmerOpacity}) 50%,
+          transparent 100%
+        ) !important;
+      }
+      .thumbnail-card--loading .ghost.sizer {
+        background: linear-gradient(
+          90deg,
+          ${skeletonBase} 0%,
+          ${skeletonHighlight} 50%,
+          ${skeletonBase} 100%
+        ) !important;
+        background-size: 200% 100% !important;
+      }
+    `;
+  }, [colors]);
 
   const thumbnailStyle: React.CSSProperties = {
     width: config.thumbnailSize,
@@ -165,77 +221,99 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
   };
 
   const handleClick = () => {
-    if (!disabled && onClick) {
+    if (!disabled && !loading && onClick) {
       onClick();
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if ((e.key === 'Enter' || e.key === ' ') && !disabled && onClick) {
+    if ((e.key === 'Enter' || e.key === ' ') && !disabled && !loading && onClick) {
       e.preventDefault();
       onClick();
     }
   };
 
+  // Generate component classes
+  const componentClasses = [
+    className,
+    loading ? 'thumbnail-card--loading' : '',
+  ].filter(Boolean).join(' ');
+
   return (
     <div
-      style={isHovered && !disabled ? hoverStyle : cardStyle}
-      className={className}
-      onMouseEnter={() => setIsHovered(true)}
+      style={isHovered && !disabled && !loading ? hoverStyle : cardStyle}
+      className={componentClasses}
+      onMouseEnter={() => !loading && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       role="article"
-      aria-label={`${title}${selected ? ', selected' : ''}${disabled ? ', disabled' : ''}`}
+      aria-label={`${title}${selected ? ', selected' : ''}${disabled ? ', disabled' : ''}${loading ? ', loading' : ''}`}
       aria-describedby={`thumbnail-${title?.replace(/\s+/g, '-').toLowerCase()}-content`}
     >
       {/* Header with Checkbox and Icon Button */}
       <div style={headerStyle}>
-        <Checkbox
-          checked={checked || selected}
-          onChange={onCheckboxChange}
-          disabled={disabled}
-          size="lg"
-          aria-label={`Select ${title}`}
-        />
-        <IconButton
-          icon={iconName}
-          variant="ghost"
-          size={size === 'small' ? 'sm' : size === 'large' ? 'lg' : 'md'}
-          onClick={onIconClick}
-          disabled={disabled}
-          aria-label={`More options for ${title}`}
-        />
+        {loading ? (
+          <>
+            <div className="ghost sizer" style={{ width: '24px', height: '24px' }}></div>
+            <div className="ghost sizer" style={{ width: '32px', height: '32px' }}></div>
+          </>
+        ) : (
+          <>
+            <Checkbox
+              checked={checked || selected}
+              onChange={onCheckboxChange}
+              disabled={disabled}
+              size="lg"
+              aria-label={`Select ${title}`}
+            />
+            <IconButton
+              icon={iconName}
+              variant="ghost"
+              size={size === 'small' ? 'sm' : size === 'large' ? 'lg' : 'md'}
+              onClick={onIconClick}
+              disabled={disabled}
+              aria-label={`More options for ${title}`}
+            />
+          </>
+        )}
       </div>
 
       {/* Image Container */}
       <div style={imageContainerStyle}>
-        <div style={thumbnailStyle}>
-          {!thumbnailSrc && (
-            <svg 
-              width="100%" 
-              height="100%" 
-              viewBox="0 0 100 100" 
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ borderRadius: '4px' }}
-              role="img"
-              aria-label="Document preview"
-            >
-              <rect width="100" height="100" fill="#F8F9FA"/>
-              <rect x="10" y="15" width="80" height="3" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="22" width="70" height="2" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="27" width="75" height="2" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="32" width="65" height="2" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="37" width="80" height="2" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="42" width="60" height="2" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="50" width="75" height="2" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="55" width="70" height="2" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="60" width="65" height="2" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="65" width="80" height="2" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="70" width="55" height="2" fill="#E9ECEF" rx="1"/>
-              <rect x="10" y="78" width="30" height="8" fill="#DEE2E6" rx="2"/>
-              <rect x="45" y="78" width="25" height="8" fill="#DEE2E6" rx="2"/>
-            </svg>
-          )}
-        </div>
+        {loading ? (
+          <div className="ghost sizer" style={{ 
+            width: config.thumbnailSize, 
+            height: size === 'small' ? '120px' : size === 'medium' ? '180px' : '240px' 
+          }}></div>
+        ) : (
+          <div style={thumbnailStyle}>
+            {!thumbnailSrc && (
+              <svg 
+                width="100%" 
+                height="100%" 
+                viewBox="0 0 100 100" 
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ borderRadius: '4px' }}
+                role="img"
+                aria-label="Document preview"
+              >
+                <rect width="100" height="100" fill="#F8F9FA"/>
+                <rect x="10" y="15" width="80" height="3" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="22" width="70" height="2" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="27" width="75" height="2" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="32" width="65" height="2" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="37" width="80" height="2" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="42" width="60" height="2" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="50" width="75" height="2" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="55" width="70" height="2" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="60" width="65" height="2" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="65" width="80" height="2" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="70" width="55" height="2" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="78" width="30" height="8" fill="#DEE2E6" rx="2"/>
+                <rect x="45" y="78" width="25" height="8" fill="#DEE2E6" rx="2"/>
+              </svg>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Content Below Image */}
@@ -244,13 +322,22 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
         style={contentStyle}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        tabIndex={onClick && !disabled ? 0 : -1}
+        tabIndex={onClick && !disabled && !loading ? 0 : -1}
         role={onClick ? 'button' : undefined}
-        aria-disabled={disabled}
+        aria-disabled={disabled || loading}
         aria-label={onClick ? `Open ${title}` : undefined}
       >
-        <FileType type={fileType} size={24} aria-hidden="true" />
-        <h4 style={titleStyle} id={`thumbnail-${title?.replace(/\s+/g, '-').toLowerCase()}-title`}>{title}</h4>
+        {loading ? (
+          <>
+            <div className="ghost sizer" style={{ width: '24px', height: '24px' }}></div>
+            <div className="ghost sizer" style={{ width: '150px', height: '16px' }}></div>
+          </>
+        ) : (
+          <>
+            <FileType type={fileType} size={24} aria-hidden="true" />
+            <h4 style={titleStyle} id={`thumbnail-${title?.replace(/\s+/g, '-').toLowerCase()}-title`}>{title}</h4>
+          </>
+        )}
       </div>
     </div>
   );

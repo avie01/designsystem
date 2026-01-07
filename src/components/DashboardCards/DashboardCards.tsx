@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import { ODLTheme } from '../../styles/ODLTheme';
 import FileType from '../FileType/FileType';
 import IconButton from '../IconButton/IconButton';
+import './DashboardCards.css';
 
 export interface DashboardCardProps {
   /** Main value or metric to display */
@@ -45,6 +46,56 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
   const [isValueHovered, setIsValueHovered] = React.useState(false);
   const isClickable = !!onClick;
 
+  // Inject dynamic theme colors for loading state skeleton elements
+  useEffect(() => {
+    // Calculate skeleton colors based on theme
+    const skeletonBase = colors.grey300 || colors.surface || '#F5F5F5';
+    const skeletonHighlight = colors.grey400 || colors.surfaceHover || '#E8E8E8';
+    const loadingBg = colors.paper || '#FFFFFF';
+    
+    // Set CSS custom properties for theme-aware loading state
+    const root = document.documentElement;
+    root.style.setProperty('--dashboard-loading-bg', loadingBg);
+    root.style.setProperty('--dashboard-skeleton-base', skeletonBase);
+    root.style.setProperty('--dashboard-skeleton-highlight', skeletonHighlight);
+    
+    // Determine if we're in dark mode for shimmer effect
+    const paperColor = typeof colors.paper === 'string' ? colors.paper : '#FFFFFF';
+    const isDark = paperColor.toLowerCase().startsWith('#') && 
+                   parseInt(paperColor.slice(1), 16) < 0x808080;
+    const shimmerOpacity = isDark ? 0.3 : 0.8;
+    
+    // Update shimmer overlay color
+    const styleId = 'dashboard-loading-shimmer';
+    let styleElement = document.getElementById(styleId) as HTMLStyleElement;
+    
+    if (!styleElement) {
+      styleElement = document.createElement('style');
+      styleElement.id = styleId;
+      document.head.appendChild(styleElement);
+    }
+    
+    styleElement.textContent = `
+      .dashboard-card--loading::after {
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(255, 255, 255, ${shimmerOpacity}) 50%,
+          transparent 100%
+        ) !important;
+      }
+      .dashboard-card--loading .ghost.sizer {
+        background: linear-gradient(
+          90deg,
+          ${skeletonBase} 0%,
+          ${skeletonHighlight} 50%,
+          ${skeletonBase} 100%
+        ) !important;
+        background-size: 200% 100% !important;
+      }
+    `;
+  }, [colors]);
+
   // Base card styles with exact specifications
   const cardStyles: React.CSSProperties = {
     display: 'flex',
@@ -54,10 +105,12 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
     alignItems: 'flex-start',
     borderRadius: '8px',
     border: isPressed ? `1px solid ${colors.primaryMain}` : `1px solid ${colors.border}`,
-    backgroundColor: isPressed ? colors.selectedLight : (isHovered ? colors.surfaceHover : colors.background),
+    backgroundColor: loading
+      ? colors.paper || '#FFFFFF'
+      : isPressed ? colors.selectedLight : (isHovered ? colors.surfaceHover : colors.background),
     padding: '12px',
     transition: 'all 0.2s ease-in-out',
-    cursor: isClickable ? 'pointer' : 'default',
+    cursor: loading ? 'not-allowed' : (isClickable ? 'pointer' : 'default'),
     position: 'relative',
     overflow: 'hidden',
     fontFamily: ODLTheme.typography.fontFamily.sans,
@@ -66,10 +119,16 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
 
 
 
+  // Generate component classes
+  const componentClasses = [
+    className,
+    loading ? 'dashboard-card--loading' : '',
+  ].filter(Boolean).join(' ');
+
   if (loading) {
     return (
       <div 
-        className={className}
+        className={componentClasses}
         style={{
           ...cardStyles
         }}
@@ -83,35 +142,26 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
           width: '100%'
         }}>
           {/* Left side - FileType skeleton */}
-          <div 
-            className="skeleton-box"
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '4px',
-              overflow: 'hidden'
-            }} />
+          <div className="ghost sizer" style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '4px'
+          }} />
           
           {/* Right side - IconButton skeleton */}
           <div style={{ display: 'flex', alignItems: 'center', gap: ODLTheme.spacing[1] }}>
-            <div 
-              className="skeleton-box"
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '100px',
-                overflow: 'hidden'
-              }} />
+            <div className="ghost sizer" style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '100px'
+            }} />
             {/* Additional actions skeleton if needed */}
             {actions && (
-              <div 
-                className="skeleton-box"
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '100px',
-                  overflow: 'hidden'
-                }} />
+              <div className="ghost sizer" style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '100px'
+              }} />
             )}
           </div>
         </div>
@@ -120,96 +170,81 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
         <div style={{
           marginBottom: variant === 'detailed' ? ODLTheme.spacing[3] : ODLTheme.spacing[2]
         }}>
-          <div 
-            className="skeleton-box"
-            style={{
-              fontSize: ODLTheme.typography.fontSize.md,
-              fontWeight: ODLTheme.typography.fontWeight.semibold,
-              lineHeight: ODLTheme.typography.lineHeight.tight,
-              marginBottom: '4px',
-              height: '24px',
-              borderRadius: '4px',
-              width: '280px',
-              overflow: 'hidden'
-            }} />
+          <div className="ghost sizer" style={{
+            height: '24px',
+            borderRadius: '4px',
+            width: '280px',
+            lineHeight: '24px'
+          }} />
           {/* Subtitle skeleton - matching the long description */}
           {subtitle && (
             <div>
-              <div 
-                className="skeleton-box"
-                style={{
-                  fontSize: ODLTheme.typography.fontSize.base,
-                  lineHeight: ODLTheme.typography.lineHeight.normal,
-                  height: '16px',
-                  borderRadius: '4px',
-                  marginBottom: '4px',
-                  width: '100%',
-                  overflow: 'hidden'
-                }} />
-              <div 
-                className="skeleton-box"
-                style={{
-                  fontSize: ODLTheme.typography.fontSize.base,
-                  lineHeight: ODLTheme.typography.lineHeight.normal,
-                  height: '16px',
-                  borderRadius: '4px',
-                  marginBottom: '4px',
-                  width: '100%',
-                  overflow: 'hidden'
-                }} />
-              <div 
-                className="skeleton-box"
-                style={{
-                  fontSize: ODLTheme.typography.fontSize.base,
-                  lineHeight: ODLTheme.typography.lineHeight.normal,
-                  height: '16px',
-                  borderRadius: '4px',
-                  width: '75%',
-                  overflow: 'hidden'
-                }} />
+              <div className="ghost sizer" style={{
+                height: '16px',
+                borderRadius: '4px',
+                marginBottom: '4px',
+                width: '100%',
+                lineHeight: '16px'
+              }} />
+              <div className="ghost sizer" style={{
+                height: '16px',
+                borderRadius: '4px',
+                marginBottom: '4px',
+                width: '100%',
+                lineHeight: '16px'
+              }} />
+              <div className="ghost sizer" style={{
+                height: '16px',
+                borderRadius: '4px',
+                width: '75%',
+                lineHeight: '16px'
+              }} />
             </div>
           )}
         </div>
 
         {/* Modified information skeleton - Fixed at bottom */}
-        <div 
-          className="skeleton-box"
-          style={{
-            position: 'absolute',
-            bottom: '12px',
-            left: '12px',
-            right: '12px',
-            fontSize: ODLTheme.typography.fontSize.base,
-            lineHeight: ODLTheme.typography.lineHeight.normal,
-            height: '14px',
-            borderRadius: '4px',
-            width: '320px',
-            overflow: 'hidden'
-          }} />
+        <div className="ghost sizer" style={{
+          position: 'absolute',
+          bottom: '12px',
+          left: '12px',
+          height: '14px',
+          borderRadius: '4px',
+          width: '320px',
+          lineHeight: '14px'
+        }} />
       </div>
     );
   }
 
+  // Don't make the card a button if it contains interactive children (IconButton, actions)
+  // This prevents nested interactive controls accessibility violation
+  const hasInteractiveChildren = true; // Always has IconButton
+  const shouldBeButton = isClickable && !loading && !hasInteractiveChildren;
+
   return (
     <div 
-      className={className}
+      className={componentClasses}
       style={cardStyles}
-      onClick={onClick}
-      role={isClickable ? 'button' : undefined}
-      tabIndex={isClickable ? 0 : undefined}
-      onMouseEnter={() => setIsHovered(true)}
+      onClick={loading ? undefined : onClick}
+      onMouseEnter={() => !loading && setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
         setIsPressed(false);
       }}
-      onMouseDown={() => setIsPressed(true)}
+      onMouseDown={() => !loading && setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
       onKeyDown={(e) => {
-        if (isClickable && (e.key === 'Enter' || e.key === ' ')) {
+        // Only handle keyboard if card is clickable and event didn't come from interactive child
+        if (isClickable && !loading && (e.key === 'Enter' || e.key === ' ') && 
+            !(e.target as HTMLElement).closest('button, [role="button"]')) {
           e.preventDefault();
           onClick?.();
         }
       }}
+      role={shouldBeButton ? 'button' : undefined}
+      tabIndex={shouldBeButton ? 0 : undefined}
+      aria-label={isClickable && !loading ? `Dashboard card: ${value}` : undefined}
     >
       {/* Header with icon and actions */}
       <div style={{
@@ -280,28 +315,6 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
         fAF477726 • {modifiedText}
       </div>
 
-      {/* Shimmer animation for loading */}
-      <style>{`
-        @keyframes shimmer {
-          0% {
-            background-position: -468px 0;
-          }
-          100% {
-            background-position: 468px 0;
-          }
-        }
-        
-        .skeleton-box {
-          background-image: linear-gradient(
-            90deg,
-            #f0f0f0 25%,
-            #e0e0e0 50%,
-            #f0f0f0 75%
-          );
-          background-size: 468px 104px;
-          animation: shimmer 1.5s infinite;
-        }
-      `}</style>
     </div>
   );
 };
