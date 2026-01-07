@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import Icon from '../Icon/Icon';
 import { ODLTheme } from '../../styles/ODLTheme';
+import './IconButton.css';
 
 export interface IconButtonProps {
   /** The name of the Carbon icon to display */
@@ -274,16 +275,6 @@ const IconButton: React.FC<IconButtonProps> = ({
           aria-hidden="true"
         />
       )}
-      <style jsx>{`
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </button>
   );
 };

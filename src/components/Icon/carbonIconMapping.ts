@@ -303,6 +303,7 @@ const iconMapping: Record<string, string> = {
   // Status
   'checkmark': 'Checkmark',
   'error': 'Error',
+  'error-outline': 'ErrorOutline',
   'warning': 'Warning',
   'information': 'Information',
   'help': 'Help',
@@ -311,6 +312,7 @@ const iconMapping: Record<string, string> = {
   'error-filled': 'ErrorFilled',
   'warning-filled': 'WarningFilled',
   'information-filled': 'InformationFilled',
+  'lightning': 'Lightning',
   
   // System
   'settings-adjust': 'SettingsAdjust',
