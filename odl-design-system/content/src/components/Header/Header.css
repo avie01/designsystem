@@ -172,6 +172,10 @@
   opacity: 0.6;
 }
 
+.header__notification-container {
+  position: relative;
+}
+
 .header__badge {
   position: absolute;
   top: 4px;

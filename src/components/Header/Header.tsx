@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Icon from '../Icon/Icon';
+import IconButton from '../IconButton/IconButton';
 import Input from '../Input/Input';
 import UserAvatar from '../UserAvatar/UserAvatar';
 import { ODLTheme } from '../../styles/ODLTheme';
@@ -315,32 +316,38 @@ const Header: React.FC<HeaderProps> = ({
 
         {/* Right Section - Actions and User */}
         <div className="header__right">
-          <button
-            className="header__action-button"
-            onClick={onNotificationClick}
-            onKeyDown={(e) => handleKeyDown(e, onNotificationClick)}
-            aria-label={`Notifications ${finalNotificationCount > 0 ? `(${finalNotificationCount} unread)` : ''}`}
-            tabIndex={disabled ? -1 : 0}
-            disabled={disabled}
-          >
-            <Icon name="notification" size={20} aria-hidden="true" />
+          <div style={{ position: 'relative' }}>
+            <IconButton
+              icon="notification"
+              onClick={onNotificationClick}
+              aria-label={`Notifications ${finalNotificationCount > 0 ? `(${finalNotificationCount} unread)` : ''}`}
+              variant="disabled"
+              size="small"
+              disabled={disabled}
+              style={{
+                minWidth: '40px',
+                minHeight: '40px',
+              }}
+            />
             {finalNotificationCount > 0 && (
               <span className="header__badge" aria-hidden="true">
                 {finalNotificationCount > 99 ? '99+' : finalNotificationCount}
               </span>
             )}
-          </button>
+          </div>
 
-          <button
-            className="header__action-button"
+          <IconButton
+            icon="settings"
             onClick={onSettingsClick}
-            onKeyDown={(e) => handleKeyDown(e, onSettingsClick)}
             aria-label="Open settings"
-            tabIndex={disabled ? -1 : 0}
+            variant="disabled"
+            size="small"
             disabled={disabled}
-          >
-            <Icon name="settings" size={20} aria-hidden="true" />
-          </button>
+            style={{
+              minWidth: '40px',
+              minHeight: '40px',
+            }}
+          />
 
           {(currentUser.name || currentUser.initials) && (
             <div className="header__user-info">
@@ -349,19 +356,13 @@ const Header: React.FC<HeaderProps> = ({
                   name: currentUser.name || 'User',
                   role: currentUser.role,
                 }}
-                size="sm"
                 showPopup={false}
-                clickable={true}
-                onClick={handleUserClick}
                 disabled={disabled}
                 aria-label={`User menu for ${currentUser.name || currentUser.initials}`}
               />
               {currentUser.name && (
                 <div className="header__user-details">
                   <div className="header__user-name">{currentUser.name}</div>
-                  {currentUser.role && (
-                    <div className="header__user-role">{currentUser.role}</div>
-                  )}
                 </div>
               )}
             </div>
