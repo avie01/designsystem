@@ -65,6 +65,14 @@ const meta: Meta<typeof ThumbnailCards> = {
         defaultValue: { summary: 'false' },
       },
     },
+    loading: {
+      control: 'boolean',
+      description: 'Loading state - shows loading animation',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     checked: {
       control: 'boolean',
       description: 'Whether the checkbox is checked',
@@ -243,10 +251,14 @@ export const InteractiveStates: Story = {
         <ThumbnailCards
           size="large"
           title="Disabled State"
-          subtitle="This card is disabled"
           disabled={true}
           thumbnailSrc="https://via.placeholder.com/56x56/CCCCCC/FFFFFF?text=DIS"
           onClick={() => alert('This should not fire!')}
+        />
+        <ThumbnailCards
+          size="large"
+          title="Loading State"
+          loading={true}
         />
       </div>
     </div>
