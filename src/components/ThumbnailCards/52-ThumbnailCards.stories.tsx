@@ -259,7 +259,6 @@ export const InteractiveStates: Story = {
         <ThumbnailCards
           size="large"
           title="Disabled State"
-          subtitle="This card is disabled"
           disabled={true}
           thumbnailSrc="https://via.placeholder.com/56x56/CCCCCC/FFFFFF?text=DIS"
           onClick={() => alert('This should not fire!')}
