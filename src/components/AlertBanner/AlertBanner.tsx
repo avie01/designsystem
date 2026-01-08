@@ -233,7 +233,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
             alignSelf: 'flex-start',
             marginTop: '-3px',
           }}
-        />
+          />
       )}
     </section>
   );

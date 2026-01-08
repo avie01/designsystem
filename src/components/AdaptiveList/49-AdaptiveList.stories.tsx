@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { useRef } from 'react';
 import AdaptiveList, { ViewType } from './AdaptiveList';
 import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
 import Chip from '../Chip/Chip';
 import IconButton from '../IconButton/IconButton';
 import Checkbox from '../Checkbox/Checkbox';
+import PopupMenu, { PopupMenuItem } from '../PopupMenu/PopupMenu';
 import { useTheme } from '../../../.storybook/theme-decorator';
 
 const meta: Meta<typeof AdaptiveList> = {
@@ -179,7 +179,9 @@ const BulkActionsBar = ({
   onRefreshClick,
   onSelectAll,
   allSelected,
-  totalCount
+  totalCount,
+  sortMenuOpen,
+  viewMenuOpen
 }: {
   selectedCount: number;
   onDelete: () => void;
@@ -190,12 +192,14 @@ const BulkActionsBar = ({
   onPublish: () => void;
   sortButtonRef?: React.RefObject<HTMLDivElement>;
   viewButtonRef?: React.RefObject<HTMLDivElement>;
-  onSortClick?: () => void;
-  onViewClick?: () => void;
+  onSortClick?: (e?: React.MouseEvent) => void;
+  onViewClick?: (e?: React.MouseEvent) => void;
   onRefreshClick?: () => void;
   onSelectAll?: () => void;
   allSelected?: boolean;
   totalCount?: number;
+  sortMenuOpen?: boolean;
+  viewMenuOpen?: boolean;
 }) => {
   const { colors } = useTheme();
   
@@ -273,29 +277,33 @@ const BulkActionsBar = ({
         </Button>
       </div>
       <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <div ref={sortButtonRef}>
+        <div ref={sortButtonRef} style={{ display: 'inline-block' }}>
           <IconButton
             icon="sort-remove"
             variant="ghost"
             size="medium"
             aria-label="Sort"
             menuIndicator={true}
+            selected={sortMenuOpen}
+            aria-expanded={sortMenuOpen}
             onClick={(e) => {
               e.stopPropagation();
-              onSortClick?.();
+              onSortClick?.(e);
             }}
           />
         </div>
-        <div ref={viewButtonRef}>
+        <div ref={viewButtonRef} style={{ display: 'inline-block' }}>
           <IconButton
             icon="view"
             variant="ghost"
             size="medium"
             aria-label="View"
             menuIndicator={true}
+            selected={viewMenuOpen}
+            aria-expanded={viewMenuOpen}
             onClick={(e) => {
               e.stopPropagation();
-              onViewClick?.();
+              onViewClick?.(e);
             }}
           />
         </div>
@@ -314,113 +322,14 @@ const BulkActionsBar = ({
   );
 };
 
-// Dropdown Menu Component
-const DropdownMenu = ({ 
-  isOpen, 
-  onClose, 
-  position,
-  children 
-}: { 
-  isOpen: boolean; 
-  onClose: () => void; 
-  position: { top: number; left: number };
-  children: React.ReactNode;
-}) => {
-  const { colors } = useTheme();
-  const dropdownRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
-  const dropdownElement = (
-    <div
-      ref={dropdownRef}
-      style={{
-        position: 'fixed',
-        top: position.top,
-        left: position.left,
-        backgroundColor: colors.paper,
-        border: `1px solid ${colors.border}`,
-        borderRadius: '4px',
-        boxShadow: `0 4px 8px ${colors.shadow || 'rgba(0, 0, 0, 0.1)'}`,
-        zIndex: 9999,
-        minWidth: '180px',
-        padding: '8px 0',
-      }}
-    >
-      {children}
-    </div>
-  );
-
-  return ReactDOM.createPortal(dropdownElement, document.body);
-};
-
-const MenuItem = ({ 
-  onClick, 
-  children,
-  active = false
-}: { 
-  onClick: () => void; 
-  children: React.ReactNode;
-  active?: boolean;
-}) => {
-  const { colors } = useTheme();
-  
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        display: 'block',
-        width: '100%',
-        padding: '8px 16px',
-        textAlign: 'left',
-        background: active ? colors.selectedLight : 'none',
-        border: 'none',
-        cursor: 'pointer',
-        fontSize: '14px',
-        color: active ? colors.primaryMain : colors.textPrimary,
-      fontWeight: active ? 600 : 400,
-      transition: 'background-color 150ms ease',
-    }}
-        onMouseEnter={(e) => {
-          if (!active) {
-            (e.currentTarget as HTMLButtonElement).style.backgroundColor = colors.surfaceHover || '#F4F4F4';
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (!active) {
-            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
-          }
-        }}
-      >
-        {children}
-      </button>
-    );
-};
 
 const AdaptiveListWithBulkActions = () => {
   const [selectedKeys, setSelectedKeys] = React.useState<string[]>(['1']);
-  const [sortDropdownOpen, setSortDropdownOpen] = React.useState(false);
-  const [viewDropdownOpen, setViewDropdownOpen] = React.useState(false);
-  const [dropdownPosition, setDropdownPosition] = React.useState({ top: 0, left: 0 });
+  const [sortMenuOpen, setSortMenuOpen] = React.useState(false);
+  const [viewMenuOpen, setViewMenuOpen] = React.useState(false);
   const [activeView, setActiveView] = React.useState<ViewType>('table');
-  const sortButtonRef = React.useRef<HTMLDivElement>(null);
-  const viewButtonRef = React.useRef<HTMLDivElement>(null);
+  const sortButtonRef = useRef<HTMLDivElement>(null);
+  const viewButtonRef = useRef<HTMLDivElement>(null);
 
   // Mapping between display names and ViewType values
   const viewTypeMap: { [key: string]: ViewType } = {
@@ -492,29 +401,33 @@ const AdaptiveListWithBulkActions = () => {
     alert(`Publishing ${selectedKeys.length} item(s)`);
   };
 
-  const handleSortClick = () => {
-    if (sortButtonRef.current) {
-      const rect = sortButtonRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: rect.bottom + 4,
-        left: rect.left,
-      });
-    }
-    setSortDropdownOpen(!sortDropdownOpen);
-    setViewDropdownOpen(false);
+  const handleSortClick = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setSortMenuOpen((prev) => !prev);
+    setViewMenuOpen(false);
   };
 
-  const handleViewClick = () => {
-    if (viewButtonRef.current) {
-      const rect = viewButtonRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: rect.bottom + 4,
-        left: rect.left,
-      });
-    }
-    setViewDropdownOpen(!viewDropdownOpen);
-    setSortDropdownOpen(false);
+  const handleViewClick = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setViewMenuOpen((prev) => !prev);
+    setSortMenuOpen(false);
   };
+
+  const sortMenuItems: PopupMenuItem[] = [
+    { id: 'name', label: 'Sort by Name', icon: 'sort-ascending', action: () => { console.log('Sort by Name'); setSortMenuOpen(false); } },
+    { id: 'date', label: 'Sort by Date', icon: 'calendar', action: () => { console.log('Sort by Date'); setSortMenuOpen(false); } },
+    { id: 'status', label: 'Sort by Status', icon: 'status', action: () => { console.log('Sort by Status'); setSortMenuOpen(false); } },
+    { id: 'modified', label: 'Sort by Modified By', icon: 'user', action: () => { console.log('Sort by Modified By'); setSortMenuOpen(false); } },
+  ];
+
+  const viewMenuItems: PopupMenuItem[] = [
+    { id: 'compact', label: 'Compact', icon: 'view', action: () => { setActiveView('compact'); console.log('Compact'); setViewMenuOpen(false); } },
+    { id: 'comfortable', label: 'Comfortable', icon: 'view', action: () => { setActiveView('comfortable'); console.log('Comfortable'); setViewMenuOpen(false); } },
+    { id: 'small-grid', label: 'Small grid', icon: 'grid', action: () => { setActiveView('small-grid'); console.log('Small grid'); setViewMenuOpen(false); } },
+    { id: 'large-grid', label: 'Large grid', icon: 'grid', action: () => { setActiveView('large-grid'); console.log('Large grid'); setViewMenuOpen(false); } },
+    { id: 'metadata', label: 'Metadata', icon: 'information', action: () => { setActiveView('metadata'); console.log('Metadata'); setViewMenuOpen(false); } },
+    { id: 'table', label: 'Table', icon: 'table', action: () => { setActiveView('table'); console.log('Table'); setViewMenuOpen(false); } },
+  ];
 
   const handleRefreshClick = () => {
     console.log('Refreshing list...');
@@ -552,6 +465,8 @@ const AdaptiveListWithBulkActions = () => {
         onSelectAll={handleSelectAll}
         allSelected={allSelected}
         totalCount={documentData.length}
+        sortMenuOpen={sortMenuOpen}
+        viewMenuOpen={viewMenuOpen}
       />
       <AdaptiveList
         data={documentData}
@@ -565,91 +480,22 @@ const AdaptiveListWithBulkActions = () => {
         selectable={true}
         showFileTypeIcon={true}
       />
-      <DropdownMenu
-        isOpen={sortDropdownOpen}
-        onClose={() => setSortDropdownOpen(false)}
-        position={dropdownPosition}
-      >
-        <MenuItem onClick={() => { console.log('Sort by Name'); setSortDropdownOpen(false); }}>
-          Sort by Name
-        </MenuItem>
-        <MenuItem onClick={() => { console.log('Sort by Date'); setSortDropdownOpen(false); }}>
-          Sort by Date
-        </MenuItem>
-        <MenuItem onClick={() => { console.log('Sort by Status'); setSortDropdownOpen(false); }}>
-          Sort by Status
-        </MenuItem>
-        <MenuItem onClick={() => { console.log('Sort by Modified By'); setSortDropdownOpen(false); }}>
-          Sort by Modified By
-        </MenuItem>
-      </DropdownMenu>
-      
-      <DropdownMenu
-        isOpen={viewDropdownOpen}
-        onClose={() => setViewDropdownOpen(false)}
-        position={dropdownPosition}
-      >
-        <MenuItem 
-          onClick={() => { 
-            setActiveView('compact');
-            console.log('Compact'); 
-            setViewDropdownOpen(false); 
-          }}
-          active={activeView === 'compact'}
-        >
-          Compact
-        </MenuItem>
-        <MenuItem 
-          onClick={() => { 
-            setActiveView('comfortable');
-            console.log('Comfortable'); 
-            setViewDropdownOpen(false); 
-          }}
-          active={activeView === 'comfortable'}
-        >
-          Comfortable
-        </MenuItem>
-        <MenuItem 
-          onClick={() => { 
-            setActiveView('small-grid');
-            console.log('Small grid'); 
-            setViewDropdownOpen(false); 
-          }}
-          active={activeView === 'small-grid'}
-        >
-          Small grid
-        </MenuItem>
-        <MenuItem 
-          onClick={() => { 
-            setActiveView('large-grid');
-            console.log('Large grid'); 
-            setViewDropdownOpen(false); 
-          }}
-          active={activeView === 'large-grid'}
-        >
-          Large grid
-        </MenuItem>
-        <MenuItem 
-          onClick={() => { 
-            setActiveView('metadata');
-            console.log('Metadata'); 
-            setViewDropdownOpen(false); 
-          }}
-          active={activeView === 'metadata'}
-        >
-          Metadata
-        </MenuItem>
-        <MenuItem 
-          onClick={() => { 
-            setActiveView('table');
-            console.log('Table'); 
-            setViewDropdownOpen(false); 
-          }}
-          active={activeView === 'table'}
-        >
-          Table
-        </MenuItem>
-      </DropdownMenu>
+      <PopupMenu
+        items={sortMenuItems}
+        open={sortMenuOpen}
+        onClose={() => setSortMenuOpen(false)}
+        anchorEl={sortButtonRef.current}
+        align="left"
+        size="md"
+      />
+      <PopupMenu
+        items={viewMenuItems}
+        open={viewMenuOpen}
+        onClose={() => setViewMenuOpen(false)}
+        anchorEl={viewButtonRef.current}
+        align="left"
+        size="md"
+      />
     </div>
   );
 };

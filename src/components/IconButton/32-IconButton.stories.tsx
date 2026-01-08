@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import IconButton from './IconButton';
 import Icon from '../Icon/Icon';
+import PopupMenu, { PopupMenuItem } from '../PopupMenu/PopupMenu';
 import { useTheme } from '../../../.storybook/theme-decorator';
 
 const meta: Meta<typeof IconButton> = {
@@ -407,30 +408,28 @@ export const Playground: Story = {
 export const WithMenu: Story = {
   name: '10 With Menu',
   render: () => {
-    const { colors } = useTheme();
     const [openMenuId, setOpenMenuId] = useState<number | null>(null);
-    const [hoveredMenuItem, setHoveredMenuItem] = useState<string | null>(null);
+    const anchorRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
     
-    const menuOptions = [
-      { value: 'edit', label: 'Edit', icon: <Icon name="edit" size={16} color={colors.textPrimary} /> },
-      { value: 'copy', label: 'Copy', icon: <Icon name="copy" size={16} color={colors.textPrimary} /> },
-      { value: 'share', label: 'Share', icon: <Icon name="share" size={16} color={colors.textPrimary} /> },
-      { value: 'delete', label: 'Delete', icon: <Icon name="delete" size={16} color={colors.textPrimary} /> },
+    const menuItems: PopupMenuItem[] = [
+      { id: 'edit', label: 'Edit', icon: 'edit', action: () => console.log('Edit clicked') },
+      { id: 'copy', label: 'Copy', icon: 'copy', action: () => console.log('Copy clicked') },
+      { id: 'share', label: 'Share', icon: 'share', action: () => console.log('Share clicked') },
+      { id: 'delete', label: 'Delete', icon: 'delete', action: () => console.log('Delete clicked') },
     ];
 
     const toggleMenu = (menuId: number) => {
       setOpenMenuId(openMenuId === menuId ? null : menuId);
-      setHoveredMenuItem(null); // Reset hover state when toggling menu
     };
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <div>
           <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
-            IconButton with Dropdown Menu
+            IconButton with PopupMenu
           </h4>
           <p style={{ fontSize: '14px', color: '#6C757D', marginBottom: '16px' }}>
-            Ghost variant IconButtons that trigger dropdown menus when clicked
+            Ghost variant IconButtons that trigger PopupMenu when clicked
           </p>
           
           <div style={{ 
@@ -440,86 +439,33 @@ export const WithMenu: Story = {
             maxWidth: '600px'
           }}>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-              <div key={item} style={{ position: 'relative' }}>
-                <IconButton
-                  icon="overflow-menu-vertical"
-                  variant="ghost"
-                  size="medium"
-                  aria-label={`Open menu for item ${item}`}
-                  aria-expanded={openMenuId === item}
-                  onClick={() => toggleMenu(item)}
-                  selected={openMenuId === item}
-                  menuIndicator={item >= 6} // Show menu indicator on second line (items 6-10)
-                />
+              <div key={item} style={{ position: 'relative', display: 'inline-block' }}>
+                <div
+                  ref={(el) => {
+                    anchorRefs.current[item] = el;
+                  }}
+                  style={{ display: 'inline-block' }}
+                >
+                  <IconButton
+                    icon="overflow-menu-vertical"
+                    variant="ghost"
+                    size="medium"
+                    aria-label={`Open menu for item ${item}`}
+                    aria-expanded={openMenuId === item}
+                    onClick={() => toggleMenu(item)}
+                    selected={openMenuId === item}
+                    menuIndicator={item >= 6} // Show menu indicator on second line (items 6-10)
+                  />
+                </div>
                 
-                {openMenuId === item && (
-                  <>
-                    {/* Backdrop to close menu when clicking outside */}
-                    <div
-                      style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: 'transparent',
-                        zIndex: 999,
-                      }}
-                      onClick={() => setOpenMenuId(null)}
-                    />
-                    
-                    {/* Dropdown Menu */}
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: '100%',
-                        right: 0,
-                        backgroundColor: colors.paper,
-                        border: `1px solid ${colors.border}`,
-                        borderRadius: '4px',
-                        boxShadow: '0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px 0px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05)',
-                        zIndex: 1000,
-                        minWidth: '160px',
-                        maxHeight: '20rem',
-                        overflowY: 'auto',
-                      }}
-                    >
-                      {menuOptions.map((option, index) => {
-                        const menuItemKey = `${item}-${option.value}`;
-                        const isHovered = hoveredMenuItem === menuItemKey;
-                        
-                        return (
-                          <div
-                            key={option.value}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '8px',
-                              padding: '8px 12px',
-                              cursor: 'pointer',
-                              fontSize: '14px',
-                              color: colors.textPrimary,
-                              backgroundColor: isHovered ? colors.surfaceHover : 'transparent',
-                              borderBottom: index < menuOptions.length - 1 ? `1px solid ${colors.border}` : 'none',
-                              transition: 'background-color 0.15s ease',
-                              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
-                            }}
-                            onMouseEnter={() => setHoveredMenuItem(menuItemKey)}
-                            onMouseLeave={() => setHoveredMenuItem(null)}
-                            onClick={() => {
-                              console.log(`${option.label} clicked for item ${item}`);
-                              setOpenMenuId(null);
-                              setHoveredMenuItem(null);
-                            }}
-                          >
-                            {option.icon}
-                            {option.label}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </>
-                )}
+                <PopupMenu
+                  items={menuItems}
+                  open={openMenuId === item}
+                  onClose={() => setOpenMenuId(null)}
+                  anchorEl={anchorRefs.current[item] || null}
+                  align="right"
+                  size="md"
+                />
               </div>
             ))}
           </div>
@@ -527,11 +473,11 @@ export const WithMenu: Story = {
           <div style={{ 
             marginTop: '16px', 
             padding: '12px', 
-            backgroundColor: colors.grey100, 
+            backgroundColor: '#F8F9FA', 
             borderRadius: '8px', 
             fontSize: '14px' 
           }}>
-            <strong>Try it:</strong> Click any of the menu icons above to open the dropdown menu. 
+            <strong>Try it:</strong> Click any of the menu icons above to open the PopupMenu. 
             The menu will close when you click an option or click outside the menu area.
           </div>
         </div>
