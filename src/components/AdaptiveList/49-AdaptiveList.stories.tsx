@@ -7,6 +7,7 @@ import Button from '../Button/Button';
 import Chip from '../Chip/Chip';
 import IconButton from '../IconButton/IconButton';
 import Checkbox from '../Checkbox/Checkbox';
+import { useTheme } from '../../../.storybook/theme-decorator';
 
 const meta: Meta<typeof AdaptiveList> = {
   title: 'Design System/Components/AdaptiveList',
@@ -196,6 +197,8 @@ const BulkActionsBar = ({
   allSelected?: boolean;
   totalCount?: number;
 }) => {
+  const { colors } = useTheme();
+  
   return (
     <div
       className="adaptive-list-bulk-actions-bar"
@@ -203,8 +206,8 @@ const BulkActionsBar = ({
         display: 'flex',
         alignItems: 'center',
         padding: '12px 16px',
-        backgroundColor: 'white',
-        borderBottom: '1px solid #D1D1D1',
+        backgroundColor: colors.paper,
+        borderBottom: `1px solid ${colors.border}`,
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -220,7 +223,7 @@ const BulkActionsBar = ({
             style={{ 
               fontSize: '14px',
               fontWeight: 500,
-              color: '#525965',
+              color: colors.textSecondary,
               cursor: 'pointer'
             }}
             onClick={onSelectAll}
@@ -323,6 +326,7 @@ const DropdownMenu = ({
   position: { top: number; left: number };
   children: React.ReactNode;
 }) => {
+  const { colors } = useTheme();
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -350,10 +354,10 @@ const DropdownMenu = ({
         position: 'fixed',
         top: position.top,
         left: position.left,
-        backgroundColor: 'white',
-        border: '1px solid #E0E0E0',
+        backgroundColor: colors.paper,
+        border: `1px solid ${colors.border}`,
         borderRadius: '4px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        boxShadow: `0 4px 8px ${colors.shadow || 'rgba(0, 0, 0, 0.1)'}`,
         zIndex: 9999,
         minWidth: '180px',
         padding: '8px 0',
@@ -374,36 +378,40 @@ const MenuItem = ({
   onClick: () => void; 
   children: React.ReactNode;
   active?: boolean;
-}) => (
-  <button
-    onClick={onClick}
-    style={{
-      display: 'block',
-      width: '100%',
-      padding: '8px 16px',
-      textAlign: 'left',
-      background: active ? '#E8F0FE' : 'none',
-      border: 'none',
-      cursor: 'pointer',
-      fontSize: '14px',
-      color: active ? '#3560C1' : '#161616',
+}) => {
+  const { colors } = useTheme();
+  
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        display: 'block',
+        width: '100%',
+        padding: '8px 16px',
+        textAlign: 'left',
+        background: active ? colors.selectedLight : 'none',
+        border: 'none',
+        cursor: 'pointer',
+        fontSize: '14px',
+        color: active ? colors.primaryMain : colors.textPrimary,
       fontWeight: active ? 600 : 400,
       transition: 'background-color 150ms ease',
     }}
-    onMouseEnter={(e) => {
-      if (!active) {
-        (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#F4F4F4';
-      }
-    }}
-    onMouseLeave={(e) => {
-      if (!active) {
-        (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
-      }
-    }}
-  >
-    {children}
-  </button>
-);
+        onMouseEnter={(e) => {
+          if (!active) {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = colors.surfaceHover || '#F4F4F4';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!active) {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
+          }
+        }}
+      >
+        {children}
+      </button>
+    );
+};
 
 const AdaptiveListWithBulkActions = () => {
   const [selectedKeys, setSelectedKeys] = React.useState<string[]>(['1']);
