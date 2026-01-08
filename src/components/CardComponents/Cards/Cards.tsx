@@ -18,7 +18,7 @@ const classNames = (...classes: (string | boolean | undefined | null)[]): string
 
 export interface CardsProps {
   /** Card type variant - affects layout and styling */
-  type?: 'compact' | 'comfortable' | 'metadata' | 'user' | 'workspace' | 'build' | '3Sixty';
+  type?: 'compact' | 'comfortable' | 'metadata' | 'user' | 'workspace' | 'build' | '3Sixty' | 'small-grid';
   /** Whether to show the icon gutter (FileType icon) */
   iconGutter?: boolean;
   /** Icons to display in the gutter between FileType and text content */
