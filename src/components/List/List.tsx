@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Icon from '../Icon/Icon';
 import Checkbox from '../Checkbox/Checkbox';
+import Badge from '../Badge/Badge';
 import { ODLTheme } from '../../styles/ODLTheme';
 import { useTheme } from '../../../.storybook/theme-decorator';
 
@@ -58,6 +59,7 @@ const List: React.FC<ListProps> = ({
   showExpandIcons = true,
   ariaLabel = 'List',
   showCheckboxes = false,
+  showBadges = false,
 }) => {
   const { colors } = useTheme();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -342,6 +344,12 @@ const List: React.FC<ListProps> = ({
               >{item.caption}</span>
             )}
           </div>
+          {showBadges && item.badgeValue !== undefined && (
+            <Badge
+              value={item.badgeValue}
+              variant={item.badgeVariant || 'blue-dark'}
+            />
+          )}
           {hasChildren && showExpandIcons && (
             <button
               type="button"

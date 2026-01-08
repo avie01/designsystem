@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TableRowData, SortConfig } from '../../types/common';
 import Icon from '../Icon/Icon';
 import Checkbox from '../Checkbox/Checkbox';
+import FileType from '../FileType/FileType';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import ODLTheme from '../../styles/ODLTheme';
 import styles from './Table.module.css';
@@ -43,6 +44,8 @@ export interface TableProps<T extends TableRowData> {
   headerActions?: React.ReactNode;
   children?: React.ReactNode;
   emptyMessage?: string;
+  showFileTypeIcon?: boolean;
+  bulkActions?: boolean;
 }
 
 function Table<T extends TableRowData>({
@@ -66,6 +69,8 @@ function Table<T extends TableRowData>({
   headerActions,
   children,
   emptyMessage = 'No data available',
+  showFileTypeIcon = false,
+  bulkActions = false,
 }: TableProps<T>) {
   const { colors, theme } = useTheme();
   const [hoveredRow, setHoveredRow] = React.useState<string | null>(null);
@@ -281,7 +286,8 @@ function Table<T extends TableRowData>({
             <tr>
               {selectable && (
                 <th className={styles.checkboxCell} style={{
-                  backgroundColor: colors.paper
+                  backgroundColor: colors.paper,
+                  paddingLeft: '18px'
                 }}>
                   <Checkbox
                     checked={selectedRows.size === paginatedData.length && paginatedData.length > 0}
@@ -367,7 +373,17 @@ function Table<T extends TableRowData>({
                     )}
                     {columns.map((column) => (
                       <td key={column.key} className={getCellClasses(column)} style={tableCellStyle}>
-                        {column.render ? column.render(item) : (item as any)[column.key]}
+                        {column.key === 'name' && showFileTypeIcon ? (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <FileType 
+                              type={((item as any)[column.key] as string).split('.').pop()?.toLowerCase() || 'folder'} 
+                              size={24}
+                            />
+                            {column.render ? column.render(item) : (item as any)[column.key]}
+                          </div>
+                        ) : (
+                          column.render ? column.render(item) : (item as any)[column.key]
+                        )}
                       </td>
                     ))}
                   </tr>

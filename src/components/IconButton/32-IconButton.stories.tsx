@@ -65,6 +65,14 @@ const meta: Meta<typeof IconButton> = {
         type: { summary: 'string' },
       },
     },
+    menuIndicator: {
+      control: 'boolean',
+      description: 'Whether to show a menu indicator (chevron-down icon)',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     onClick: {
       control: false,
       table: {
@@ -441,6 +449,7 @@ export const WithMenu: Story = {
                   aria-expanded={openMenuId === item}
                   onClick={() => toggleMenu(item)}
                   selected={openMenuId === item}
+                  menuIndicator={item >= 6} // Show menu indicator on second line (items 6-10)
                 />
                 
                 {openMenuId === item && (

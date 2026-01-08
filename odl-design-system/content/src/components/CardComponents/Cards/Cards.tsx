@@ -12,7 +12,7 @@ const classNames = (...classes: (string | boolean | undefined | null)[]): string
 
 export interface CardsProps {
   /** Size variant - affects typography and spacing */
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'small-grid';
   /** Disabled state - affects colors and interaction */
   disabled?: boolean;
   /** Error state - uses error colors */

@@ -180,6 +180,16 @@ const Icon: React.FC<IconProps> = ({
       return carbonIconMapping[pascalToKebab];
     }
     
+    // If still not found, try converting kebab-case to PascalCase (e.g., "error-outline" -> "ErrorOutline")
+    if (name.includes('-')) {
+      const pascalCase = name
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join('');
+      console.warn(`Icon '${name}' not found in mapping. Trying '${pascalCase}' directly from Carbon.`);
+      return pascalCase;
+    }
+    
     // If still not found, try the name as-is (it might be the Carbon export name)
     // Convert first letter to uppercase for Carbon convention
     const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);

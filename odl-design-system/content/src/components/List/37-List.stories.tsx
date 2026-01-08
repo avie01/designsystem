@@ -13,7 +13,7 @@ const meta: Meta<typeof List> = {
       },
     },
   },
-  tags: ['autodocs', 'Ready for dev'],
+  tags: ['autodocs'],
   argTypes: {
     items: {
       control: false,
@@ -93,9 +93,9 @@ const meta: Meta<typeof List> = {
         disable: true,
       },
     },
-    showCheckboxes: {
+    showBadges: {
       control: 'boolean',
-      description: 'Whether to show checkboxes for multi-select mode',
+      description: 'Whether to show badges for items with badge values',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -120,6 +120,14 @@ const itemsWithCaptions: ListItem[] = [
   { id: '2', label: 'Drafts', caption: '3 items', icon: 'document' },
   { id: '3', label: 'Sent', caption: '45 items', icon: 'send' },
   { id: '4', label: 'Trash', caption: 'Empty', icon: 'trash-can' },
+];
+
+const itemsWithBadges: ListItem[] = [
+  { id: '1', label: 'Notifications', icon: 'notification', badgeValue: 5, badgeVariant: 'red-dark' },
+  { id: '2', label: 'Messages', icon: 'email', badgeValue: 12, badgeVariant: 'blue-dark' },
+  { id: '3', label: 'Updates', icon: 'renew', badgeValue: 3, badgeVariant: 'green-dark' },
+  { id: '4', label: 'Tasks', icon: 'task', badgeValue: 8, badgeVariant: 'orange-dark' },
+  { id: '5', label: 'Alerts', icon: 'warning', badgeValue: 2, badgeVariant: 'yellow-dark' },
 ];
 
 const hierarchicalItems: ListItem[] = [
@@ -228,9 +236,9 @@ export const MultipleSelection: Story = {
   render: () => (
     <div style={{ maxWidth: '400px' }}>
       <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
-        Multiple Selection with Checkboxes
+        Multiple Selection Enabled
       </h4>
-      <List items={basicItems} multiSelect={true} showCheckboxes={true} />
+      <List items={basicItems} multiSelect={true} />
     </div>
   ),
 };
@@ -360,8 +368,41 @@ export const NavigationMenu: Story = {
   },
 };
 
+export const WithBadges: Story = {
+  name: '12 With Badges',
+  render: () => {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>List with Badges</h4>
+          <p style={{ marginBottom: '16px', fontSize: '14px', opacity: 0.7 }}>
+            Badge values can be displayed to the right of list items to show counts or status indicators.
+          </p>
+          <div style={{ maxWidth: '400px' }}>
+            <List items={itemsWithBadges} showBadges={true} />
+          </div>
+        </div>
+        <div>
+          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>List with Badges and Captions</h4>
+          <div style={{ maxWidth: '400px' }}>
+            <List
+              items={[
+                { id: '1', label: 'Inbox', caption: 'New messages', icon: 'email', badgeValue: 24, badgeVariant: 'blue-dark' },
+                { id: '2', label: 'Priority', caption: 'High priority items', icon: 'flag', badgeValue: 3, badgeVariant: 'red-dark' },
+                { id: '3', label: 'Archive', caption: 'Archived items', icon: 'folder', badgeValue: 156 },
+              ]}
+              size="lg"
+              showBadges={true}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
 export const Playground: Story = {
-  name: '12 Playground',
+  name: '13 Playground',
   args: {
     items: basicItems,
     size: 'md',
@@ -369,41 +410,5 @@ export const Playground: Story = {
     multiSelect: false,
     hierarchical: false,
     showExpandIcons: true,
-  },
-};
-
-export const ThemeSupport: Story = {
-  name: '13 Theme Support',
-  render: () => {
-    const themeItems: ListItem[] = [
-      { id: '1', label: 'Primary Action', icon: 'star', selected: true },
-      { id: '2', label: 'Secondary Action', icon: 'settings' },
-      { id: '3', label: 'Disabled Option', icon: 'close', disabled: true },
-      { 
-        id: '4', 
-        label: 'Nested Options', 
-        icon: 'folder',
-        children: [
-          { id: '4-1', label: 'Sub Option 1', icon: 'document' },
-          { id: '4-2', label: 'Sub Option 2', icon: 'document' },
-        ]
-      },
-    ];
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        <div>
-          <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
-            The List component automatically adapts to the current theme
-          </h4>
-          <p style={{ marginBottom: '16px', fontSize: '14px', opacity: 0.7 }}>
-            Try switching between Light, Dark, and High Contrast themes using the toolbar above
-          </p>
-          <div style={{ maxWidth: '400px' }}>
-            <List items={themeItems} hierarchical={true} multiSelect={true} showCheckboxes={true} />
-          </div>
-        </div>
-      </div>
-    );
   },
 };

@@ -124,6 +124,7 @@ export const carbonIconMapping: Record<string, string> = {
   'enterprise': 'Enterprise',
   'error': 'Error',
   'error-filled': 'ErrorFilled',
+  'error-outline': 'ErrorOutline',
   'event': 'Event',
   'event-warning': 'EventWarning',
   'export': 'Export',
@@ -171,6 +172,7 @@ export const carbonIconMapping: Record<string, string> = {
   // L
   'launch': 'Launch',
   'layers': 'Layers',
+  'lightning': 'Lightning',
   'link': 'Link',
   'list': 'List',
   'list-bulleted': 'ListBulleted',

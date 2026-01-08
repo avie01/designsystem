@@ -7,7 +7,6 @@ const config: StorybookConfig = {
   ],
   addons: [
     "@storybook/addon-docs",
-    "@storybook/addon-onboarding",
     "@storybook/addon-a11y"
   ],
   framework: {
@@ -16,6 +15,17 @@ const config: StorybookConfig = {
   },
   core: {
     disableTelemetry: true,
+  },
+  async viteFinal(config) {
+    // Ensure MUI dependencies are optimized
+    config.optimizeDeps = config.optimizeDeps || {};
+    config.optimizeDeps.include = [
+      ...(config.optimizeDeps.include || []),
+      '@mui/material',
+      '@mui/icons-material',
+      '@mui/x-data-grid',
+    ];
+    return config;
   },
 };
 export default config;

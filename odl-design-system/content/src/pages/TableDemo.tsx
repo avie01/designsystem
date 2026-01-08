@@ -280,7 +280,7 @@ const TableDemo: React.FC = () => {
       label: 'Actions',
       width: '10%',
       render: (item: BasicTableData) => (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: ODLTheme.spacing[1] }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: ODLTheme.spacing[1] }}>
           <button 
             style={{
               padding: ODLTheme.spacing[1],
@@ -404,7 +404,7 @@ const TableDemo: React.FC = () => {
       label: 'Actions',
       width: '12%',
       render: (item: ProductData) => (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: ODLTheme.spacing[1] }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: ODLTheme.spacing[1] }}>
           <button 
             style={{
               padding: ODLTheme.spacing[1],
@@ -507,7 +507,7 @@ const TableDemo: React.FC = () => {
       label: 'Actions',
       width: '10%',
       render: (item: any) => (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: ODLTheme.spacing[1] }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: ODLTheme.spacing[1] }}>
           <button 
             style={{
               padding: ODLTheme.spacing[1],

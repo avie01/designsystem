@@ -69,6 +69,22 @@ const meta: Meta<typeof Table> = {
         type: { summary: 'ReactNode' },
       },
     },
+    showFileTypeIcon: {
+      control: 'boolean',
+      description: 'Whether to show file type icons in the name column',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    bulkActions: {
+      control: 'boolean',
+      description: 'Whether to enable bulk actions for selected items',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
   },
 };
 
@@ -201,9 +217,9 @@ const documentColumns = [
     key: 'actions',
     label: 'Action',
     width: '70px',
-    alignRight: true,
+    alignRight: false,
     render: (item: any) => (
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-start' }}>
         <Tooltip label="Download">
           <IconButton
             icon="cloud-download"
@@ -312,39 +328,49 @@ const BulkActionsBar = ({
   selectedCount,
   onDelete,
   onDownload,
-  onClearSelection
+  onClearSelection,
+  onShare,
+  onMove,
+  onPublish
 }: {
   selectedCount: number;
   onDelete: () => void;
   onDownload: () => void;
   onClearSelection: () => void;
+  onShare: () => void;
+  onMove: () => void;
+  onPublish: () => void;
 }) => {
   return (
     <div
+      className="bulk-actions-bar"
       style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
         padding: '12px 16px',
         backgroundColor: 'white',
         borderBottom: '1px solid #D1D1D1',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <span style={{ fontSize: '14px', fontWeight: 600, color: '#161616' }}>
-          {selectedCount} item{selectedCount !== 1 ? 's' : ''} selected
-        </span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <Button
           variant="text"
           size="sm"
-          onClick={onClearSelection}
+          onClick={onShare}
+          icon={<Icon name="share" size={16} />}
         >
-          Clear selection
+          Share
         </Button>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <Button
-          variant="secondary"
+          variant="text"
+          size="sm"
+          onClick={onMove}
+          icon={<Icon name="folder-move-to" size={16} />}
+        >
+          Move
+        </Button>
+        <Button
+          variant="text"
           size="sm"
           onClick={onDownload}
           icon={<Icon name="cloud-download" size={16} />}
@@ -352,7 +378,15 @@ const BulkActionsBar = ({
           Download
         </Button>
         <Button
-          variant="secondary"
+          variant="text"
+          size="sm"
+          onClick={onPublish}
+          icon={<Icon name="send" size={16} />}
+        >
+          Publish
+        </Button>
+        <Button
+          variant="text"
           size="sm"
           onClick={onDelete}
           icon={<Icon name="trash-can" size={16} />}
@@ -411,6 +445,112 @@ const SelectableTable = () => {
 export const WithSelection: Story = {
   name: 'Row Selection',
   render: () => <SelectableTable />,
+};
+
+const BulkActionsTable = () => {
+  const [selectedKeys, setSelectedKeys] = React.useState<string[]>(['1']);
+  
+  // Extended data for pagination
+  const extendedData = [
+    ...documentData,
+    { id: 6, name: 'Budget Forecast.xlsx', modifiedDate: '10-Dec-2024', modifiedBy: 'David Lee', status: 'Approved' },
+    { id: 7, name: 'Project Timeline.pptx', modifiedDate: '09-Dec-2024', modifiedBy: 'Emma Davis', status: 'In Review' },
+    { id: 8, name: 'Contract Agreement.pdf', modifiedDate: '08-Dec-2024', modifiedBy: 'Frank Miller', status: 'Draft' },
+    { id: 9, name: 'Meeting Notes.docx', modifiedDate: '07-Dec-2024', modifiedBy: 'Grace Taylor', status: 'Approved' },
+    { id: 10, name: 'Technical Specs.pdf', modifiedDate: '06-Dec-2024', modifiedBy: 'Henry White', status: 'In Review' },
+    { id: 11, name: 'Training Manual.docx', modifiedDate: '05-Dec-2024', modifiedBy: 'Ivy Green', status: 'Approved' },
+    { id: 12, name: 'Expense Report.xlsx', modifiedDate: '04-Dec-2024', modifiedBy: 'Jack Black', status: 'Draft' },
+  ];
+
+  React.useEffect(() => {
+    // Add a style to remove table border for bulk actions
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .bulk-actions-table { border: none !important; }
+      .bulk-actions-bar button > span:first-child { margin-right: 0 !important; }
+      .bulk-actions-bar button svg { margin-right: 0 !important; }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  const handleRowSelect = (selected: any[]) => {
+    setSelectedKeys(selected.map(item => item.id.toString()));
+    console.log('Selected:', selected);
+  };
+
+  const handleClearSelection = () => {
+    setSelectedKeys([]);
+  };
+
+  const handleDelete = () => {
+    console.log('Delete items:', selectedKeys);
+    alert(`Deleting ${selectedKeys.length} item(s)`);
+  };
+
+  const handleDownload = () => {
+    console.log('Download items:', selectedKeys);
+    alert(`Downloading ${selectedKeys.length} item(s)`);
+  };
+
+  const handleShare = () => {
+    console.log('Share items:', selectedKeys);
+    alert(`Sharing ${selectedKeys.length} item(s)`);
+  };
+
+  const handleMove = () => {
+    console.log('Move items:', selectedKeys);
+    alert(`Moving ${selectedKeys.length} item(s)`);
+  };
+
+  const handlePublish = () => {
+    console.log('Publish items:', selectedKeys);
+    alert(`Publishing ${selectedKeys.length} item(s)`);
+  };
+
+  return (
+    <div style={{ border: '1px solid #E0E0E0', borderRadius: '8px', overflow: 'hidden' }}>
+      <BulkActionsBar
+        selectedCount={selectedKeys.length}
+        onDelete={handleDelete}
+        onDownload={handleDownload}
+        onClearSelection={handleClearSelection}
+        onShare={handleShare}
+        onMove={handleMove}
+        onPublish={handlePublish}
+      />
+      <Table
+        data={extendedData}
+        columns={documentColumns}
+        selectable={true}
+        bulkActions={true}
+        selectedKeys={selectedKeys}
+        onRowSelect={handleRowSelect}
+        getRowKey={(item) => item.id.toString()}
+        className="bulk-actions-table"
+        paginated={true}
+        pageSize={5}
+      />
+    </div>
+  );
+};
+
+export const BulkActions: Story = {
+  name: 'Bulk Actions',
+  render: () => <BulkActionsTable />,
+};
+
+export const WithFileTypeIcons: Story = {
+  name: 'With FileType Icons',
+  args: {
+    data: documentData,
+    columns: documentColumns,
+    showFileTypeIcon: true,
+    selectable: true,
+  },
 };
 
 export const EmptyState: Story = {
@@ -661,9 +801,9 @@ const FilterableTable = () => {
       key: 'actions',
       label: 'Action',
       width: '70px',
-      alignRight: true,
+      alignRight: false,
       render: (item: any) => (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-start' }}>
           <Tooltip label="Download">
             <IconButton
               icon="cloud-download"

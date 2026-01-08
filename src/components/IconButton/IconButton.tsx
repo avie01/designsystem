@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import Icon from '../Icon/Icon';
 import { ODLTheme } from '../../styles/ODLTheme';
+import './IconButton.css';
 
 export interface IconButtonProps {
   /** The name of the Carbon icon to display */
@@ -36,6 +37,8 @@ export interface IconButtonProps {
   'aria-expanded'?: boolean;
   /** Tooltip text to display on hover */
   title?: string;
+  /** Whether to show a menu indicator (chevron-down icon) */
+  menuIndicator?: boolean;
 }
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -55,6 +58,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   'aria-pressed': ariaPressed,
   'aria-expanded': ariaExpanded,
   title,
+  menuIndicator = false,
 }) => {
   const { colors } = useTheme();
   const [isPressed, setIsPressed] = useState(false);
@@ -66,21 +70,21 @@ const IconButton: React.FC<IconButtonProps> = ({
     switch (size) {
       case 'xs':
         return { 
-          width: '28px', 
+          width: menuIndicator ? '44px' : '28px', 
           height: '28px', 
           padding: '6px', 
           iconSize: 16 
         };
       case 'small':
         return { 
-          width: '32px', 
+          width: menuIndicator ? '48px' : '32px', 
           height: '32px', 
           padding: '8px', 
           iconSize: 16 
         };
       case 'medium':
         return { 
-          width: '36px', 
+          width: menuIndicator ? '56px' : '36px', 
           height: '36px', 
           padding: '8px', 
           iconSize: 20 
@@ -88,7 +92,7 @@ const IconButton: React.FC<IconButtonProps> = ({
       case 'large':
       default:
         return { 
-          width: '44px', 
+          width: menuIndicator ? '64px' : '44px', 
           height: '44px', 
           padding: '10px', 
           iconSize: 20 
@@ -267,23 +271,23 @@ const IconButton: React.FC<IconButtonProps> = ({
           />
         </svg>
       ) : (
-        <Icon 
-          name={icon}
-          width={sizeDimensions.iconSize}
-          height={sizeDimensions.iconSize}
-          aria-hidden="true"
-        />
+        <>
+          <Icon 
+            name={icon}
+            width={sizeDimensions.iconSize}
+            height={sizeDimensions.iconSize}
+            aria-hidden="true"
+          />
+          {menuIndicator && (
+            <Icon 
+              name="chevron-down"
+              width={sizeDimensions.iconSize}
+              height={sizeDimensions.iconSize}
+              aria-hidden="true"
+            />
+          )}
+        </>
       )}
-      <style jsx>{`
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </button>
   );
 };

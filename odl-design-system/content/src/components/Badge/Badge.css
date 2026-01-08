@@ -1,0 +1,133 @@
+/* Badge Component - ODL Design System */
+
+.odl-badge {
+  /* Fixed dimensions as requested */
+  width: 25px;
+  height: 21px;
+  
+  /* Display and layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Typography */
+  font-family: var(--odl-font-family-sans);
+  font-size: var(--odl-font-size-xs);
+  font-weight: var(--odl-font-weight-medium);
+  line-height: 1;
+  color: #ffffff;
+  
+  /* Shape */
+  border-radius: 4px;
+  
+  /* Other properties */
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+  
+  /* Transition for smooth color changes */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Dark Chip Color Variants - Light Mode Values */
+.odl-badge--brown-dark {
+  background-color: #4F3E34;
+}
+
+.odl-badge--blue-dark {
+  background-color: #0F307A;
+}
+
+.odl-badge--pink-dark {
+  background-color: #9C27B0;
+}
+
+.odl-badge--red-dark {
+  background-color: #C2185B;
+}
+
+.odl-badge--orange-dark {
+  background-color: #C93713;
+}
+
+.odl-badge--yellow-dark {
+  background-color: #A15202;
+}
+
+.odl-badge--olive-dark {
+  background-color: #54622C;
+}
+
+.odl-badge--green-dark {
+  background-color: #31622C;
+}
+
+.odl-badge--mint-dark {
+  background-color: #1F787A;
+}
+
+.odl-badge--purple-dark {
+  background-color: #1A1C93;
+}
+
+/* Dark Mode Support - Using Light Chip Backgrounds */
+/* In dark mode, badges use light chip backgrounds with consistent dark text color */
+[data-theme="dark"] .odl-badge {
+  color: #32373F;
+}
+
+[data-theme="dark"] .odl-badge--brown-dark {
+  background-color: #E1D5C7;
+}
+
+[data-theme="dark"] .odl-badge--blue-dark {
+  background-color: #E5F5FE;
+}
+
+[data-theme="dark"] .odl-badge--pink-dark {
+  background-color: #F7E2F9;
+}
+
+[data-theme="dark"] .odl-badge--red-dark {
+  background-color: #F8E8EA;
+}
+
+[data-theme="dark"] .odl-badge--orange-dark {
+  background-color: #FCEEDA;
+}
+
+[data-theme="dark"] .odl-badge--yellow-dark {
+  background-color: #FFFBCE;
+}
+
+[data-theme="dark"] .odl-badge--olive-dark {
+  background-color: #DAE3BF;
+}
+
+[data-theme="dark"] .odl-badge--green-dark {
+  background-color: #E4F7E4;
+}
+
+[data-theme="dark"] .odl-badge--mint-dark {
+  background-color: #D0FAF7;
+}
+
+[data-theme="dark"] .odl-badge--purple-dark {
+  background-color: #DAD8FD;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .odl-badge {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .odl-badge {
+    transition: none;
+  }
+}
