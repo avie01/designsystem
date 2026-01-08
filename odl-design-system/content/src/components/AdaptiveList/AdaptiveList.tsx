@@ -1,8 +1,9 @@
 import React from 'react';
 import Table, { TableProps } from '../Table/Table';
 import Cards from '../CardComponents/Cards/Cards';
+import ThumbnailCards from '../ThumbnailCards/ThumbnailCards';
 
-export type ViewType = 'compact' | 'comfortable' | 'small-grid' | 'large-grid' | 'metadata' | 'table' | 'accordion';
+export type ViewType = 'compact' | 'comfortable' | 'small-grid' | 'large-grid' | 'metadata' | 'table';
 
 export interface AdaptiveListProps<T> extends TableProps<T> {
   /** The view type for displaying the list */
@@ -24,8 +25,8 @@ function AdaptiveList<T extends Record<string, any>>({
   // AdaptiveList wraps Table with default bulk actions configuration
   // Different view types can be handled here in the future
   
-  // Render cards for compact, comfortable, metadata, and small-grid views
-  if (viewType === 'compact' || viewType === 'comfortable' || viewType === 'metadata' || viewType === 'small-grid') {
+  // Render cards for compact, comfortable, metadata, small-grid, and large-grid views
+  if (viewType === 'compact' || viewType === 'comfortable' || viewType === 'metadata' || viewType === 'small-grid' || viewType === 'large-grid') {
     const handleCardSelect = (item: any, selected: boolean) => {
       const key = getRowKey ? getRowKey(item) : item.id.toString();
       let newSelectedKeys: string[];
@@ -45,32 +46,35 @@ function AdaptiveList<T extends Record<string, any>>({
       onRowSelect?.(selectedItems);
     };
 
-    // Use grid layout for small-grid view
-    if (viewType === 'small-grid') {
+    // Use grid layout for small-grid and large-grid views
+    if (viewType === 'small-grid' || viewType === 'large-grid') {
+      const thumbnailSize = viewType === 'small-grid' ? 'small' : 'large';
+      const minColumnWidth = viewType === 'small-grid' ? '180px' : '272px';
+      
       return (
         <div style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
+          gridTemplateColumns: `repeat(auto-fill, minmax(${minColumnWidth}, 1fr))`, 
           gap: '16px',
           padding: '16px'
         }}>
           {data.map((item: any) => {
             const key = getRowKey ? getRowKey(item) : item.id.toString();
             const isSelected = selectedKeys?.includes(key) || false;
-            // Remove file extension from title for small-grid view
+            // Remove file extension from title for grid views
             const titleWithoutExtension = item.name?.replace(/\.[^/.]+$/, '') || item.name;
             
             return (
-              <Cards
+              <ThumbnailCards
                 key={key}
-                size="small-grid"
+                size={thumbnailSize}
+                fileType={item.name?.split('.').pop()?.toLowerCase() || 'folder'}
                 selected={isSelected}
+                checked={isSelected}
                 title={titleWithoutExtension}
-                subtitle=""
-                tag=""
-                onSelect={(selected) => handleCardSelect(item, selected)}
-                showMenuIcon={false}
-                onMenuClick={() => console.log('Menu clicked for:', item)}
+                onCheckboxChange={(checked) => handleCardSelect(item, checked)}
+                onClick={() => console.log('Card clicked for:', item)}
+                onIconClick={() => console.log('Menu clicked for:', item)}
               />
             );
           })}
