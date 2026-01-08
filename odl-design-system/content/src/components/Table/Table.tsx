@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TableRowData, SortConfig } from '../../types/common';
 import Icon from '../Icon/Icon';
 import Dropdown from '../Dropdown/Dropdown';
+import FileType from '../FileType/FileType';
 import ODLTheme from '../../styles/ODLTheme';
 import styles from './Table.module.css';
 
@@ -69,6 +70,10 @@ export interface TableProps<T extends TableRowData> {
   headerActions?: React.ReactNode;
   /** Children to render below header */
   children?: React.ReactNode;
+  /** Whether to show file type icons in the name column */
+  showFileTypeIcon?: boolean;
+  /** Whether to enable bulk actions for selected items */
+  bulkActions?: boolean;
 }
 
 function Table<T extends TableRowData>({
@@ -92,6 +97,8 @@ function Table<T extends TableRowData>({
   onItemsPerPageChange,
   headerActions,
   children,
+  showFileTypeIcon = false,
+  bulkActions = false,
 }: TableProps<T>) {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
@@ -357,7 +364,17 @@ function Table<T extends TableRowData>({
                       bordered && columnIndex < columns.length - 1 && 'border-r border-gray-200'
                     )}
                   >
-                    {column.render ? column.render(item) : (item as any)[column.key]}
+                    {column.key === 'name' && showFileTypeIcon ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <FileType 
+                          fileName={(item as any)[column.key]} 
+                          size={24}
+                        />
+                        {column.render ? column.render(item) : (item as any)[column.key]}
+                      </div>
+                    ) : (
+                      column.render ? column.render(item) : (item as any)[column.key]
+                    )}
                   </td>
                 ))}
               </tr>
