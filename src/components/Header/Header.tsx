@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Icon from '../Icon/Icon';
 import IconButton from '../IconButton/IconButton';
+import Button from '../Button/Button';
 import Input from '../Input/Input';
 import UserAvatar from '../UserAvatar/UserAvatar';
 import { ODLTheme } from '../../styles/ODLTheme';
@@ -18,7 +19,7 @@ export interface Alert {
 
 export interface HeaderProps {
   /** Product variant */
-  variant?: 'build' | 'connect' | 'keystone' | 'nexus' | 'regworks' | '3sixty' | 'keyplan' | 'redact' | 'trapeze';
+  variant?: 'build' | 'connect' | 'keystone' | 'nexus' | 'regworks' | '3sixty' | 'keyplan' | 'trapeze';
   /** User name */
   userName?: string;
   /** User role */
@@ -104,68 +105,77 @@ const Header: React.FC<HeaderProps> = ({
   user: legacyUser,
   onUserClick: legacyOnUserClick
 }) => {
-  // Variant configurations
-  const getVariantConfig = (variant: string) => {
+  // Variant configurations with light/dark mode logos
+  const getVariantConfig = (variant: string, isDark: boolean = false) => {
     const configs = {
       'build': {
-        logo: '/assets/Logos/Objective-Build-H.svg',
+        lightLogo: '/src/assets/build-light.svg',
+        darkLogo: '/src/assets/build-dark.svg',
         title: 'Build',
-        logoAlt: 'Objective Build Logo',
+        logoAlt: 'Build Logo',
         color: '#5DA10C'
       },
       'connect': {
-        logo: '/assets/Logos/Product=Connect-light theme.svg',
+        lightLogo: '/src/assets/connect-light.svg',
+        darkLogo: '/src/assets/connect-dark.svg',
         title: 'Connect',
         logoAlt: 'Connect Logo',
         color: '#0B77D8'
       },
       'keystone': {
-        logo: '/assets/Logos/Objective-Keystone-H.svg',
+        lightLogo: '/src/assets/keystone-light.svg',
+        darkLogo: '/src/assets/keystone-dark.svg',
         title: 'Keystone',
-        logoAlt: 'Objective Keystone Logo',
+        logoAlt: 'Keystone Logo',
         color: '#00928F'
       },
       'nexus': {
-        logo: '/assets/Logos/Product=Nexus-light theme.svg',
+        lightLogo: '/src/assets/nexus-light.svg',
+        darkLogo: '/src/assets/nexus-dark.svg',
         title: 'Nexus',
         logoAlt: 'Nexus Logo',
         color: '#0B77D8'
       },
       'regworks': {
-        logo: '/assets/Logos/Product=Regworks-light theme.svg',
+        lightLogo: '/src/assets/regworks-light.svg',
+        darkLogo: '/src/assets/regworks-dark.svg',
         title: 'Regworks',
         logoAlt: 'Regworks Logo',
         color: '#00928F'
       },
       '3sixty': {
-        logo: '/assets/Logos/Product=3SIXTY-light theme.svg',
+        lightLogo: '/src/assets/3sixty-light.svg',
+        darkLogo: '/src/assets/3sixty-dark.svg',
         title: '3Sixty',
         logoAlt: '3Sixty Logo',
         color: '#0B77D8'
       },
       'keyplan': {
-        logo: '/assets/Logos/Product=Keyplan-light theme.svg',
+        lightLogo: '/src/assets/keyplan-light.svg',
+        darkLogo: '/src/assets/keyplan-dark.svg',
         title: 'Keyplan',
         logoAlt: 'Keyplan Logo',
-        color: '#00928F'
-      },
-      'redact': {
-        logo: '/assets/Logos/Product=Redact-light theme.svg',
-        title: 'Redact',
-        logoAlt: 'Redact Logo',
-        color: '#0B77D8'
+        color: '#5DA10C'
       },
       'trapeze': {
-        logo: '/assets/Logos/Product=Trapeze-light theme.svg',
+        lightLogo: '/src/assets/trapeze-light.svg',
+        darkLogo: '/src/assets/trapeze-dark.svg',
         title: 'Trapeze',
         logoAlt: 'Trapeze Logo',
-        color: '#0B77D8'
+        color: '#5DA10C'
       }
     };
-    return configs[variant as keyof typeof configs] || configs['build'];
+    
+    const config = configs[variant as keyof typeof configs] || configs['build'];
+    return {
+      ...config,
+      logo: isDark ? config.darkLogo : config.lightLogo
+    };
   };
 
-  const variantConfig = getVariantConfig(variant);
+  const { colors } = useTheme();
+  const isDark = colors.mode === 'dark' || colors.paper === '#000000' || colors.textPrimary === '#FFFFFF';
+  const variantConfig = getVariantConfig(variant, isDark);
   
   // Support legacy props
   const logo = legacyLogo || variantConfig.logo;
@@ -181,7 +191,6 @@ const Header: React.FC<HeaderProps> = ({
   
   const handleUserClick = onProfileClick || legacyOnUserClick;
 
-  const { colors } = useTheme();
   const styleRef = useRef<HTMLStyleElement | null>(null);
 
   // Inject dynamic styles for theme-aware colors
@@ -244,7 +253,7 @@ const Header: React.FC<HeaderProps> = ({
         styleRef.current = null;
       }
     };
-  }, [colors]);
+  }, [colors, variantConfig.color]);
 
   const [localSearchValue, setLocalSearchValue] = useState(searchValue);
 
@@ -316,7 +325,61 @@ const Header: React.FC<HeaderProps> = ({
 
         {/* Right Section - Actions and User */}
         <div className="header__right">
-          <div style={{ position: 'relative' }}>
+          {variant === 'build' && (
+            <Button
+              variant="text"
+              size="sm"
+              onClick={() => console.log('New application clicked')}
+              icon={<Icon name="add" size={16} />}
+              disabled={disabled}
+            >
+              New application
+            </Button>
+          )}
+          
+          {variant === 'build' && (
+            <IconButton
+              icon="help"
+              onClick={onSettingsClick}
+              aria-label="Help"
+              variant="disabled"
+              size="small"
+              disabled={disabled}
+              style={{
+                minWidth: '40px',
+                minHeight: '40px',
+              }}
+            />
+          )}
+
+          {variant === 'connect' && (
+            <>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => console.log('Search clicked')}
+                icon={<Icon name="search" size={16} />}
+                disabled={disabled}
+              >
+                Search
+              </Button>
+              
+              <IconButton
+                icon="settings"
+                onClick={onSettingsClick}
+                aria-label="Open settings"
+                variant="disabled"
+                size="small"
+                disabled={disabled}
+                style={{
+                  minWidth: '40px',
+                  minHeight: '40px',
+                }}
+              />
+            </>
+          )}
+
+          {variant === 'keystone' && (
             <IconButton
               icon="notification"
               onClick={onNotificationClick}
@@ -329,25 +392,79 @@ const Header: React.FC<HeaderProps> = ({
                 minHeight: '40px',
               }}
             />
-            {finalNotificationCount > 0 && (
+          )}
+
+          {variant === 'nexus' && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => console.log('Search clicked')}
+              icon={<Icon name="search" size={16} />}
+              disabled={disabled}
+            >
+              Search
+            </Button>
+          )}
+
+          {variant !== 'build' && variant !== 'connect' && variant !== 'keystone' && variant !== 'nexus' && variant !== 'regworks' && variant !== 'trapeze' && (
+            <>
+              <IconButton
+                icon="notification"
+                onClick={onNotificationClick}
+                aria-label={`Notifications ${finalNotificationCount > 0 ? `(${finalNotificationCount} unread)` : ''}`}
+                variant="disabled"
+                size="small"
+                disabled={disabled}
+                style={{
+                  minWidth: '40px',
+                  minHeight: '40px',
+                }}
+              />
+
+              <IconButton
+                icon="settings"
+                onClick={onSettingsClick}
+                aria-label="Open settings"
+                variant="disabled"
+                size="small"
+                disabled={disabled}
+                style={{
+                  minWidth: '40px',
+                  minHeight: '40px',
+                }}
+              />
+            </>
+          )}
+
+          {variant === 'build' && (
+            <div style={{ position: 'relative' }}>
+              <IconButton
+                icon="notification"
+                onClick={onNotificationClick}
+                aria-label={`Notifications ${finalNotificationCount > 0 ? `(${finalNotificationCount} unread)` : ''}`}
+                variant="disabled"
+                size="small"
+                disabled={disabled}
+                style={{
+                  minWidth: '40px',
+                  minHeight: '40px',
+                }}
+              />
+              {finalNotificationCount > 0 && (
+                <span className="header__badge" aria-hidden="true">
+                  {finalNotificationCount > 99 ? '99+' : finalNotificationCount}
+                </span>
+              )}
+            </div>
+          )}
+
+          {variant !== 'build' && variant !== 'connect' && finalNotificationCount > 0 && (
+            <div style={{ position: 'absolute', top: '4px', right: '4px' }}>
               <span className="header__badge" aria-hidden="true">
                 {finalNotificationCount > 99 ? '99+' : finalNotificationCount}
               </span>
-            )}
-          </div>
-
-          <IconButton
-            icon="settings"
-            onClick={onSettingsClick}
-            aria-label="Open settings"
-            variant="disabled"
-            size="small"
-            disabled={disabled}
-            style={{
-              minWidth: '40px',
-              minHeight: '40px',
-            }}
-          />
+            </div>
+          )}
 
           {(currentUser.name || currentUser.initials) && (
             <div className="header__user-info">

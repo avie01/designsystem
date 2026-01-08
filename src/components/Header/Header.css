@@ -6,6 +6,8 @@
   padding: var(--odl-spacing-4) var(--odl-spacing-6);
   font-family: var(--odl-font-family-sans);
   position: relative;
+  height: 70px;
+  box-sizing: border-box;
 }
 
 .header::before {
@@ -44,20 +46,18 @@
 }
 
 .header--keyplan::before {
-  background-color: #00928F;
+  background-color: #5DA10C;
 }
 
-.header--redact::before {
-  background-color: #0B77D8;
-}
 
 .header--trapeze::before {
-  background-color: #0B77D8;
+  background-color: #5DA10C;
 }
 
 .header__container {
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .header__left {
@@ -88,7 +88,7 @@
 }
 
 .header__logo {
-  height: 28px;
+  height: 48px;
   width: auto;
   object-fit: contain;
   max-width: 160px;
@@ -98,7 +98,7 @@
 
 /* Connect logo - make it bigger */
 .header__logo[src*="Product=Connect"] {
-  height: 36px;
+  height: 48px;
 }
 
 /* Large logos - all product variants */
@@ -110,7 +110,7 @@
 .header__logo[src*="Product=Keyplan"],
 .header__logo[src*="Product=Redact"],
 .header__logo[src*="Product=Trapeze"] {
-  height: 36px;
+  height: 48px;
 }
 
 .header__divider {
