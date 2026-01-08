@@ -6,6 +6,7 @@ import Button from '../components/Button/ButtonTW';
 import Input from '../components/Input/InputTW';
 import Dropdown from '../components/Dropdown/Dropdown';
 import AdvancedTable, { TableColumn } from '../components/AdvancedTable/AdvancedTable';
+import AdaptiveList from '../components/AdaptiveList/AdaptiveList';
 import Cards from '../components/CardComponents/Cards/CardsTW';
 import Chip from '../components/Chip/ChipTW';
 import Breadcrumb from '../components/Breadcrumb/BreadcrumbTW';
@@ -1446,6 +1447,153 @@ export const ODLAppShellTemplate: React.FC = () => {
   );
 };
 
+// ============================================
+// ADAPTIVE LIST TEMPLATE
+// ============================================
+const AdaptiveListContent: React.FC = () => {
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+
+  const documentData = [
+    {
+      id: 1,
+      name: 'Q4 Financial Report.pdf',
+      modifiedDate: '15-Dec-2024',
+      modifiedBy: 'John Doe',
+      documentId: 'A1691878'
+    },
+    {
+      id: 2,
+      name: 'Marketing Strategy 2025.docx',
+      modifiedDate: '14-Dec-2024',
+      modifiedBy: 'Jane Smith',
+      documentId: 'A1691879'
+    },
+    {
+      id: 3,
+      name: 'Product Roadmap.xlsx',
+      modifiedDate: '13-Dec-2024',
+      modifiedBy: 'Bob Johnson',
+      documentId: 'A1691880'
+    },
+    {
+      id: 4,
+      name: 'Employee Handbook.pdf',
+      modifiedDate: '12-Dec-2024',
+      modifiedBy: 'Alice Brown',
+      documentId: 'A1691881'
+    },
+    {
+      id: 5,
+      name: 'Sales Presentation.pptx',
+      modifiedDate: '11-Dec-2024',
+      modifiedBy: 'Charlie Wilson',
+      documentId: 'A1691882'
+    },
+    { id: 6, name: 'Budget Forecast.xlsx', modifiedDate: '10-Dec-2024', modifiedBy: 'David Lee', documentId: 'A1691883' },
+    { id: 7, name: 'Project Timeline.pptx', modifiedDate: '09-Dec-2024', modifiedBy: 'Emma Davis', documentId: 'A1691884' },
+    { id: 8, name: 'Contract Agreement.pdf', modifiedDate: '08-Dec-2024', modifiedBy: 'Frank Miller', documentId: 'A1691885' },
+    { id: 9, name: 'Meeting Notes.docx', modifiedDate: '07-Dec-2024', modifiedBy: 'Grace Taylor', documentId: 'A1691886' },
+    { id: 10, name: 'Technical Specs.pdf', modifiedDate: '06-Dec-2024', modifiedBy: 'Henry White', documentId: 'A1691887' },
+  ];
+
+  const documentColumns = [
+    {
+      key: 'name',
+      label: 'Name',
+      width: '196px',
+    },
+    { key: 'modifiedDate', label: 'Modified Date', width: '130px' },
+    { key: 'modifiedBy', label: 'Modified By', width: '140px' },
+    {
+      key: 'documentId',
+      label: 'Id',
+      width: '120px',
+    },
+    {
+      key: 'actions',
+      label: 'Action',
+      width: '70px',
+      alignRight: false,
+      render: (item: any) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-start' }}>
+          <Button variant="text" size="sm">
+            <Icon name="cloud-download" size={16} />
+          </Button>
+          <Button variant="text" size="sm">
+            <Icon name="overflow-menu-vertical" size={16} />
+          </Button>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <>
+      {/* Page Header */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        marginBottom: ODLTheme.spacing[6],
+        paddingBottom: ODLTheme.spacing[4],
+        borderBottom: `1px solid ${ODLTheme.colors.border}`
+      }}>
+        <div>
+          <h1 style={{
+            fontSize: ODLTheme.typography.fontSize['2xl'],
+            fontWeight: ODLTheme.typography.fontWeight.semibold,
+            color: ODLTheme.colors.text.primary,
+            margin: 0
+          }}>
+            Document Management
+          </h1>
+          <p style={{
+            fontSize: ODLTheme.typography.fontSize.base,
+            color: ODLTheme.colors.text.secondary,
+            margin: `${ODLTheme.spacing[2]} 0 0 0`
+          }}>
+            Manage and organize your documents with advanced filtering and view options
+          </p>
+        </div>
+        <Button variant="primary" size="md">
+          <Icon name="add" size={16} style={{ marginRight: ODLTheme.spacing[2] }} />
+          Add Document
+        </Button>
+      </div>
+
+      {/* AdaptiveList Component */}
+      <AdaptiveList
+        data={documentData}
+        columns={documentColumns}
+        selectedKeys={selectedKeys}
+        onRowSelect={(selected) => setSelectedKeys(selected.map(item => item.id.toString()))}
+        getRowKey={(item) => item.id.toString()}
+        viewType="table"
+        selectable={true}
+        showFileTypeIcon={true}
+        paginated={true}
+        bulkActions={true}
+      />
+    </>
+  );
+};
+
+export const ODLAdaptiveListTemplate: React.FC = () => {
+  return (
+    <ODLAppShellWrapper
+      currentPage="/documents"
+      pageTitle="Document Management"
+      pageSubtitle="Manage and organize your documents with advanced filtering and view options"
+      breadcrumbItems={[
+        { label: 'Home', path: '/' },
+        { label: 'Documents', path: '/documents' },
+      ]}
+    >
+      <AdaptiveListContent />
+    </ODLAppShellWrapper>
+  );
+};
+
 // Export all templates
 export default {
   ODLDashboardTemplate,
@@ -1454,4 +1602,5 @@ export default {
   ODLDetailPageTemplate,
   ODLCardsGridTemplate,
   ODLAppShellTemplate,
+  ODLAdaptiveListTemplate,
 };

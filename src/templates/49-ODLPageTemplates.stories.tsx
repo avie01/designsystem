@@ -6,6 +6,7 @@ import {
   ODLDetailPageTemplate,
   ODLCardsGridTemplate,
   ODLAppShellTemplate,
+  ODLAdaptiveListTemplate,
 } from './ODLPageTemplates';
 
 /**
@@ -43,6 +44,7 @@ A collection of page templates built **exclusively with ODL Design System compon
 | **Form Page** | Multi-section form layout | Input, Dropdown, Button |
 | **Detail Page** | Entity detail view with tabs and drawer | SimpleTabs, Accordion, Chip, Drawer |
 | **Cards Grid** | Grid of project/item cards | Cards, Chip, Button |
+| **AdaptiveList** | Flexible data display with multiple view types | AdaptiveList, Button, Icon |
 | **App Shell** | Full app layout with navigation | NavigationRail, Breadcrumb |
 
 ### How to Use
@@ -210,6 +212,35 @@ Great for projects, products, articles, or any collection view.
 };
 
 /**
+ * AdaptiveList template for flexible data display with multiple view types.
+ *
+ * **Components used:**
+ * - AdaptiveList (table, grid, card views)
+ * - Button (with icons)
+ * - Icon
+ * - Breadcrumb
+ */
+export const AdaptiveListPage: Story = {
+  name: '06 AdaptiveList',
+  render: () => <ODLAdaptiveListTemplate />,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+A document management page featuring:
+- **Header**: Page title, description, and add document button
+- **AdaptiveList**: Full-featured list with multiple view types (table, small grid, large grid)
+- **View Controls**: Sort, view toggle, and bulk actions
+- **File Icons**: Automatic file type detection and display
+
+Perfect for document management, file libraries, or any data that needs flexible viewing options.
+        `,
+      },
+    },
+  },
+};
+
+/**
  * Full application shell with Header and dual navigation rails.
  *
  * **Components used:**
@@ -220,7 +251,7 @@ Great for projects, products, articles, or any collection view.
  * - Icon
  */
 export const AppShell: Story = {
-  name: '06 App Shell',
+  name: '07 App Shell',
   render: () => <ODLAppShellTemplate />,
   parameters: {
     docs: {
@@ -245,7 +276,7 @@ This template provides the standard ODL application layout structure.
  * View all ODL templates together for comparison.
  */
 export const AllTemplates: Story = {
-  name: '07 All Templates',
+  name: '08 All Templates',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '60px', padding: '20px', backgroundColor: '#f5f5f5' }}>
       <section>
@@ -295,7 +326,16 @@ export const AllTemplates: Story = {
 
       <section>
         <h2 style={{ marginBottom: '20px', color: '#161616', fontSize: '24px', fontWeight: 600 }}>
-          6. App Shell Template
+          6. AdaptiveList Template
+        </h2>
+        <div style={{ border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'hidden' }}>
+          <ODLAdaptiveListTemplate />
+        </div>
+      </section>
+
+      <section>
+        <h2 style={{ marginBottom: '20px', color: '#161616', fontSize: '24px', fontWeight: 600 }}>
+          7. App Shell Template
         </h2>
         <div style={{ border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'hidden', height: '600px' }}>
           <ODLAppShellTemplate />
