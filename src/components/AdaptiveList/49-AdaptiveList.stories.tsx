@@ -56,7 +56,7 @@ const meta: Meta<typeof AdaptiveList> = {
     },
     viewType: {
       control: 'select',
-      options: ['compact', 'comfortable', 'small-grid', 'large-grid', 'metadata', 'table', 'accordion'],
+      options: ['compact', 'comfortable', 'small-grid', 'large-grid', 'metadata', 'table'],
       description: 'The view type for displaying the list',
       table: {
         type: { summary: 'ViewType' },
@@ -276,6 +276,7 @@ const BulkActionsBar = ({
             variant="ghost"
             size="medium"
             aria-label="Sort"
+            menuIndicator={true}
             onClick={(e) => {
               e.stopPropagation();
               onSortClick?.();
@@ -288,6 +289,7 @@ const BulkActionsBar = ({
             variant="ghost"
             size="medium"
             aria-label="View"
+            menuIndicator={true}
             onClick={(e) => {
               e.stopPropagation();
               onViewClick?.();
@@ -419,8 +421,7 @@ const AdaptiveListWithBulkActions = () => {
     'Small grid': 'small-grid',
     'Large grid': 'large-grid',
     'Metadata': 'metadata',
-    'Table': 'table',
-    'Accordion': 'accordion'
+    'Table': 'table'
   };
 
   const displayNameMap: { [key in ViewType]: string } = {
@@ -429,8 +430,7 @@ const AdaptiveListWithBulkActions = () => {
     'small-grid': 'Small grid',
     'large-grid': 'Large grid',
     'metadata': 'Metadata',
-    'table': 'Table',
-    'accordion': 'Accordion'
+    'table': 'Table'
   };
 
   React.useEffect(() => {
@@ -641,16 +641,6 @@ const AdaptiveListWithBulkActions = () => {
         >
           Table
         </MenuItem>
-        <MenuItem 
-          onClick={() => { 
-            setActiveView('accordion');
-            console.log('Accordion'); 
-            setViewDropdownOpen(false); 
-          }}
-          active={activeView === 'accordion'}
-        >
-          Accordion
-        </MenuItem>
       </DropdownMenu>
     </div>
   );
@@ -659,24 +649,4 @@ const AdaptiveListWithBulkActions = () => {
 export const Default: Story = {
   name: 'Default with Bulk Actions',
   render: () => <AdaptiveListWithBulkActions />,
-};
-
-export const Simple: Story = {
-  name: 'Simple List',
-  args: {
-    data: documentData.slice(0, 5),
-    columns: documentColumns,
-    bulkActions: false,
-    selectable: false,
-    paginated: false,
-  },
-};
-
-export const WithoutPagination: Story = {
-  name: 'Without Pagination',
-  args: {
-    data: documentData.slice(0, 5),
-    columns: documentColumns,
-    paginated: false,
-  },
 };
