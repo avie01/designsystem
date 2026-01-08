@@ -143,25 +143,25 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
         }}>
           {/* Left side - FileType skeleton */}
           <div className="ghost sizer" style={{
-            width: '36px',
-            height: '36px',
+              width: '36px',
+              height: '36px',
             borderRadius: '4px'
-          }} />
+            }} />
           
           {/* Right side - IconButton skeleton */}
           <div style={{ display: 'flex', alignItems: 'center', gap: ODLTheme.spacing[1] }}>
             <div className="ghost sizer" style={{
-              width: '36px',
-              height: '36px',
+                width: '36px',
+                height: '36px',
               borderRadius: '100px'
-            }} />
+              }} />
             {/* Additional actions skeleton if needed */}
             {actions && (
               <div className="ghost sizer" style={{
-                width: '36px',
-                height: '36px',
+                  width: '36px',
+                  height: '36px',
                 borderRadius: '100px'
-              }} />
+                }} />
             )}
           </div>
         </div>
@@ -171,48 +171,48 @@ const DashboardCards: React.FC<DashboardCardProps> = ({
           marginBottom: variant === 'detailed' ? ODLTheme.spacing[3] : ODLTheme.spacing[2]
         }}>
           <div className="ghost sizer" style={{
-            height: '24px',
-            borderRadius: '4px',
-            width: '280px',
+              height: '24px',
+              borderRadius: '4px',
+              width: '280px',
             lineHeight: '24px'
-          }} />
+            }} />
           {/* Subtitle skeleton - matching the long description */}
           {subtitle && (
             <div>
               <div className="ghost sizer" style={{
-                height: '16px',
-                borderRadius: '4px',
-                marginBottom: '4px',
-                width: '100%',
+                  height: '16px',
+                  borderRadius: '4px',
+                  marginBottom: '4px',
+                  width: '100%',
                 lineHeight: '16px'
-              }} />
+                }} />
               <div className="ghost sizer" style={{
-                height: '16px',
-                borderRadius: '4px',
-                marginBottom: '4px',
-                width: '100%',
+                  height: '16px',
+                  borderRadius: '4px',
+                  marginBottom: '4px',
+                  width: '100%',
                 lineHeight: '16px'
-              }} />
+                }} />
               <div className="ghost sizer" style={{
-                height: '16px',
-                borderRadius: '4px',
-                width: '75%',
+                  height: '16px',
+                  borderRadius: '4px',
+                  width: '75%',
                 lineHeight: '16px'
-              }} />
+                }} />
             </div>
           )}
         </div>
 
         {/* Modified information skeleton - Fixed at bottom */}
         <div className="ghost sizer" style={{
-          position: 'absolute',
-          bottom: '12px',
-          left: '12px',
-          height: '14px',
-          borderRadius: '4px',
-          width: '320px',
+            position: 'absolute',
+            bottom: '12px',
+            left: '12px',
+            height: '14px',
+            borderRadius: '4px',
+            width: '320px',
           lineHeight: '14px'
-        }} />
+          }} />
       </div>
     );
   }

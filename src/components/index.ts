@@ -34,6 +34,7 @@ export { default as FileType } from './FileType/FileType';
 export { default as RadioButton, RadioButtonGroup } from './RadioButton/RadioButton';
 export { default as Switch } from './Switch/Switch';
 export { default as ThumbnailCards } from './ThumbnailCards/ThumbnailCards';
+export { default as PopupMenu } from './PopupMenu/PopupMenu';
 
 // Demo Components
 export { default as DemoBreadcrumb } from './DemoBreadcrumb/DemoBreadcrumb';
@@ -54,3 +55,4 @@ export type { RadioButtonProps, RadioButtonGroupProps } from './RadioButton/Radi
 export type { SwitchProps } from './Switch/Switch';
 export type { FileTypeVariant } from './FileType/FileType';
 export type { ThumbnailCardsProps, ThumbnailCardSize } from './ThumbnailCards/ThumbnailCards';
+export type { PopupMenuProps, PopupMenuItem } from './PopupMenu/PopupMenu';
