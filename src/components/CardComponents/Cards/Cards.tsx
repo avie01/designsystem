@@ -18,7 +18,7 @@ const classNames = (...classes: (string | boolean | undefined | null)[]): string
 
 export interface CardsProps {
   /** Card type variant - affects layout and styling */
-  type?: 'compact' | 'comfortable' | 'metadata' | 'user' | 'workspace' | 'build' | '3Sixty' | 'small-grid';
+  type?: 'compact' | 'comfortable' | 'metadata' | 'user' | 'workspace' | 'build' | 'regworks' | '3Sixty' | 'small-grid';
   /** Whether to show the icon gutter (FileType icon) */
   iconGutter?: boolean;
   /** Icons to display in the gutter between FileType and text content */
@@ -167,6 +167,7 @@ const Cards: React.FC<CardsProps> = ({
             maxHeight: '70px',
           };
         case 'build':
+        case 'regworks':
           return {
             padding: `${colors.spacing[3]} ${colors.spacing[2]} ${colors.spacing[3]} ${colors.spacing[3]}`,
             gap: colors.spacing[3],
@@ -199,7 +200,7 @@ const Cards: React.FC<CardsProps> = ({
         border: `1px solid ${borderColor}`,
         borderLeft: selected ? `4px solid ${colors.primaryMain}` : `1px solid ${borderColor}`,
       }),
-      paddingLeft: type === 'build' ? 
+      paddingLeft: type === 'build' || type === 'regworks' ? 
         (selected ? `calc(${colors.spacing[3]} - 3px)` : colors.spacing[3]) :
         type === 'metadata' ?
         (selected ? '13px' : '16px') :
@@ -209,7 +210,7 @@ const Cards: React.FC<CardsProps> = ({
       fontFamily: '"Noto Sans", sans-serif',
       display: 'flex',
       width: '100%',
-      alignItems: type === 'build' ? 'flex-start' : 'center',
+      alignItems: type === 'build' || type === 'regworks' ? 'flex-start' : 'center',
       cursor: loading || disabled ? 'not-allowed' : 'pointer',
       boxSizing: 'border-box' as const,
       ...style,
@@ -230,7 +231,7 @@ const Cards: React.FC<CardsProps> = ({
 
   // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (disabled || loading || type === 'build') return;
+    if (disabled || loading || type === 'build' || type === 'regworks') return;
     
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -303,7 +304,7 @@ const Cards: React.FC<CardsProps> = ({
       }}
     >
       {/* Checkbox */}
-      {type !== 'build' && (
+      {type !== 'build' && type !== 'regworks' && (
         <div className="cards-container__checkbox">
           {loading ? (
             <div className="ghost sizer"></div>
@@ -322,7 +323,7 @@ const Cards: React.FC<CardsProps> = ({
 
       {/* FileType Icon */}
       {iconGutter && (
-        <div className="cards-container__icon" style={{ alignSelf: type === 'build' ? 'flex-start' : 'center' }}>
+        <div className="cards-container__icon" style={{ alignSelf: type === 'build' || type === 'regworks' ? 'flex-start' : 'center' }}>
           {loading ? (
             <div className="ghost sizer"></div>
           ) : type === 'user' ? (
@@ -355,6 +356,26 @@ const Cards: React.FC<CardsProps> = ({
                 marginTop: 0
               }}
             />
+          ) : type === 'regworks' ? (
+            <div
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: '4px',
+                backgroundColor: disabled ? colors.grey300 : colors.grey200,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: disabled ? 0.5 : 1,
+                marginTop: 0
+              }}
+            >
+              <Icon
+                name="document"
+                size={24}
+                color={disabled ? colors.textDisabled : colors.textPrimary}
+              />
+            </div>
           ) : (
             <FileType 
               type={fileType} 
@@ -387,7 +408,7 @@ const Cards: React.FC<CardsProps> = ({
       {/* Text Content */}
       <div className="cards-container__content" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '-2px', minWidth: 0, overflow: 'hidden' }}>
         {/* Top text for build type */}
-        {type === 'build' && topText && (
+        {(type === 'build' || type === 'regworks') && topText && (
           <div 
             className="cards-container__top-text"
             style={{
@@ -474,7 +495,7 @@ const Cards: React.FC<CardsProps> = ({
           </div>
         )}
         {/* Bottom text for build type */}
-        {type === 'build' && bottomText && (
+        {(type === 'build' || type === 'regworks') && bottomText && (
           <div 
             className="cards-container__bottom-text"
             style={{
@@ -494,29 +515,44 @@ const Cards: React.FC<CardsProps> = ({
 
       {/* Tag - hidden on hover/active for specific card types */}
       {tag && type !== 'workspace' && (
-        <div 
-          className="cards-container__tag"
-          style={{
-            backgroundColor: loading ? 'transparent' : (disabled ? colors.grey200 : colors.grey300),
-            color: disabled ? colors.textDisabled : colors.textPrimary,
-            padding: `${colors.spacing[1]} ${colors.spacing[2]}`,
-            borderRadius: '4px',
-            fontSize: type === 'compact' ? '11px' : '12px',
-            fontWeight: 500,
-            whiteSpace: 'nowrap',
-            border: loading ? 'none' : `1px solid ${disabled ? colors.textDisabled : colors.border}`,
-            flexShrink: 0,
-            alignSelf: type === 'build' ? 'flex-start' : 'center',
-            marginTop: type === 'build' ? '4px' : 0,
-            display: ((effectiveHoverState || selected) && (type === 'compact' || type === 'comfortable' || type === 'metadata')) ? 'none' : 'block'
-          }}
-        >
+        <>
           {loading ? (
-            <div className="ghost sizer" style={{ width: '60px', height: type === 'compact' ? '13px' : '14px' }}></div>
+            <div 
+              className="ghost sizer" 
+              style={{ 
+                width: '60px', 
+                height: type === 'compact' ? '13px' : '14px',
+                alignSelf: type === 'build' ? 'flex-start' : 'center',
+                marginTop: type === 'build' ? '4px' : 0,
+                display: ((effectiveHoverState || selected) && (type === 'compact' || type === 'comfortable' || type === 'metadata')) ? 'none' : 'block'
+              }}
+            ></div>
+          ) : type === 'regworks' ? (
+            <div style={{ alignSelf: 'center' }}>
+              <Chip
+                label={tag}
+                variant="blue"
+                size={type === 'compact' ? 'sm' : 'sm'}
+                disabled={disabled}
+              />
+            </div>
           ) : (
-            tag
+            <div
+              style={{
+                alignSelf: type === 'build' ? 'flex-start' : 'center',
+                marginTop: type === 'build' ? '4px' : 0,
+                display: ((effectiveHoverState || selected) && (type === 'compact' || type === 'comfortable' || type === 'metadata')) ? 'none' : 'block'
+              }}
+            >
+              <Chip
+                label={tag}
+                variant="white"
+                size={type === 'compact' ? 'sm' : 'sm'}
+                disabled={disabled}
+              />
+            </div>
           )}
-        </div>
+        </>
       )}
 
       {/* Action Icons - shown on hover/active for specific card types */}
@@ -569,7 +605,7 @@ const Cards: React.FC<CardsProps> = ({
       <div className="cards-container__actions" style={{ alignSelf: type === 'build' ? 'flex-start' : 'center' }}>
         {loading ? (
           <>
-            {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && (
+            {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && type !== 'regworks' && (
               <div className="ghost sizer" style={{ width: '36px', height: '36px' }}></div>
             )}
             {showMenuIcon && (
@@ -579,7 +615,7 @@ const Cards: React.FC<CardsProps> = ({
         ) : (
           <>
             {/* Information Icon */}
-            {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && (
+            {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && type !== 'regworks' && (
               <div onClick={(e) => e.stopPropagation()}>
                 <IconButton
                   icon="information"

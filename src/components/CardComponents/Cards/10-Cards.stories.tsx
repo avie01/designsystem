@@ -21,7 +21,7 @@ const meta: Meta<typeof Cards> = {
   argTypes: {
     type: {
       control: 'select',
-      options: ['compact', 'comfortable', 'metadata', 'user', 'workspace', 'build', '3Sixty'],
+      options: ['compact', 'comfortable', 'metadata', 'user', 'workspace', 'build', 'regworks', '3Sixty'],
       description: 'Card type variant affecting layout and styling',
       table: {
         type: { summary: 'string' },
@@ -357,6 +357,14 @@ export const Types: Story = {
               onSelect={() => toggleCardSelection('build')}
             />
             <Cards
+              type="regworks"
+              title="Report Triage - Complaint - Jon Smith | Unfair dismissal | ACME"
+              subtitle="INV-123"
+              tag="In-Progress"
+              selected={selectedCards.includes('regworks')}
+              onSelect={() => toggleCardSelection('regworks')}
+            />
+            <Cards
               type="3Sixty"
               title="3Sixty Document"
               subtitle="Type: 3Sixty - Same styling as comfortable cards"
@@ -452,9 +460,83 @@ export const BuildCards: Story = {
   },
 };
 
+// Regworks Cards
+export const RegworksCards: Story = {
+  name: '05 Regworks Cards',
+  render: () => {
+    const [selectedRegworks, setSelectedRegworks] = React.useState<number[]>([1]);
+    const { colors } = useTheme();
+
+    const regworks = [
+      { 
+        id: 1, 
+        name: 'RC-2024-0156', 
+        status: 'Approved - Ready for issue',
+        bottomText: 'Residential development • 123 Main St • Approved: 15 Dec 2024',
+        tag: 'RC-156'
+      },
+      { 
+        id: 2, 
+        name: 'RC-2024-0155', 
+        status: 'Under review - Additional info required',
+        bottomText: 'Commercial development • 45 Queen St • Requested: 10 Dec 2024',
+        tag: 'RC-155'
+      },
+      { 
+        id: 3, 
+        name: 'RC-2024-0154', 
+        status: 'Processing - Initial assessment',
+        bottomText: 'Subdivision • 78 Park Ave • Submitted: 14 Dec 2024',
+        tag: 'RC-154'
+      },
+      { 
+        id: 4, 
+        name: 'RC-2024-0153', 
+        status: 'Declined - Does not meet standards',
+        bottomText: 'Industrial development • 99 Industrial Rd • Declined: 12 Dec 2024',
+        tag: 'RC-153'
+      },
+    ];
+
+    const toggleRegworksSelection = (id: number) => {
+      setSelectedRegworks(prev =>
+        prev.includes(id)
+          ? prev.filter(regworksId => regworksId !== id)
+          : [...prev, id]
+      );
+    };
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[6] || '24px' }}>
+        <div>
+          <h4 style={{ marginBottom: colors.spacing[3] || '12px', fontSize: colors.fontSize?.sm || '14px', fontWeight: 600, color: colors.textPrimary }}>Resource Consent Cards</h4>
+          <p style={{ marginBottom: colors.spacing[4] || '16px', fontSize: colors.fontSize?.sm || '14px', color: colors.textSecondary }}>
+            Regworks cards with consent type above title and details below status. Perfect for resource consent management systems.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: colors.spacing[3] || '12px' }}>
+            {regworks.map(regwork => (
+              <Cards
+                key={regwork.id}
+                type="regworks"
+                title={regwork.name}
+                subtitle={regwork.status}
+                bottomText={regwork.bottomText}
+                tag={regwork.tag}
+                selected={selectedRegworks.includes(regwork.id)}
+                onSelect={() => toggleRegworksSelection(regwork.id)}
+                onMenuClick={() => alert(`Regworks options for ${regwork.name}`)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
 // 3Sixty Cards
 export const ThreeSixtyCards: Story = {
-  name: '05 3Sixty Cards',
+  name: '06 3Sixty Cards',
   render: () => {
     const [selectedDocs, setSelectedDocs] = React.useState<number[]>([1]);
     const { colors } = useTheme();
@@ -530,7 +612,7 @@ export const ThreeSixtyCards: Story = {
 
 // User Cards
 export const UserCards: Story = {
-  name: '06 User Cards',
+  name: '07 User Cards',
   render: () => {
     const [selectedUsers, setSelectedUsers] = React.useState<number[]>([1]);
     const { colors } = useTheme();
@@ -585,7 +667,7 @@ export const InteractiveFeatures: Story = {
     type: "build"
   },
 
-  name: '07 Interactive Features',
+  name: '08 Interactive Features',
 
   render: () => {
     const { colors } = useTheme();
@@ -634,7 +716,7 @@ export const InteractiveFeatures: Story = {
 
 // Metadata with White Chips
 export const MetadataWithWhiteChips: Story = {
-  name: '08 Metadata Cards with White Chips',
+  name: '09 Metadata Cards with White Chips',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -682,7 +764,7 @@ export const MetadataWithWhiteChips: Story = {
 
 // Icon variations
 export const IconVariations: Story = {
-  name: '09 Icon Variations',
+  name: '10 Icon Variations',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -753,7 +835,7 @@ export const IconVariations: Story = {
 
 // Real-world examples
 export const RealWorldExamples: Story = {
-  name: '10 Real World Examples',
+  name: '11 Real World Examples',
   render: () => {
     const [selectedFiles, setSelectedFiles] = React.useState<number[]>([1, 3]);
 
@@ -803,7 +885,7 @@ export const RealWorldExamples: Story = {
 
 // Card Lists
 export const CardLists: Story = {
-  name: '11 Card Lists',
+  name: '12 Card Lists',
   render: () => {
     const [selectedFiles, setSelectedFiles] = React.useState<number[]>([1, 3]);
 
@@ -895,7 +977,7 @@ export const CardLists: Story = {
 
 // Accessibility example
 export const AccessibilityFocus: Story = {
-  name: '12 Accessibility Focus',
+  name: '13 Accessibility Focus',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -936,7 +1018,7 @@ export const AccessibilityFocus: Story = {
 
 // Edge cases
 export const EdgeCases: Story = {
-  name: '13 Edge Cases',
+  name: '14 Edge Cases',
   render: () => {
     const { colors } = useTheme();
     return (
@@ -973,7 +1055,7 @@ export const EdgeCases: Story = {
 
 // Playground
 export const Playground: Story = {
-  name: '14 Playground',
+  name: '15 Playground',
   args: {
     title: 'Playground Card',
     subtitle: 'Experiment with props',
