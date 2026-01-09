@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ODLTheme from '../styles/ODLTheme';
 
 // ODL Components
 import Button from '../components/Button/ButtonTW';
+// Import Button with icon support for BulkActionsBar
+import ButtonComponent from '../components/Button/Button';
 import Input from '../components/Input/InputTW';
 import Dropdown from '../components/Dropdown/Dropdown';
 import AdvancedTable, { TableColumn } from '../components/AdvancedTable/AdvancedTable';
-import AdaptiveList from '../components/AdaptiveList/AdaptiveList';
+import AdaptiveList, { ViewType } from '../components/AdaptiveList/AdaptiveList';
 import Cards from '../components/CardComponents/Cards/CardsTW';
 import Chip from '../components/Chip/ChipTW';
 import Breadcrumb from '../components/Breadcrumb/BreadcrumbTW';
@@ -18,6 +20,10 @@ import Accordion from '../components/Accordion/Accordion';
 import NavigationRail from '../components/NavigationRail/NavigationRail';
 import Header from '../components/Header/Header';
 import Drawer from '../components/Drawer/Drawer';
+import IconButton from '../components/IconButton/IconButton';
+import Checkbox from '../components/Checkbox/Checkbox';
+import PopupMenu, { PopupMenuItem } from '../components/PopupMenu/PopupMenu';
+import { useTheme } from '../../.storybook/theme-decorator';
 
 /**
  * PURE ODL PAGE TEMPLATES
@@ -1450,8 +1456,205 @@ export const ODLAppShellTemplate: React.FC = () => {
 // ============================================
 // ADAPTIVE LIST TEMPLATE
 // ============================================
+const BulkActionsBar = ({
+  selectedCount,
+  onDelete,
+  onDownload,
+  onClearSelection,
+  onShare,
+  onMove,
+  onPublish,
+  sortButtonRef,
+  viewButtonRef,
+  onSortClick,
+  onViewClick,
+  onRefreshClick,
+  onSelectAll,
+  allSelected,
+  totalCount,
+  sortMenuOpen,
+  viewMenuOpen,
+  sortMenuItems,
+  viewMenuItems,
+  onSortMenuClose,
+  onViewMenuClose
+}: {
+  selectedCount: number;
+  onDelete: () => void;
+  onDownload: () => void;
+  onClearSelection: () => void;
+  onShare: () => void;
+  onMove: () => void;
+  onPublish: () => void;
+  sortButtonRef?: React.RefObject<HTMLDivElement>;
+  viewButtonRef?: React.RefObject<HTMLDivElement>;
+  onSortClick?: () => void;
+  onViewClick?: () => void;
+  onRefreshClick?: () => void;
+  onSelectAll?: () => void;
+  allSelected?: boolean;
+  totalCount?: number;
+  sortMenuOpen?: boolean;
+  viewMenuOpen?: boolean;
+  sortMenuItems?: PopupMenuItem[];
+  viewMenuItems?: PopupMenuItem[];
+  onSortMenuClose?: () => void;
+  onViewMenuClose?: () => void;
+}) => {
+  const { colors } = useTheme();
+  
+  return (
+    <div
+      className="adaptive-list-bulk-actions-bar"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '12px 16px',
+        backgroundColor: colors.paper,
+        borderBottom: `1px solid ${colors.border}`,
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Checkbox
+            checked={allSelected || false}
+            indeterminate={selectedCount > 0 && !allSelected}
+            onChange={onSelectAll}
+            aria-label="Select all items"
+            size="md"
+          />
+          <span 
+            style={{ 
+              fontSize: '14px',
+              fontWeight: 500,
+              color: colors.textSecondary,
+              cursor: 'pointer'
+            }}
+            onClick={onSelectAll}
+          >
+            Select all
+          </span>
+        </div>
+        <ButtonComponent
+          variant="text"
+          size="sm"
+          onClick={onShare}
+          icon={<Icon name="share" size={16} />}
+        >
+          Share
+        </ButtonComponent>
+        <ButtonComponent
+          variant="text"
+          size="sm"
+          onClick={onMove}
+          icon={<Icon name="folder-move-to" size={16} />}
+        >
+          Move
+        </ButtonComponent>
+        <ButtonComponent
+          variant="text"
+          size="sm"
+          onClick={onDownload}
+          icon={<Icon name="cloud-download" size={16} />}
+        >
+          Download
+        </ButtonComponent>
+        <ButtonComponent
+          variant="text"
+          size="sm"
+          onClick={onPublish}
+          icon={<Icon name="send" size={16} />}
+        >
+          Publish
+        </ButtonComponent>
+        <ButtonComponent
+          variant="text"
+          size="sm"
+          onClick={onDelete}
+          icon={<Icon name="trash-can" size={16} />}
+        >
+          Delete
+        </ButtonComponent>
+      </div>
+      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <div
+            ref={sortButtonRef}
+            style={{ display: 'inline-block' }}
+          >
+            <IconButton
+              icon="sort-remove"
+              variant="ghost"
+              size="medium"
+              aria-label="Sort"
+              menuIndicator={true}
+              selected={sortMenuOpen}
+              aria-expanded={sortMenuOpen}
+              onClick={() => {
+                onSortClick?.();
+              }}
+            />
+          </div>
+          {sortMenuItems && (
+            <PopupMenu
+              items={sortMenuItems}
+              open={sortMenuOpen || false}
+              onClose={onSortMenuClose || (() => {})}
+              anchorEl={sortButtonRef?.current || null}
+              align="right"
+              size="md"
+            />
+          )}
+        </div>
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <div
+            ref={viewButtonRef}
+            style={{ display: 'inline-block' }}
+          >
+            <IconButton
+              icon="view"
+              variant="ghost"
+              size="medium"
+              aria-label="View"
+              menuIndicator={true}
+              selected={viewMenuOpen}
+              aria-expanded={viewMenuOpen}
+              onClick={() => {
+                onViewClick?.();
+              }}
+            />
+          </div>
+          {viewMenuItems && (
+            <PopupMenu
+              items={viewMenuItems}
+              open={viewMenuOpen || false}
+              onClose={onViewMenuClose || (() => {})}
+              anchorEl={viewButtonRef?.current || null}
+              align="right"
+              size="md"
+            />
+          )}
+        </div>
+        <IconButton
+          icon="refresh"
+          variant="ghost"
+          size="medium"
+          aria-label="Refresh"
+          onClick={onRefreshClick}
+        />
+      </div>
+    </div>
+  );
+};
+
 const AdaptiveListContent: React.FC = () => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [sortMenuOpen, setSortMenuOpen] = useState(false);
+  const [viewMenuOpen, setViewMenuOpen] = useState(false);
+  const [activeView, setActiveView] = useState<ViewType>('table');
+  
+  const sortButtonRef = useRef<HTMLDivElement>(null);
+  const viewButtonRef = useRef<HTMLDivElement>(null);
 
   const documentData = [
     {
@@ -1527,6 +1730,81 @@ const AdaptiveListContent: React.FC = () => {
     },
   ];
 
+  const handleRowSelect = (selected: any[]) => {
+    setSelectedKeys(selected.map(item => item.id.toString()));
+  };
+
+  const handleClearSelection = () => {
+    setSelectedKeys([]);
+  };
+
+  const handleDelete = () => {
+    console.log('Delete items:', selectedKeys);
+    alert(`Deleting ${selectedKeys.length} item(s)`);
+    setSelectedKeys([]);
+  };
+
+  const handleDownload = () => {
+    console.log('Download items:', selectedKeys);
+    alert(`Downloading ${selectedKeys.length} item(s)`);
+  };
+
+  const handleShare = () => {
+    console.log('Share items:', selectedKeys);
+    alert(`Sharing ${selectedKeys.length} item(s)`);
+  };
+
+  const handleMove = () => {
+    console.log('Move items:', selectedKeys);
+    alert(`Moving ${selectedKeys.length} item(s)`);
+  };
+
+  const handlePublish = () => {
+    console.log('Publish items:', selectedKeys);
+    alert(`Publishing ${selectedKeys.length} item(s)`);
+  };
+
+  const handleSortClick = () => {
+    setSortMenuOpen((prev) => !prev);
+    setViewMenuOpen(false);
+  };
+
+  const handleViewClick = () => {
+    setViewMenuOpen((prev) => !prev);
+    setSortMenuOpen(false);
+  };
+
+  const sortMenuItems: PopupMenuItem[] = [
+    { id: 'name', label: 'Sort by Name', icon: 'sort-ascending', action: () => { console.log('Sort by Name'); setSortMenuOpen(false); } },
+    { id: 'date', label: 'Sort by Date', icon: 'calendar', action: () => { console.log('Sort by Date'); setSortMenuOpen(false); } },
+    { id: 'status', label: 'Sort by Status', icon: 'status', action: () => { console.log('Sort by Status'); setSortMenuOpen(false); } },
+    { id: 'modified', label: 'Sort by Modified By', icon: 'user', action: () => { console.log('Sort by Modified By'); setSortMenuOpen(false); } },
+  ];
+
+  const viewMenuItems: PopupMenuItem[] = [
+    { id: 'compact', label: 'Compact', icon: 'view', action: () => { setActiveView('compact'); console.log('Compact'); setViewMenuOpen(false); } },
+    { id: 'comfortable', label: 'Comfortable', icon: 'view', action: () => { setActiveView('comfortable'); console.log('Comfortable'); setViewMenuOpen(false); } },
+    { id: 'small-grid', label: 'Small grid', icon: 'grid', action: () => { setActiveView('small-grid'); console.log('Small grid'); setViewMenuOpen(false); } },
+    { id: 'large-grid', label: 'Large grid', icon: 'grid', action: () => { setActiveView('large-grid'); console.log('Large grid'); setViewMenuOpen(false); } },
+    { id: 'metadata', label: 'Metadata', icon: 'information', action: () => { setActiveView('metadata'); console.log('Metadata'); setViewMenuOpen(false); } },
+    { id: 'table', label: 'Table', icon: 'table', action: () => { setActiveView('table'); console.log('Table'); setViewMenuOpen(false); } },
+  ];
+
+  const handleRefreshClick = () => {
+    console.log('Refreshing list...');
+  };
+
+  const handleSelectAll = () => {
+    if (selectedKeys.length === documentData.length) {
+      setSelectedKeys([]);
+    } else {
+      const allKeys = documentData.map(item => item.id.toString());
+      setSelectedKeys(allKeys);
+    }
+  };
+
+  const allSelected = selectedKeys.length === documentData.length && documentData.length > 0;
+
   return (
     <>
       {/* Page Header */}
@@ -1561,19 +1839,44 @@ const AdaptiveListContent: React.FC = () => {
         </Button>
       </div>
 
-      {/* AdaptiveList Component */}
-      <AdaptiveList
-        data={documentData}
-        columns={documentColumns}
-        selectedKeys={selectedKeys}
-        onRowSelect={(selected) => setSelectedKeys(selected.map(item => item.id.toString()))}
-        getRowKey={(item) => item.id.toString()}
-        viewType="table"
-        selectable={true}
-        showFileTypeIcon={true}
-        paginated={true}
-        bulkActions={true}
-      />
+      {/* Bulk Actions Bar and AdaptiveList */}
+      <div style={{ border: '1px solid #E0E0E0', borderRadius: '8px', overflow: 'hidden' }}>
+        <BulkActionsBar
+          selectedCount={selectedKeys.length}
+          onDelete={handleDelete}
+          onDownload={handleDownload}
+          onClearSelection={handleClearSelection}
+          onShare={handleShare}
+          onMove={handleMove}
+          onPublish={handlePublish}
+          sortButtonRef={sortButtonRef}
+          viewButtonRef={viewButtonRef}
+          onSortClick={handleSortClick}
+          onViewClick={handleViewClick}
+          onRefreshClick={handleRefreshClick}
+          onSelectAll={handleSelectAll}
+          allSelected={allSelected}
+          totalCount={documentData.length}
+          sortMenuOpen={sortMenuOpen}
+          viewMenuOpen={viewMenuOpen}
+          sortMenuItems={sortMenuItems}
+          viewMenuItems={viewMenuItems}
+          onSortMenuClose={() => setSortMenuOpen(false)}
+          onViewMenuClose={() => setViewMenuOpen(false)}
+        />
+        <AdaptiveList
+          data={documentData}
+          columns={documentColumns}
+          selectedKeys={selectedKeys}
+          onRowSelect={handleRowSelect}
+          getRowKey={(item) => item.id.toString()}
+          className="adaptive-list-container"
+          viewType={activeView}
+          onViewTypeChange={setActiveView}
+          selectable={true}
+          showFileTypeIcon={true}
+        />
+      </div>
     </>
   );
 };

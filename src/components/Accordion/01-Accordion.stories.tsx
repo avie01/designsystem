@@ -489,6 +489,44 @@ export const ExpandIconPosition: Story = {
           expandPosition="right"
         />
       </div>
+      
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Left Position with Icon</h4>
+        <p style={{ fontSize: '12px', color: '#6C757D', marginBottom: '16px' }}>Expand icon positioned to the left of the label with item icon</p>
+        <Accordion
+          items={[
+            {
+              id: '3',
+              title: 'Left Expand Icon with Icon Example',
+              content: 'The expand/collapse icon is positioned to the left of the accordion label, and the item has its own icon.',
+              icon: 'settings',
+            },
+          ]}
+          allowMultiple={true}
+          showIcons={true}
+          variant="default"
+          expandPosition="left"
+        />
+      </div>
+      
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Right Position with Icon</h4>
+        <p style={{ fontSize: '12px', color: '#6C757D', marginBottom: '16px' }}>Expand icon positioned to the right of the label with item icon</p>
+        <Accordion
+          items={[
+            {
+              id: '4',
+              title: 'Right Expand Icon with Icon Example',
+              content: 'The expand/collapse icon is positioned to the right of the accordion label, and the item has its own icon.',
+              icon: 'settings',
+            },
+          ]}
+          allowMultiple={true}
+          showIcons={true}
+          variant="default"
+          expandPosition="right"
+        />
+      </div>
     </div>
   ),
 };
