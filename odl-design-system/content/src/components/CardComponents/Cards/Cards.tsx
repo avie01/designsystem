@@ -19,6 +19,8 @@ export interface CardsProps {
   error?: boolean;
   /** Whether the card is selected (checkbox state) */
   selected?: boolean;
+  /** OnDrag state - indicates the card is being dragged */
+  onDrag?: boolean;
   /** Primary text content */
   title?: string;
   /** Secondary text content */
@@ -52,6 +54,7 @@ const Cards: React.FC<CardsProps> = ({
   disabled = false,
   error = false,
   selected = false,
+  onDrag = false,
   title = "Title - h4 - Primary",
   subtitle = "Body - body2 - Secondary",
   tag = "fA7985",
@@ -76,6 +79,7 @@ const Cards: React.FC<CardsProps> = ({
     selected && 'cards-container--selected',
     disabled && 'cards-container--disabled',
     error && 'cards-container--error',
+    onDrag && 'cards-container--on-drag',
     className
   );
 
@@ -97,12 +101,15 @@ const Cards: React.FC<CardsProps> = ({
   return (
     <div 
       className={componentClasses}
-      style={style}
+      style={{
+        cursor: disabled ? 'not-allowed' : onDrag ? 'grabbing' : 'pointer',
+        ...style
+      }}
       role="article"
-      aria-label={ariaLabel || `${title}${selected ? ', selected' : ''}`}
+      aria-label={ariaLabel || `${title}${selected ? ', selected' : ''}${onDrag ? ', dragging' : ''}`}
       aria-describedby={ariaDescribedBy}
       tabIndex={disabled ? -1 : 0}
-      onClick={() => !disabled && onSelect?.(!selected)}
+      onClick={() => !disabled && !onDrag && onSelect?.(!selected)}
       onKeyDown={handleKeyDown}
     >
       {/* Checkbox */}
