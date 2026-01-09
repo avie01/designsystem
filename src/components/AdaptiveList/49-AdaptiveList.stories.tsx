@@ -298,9 +298,8 @@ const BulkActionsBar = ({
               menuIndicator={true}
               selected={sortMenuOpen}
               aria-expanded={sortMenuOpen}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSortClick?.(e);
+              onClick={() => {
+                onSortClick?.();
               }}
             />
           </div>
@@ -328,9 +327,8 @@ const BulkActionsBar = ({
               menuIndicator={true}
               selected={viewMenuOpen}
               aria-expanded={viewMenuOpen}
-              onClick={(e) => {
-                e.stopPropagation();
-                onViewClick?.(e);
+              onClick={() => {
+                onViewClick?.();
               }}
             />
           </div>
