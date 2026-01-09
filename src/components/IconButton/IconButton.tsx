@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import Icon from '../Icon/Icon';
+import PopupMenu, { PopupMenuItem } from '../PopupMenu/PopupMenu';
 import { ODLTheme } from '../../styles/ODLTheme';
 import './IconButton.css';
 
@@ -39,6 +40,14 @@ export interface IconButtonProps {
   title?: string;
   /** Whether to show a menu indicator (chevron-down icon) */
   menuIndicator?: boolean;
+  /** Menu items for popup menu */
+  menuItems?: PopupMenuItem[];
+  /** Menu alignment relative to button */
+  menuAlign?: 'left' | 'right' | 'center';
+  /** Menu size */
+  menuSize?: 'sm' | 'md' | 'lg';
+  /** Callback when menu closes */
+  onMenuClose?: () => void;
 }
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -59,10 +68,15 @@ const IconButton: React.FC<IconButtonProps> = ({
   'aria-expanded': ariaExpanded,
   title,
   menuIndicator = false,
+  menuItems,
+  menuAlign = 'left',
+  menuSize = 'md',
+  onMenuClose,
 }) => {
   const { colors } = useTheme();
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   // Size-based dimensions
@@ -168,6 +182,23 @@ const IconButton: React.FC<IconButtonProps> = ({
     }
   };
 
+  // Handle click with menu support
+  const handleClick = () => {
+    if (disabled) return;
+    
+    if (menuItems && menuItems.length > 0) {
+      setMenuOpen(!menuOpen);
+    } else {
+      onClick?.();
+    }
+  };
+
+  // Handle menu close
+  const handleMenuClose = () => {
+    setMenuOpen(false);
+    onMenuClose?.();
+  };
+
   const isDisabled = disabled || loading;
   const buttonColors = getButtonColors();
 
@@ -215,11 +246,12 @@ const IconButton: React.FC<IconButtonProps> = ({
   };
 
   return (
+    <>
     <button
       ref={buttonRef}
       type={type}
       className={className}
-      onClick={onClick}
+      onClick={handleClick}
       disabled={isDisabled}
       onMouseEnter={() => !isDisabled && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -239,7 +271,7 @@ const IconButton: React.FC<IconButtonProps> = ({
       }}
       aria-label={ariaLabel}
       aria-pressed={ariaPressed}
-      aria-expanded={ariaExpanded}
+      aria-expanded={menuItems && menuItems.length > 0 ? menuOpen : ariaExpanded}
       aria-disabled={isDisabled}
       title={title || ariaLabel}
       style={buttonStyles}
@@ -289,6 +321,18 @@ const IconButton: React.FC<IconButtonProps> = ({
         </>
       )}
     </button>
+    
+    {menuItems && menuItems.length > 0 && (
+      <PopupMenu
+        items={menuItems}
+        open={menuOpen}
+        onClose={handleMenuClose}
+        anchorEl={buttonRef.current}
+        align={menuAlign}
+        size={menuSize}
+      />
+    )}
+    </>
   );
 };
 

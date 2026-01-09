@@ -3,7 +3,7 @@ import PageTemplate from './PageTemplate';
 import NavigationRail from '../NavigationRail/NavigationRail';
 
 const meta: Meta<typeof PageTemplate> = {
-  title: 'Internal/PageTemplate',
+  title: 'Design System/Templates/PageTemplate',
   component: PageTemplate,
   parameters: {
     layout: 'fullscreen',

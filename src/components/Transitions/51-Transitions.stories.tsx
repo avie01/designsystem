@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ODLTheme } from '../../styles/ODLTheme';
 
 const meta: Meta = {
-  title: 'Design System/Tokens/Transitions',
+  title: 'Design System/Components/Transitions',
   parameters: {
     layout: 'padded',
     docs: {
