@@ -65,6 +65,20 @@ const PopupMenu: React.FC<PopupMenuProps> = ({
   };
 
   useEffect(() => {
+    if (open) {
+      // Mark that menu was just opened to ignore the opening click
+      justOpenedRef.current = true;
+      const timeoutId = setTimeout(() => {
+        justOpenedRef.current = false;
+      }, 100);
+      
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [open]);
+
+  useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
       .popup-menu {
@@ -104,20 +118,6 @@ const PopupMenu: React.FC<PopupMenuProps> = ({
       }
     };
   }, [colors]);
-
-  useEffect(() => {
-    if (open) {
-      // Mark that menu was just opened to ignore the opening click
-      justOpenedRef.current = true;
-      const timeoutId = setTimeout(() => {
-        justOpenedRef.current = false;
-      }, 100);
-      
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
-  }, [open]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -294,7 +294,7 @@ const PopupMenu: React.FC<PopupMenuProps> = ({
       width: '100%',
       textAlign: 'left',
       cursor: 'pointer',
-      transition: ODLTheme.transitions.button,
+      transition: ODLTheme.transitions.base,
       display: 'flex',
       alignItems: 'center',
       gap: ODLTheme.spacing[2],
@@ -322,7 +322,7 @@ const PopupMenu: React.FC<PopupMenuProps> = ({
         maxHeight: `${maxHeight}px`,
         overflowY: 'auto',
         borderRadius: ODLTheme.borders.radius.md,
-        border: `2px solid ${colors.primaryMain}`,
+        border: `1px solid ${colors.primaryMain}`,
         backgroundColor: colors.paper,
         boxShadow: ODLTheme.shadows.lg,
       }}

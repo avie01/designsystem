@@ -8,23 +8,11 @@ import { ODLTheme } from '../../styles/ODLTheme';
 const meta: Meta<typeof PopupMenu> = {
   title: 'Design System/Components/PopupMenu',
   component: PopupMenu,
-  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: `The PopupMenu component displays a contextual menu with interactive items. It supports various configurations including positioning, sizing, alignment, icons, and multi-select functionality.
-
-## Features
-
-- **Positioning**: Position relative to an anchor element or absolute coordinates
-- **Sizing**: Small, medium, and large size variants
-- **Alignment**: Left, center, or right alignment relative to anchor
-- **Icons**: Optional icons for menu items with show/hide control
-- **Multi-select**: Checkbox-based multi-selection mode
-- **States**: Default, hover, active/pressed, disabled, and focus states
-- **Accessibility**: Full keyboard navigation and ARIA support
-- **Theming**: Dynamic theme support for light, dark, and high contrast modes`,
+        component: 'PopupMenu component displays a popup menu with interactive items. This story focuses on the popup functionality without a trigger element.',
       },
     },
   },
@@ -50,42 +38,6 @@ const meta: Meta<typeof PopupMenu> = {
     minWidth: {
       control: 'number',
       description: 'Minimum width of the menu in pixels',
-    },
-    showIcons: {
-      control: 'boolean',
-      description: 'Whether to show icons in menu items',
-    },
-    multiSelect: {
-      control: 'boolean',
-      description: 'Enable multi-select mode with checkboxes',
-    },
-    selectedItems: {
-      control: false,
-      description: 'Array of selected item IDs (for controlled multi-select)',
-    },
-    onSelectionChange: {
-      action: 'selectionChanged',
-      description: 'Callback fired when selection changes in multi-select mode',
-    },
-    items: {
-      control: false,
-      description: 'Array of menu items to display',
-    },
-    onClose: {
-      action: 'closed',
-      description: 'Callback fired when the menu should be closed',
-    },
-    anchorEl: {
-      control: false,
-      description: 'Element to anchor the menu to',
-    },
-    position: {
-      control: false,
-      description: 'Absolute position { top, left } for the menu',
-    },
-    className: {
-      control: 'text',
-      description: 'Additional CSS class name',
     },
   },
 };
@@ -195,55 +147,6 @@ export const Sizes: Story = {
         />
       </div>
     );
-  },
-};
-
-export const States: Story = {
-  render: () => {
-    const [open, setOpen] = useState(true);
-    const anchorRef = useRef<HTMLDivElement>(null);
-    
-    const stateItems = [
-      { id: '1', label: 'Default State', icon: 'document', action: () => console.log('Default clicked') },
-      { id: '2', label: 'Hover State', icon: 'edit', action: () => console.log('Hover clicked') },
-      { id: '3', label: 'Active/Pressed State', icon: 'view', action: () => console.log('Active clicked') },
-      { id: 'divider-1', divider: true },
-      { id: '4', label: 'Disabled State', icon: 'settings', disabled: true },
-      { id: '5', label: 'Focus State', icon: 'notification', action: () => console.log('Focus clicked') },
-    ];
-    
-    return (
-      <div style={{ height: '500px', width: '600px', position: 'relative', padding: '100px' }}>
-        <div ref={anchorRef} style={{ display: 'inline-block' }}>
-          <Button onClick={() => setOpen(!open)}>
-            Show States Menu
-          </Button>
-        </div>
-        <PopupMenu
-          items={stateItems}
-          open={open}
-          onClose={() => setOpen(false)}
-          anchorEl={anchorRef.current}
-        />
-        <div style={{ marginTop: '300px', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-          <h3 style={{ marginTop: 0, marginBottom: '12px', fontSize: '16px', fontWeight: '600' }}>Menu Item States</h3>
-          <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '14px', lineHeight: '1.6' }}>
-            <li><strong>Default:</strong> Normal state with transparent background</li>
-            <li><strong>Hover:</strong> Background changes to #E8E8E8 on mouse hover</li>
-            <li><strong>Active/Pressed:</strong> Background changes to #D1D1D1 with no border when clicked</li>
-            <li><strong>Disabled:</strong> Reduced opacity and non-interactive</li>
-            <li><strong>Focus:</strong> Outline appears when focused via keyboard navigation</li>
-          </ul>
-        </div>
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'This story demonstrates all the different states of PopupMenu items: default, hover, active/pressed, disabled, and focus states.',
-      },
-    },
   },
 };
 
@@ -404,6 +307,137 @@ export const CustomIcons: Story = {
         />
       </div>
     );
+  },
+};
+
+export const States: Story = {
+  render: () => {
+    const [open, setOpen] = useState(true);
+    const anchorRef = useRef<HTMLDivElement>(null);
+    
+    const stateItems = [
+      { id: '1', label: 'Default State', icon: 'document', action: () => console.log('Default clicked') },
+      { id: '2', label: 'Hover State', icon: 'edit', action: () => console.log('Hover clicked') },
+      { id: '3', label: 'Active/Pressed State', icon: 'view', action: () => console.log('Active clicked') },
+      { id: 'divider-1', divider: true },
+      { id: '4', label: 'Disabled State', icon: 'settings', disabled: true },
+      { id: '5', label: 'Focus State', icon: 'notification', action: () => console.log('Focus clicked') },
+    ];
+    
+    return (
+      <div style={{ height: '500px', width: '600px', position: 'relative', padding: '100px' }}>
+        <div ref={anchorRef} style={{ display: 'inline-block' }}>
+          <Button onClick={() => setOpen(!open)}>
+            Show States Menu
+          </Button>
+        </div>
+        <PopupMenu
+          items={stateItems}
+          open={open}
+          onClose={() => setOpen(false)}
+          anchorEl={anchorRef.current}
+        />
+        <div style={{ marginTop: '300px', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+          <h3 style={{ marginTop: 0, marginBottom: '12px', fontSize: '16px', fontWeight: '600' }}>Menu Item States</h3>
+          <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '14px', lineHeight: '1.6' }}>
+            <li><strong>Default:</strong> Normal state with transparent background</li>
+            <li><strong>Hover:</strong> Background changes to #E8E8E8 on mouse hover</li>
+            <li><strong>Active/Pressed:</strong> Background changes to #D1D1D1 with no border when clicked</li>
+            <li><strong>Disabled:</strong> Reduced opacity and non-interactive</li>
+            <li><strong>Focus:</strong> Outline appears when focused via keyboard navigation</li>
+          </ul>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story demonstrates all the different states of PopupMenu items: default, hover, active/pressed, disabled, and focus states.',
+      },
+    },
+  },
+};
+
+export const MultiSelect: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false);
+    const [selectedItems, setSelectedItems] = useState<string[]>(['2', '4']);
+    const anchorRef = useRef<HTMLDivElement>(null);
+    
+    const multiSelectItems = [
+      { id: '1', label: 'Download', icon: 'download' },
+      { id: '2', label: 'Share', icon: 'share' },
+      { id: '3', label: 'Copy Link', icon: 'copy' },
+      { id: '4', label: 'Add to Favorites', icon: 'star' },
+      { id: '5', label: 'Archive', icon: 'archive' },
+    ];
+    
+    return (
+      <div style={{ height: '400px', width: '600px', position: 'relative', padding: '100px' }}>
+        <div ref={anchorRef} style={{ display: 'inline-block' }}>
+          <Button onClick={() => setOpen(!open)}>
+            Multi-Select Menu
+          </Button>
+        </div>
+        <PopupMenu
+          items={multiSelectItems}
+          open={open}
+          onClose={() => setOpen(false)}
+          anchorEl={anchorRef.current}
+          multiSelect={true}
+          selectedItems={selectedItems}
+          onSelectionChange={setSelectedItems}
+        />
+        <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#f0f0f0', borderRadius: '4px' }}>
+          <strong>Selected items:</strong> {selectedItems.join(', ') || 'None'}
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story demonstrates multi-select functionality with checkboxes. Users can select multiple items and see the current selection.',
+      },
+    },
+  },
+};
+
+export const IconButtonWithMenu: Story = {
+  render: () => {
+    const iconButtonMenuItems = [
+      { id: 'edit', label: 'Edit', icon: 'edit', action: () => console.log('Edit clicked') },
+      { id: 'duplicate', label: 'Duplicate', icon: 'copy', action: () => console.log('Duplicate clicked') },
+      { id: 'share', label: 'Share', icon: 'share', action: () => console.log('Share clicked') },
+      { id: 'divider-1', divider: true },
+      { id: 'delete', label: 'Delete', icon: 'trash-can', action: () => console.log('Delete clicked') },
+    ];
+    
+    return (
+      <div style={{ height: '400px', width: '600px', position: 'relative', padding: '100px' }}>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <span>IconButton with PopupMenu:</span>
+          {/* Note: This would use the updated IconButton component with menuItems prop */}
+          <div style={{ 
+            padding: '8px', 
+            backgroundColor: '#f0f0f0', 
+            borderRadius: '4px', 
+            fontStyle: 'italic' 
+          }}>
+            IconButton integration example<br />
+            <small>(Use IconButton with menuItems prop)</small>
+          </div>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story shows how PopupMenu integrates with IconButton components. The IconButton can accept menuItems prop to show a menu on click.',
+      },
+    },
   },
 };
 

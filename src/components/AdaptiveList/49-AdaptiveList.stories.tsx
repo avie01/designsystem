@@ -181,7 +181,11 @@ const BulkActionsBar = ({
   allSelected,
   totalCount,
   sortMenuOpen,
-  viewMenuOpen
+  viewMenuOpen,
+  sortMenuItems,
+  viewMenuItems,
+  onSortMenuClose,
+  onViewMenuClose
 }: {
   selectedCount: number;
   onDelete: () => void;
@@ -200,6 +204,10 @@ const BulkActionsBar = ({
   totalCount?: number;
   sortMenuOpen?: boolean;
   viewMenuOpen?: boolean;
+  sortMenuItems?: PopupMenuItem[];
+  viewMenuItems?: PopupMenuItem[];
+  onSortMenuClose?: () => void;
+  onViewMenuClose?: () => void;
 }) => {
   const { colors } = useTheme();
   
@@ -277,35 +285,63 @@ const BulkActionsBar = ({
         </Button>
       </div>
       <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <div ref={sortButtonRef} style={{ display: 'inline-block' }}>
-          <IconButton
-            icon="sort-remove"
-            variant="ghost"
-            size="medium"
-            aria-label="Sort"
-            menuIndicator={true}
-            selected={sortMenuOpen}
-            aria-expanded={sortMenuOpen}
-            onClick={(e) => {
-              e.stopPropagation();
-              onSortClick?.(e);
-            }}
-          />
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <div
+            ref={sortButtonRef}
+            style={{ display: 'inline-block' }}
+          >
+            <IconButton
+              icon="sort-remove"
+              variant="ghost"
+              size="medium"
+              aria-label="Sort"
+              menuIndicator={true}
+              selected={sortMenuOpen}
+              aria-expanded={sortMenuOpen}
+              onClick={() => {
+                onSortClick?.();
+              }}
+            />
+          </div>
+          {sortMenuItems && (
+            <PopupMenu
+              items={sortMenuItems}
+              open={sortMenuOpen || false}
+              onClose={onSortMenuClose || (() => {})}
+              anchorEl={sortButtonRef?.current || null}
+              align="right"
+              size="md"
+            />
+          )}
         </div>
-        <div ref={viewButtonRef} style={{ display: 'inline-block' }}>
-          <IconButton
-            icon="view"
-            variant="ghost"
-            size="medium"
-            aria-label="View"
-            menuIndicator={true}
-            selected={viewMenuOpen}
-            aria-expanded={viewMenuOpen}
-            onClick={(e) => {
-              e.stopPropagation();
-              onViewClick?.(e);
-            }}
-          />
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <div
+            ref={viewButtonRef}
+            style={{ display: 'inline-block' }}
+          >
+            <IconButton
+              icon="view"
+              variant="ghost"
+              size="medium"
+              aria-label="View"
+              menuIndicator={true}
+              selected={viewMenuOpen}
+              aria-expanded={viewMenuOpen}
+              onClick={() => {
+                onViewClick?.();
+              }}
+            />
+          </div>
+          {viewMenuItems && (
+            <PopupMenu
+              items={viewMenuItems}
+              open={viewMenuOpen || false}
+              onClose={onViewMenuClose || (() => {})}
+              anchorEl={viewButtonRef?.current || null}
+              align="right"
+              size="md"
+            />
+          )}
         </div>
         <IconButton
           icon="refresh"
@@ -467,6 +503,10 @@ const AdaptiveListWithBulkActions = () => {
         totalCount={documentData.length}
         sortMenuOpen={sortMenuOpen}
         viewMenuOpen={viewMenuOpen}
+        sortMenuItems={sortMenuItems}
+        viewMenuItems={viewMenuItems}
+        onSortMenuClose={() => setSortMenuOpen(false)}
+        onViewMenuClose={() => setViewMenuOpen(false)}
       />
       <AdaptiveList
         data={documentData}
@@ -479,22 +519,6 @@ const AdaptiveListWithBulkActions = () => {
         onViewTypeChange={setActiveView}
         selectable={true}
         showFileTypeIcon={true}
-      />
-      <PopupMenu
-        items={sortMenuItems}
-        open={sortMenuOpen}
-        onClose={() => setSortMenuOpen(false)}
-        anchorEl={sortButtonRef.current}
-        align="left"
-        size="md"
-      />
-      <PopupMenu
-        items={viewMenuItems}
-        open={viewMenuOpen}
-        onClose={() => setViewMenuOpen(false)}
-        anchorEl={viewButtonRef.current}
-        align="left"
-        size="md"
       />
     </div>
   );
