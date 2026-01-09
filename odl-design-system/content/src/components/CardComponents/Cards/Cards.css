@@ -127,6 +127,40 @@
   border-color: var(--cards-error);
 }
 
+/* OnDrag state */
+.cards-container--on-drag {
+  opacity: 1;
+  cursor: grabbing !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: var(--cards-z-dropdown);
+  background-color: var(--cards-primary, #3560C1) !important;
+  color: #ffffff !important;
+}
+
+.cards-container--on-drag .cards-container__title {
+  color: #ffffff !important;
+}
+
+.cards-container--on-drag .cards-container__subtitle {
+  color: #ffffff !important;
+}
+
+.cards-container--on-drag .cards-container__extension-size {
+  color: #ffffff !important;
+}
+
+.cards-container--on-drag .cards-container__top-text {
+  color: #ffffff !important;
+}
+
+.cards-container--on-drag .cards-container__bottom-text {
+  color: #ffffff !important;
+}
+
+.cards-container--on-drag .cards-container__subtitle2 {
+  color: #ffffff !important;
+}
+
 /* Checkbox styling */
 .cards-container__checkbox {
   display: flex;

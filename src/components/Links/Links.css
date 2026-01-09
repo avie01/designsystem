@@ -1,0 +1,268 @@
+/* Links - ODL Compliant CSS */
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-2);
+  font-family: var(--odl-font-family-sans);
+  font-size: var(--odl-font-size-base, 14px);
+  color: #32373f;
+  padding: var(--odl-spacing-2) var(--odl-spacing-3);
+}
+
+.links__separator {
+  color: var(--odl-text-tertiary);
+  margin: 0 var(--odl-spacing-2);
+}
+
+.links__separator-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--odl-text-tertiary);
+}
+
+.links__item {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-1);
+}
+
+.links__link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--odl-primary);
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  text-decoration: none;
+  transition: var(--odl-transition-fast);
+  position: relative;
+}
+
+.links__link:hover {
+  color: var(--odl-primary-hover);
+  text-decoration: underline;
+}
+
+.links__link:focus {
+  outline: 2px solid var(--odl-primary);
+  outline-offset: 2px;
+  border-radius: var(--odl-border-radius-sm);
+}
+
+.links__link:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.links__text {
+  color: var(--odl-text-secondary);
+}
+
+.links__text--current {
+  color: var(--odl-text-primary);
+}
+
+/* Icon support */
+.links__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* Size variations */
+.links--xs {
+  font-size: var(--odl-font-size-xs, 11px);
+}
+
+.links--xs .links__icon {
+  width: 12px;
+  height: 12px;
+}
+
+.links--sm {
+  font-size: var(--odl-font-size-sm, 12px);
+}
+
+.links--sm .links__icon {
+  width: 14px;
+  height: 14px;
+}
+
+.links--base {
+  font-size: var(--odl-font-size-base, 14px);
+}
+
+.links--base .links__icon {
+  width: 16px;
+  height: 16px;
+}
+
+.links--md {
+  font-size: var(--odl-font-size-md, 16px);
+}
+
+.links--md .links__icon {
+  width: 16px;
+  height: 16px;
+}
+
+.links--lg {
+  font-size: var(--odl-font-size-lg, 18px);
+  gap: var(--odl-spacing-3);
+}
+
+.links--lg .links__icon {
+  width: 18px;
+  height: 18px;
+}
+
+.links--xl {
+  font-size: 20px;
+  gap: var(--odl-spacing-3);
+}
+
+.links--xl .links__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.links--2xl {
+  font-size: 24px;
+  gap: var(--odl-spacing-3);
+}
+
+.links--2xl .links__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.links--3xl {
+  font-size: 32px;
+  gap: var(--odl-spacing-4);
+}
+
+.links--3xl .links__icon {
+  width: 32px;
+  height: 32px;
+}
+
+.links--4xl {
+  font-size: 40px;
+  gap: var(--odl-spacing-4);
+}
+
+.links--4xl .links__icon {
+  width: 40px;
+  height: 40px;
+}
+
+/* Legacy size support */
+.links--small {
+  font-size: var(--odl-font-size-xs, 12px);
+}
+
+.links--small .links__icon {
+  width: 14px;
+  height: 14px;
+}
+
+.links--large {
+  font-size: var(--odl-font-size-base, 16px);
+  gap: var(--odl-spacing-3);
+}
+
+.links--large .links__icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .links {
+    flex-wrap: wrap;
+  }
+}
+
+/* Accessibility */
+.links[aria-label] {
+  position: relative;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .links__link {
+    text-decoration: underline;
+  }
+
+  .links__link:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .links__link {
+    transition: none;
+  }
+}
+
+/* Color scheme variants */
+.links--light {
+  color: var(--odl-text-secondary);
+}
+
+.links--light .links__link {
+  color: var(--odl-primary);
+}
+
+.links--dark {
+  background: var(--odl-surface-dark);
+  color: var(--odl-text-primary-dark);
+  padding: var(--odl-spacing-2);
+  border-radius: var(--odl-border-radius-base);
+}
+
+.links--dark .links__link {
+  color: #4589FF;
+}
+
+.links--primary {
+  background: var(--odl-primary-light);
+  color: var(--odl-primary);
+  padding: var(--odl-spacing-2);
+  border-radius: var(--odl-border-radius-base);
+}
+
+.links--primary .links__link {
+  color: var(--odl-primary);
+}
+
+/* Link type variants */
+.links--default {
+  /* Default link styles */
+}
+
+.links--list {
+  /* List link specific styles */
+}
+
+.links--list .links__link {
+  font-weight: 600;
+}
+
+.links--list .links__link:hover {
+  text-decoration: none !important;
+}
+
+.links--public {
+  /* Public facing link specific styles */
+}
+
+.links--public .links__link {
+  color: var(--odl-primary, #3560C1) !important;
+}
+
+.links--public .links__text {
+  color: var(--odl-primary, #3560C1) !important;
+}

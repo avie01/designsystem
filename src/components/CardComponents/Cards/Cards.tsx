@@ -37,6 +37,8 @@ export interface CardsProps {
   loading?: boolean;
   /** Whether the card is selected (checkbox state) */
   selected?: boolean;
+  /** OnDrag state - indicates the card is being dragged */
+  onDrag?: boolean;
   /** Primary text content */
   title?: string;
   /** Secondary text content */
@@ -94,6 +96,7 @@ const Cards: React.FC<CardsProps> = ({
   error = false,
   loading = false,
   selected = false,
+  onDrag = false,
   title = "Title - h4 - Primary",
   subtitle = "Body - body2 - Secondary",
   subtitle2,
@@ -136,6 +139,10 @@ const Cards: React.FC<CardsProps> = ({
     } else if (loading) {
       backgroundColor = colors.paper || '#ffffff';
       textColor = colors.textDisabled;
+    } else if (onDrag) {
+      backgroundColor = colors.primaryMain || '#3560C1';
+      borderColor = colors.primaryMain || '#3560C1';
+      textColor = '#ffffff';
     } else if (selected) {
       backgroundColor = colors.selectedLight;
       borderColor = colors.primaryMain;
@@ -211,7 +218,7 @@ const Cards: React.FC<CardsProps> = ({
       display: 'flex',
       width: '100%',
       alignItems: type === 'build' || type === 'regworks' ? 'flex-start' : 'center',
-      cursor: loading || disabled ? 'not-allowed' : 'pointer',
+      cursor: loading || disabled ? 'not-allowed' : onDrag ? 'grabbing' : 'pointer',
       boxSizing: 'border-box' as const,
       ...style,
     };
@@ -225,6 +232,7 @@ const Cards: React.FC<CardsProps> = ({
     disabled && 'cards-container--disabled',
     error && 'cards-container--error',
     loading && 'cards-container--loading',
+    onDrag && 'cards-container--on-drag',
     showMetadata && 'cards-container--with-metadata',
     className
   );
@@ -304,7 +312,7 @@ const Cards: React.FC<CardsProps> = ({
       }}
     >
       {/* Checkbox */}
-      {type !== 'build' && type !== 'regworks' && (
+      {!onDrag && type !== 'build' && type !== 'regworks' && (
         <div className="cards-container__checkbox">
           {loading ? (
             <div className="ghost sizer"></div>
@@ -373,7 +381,7 @@ const Cards: React.FC<CardsProps> = ({
               <Icon
                 name="document"
                 size={24}
-                color={disabled ? colors.textDisabled : colors.textPrimary}
+                color={disabled ? colors.textDisabled : onDrag ? '#ffffff' : colors.textPrimary}
               />
             </div>
           ) : (
@@ -398,7 +406,7 @@ const Cards: React.FC<CardsProps> = ({
                 key={index}
                 name={iconName}
                 size={16}
-                color={disabled ? colors.textDisabled : colors.textSecondary}
+                color={disabled ? colors.textDisabled : onDrag ? '#ffffff' : colors.textSecondary}
               />
             ))
           )}
@@ -411,15 +419,15 @@ const Cards: React.FC<CardsProps> = ({
         {(type === 'build' || type === 'regworks') && topText && (
           <div 
             className="cards-container__top-text"
-            style={{
-              fontSize: '12px',
-              color: disabled ? colors.textDisabled : colors.textMuted,
-              lineHeight: '1.5',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              marginBottom: '2px'
-            }}
+              style={{
+                fontSize: '12px',
+                color: disabled ? colors.textDisabled : onDrag ? '#ffffff' : colors.textMuted,
+                lineHeight: '1.5',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                marginBottom: '2px'
+              }}
           >
             {topText}
           </div>
@@ -434,7 +442,7 @@ const Cards: React.FC<CardsProps> = ({
                 style={{ 
                   fontSize: type === 'compact' ? '12px' : '14px',
                   fontWeight: 600,
-                  color: disabled ? colors.textDisabled : colors.textPrimary,
+                  color: disabled ? colors.textDisabled : onDrag ? '#ffffff' : colors.textPrimary,
                   lineHeight: '1.5',
                   whiteSpace: 'nowrap',
                   flexShrink: 0
@@ -447,7 +455,7 @@ const Cards: React.FC<CardsProps> = ({
                   className="cards-container__extension-size"
                   style={{
                     fontSize: '12px',
-                    color: disabled ? colors.textDisabled : colors.textSecondary,
+                    color: disabled ? colors.textDisabled : onDrag ? '#ffffff' : colors.textSecondary,
                     lineHeight: '1.5',
                     whiteSpace: 'nowrap',
                     flexShrink: 0
@@ -464,7 +472,7 @@ const Cards: React.FC<CardsProps> = ({
             className="cards-container__subtitle"
             style={{
               fontSize: '14px',
-              color: disabled ? colors.textDisabled : colors.textSecondary,
+              color: disabled ? colors.textDisabled : onDrag ? '#ffffff' : colors.textSecondary,
               lineHeight: '1.5',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -484,7 +492,7 @@ const Cards: React.FC<CardsProps> = ({
             className="cards-container__subtitle2"
             style={{
               fontSize: '14px',
-              color: disabled ? colors.textDisabled : colors.textMuted,
+              color: disabled ? colors.textDisabled : onDrag ? '#ffffff' : colors.textMuted,
               lineHeight: '1.5',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -500,7 +508,7 @@ const Cards: React.FC<CardsProps> = ({
             className="cards-container__bottom-text"
             style={{
               fontSize: '12px',
-              color: disabled ? colors.textDisabled : colors.textMuted,
+              color: disabled ? colors.textDisabled : onDrag ? '#ffffff' : colors.textMuted,
               lineHeight: '1.5',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -514,7 +522,7 @@ const Cards: React.FC<CardsProps> = ({
       </div>
 
       {/* Tag - hidden on hover/active for specific card types */}
-      {tag && type !== 'workspace' && (
+      {!onDrag && tag && type !== 'workspace' && (
         <>
           {loading ? (
             <div 
@@ -556,7 +564,7 @@ const Cards: React.FC<CardsProps> = ({
       )}
 
       {/* Action Icons - shown on hover/active for specific card types */}
-      {(effectiveHoverState || selected) && (type === 'compact' || type === 'comfortable' || type === 'metadata') && (
+      {!onDrag && (effectiveHoverState || selected) && (type === 'compact' || type === 'comfortable' || type === 'metadata') && (
         <div className="cards-container__hover-actions" style={{ display: 'flex', gap: colors.spacing[1], alignSelf: 'center' }}>
           {loading ? (
             <>
@@ -602,48 +610,50 @@ const Cards: React.FC<CardsProps> = ({
       )}
 
       {/* Action Icons */}
-      <div className="cards-container__actions" style={{ alignSelf: type === 'build' ? 'flex-start' : 'center' }}>
-        {loading ? (
-          <>
-            {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && type !== 'regworks' && (
-              <div className="ghost sizer" style={{ width: '36px', height: '36px' }}></div>
-            )}
-            {showMenuIcon && (
-              <div className="ghost sizer" style={{ width: '36px', height: '36px' }}></div>
-            )}
-          </>
-        ) : (
-          <>
-            {/* Information Icon */}
-            {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && type !== 'regworks' && (
-              <div onClick={(e) => e.stopPropagation()}>
-                <IconButton
-                  icon="information"
-                  variant="ghost"
-                  size="medium"
-                  onClick={onInfoClick}
-                  disabled={disabled}
-                  aria-label={`More information about ${title}`}
-                />
-              </div>
-            )}
+      {!onDrag && (
+        <div className="cards-container__actions" style={{ alignSelf: type === 'build' ? 'flex-start' : 'center' }}>
+          {loading ? (
+            <>
+              {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && type !== 'regworks' && (
+                <div className="ghost sizer" style={{ width: '36px', height: '36px' }}></div>
+              )}
+              {showMenuIcon && (
+                <div className="ghost sizer" style={{ width: '36px', height: '36px' }}></div>
+              )}
+            </>
+          ) : (
+            <>
+              {/* Information Icon */}
+              {showInfoIcon && type !== 'user' && type !== 'workspace' && type !== 'build' && type !== 'regworks' && (
+                <div onClick={(e) => e.stopPropagation()}>
+                  <IconButton
+                    icon="information"
+                    variant="ghost"
+                    size="medium"
+                    onClick={onInfoClick}
+                    disabled={disabled}
+                    aria-label={`More information about ${title}`}
+                  />
+                </div>
+              )}
 
-            {/* Menu Icon */}
-            {showMenuIcon && (
-              <div onClick={(e) => e.stopPropagation()}>
-                <IconButton
-                  icon={type === 'workspace' ? "star" : "overflow-menu-vertical"}
-                  variant="ghost"
-                  size="medium"
-                  onClick={onMenuClick}
-                  disabled={disabled}
-                  aria-label={`Options for ${title}`}
-                />
-              </div>
-            )}
-          </>
-        )}
-      </div>
+              {/* Menu Icon */}
+              {showMenuIcon && (
+                <div onClick={(e) => e.stopPropagation()}>
+                  <IconButton
+                    icon={type === 'workspace' ? "star" : "overflow-menu-vertical"}
+                    variant="ghost"
+                    size="medium"
+                    onClick={onMenuClick}
+                    disabled={disabled}
+                    aria-label={`Options for ${title}`}
+                  />
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };

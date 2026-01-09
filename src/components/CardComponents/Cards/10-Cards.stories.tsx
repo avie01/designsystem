@@ -101,6 +101,14 @@ const meta: Meta<typeof Cards> = {
         defaultValue: { summary: 'false' },
       },
     },
+    onDrag: {
+      control: 'boolean',
+      description: 'OnDrag state - indicates the card is being dragged',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     title: {
       control: 'text',
       description: 'Primary text content',
@@ -256,6 +264,12 @@ export const AllStates: Story = {
               subtitle="This card is loading"
               tag="Loading"
               loading={true}
+            />
+            <Cards
+              title="OnDrag State"
+              subtitle="This card is being dragged"
+              tag="Dragging"
+              onDrag={true}
             />
             <Cards
               title="Selected + Disabled"
