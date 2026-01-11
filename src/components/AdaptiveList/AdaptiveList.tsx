@@ -171,7 +171,7 @@ function AdaptiveList<T extends Record<string, any>>({
 
     return (
       <>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0px' }}>
+        <div className="adaptive-list-container" style={{ display: 'flex', flexDirection: 'column', gap: '0px' }}>
           {data.map((item: any) => {
             const key = getRowKey ? getRowKey(item) : item.id.toString();
             const isSelected = selectedKeys?.includes(key) || false;

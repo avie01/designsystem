@@ -266,3 +266,7 @@
 .links--public .links__text {
   color: var(--odl-primary, #3560C1) !important;
 }
+
+.links--popup {
+  /* Popup link specific styles */
+}

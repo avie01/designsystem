@@ -71,10 +71,10 @@ const meta: Meta<typeof Links> = {
     },
     linkType: {
       control: 'select',
-      options: ['default', 'list', 'public'],
+      options: ['default', 'list', 'public', 'popup'],
       description: 'Link type variant',
       table: {
-        type: { summary: 'default | list | public' },
+        type: { summary: 'default | list | public | popup' },
         defaultValue: { summary: 'default' },
         category: 'Appearance',
       },
@@ -274,6 +274,14 @@ export const Types: Story = {
                 { label: 'Example', path: '/example' },
               ]}
               linkType="public"
+              onNavigate={(path) => console.log('Link clicked:', path)}
+            />
+            <Links
+              items={[
+                { label: 'Popup Link', path: '/' },
+                { label: 'Example', path: '/example' },
+              ]}
+              linkType="popup"
               onNavigate={(path) => console.log('Link clicked:', path)}
             />
           </div>
