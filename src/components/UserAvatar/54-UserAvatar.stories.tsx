@@ -7,7 +7,7 @@ const meta: Meta<typeof UserAvatar> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   decorators: [
     (Story) => (
       <div style={{ 

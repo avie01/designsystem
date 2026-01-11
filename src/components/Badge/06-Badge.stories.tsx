@@ -13,7 +13,7 @@ const meta: Meta<typeof Badge> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     value: {
       control: { type: 'text' },

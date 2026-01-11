@@ -83,7 +83,7 @@ const meta: Meta<typeof Breadcrumb> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     items: {
       description: 'Array of breadcrumb items with label, optional path, and optional icon',

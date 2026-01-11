@@ -16,6 +16,7 @@ const meta: Meta<typeof PopupMenu> = {
       },
     },
   },
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     open: {
       control: 'boolean',

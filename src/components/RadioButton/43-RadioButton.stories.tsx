@@ -13,7 +13,7 @@ const meta: Meta<typeof RadioButton> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     checked: { control: 'boolean' },
     label: { control: 'text' },

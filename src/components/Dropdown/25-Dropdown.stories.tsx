@@ -9,7 +9,7 @@ const meta: Meta<typeof Dropdown> = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   decorators: [
     (Story) => (
       <div style={{ width: '400px' }}>

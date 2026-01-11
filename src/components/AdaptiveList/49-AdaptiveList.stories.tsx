@@ -15,7 +15,7 @@ const meta: Meta<typeof AdaptiveList> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     columns: {
       control: false,

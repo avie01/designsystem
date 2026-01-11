@@ -44,8 +44,7 @@ const meta: Meta<typeof Checkbox> = {
       action: 'changed',
       description: 'Callback fired when the checkbox state changes'
     }
-  },
-  tags: ['autodocs']
+  }
 };
 
 export default meta;
