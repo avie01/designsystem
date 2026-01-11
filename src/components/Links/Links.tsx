@@ -94,8 +94,8 @@ export interface LinksProps {
   size?: 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
   /** Font weight: 400, 500, 600, 800 */
   fontWeight?: 400 | 500 | 600 | 800;
-  /** Link type variant: 'default' | 'list' | 'public' */
-  linkType?: 'default' | 'list' | 'public';
+  /** Link type variant: 'default' | 'list' | 'public' | 'popup' */
+  linkType?: 'default' | 'list' | 'public' | 'popup';
   /** Spacing variant: 'compact', 'comfortable', 'spacious' */
   spacing?: keyof typeof SPACING_VARIANTS;
   /** Color scheme: 'light', 'dark', 'primary' */

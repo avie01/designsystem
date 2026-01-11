@@ -382,6 +382,12 @@
 
 .cards-container--metadata {
   /* Use default padding and spacing - same as comfortable */
+  margin-bottom: 0 !important;
+}
+
+/* Metadata cards in AdaptiveList should have margin-bottom: 8px */
+.adaptive-list-container .cards-container--metadata {
+  margin-bottom: 8px !important;
 }
 
 .cards-container--metadata .cards-container__content {

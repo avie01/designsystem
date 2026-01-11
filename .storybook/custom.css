@@ -1,0 +1,27 @@
+/* Custom Storybook styles */
+/* Target the Storybook sidebar logo area with the specific class */
+[class*="css-1x5orkv"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+/* Target any sidebar brand/logo area */
+[class*="sidebar"] [class*="brand"],
+[class*="sidebar"] a[href*="storybook"],
+[data-testid="sidebar-header"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style the logo image - don't hide, just style */
+[class*="css-1x5orkv"] img,
+[class*="sidebar"] [class*="brand"] img,
+[class*="sidebar"] a[href*="storybook"] img {
+  width: 162px !important;
+  height: 55px !important;
+  object-fit: contain !important;
+  max-width: 100%;
+}
