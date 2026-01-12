@@ -15,6 +15,13 @@ const meta: Meta<typeof Switch> = {
     },
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    label: 'Toggle setting',
+    checked: false,
+    disabled: false,
+    error: false,
+    size: 'md',
+  },
   argTypes: {
     checked: {
       control: 'boolean',

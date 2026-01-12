@@ -14,6 +14,13 @@ const meta: Meta<typeof List> = {
     },
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    size: 'md',
+    selectable: true,
+    multiSelect: false,
+    hierarchical: false,
+    showExpandIcons: true,
+  },
   argTypes: {
     items: {
       control: false,

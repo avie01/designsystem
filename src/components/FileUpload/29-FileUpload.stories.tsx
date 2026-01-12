@@ -16,7 +16,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
 } satisfies Meta<typeof Modal>;
 
 export default meta;

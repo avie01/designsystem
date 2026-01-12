@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DashboardCards Example</title>
+  <style>
+    /* DashboardCards Styles */
+    
+    /* CSS Custom Properties for Theme */
+    :root {
+      --theme-paper: #FFFFFF;
+      --theme-background: #FFFFFF;
+      --theme-surface-hover: #F5F5F5;
+      --theme-selected-light: #E0F3FE;
+      --theme-border: #E0E0E0;
+      --theme-primary-main: #3560C1;
+      --theme-primary-hover: #2A4FA3;
+      --theme-text-primary: #161616;
+      --theme-text-secondary: #525252;
+      --theme-text-muted: #8D8D8D;
+      --theme-grey-300: #F5F5F5;
+      --theme-grey-400: #E8E8E8;
+      
+      /* Typography */
+      --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+      --font-size-base: 14px;
+      --font-size-md: 16px;
+      --font-weight-semibold: 600;
+      --line-height-tight: 1.2;
+      --line-height-normal: 1.5;
+      
+      /* Spacing */
+      --spacing-1: 4px;
+      --spacing-2: 8px;
+      --spacing-3: 12px;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: var(--font-family-sans);
+      padding: 24px;
+      background-color: #F4F4F4;
+    }
+    
+    .dashboard-card {
+      display: flex;
+      width: 431.5px;
+      height: 180px;
+      flex-direction: column;
+      align-items: flex-start;
+      border-radius: 8px;
+      border: 1px solid var(--theme-border);
+      background-color: var(--theme-background);
+      padding: 12px;
+      transition: all 0.2s ease-in-out;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+      font-family: var(--font-family-sans);
+    }
+    
+    .dashboard-card:hover {
+      background-color: var(--theme-surface-hover);
+    }
+    
+    .dashboard-card:active {
+      border-color: var(--theme-primary-main);
+      background-color: var(--theme-selected-light);
+    }
+    
+    .dashboard-card.clickable {
+      cursor: pointer;
+    }
+    
+    .dashboard-card__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-3);
+      width: 100%;
+    }
+    
+    .dashboard-card__icon {
+      width: 36px;
+      height: 36px;
+      background-color: #FF9800;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+    }
+    
+    .dashboard-card__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+    
+    .dashboard-card__action-button {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--theme-text-secondary);
+      transition: background-color 0.2s ease-in-out;
+    }
+    
+    .dashboard-card__action-button:hover {
+      background-color: var(--theme-surface-hover);
+    }
+    
+    .dashboard-card__content {
+      margin-bottom: var(--spacing-2);
+      flex: 1;
+    }
+    
+    .dashboard-card__value {
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-semibold);
+      color: var(--theme-text-primary);
+      line-height: var(--line-height-tight);
+      margin-bottom: 4px;
+      transition: color 0.2s ease-in-out;
+      cursor: pointer;
+    }
+    
+    .dashboard-card__value:hover {
+      color: var(--theme-primary-hover);
+    }
+    
+    .dashboard-card__subtitle {
+      font-size: var(--font-size-base);
+      color: var(--theme-text-secondary);
+      line-height: var(--line-height-normal);
+    }
+    
+    .dashboard-card__footer {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      font-size: var(--font-size-base);
+      color: var(--theme-text-muted);
+      line-height: var(--line-height-normal);
+    }
+    
+    /* Variant: Compact */
+    .dashboard-card--compact .dashboard-card__header {
+      margin-bottom: var(--spacing-2);
+    }
+    
+    .dashboard-card--compact .dashboard-card__content {
+      margin-bottom: var(--spacing-2);
+    }
+    
+    /* Variant: Detailed */
+    .dashboard-card--detailed .dashboard-card__content {
+      margin-bottom: var(--spacing-3);
+    }
+    
+    /* Loading State */
+    .dashboard-card--loading {
+      position: relative;
+      overflow: hidden;
+      pointer-events: none;
+      background: var(--theme-paper);
+    }
+    
+    .dashboard-card--loading::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.8) 50%,
+        transparent 100%
+      );
+      animation: dashboard-shimmer 1.5s ease-in-out infinite;
+      z-index: 2;
+    }
+    
+    .dashboard-card--loading > * {
+      position: relative;
+      z-index: 1;
+    }
+    
+    @keyframes dashboard-shimmer {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+    
+    .dashboard-card--loading .ghost.sizer {
+      background: linear-gradient(
+        90deg,
+        var(--theme-grey-300) 0%,
+        var(--theme-grey-400) 50%,
+        var(--theme-grey-300) 100%
+      );
+      background-size: 200% 100%;
+      animation: dashboard-shimmer 1.5s ease-in-out infinite;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    
+    /* Example Container */
+    .example-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .example-section {
+      margin-bottom: 32px;
+    }
+    
+    .example-section h4 {
+      margin-bottom: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--theme-text-primary);
+    }
+  </style>
+</head>
+<body>
+  <h1>DashboardCards Examples</h1>
+  
+  <!-- Default Card Example -->
+  <div class="example-section">
+    <h4>Default Card</h4>
+    <div class="example-container">
+      <div class="dashboard-card">
+        <div class="dashboard-card__header">
+          <div class="dashboard-card__icon">📁</div>
+          <div class="dashboard-card__actions">
+            <button class="dashboard-card__action-button" aria-label="More options">⋯</button>
+          </div>
+        </div>
+        <div class="dashboard-card__content">
+          <div class="dashboard-card__value">Security Operations Center</div>
+          <div class="dashboard-card__subtitle">Centralised monitoring and management of security events, threat detection, and incident response.</div>
+        </div>
+        <div class="dashboard-card__footer">
+          fAF477726 • Modified on 10 Feb 2026 by Andrew Miralles
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- All Variants Example -->
+  <div class="example-section">
+    <h4>All Variants</h4>
+    <div class="example-container">
+      <!-- Default Variant -->
+      <div class="dashboard-card">
+        <div class="dashboard-card__header">
+          <div class="dashboard-card__icon">📁</div>
+          <div class="dashboard-card__actions">
+            <button class="dashboard-card__action-button" aria-label="More options">⋯</button>
+          </div>
+        </div>
+        <div class="dashboard-card__content">
+          <div class="dashboard-card__value">Data Analytics Platform</div>
+          <div class="dashboard-card__subtitle">Advanced analytics and data visualization tools for comprehensive business intelligence and reporting capabilities.</div>
+        </div>
+        <div class="dashboard-card__footer">
+          fAF477726 • Modified on 15 Mar 2026 by John Stevens
+        </div>
+      </div>
+      
+      <!-- Compact Variant -->
+      <div class="dashboard-card dashboard-card--compact">
+        <div class="dashboard-card__header">
+          <div class="dashboard-card__icon">📁</div>
+          <div class="dashboard-card__actions">
+            <button class="dashboard-card__action-button" aria-label="More options">⋯</button>
+          </div>
+        </div>
+        <div class="dashboard-card__content">
+          <div class="dashboard-card__value">Customer Portal</div>
+          <div class="dashboard-card__subtitle">Self-service customer interface providing account management, support tickets, and service requests.</div>
+        </div>
+        <div class="dashboard-card__footer">
+          fAF477726 • Modified on 22 Jan 2026 by Maria Garcia
+        </div>
+      </div>
+      
+      <!-- Detailed Variant -->
+      <div class="dashboard-card dashboard-card--detailed">
+        <div class="dashboard-card__header">
+          <div class="dashboard-card__icon">📁</div>
+          <div class="dashboard-card__actions">
+            <button class="dashboard-card__action-button" aria-label="More options">⋯</button>
+          </div>
+        </div>
+        <div class="dashboard-card__content">
+          <div class="dashboard-card__value">Compliance Management</div>
+          <div class="dashboard-card__subtitle">Regulatory compliance tracking and audit management system for enterprise governance requirements.</div>
+        </div>
+        <div class="dashboard-card__footer">
+          fAF477726 • Modified on 08 Feb 2026 by James Wilson
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- With Actions Example -->
+  <div class="example-section">
+    <h4>With Actions</h4>
+    <div class="example-container">
+      <div class="dashboard-card">
+        <div class="dashboard-card__header">
+          <div class="dashboard-card__icon">📁</div>
+          <div class="dashboard-card__actions">
+            <button class="dashboard-card__action-button" aria-label="More options">⋯</button>
+            <button class="dashboard-card__action-button" aria-label="View">👁</button>
+            <button class="dashboard-card__action-button" aria-label="Download">⬇</button>
+          </div>
+        </div>
+        <div class="dashboard-card__content">
+          <div class="dashboard-card__value">Inventory Management System</div>
+          <div class="dashboard-card__subtitle">Real-time inventory tracking with automated reordering, supplier management, and stock level optimization.</div>
+        </div>
+        <div class="dashboard-card__footer">
+          fAF477726 • Modified on 18 Mar 2026 by Alex Johnson
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Clickable Card Example -->
+  <div class="example-section">
+    <h4>Clickable Cards</h4>
+    <div class="example-container">
+      <div class="dashboard-card clickable" onclick="alert('Card clicked!')">
+        <div class="dashboard-card__header">
+          <div class="dashboard-card__icon">📁</div>
+          <div class="dashboard-card__actions">
+            <button class="dashboard-card__action-button" aria-label="More options">⋯</button>
+          </div>
+        </div>
+        <div class="dashboard-card__content">
+          <div class="dashboard-card__value">Financial Analytics Suite</div>
+          <div class="dashboard-card__subtitle">Advanced financial reporting and analytics platform with real-time budget tracking and forecasting tools.</div>
+        </div>
+        <div class="dashboard-card__footer">
+          fAF477726 • Modified on 30 Mar 2026 by Thomas Anderson
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -14,7 +14,11 @@ const meta: Meta<typeof Links> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
+  args: {
+    separatorStyle: 'chevron',
+    size: 'default',
+  },
   argTypes: {
     items: {
       description: 'Array of link items with label and optional path',

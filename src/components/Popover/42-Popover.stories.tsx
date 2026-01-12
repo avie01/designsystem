@@ -61,6 +61,10 @@ const meta: Meta<typeof Popover> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  args: {
+    position: 'bottom',
+    align: 'start',
+  },
   argTypes: {
     trigger: {
       control: 'select',

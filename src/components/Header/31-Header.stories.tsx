@@ -8,7 +8,14 @@ const meta: Meta<typeof Header> = {
   parameters: {
     layout: 'fullscreen',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
+  args: {
+    variant: 'build',
+    userName: 'John Doe',
+    userRole: 'Administrator',
+    notifications: 3,
+    showSearch: true,
+  },
   argTypes: {
     variant: {
       control: 'select',

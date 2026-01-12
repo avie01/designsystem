@@ -14,6 +14,14 @@ const meta: Meta<typeof Checkbox> = {
     }
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    label: 'Checkbox label',
+    checked: false,
+    disabled: false,
+    indeterminate: false,
+    error: false,
+    size: 'md',
+  },
   argTypes: {
     size: {
       control: { type: 'select' },
@@ -44,8 +52,7 @@ const meta: Meta<typeof Checkbox> = {
       action: 'changed',
       description: 'Callback fired when the checkbox state changes'
     }
-  },
-  tags: ['autodocs']
+  }
 };
 
 export default meta;

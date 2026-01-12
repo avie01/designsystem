@@ -29,7 +29,7 @@ const meta: Meta<typeof DashboardCards> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     title: {
       control: 'text',

@@ -13,7 +13,7 @@ const meta: Meta<typeof MillerColumns> = {
       }
     }
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     data: {
       control: false,

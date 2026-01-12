@@ -12,7 +12,7 @@ const meta: Meta<typeof TreeNavigation> = {
       }
     }
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     title: {
       control: 'text',

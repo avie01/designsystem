@@ -13,7 +13,7 @@ const meta: Meta<typeof FileType> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
   argTypes: {
     type: {
       control: { type: 'select' },

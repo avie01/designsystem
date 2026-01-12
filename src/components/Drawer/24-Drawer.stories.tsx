@@ -15,6 +15,14 @@ const meta: Meta<typeof Drawer> = {
     },
   },
   tags: ['autodocs'],
+  args: {
+    position: 'right',
+    size: 'medium',
+    overlay: true,
+    closeOnEscape: true,
+    closeOnBackdropClick: true,
+    disabled: false,
+  },
   argTypes: {
     position: {
       control: 'select',

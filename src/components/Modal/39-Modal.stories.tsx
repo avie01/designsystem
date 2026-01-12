@@ -9,7 +9,12 @@ const meta: Meta<typeof Modal> = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'Ready for dev'],
+  args: {
+    isOpen: false,
+    title: 'Modal Title',
+    size: 'medium',
+  },
   argTypes: {
     isOpen: {
       control: 'boolean',
