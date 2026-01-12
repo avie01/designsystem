@@ -163,7 +163,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
       backgroundColor,
       color: disabled ? colors.textDisabled : colors.textPrimary,
       ...spacing[size],
-      borderRadius: variant === 'ai-suggestion' ? '0' : '2px',
+      borderRadius: variant === 'ai-suggestion' ? '8px' : '2px',
       marginBottom: colors.spacing[3],
       transition: 'all 0.2s ease',
       fontFamily: '"Noto Sans", sans-serif',

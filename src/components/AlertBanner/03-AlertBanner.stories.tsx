@@ -172,7 +172,7 @@ export const Dismissible: Story = {
   },
 };
 
-// AI Suggestion
+// AI Suggestion with Animated Gradient Border
 export const AISuggestion: Story = {
   name: '06 AI Suggestion',
   args: {
@@ -181,6 +181,33 @@ export const AISuggestion: Story = {
     children: "We've curated these suggestions based on your preferences and browsing history.",
     dismissible: true,
     visible: true,
+    className: 'alert-banner--gradient-persist',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'AI Suggestion variant features a premium animated gradient border that rotates through aurora colors (purple, blue, cyan, green, yellow, orange, pink). By default, the border effect fades out after 4 seconds. Use `alert-banner--gradient-persist` class to keep it visible.',
+      },
+    },
+  },
+};
+
+// AI Suggestion with Auto-Fade (Default Behavior)
+export const AISuggestionWithFade: Story = {
+  name: '06b AI Suggestion (Auto-Fade)',
+  args: {
+    variant: 'ai-suggestion',
+    title: 'AI Insight',
+    children: 'This gradient border will smoothly fade out after 4 seconds, creating a subtle attention-grabbing effect when the alert first appears.',
+    dismissible: true,
+    visible: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Default AI Suggestion behavior - the animated gradient border fades out after 4 seconds. Refresh the page or toggle visibility to see the effect again.',
+      },
+    },
   },
 };
 
