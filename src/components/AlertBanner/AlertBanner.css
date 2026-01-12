@@ -34,18 +34,52 @@
 }
 
 .alert-banner--ai-suggestion {
+  --gradient-border-width: 2px;
+  --gradient-animation-duration: 3s;
+  --gradient-fade-delay: 4s;
+  --gradient-fade-duration: 1s;
+
+  position: relative;
   background-color: #F9FDF9;
   color: var(--odl-text-primary);
-  border: 2px solid;
-  border-image-slice: 1;
-  border-radius: 0;
-  animation: electricFlow 2.5s linear infinite;
-  border-image-source: linear-gradient(330deg, #77BC4A 0.86%, #5DA10C 50%, #549809 75.55%, #488C07 99.14%);
+  border: none;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+/* Animated gradient border using pseudo-element */
+.alert-banner--ai-suggestion::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--gradient-border-width) * -1);
+  border-radius: 10px;
+  padding: var(--gradient-border-width);
+  background: conic-gradient(
+    from var(--gradient-angle, 143deg),
+    #067BD6,
+    #13ABA7,
+    #609F1E,
+    #f9fdf9,
+    #609F1E,
+    #13ABA7,
+    #067BD6
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation:
+    aiGradientRotate var(--gradient-animation-duration) linear infinite,
+    aiGradientFadeOut var(--gradient-fade-duration) ease-out var(--gradient-fade-delay) forwards;
+  z-index: -1;
 }
 
 .alert-banner--ai-suggestion .alert-banner__message {
   font-style: italic;
-  /* Color is set dynamically via inline styles for theme support */
 }
 
 /* Dark mode override for AI Suggestion */
@@ -54,22 +88,46 @@
   background-color: #03260B;
 }
 
-@keyframes electricFlow {
+/* Keyframes for rotating gradient */
+@keyframes aiGradientRotate {
   0% {
-    border-image-source: linear-gradient(330deg, #77BC4A 0.86%, #5DA10C 50%, #549809 75.55%, #488C07 99.14%);
-  }
-  25% {
-    border-image-source: linear-gradient(330deg, #5DA10C 0.86%, #549809 50%, #488C07 75.55%, #77BC4A 99.14%);
-  }
-  50% {
-    border-image-source: linear-gradient(330deg, #549809 0.86%, #488C07 50%, #77BC4A 75.55%, #5DA10C 99.14%);
-  }
-  75% {
-    border-image-source: linear-gradient(330deg, #488C07 0.86%, #77BC4A 50%, #5DA10C 75.55%, #549809 99.14%);
+    --gradient-angle: 0deg;
   }
   100% {
-    border-image-source: linear-gradient(330deg, #77BC4A 0.86%, #5DA10C 50%, #549809 75.55%, #488C07 99.14%);
+    --gradient-angle: 360deg;
   }
+}
+
+/* Keyframes for border fade out */
+@keyframes aiGradientFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Register custom property for animation */
+@property --gradient-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Modifier to keep gradient visible (no fade out) */
+.alert-banner--ai-suggestion.alert-banner--gradient-persist::before {
+  animation: aiGradientRotate var(--gradient-animation-duration) linear infinite;
+}
+
+/* Modifier for faster fade (2 second delay) */
+.alert-banner--ai-suggestion.alert-banner--gradient-fast-fade {
+  --gradient-fade-delay: 2s;
+}
+
+/* Modifier for slower fade (6 second delay) */
+.alert-banner--ai-suggestion.alert-banner--gradient-slow-fade {
+  --gradient-fade-delay: 6s;
 }
 
 /* Size variants */
@@ -230,13 +288,19 @@
   .alert-banner {
     transition: none;
   }
-  
+
   .alert-banner__close-button {
     transition: none;
   }
-  
+
   .alert-banner--hidden,
   .alert-banner--visible {
     transform: none;
+  }
+
+  /* Disable AI gradient animations for reduced motion */
+  .alert-banner--ai-suggestion::before {
+    animation: none;
+    opacity: 1;
   }
 }
