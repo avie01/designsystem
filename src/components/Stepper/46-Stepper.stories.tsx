@@ -10,6 +10,14 @@ const meta: Meta<typeof Stepper> = {
     layout: 'padded',
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    orientation: 'horizontal',
+    size: 'medium',
+    showDescription: true,
+    disabled: false,
+    compact: false,
+    expandedContent: false,
+  },
   argTypes: {
     steps: {
       control: false,

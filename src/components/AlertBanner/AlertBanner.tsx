@@ -82,6 +82,9 @@ const AlertBanner: React.FC<AlertBannerProps> = ({
   // Update visibility when prop changes
   useEffect(() => {
     setIsVisible(visible);
+    if (visible) {
+      setIsDismissed(false);
+    }
   }, [visible]);
 
   // Get variant-specific colors from theme

@@ -14,6 +14,14 @@ const meta: Meta<typeof Chip> = {
     },
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    label: 'Chip Label',
+    variant: 'blue',
+    size: 'md',
+    clickable: false,
+    disabled: false,
+    toggle: false,
+  },
   argTypes: {
     label: {
       control: 'text',

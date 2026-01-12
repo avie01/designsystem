@@ -9,6 +9,15 @@ const meta: Meta<typeof Accordion> = {
     layout: 'padded',
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    allowMultiple: true,
+    nested: false,
+    showIcons: false,
+    variant: 'default',
+    size: 'medium',
+    color: 'primary',
+    expandPosition: 'right',
+  },
   argTypes: {
     items: {
       control: false,
@@ -117,7 +126,14 @@ export const SingleExpand: Story = {
 };
 
 export const WithoutIcons: Story = {
+  args: {
+    allowMultiple: true,
+    nested: true,
+    showIcons: true
+  },
+
   name: '03 Without Icons',
+
   render: () => (
     <Accordion
       items={[
@@ -141,7 +157,7 @@ export const WithoutIcons: Story = {
       showIcons={false}
       variant="default"
     />
-  ),
+  )
 };
 
 export const BorderedVariant: Story = {

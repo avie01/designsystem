@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import AlertBanner from './AlertBanner';
+import Button from '../Button/Button';
 
 const meta: Meta<typeof AlertBanner> = {
   title: 'Design System/Components/AlertBanner',
@@ -9,6 +10,14 @@ const meta: Meta<typeof AlertBanner> = {
     layout: 'padded',
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    variant: 'info',
+    visible: true,
+    dismissible: false,
+    disabled: false,
+    showCloseButton: true,
+    size: 'medium',
+  },
   argTypes: {
     variant: {
       control: 'select',
@@ -19,6 +28,15 @@ const meta: Meta<typeof AlertBanner> = {
         defaultValue: { summary: 'info' },
       },
     },
+    size: {
+      control: 'select',
+      options: ['small', 'medium', 'large'],
+      description: 'Component size',
+      table: {
+        type: { summary: '"small" | "medium" | "large"' },
+        defaultValue: { summary: 'medium' },
+      },
+    },
     title: {
       control: 'text',
       description: 'Alert title text',
@@ -27,7 +45,7 @@ const meta: Meta<typeof AlertBanner> = {
       },
     },
     children: {
-      control: false,
+      control: 'text',
       description: 'Alert message content',
       table: {
         type: { summary: 'React.ReactNode' },
@@ -49,7 +67,16 @@ const meta: Meta<typeof AlertBanner> = {
         defaultValue: { summary: 'false' },
       },
     },
+    disabled: {
+      control: 'boolean',
+      description: 'Whether the alert is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     onDismiss: {
+      action: 'dismissed',
       description: 'Callback when alert is dismissed',
       table: {
         type: { summary: '() => void' },
@@ -76,6 +103,13 @@ const meta: Meta<typeof AlertBanner> = {
       table: {
         disable: true,
         type: { summary: 'string' },
+      },
+    },
+    actions: {
+      control: false,
+      description: 'Action buttons displayed below the message',
+      table: {
+        type: { summary: 'React.ReactNode' },
       },
     },
   },
@@ -148,4 +182,58 @@ export const AISuggestion: Story = {
     dismissible: true,
     visible: true,
   },
+};
+
+// With Actions
+export const WithActions: Story = {
+  name: '07 With Actions',
+  args: {
+    variant: 'info',
+    title: 'Update Available',
+    children: 'A new version is available. Would you like to update now or schedule for later?',
+    dismissible: true,
+    visible: true,
+  },
+  render: (args) => (
+    <AlertBanner
+      {...args}
+      actions={
+        <>
+          <Button variant="secondary" size="medium">
+            Update Now
+          </Button>
+          <Button variant="secondary" size="medium">
+            Remind Me Later
+          </Button>
+        </>
+      }
+    />
+  ),
+};
+
+// With Actions - Warning
+export const WithActionsWarning: Story = {
+  name: '08 With Actions Warning',
+  args: {
+    variant: 'warning',
+    title: 'Session Expiring',
+    children: 'Your session will expire in 5 minutes. Save your work to avoid losing any changes.',
+    dismissible: true,
+    visible: true,
+  },
+  render: (args) => (
+    <AlertBanner
+      {...args}
+      actions={
+        <>
+          <Button variant="secondary" size="medium">
+            Extend Session
+          </Button>
+          <Button variant="secondary" size="medium">
+            Save & Logout
+          </Button>
+        </>
+      }
+    />
+  ),
 };

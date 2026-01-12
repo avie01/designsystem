@@ -14,6 +14,10 @@ const meta: Meta<typeof Badge> = {
     },
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    value: 12,
+    variant: 'blue-dark',
+  },
   argTypes: {
     value: {
       control: { type: 'text' },

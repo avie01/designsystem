@@ -16,6 +16,15 @@ const meta: Meta<typeof Input> = {
       </div>
     ),
   ],
+  args: {
+    label: 'Label',
+    placeholder: 'Enter text...',
+    type: 'text',
+    size: 'md',
+    disabled: false,
+    error: false,
+    required: false,
+  },
   argTypes: {
     label: {
       control: 'text',

@@ -17,6 +17,14 @@ const meta: Meta<typeof IconButton> = {
     },
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    icon: 'add',
+    variant: 'primary',
+    size: 'medium',
+    disabled: false,
+    loading: false,
+    'aria-label': 'Add item',
+  },
   argTypes: {
     icon: {
       control: 'text',

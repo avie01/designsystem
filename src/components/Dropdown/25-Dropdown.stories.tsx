@@ -17,6 +17,15 @@ const meta: Meta<typeof Dropdown> = {
       </div>
     ),
   ],
+  args: {
+    label: 'Select Option',
+    placeholder: 'Choose an option',
+    searchable: false,
+    multiple: false,
+    required: false,
+    disabled: false,
+    error: false,
+  },
   argTypes: {
     label: {
       control: 'text',

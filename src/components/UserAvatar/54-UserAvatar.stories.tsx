@@ -10,8 +10,8 @@ const meta: Meta<typeof UserAvatar> = {
   tags: ['autodocs', 'Ready for dev'],
   decorators: [
     (Story) => (
-      <div style={{ 
-        minHeight: '300px', 
+      <div style={{
+        minHeight: '300px',
         padding: '100px',
         display: 'flex',
         alignItems: 'center',
@@ -22,6 +22,10 @@ const meta: Meta<typeof UserAvatar> = {
       </div>
     ),
   ],
+  args: {
+    size: 'md',
+    showPopup: true,
+  },
   argTypes: {
     size: {
       control: { type: 'select' },

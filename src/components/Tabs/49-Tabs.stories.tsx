@@ -30,6 +30,11 @@ const meta: Meta<typeof Tabs> = {
     },
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    variant: 'default',
+    showContent: true,
+    fullWidth: false,
+  },
   argTypes: {
     variant: {
       control: 'select',

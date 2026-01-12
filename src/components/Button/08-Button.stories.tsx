@@ -43,7 +43,21 @@ const meta: Meta<typeof Button> = {
     },
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    children: 'Button',
+    variant: 'primary',
+    size: 'medium',
+    disabled: false,
+    loading: false,
+  },
   argTypes: {
+    children: {
+      control: 'text',
+      description: 'Button text content',
+      table: {
+        type: { summary: 'React.ReactNode' },
+      },
+    },
     variant: {
       control: 'select',
       options: ['primary', 'secondary', 'tertiary', 'text', 'destructive', 'disabled'],

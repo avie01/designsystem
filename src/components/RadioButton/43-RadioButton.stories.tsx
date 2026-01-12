@@ -14,6 +14,13 @@ const meta: Meta<typeof RadioButton> = {
     },
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    label: 'Radio Button',
+    checked: false,
+    disabled: false,
+    error: false,
+    size: 'md',
+  },
   argTypes: {
     checked: { control: 'boolean' },
     label: { control: 'text' },

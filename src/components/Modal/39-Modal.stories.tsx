@@ -10,6 +10,11 @@ const meta: Meta<typeof Modal> = {
     layout: 'centered',
   },
   tags: ['autodocs', 'Ready for dev'],
+  args: {
+    isOpen: false,
+    title: 'Modal Title',
+    size: 'medium',
+  },
   argTypes: {
     isOpen: {
       control: 'boolean',
