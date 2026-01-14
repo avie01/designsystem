@@ -270,7 +270,7 @@ export const withTheme: Decorator = (Story, context) => {
       document.documentElement.setAttribute('data-theme', theme);
       document.documentElement.style.backgroundColor = colors.background;
       document.documentElement.style.color = colors.textPrimary;
-      
+
       // Set CSS custom properties for theme variables
       const root = document.documentElement;
       root.style.setProperty('--theme-primary-main', colors.primaryMain);
@@ -294,6 +294,50 @@ export const withTheme: Decorator = (Story, context) => {
       root.style.setProperty('--theme-text-disabled', colors.textDisabled);
       root.style.setProperty('--theme-text-secondary', colors.textSecondary);
       root.style.setProperty('--theme-text-inverse', colors.textInverse);
+
+      // Set ODL CSS custom properties for dynamic theming
+      if (theme === 'dark') {
+        root.style.setProperty('--odl-white', '#161616');
+        root.style.setProperty('--odl-background', '#161616');
+        root.style.setProperty('--odl-wave', '#262626');
+        root.style.setProperty('--odl-surface', '#262626');
+        root.style.setProperty('--odl-surface-hover', '#393939');
+        root.style.setProperty('--odl-border', '#525252');
+        root.style.setProperty('--odl-primary', '#78A9FF');
+        root.style.setProperty('--odl-primary-hover', '#A6C8FF');
+        root.style.setProperty('--odl-primary-light', '#002D5C');
+        root.style.setProperty('--odl-text-primary', '#F4F4F4');
+        root.style.setProperty('--odl-text-secondary', '#C6C6C6');
+        root.style.setProperty('--odl-text-tertiary', '#8D8D8D');
+        root.style.setProperty('--odl-text-disabled', '#525252');
+        root.style.setProperty('--odl-error', '#FF8389');
+        root.style.setProperty('--odl-warning', '#FFB784');
+        root.style.setProperty('--odl-success', '#42BE65');
+        root.style.setProperty('--odl-info', '#78A9FF');
+      } else if (theme === 'highContrast') {
+        root.style.setProperty('--odl-border', '#161616');
+        root.style.setProperty('--odl-primary', '#0043CE');
+        root.style.setProperty('--odl-text-tertiary', '#525252');
+      } else {
+        // Light mode - reset to defaults
+        root.style.setProperty('--odl-white', '#FFFFFF');
+        root.style.setProperty('--odl-background', '#FFFFFF');
+        root.style.setProperty('--odl-wave', '#EDF1F5');
+        root.style.setProperty('--odl-surface', '#F4F4F4');
+        root.style.setProperty('--odl-surface-hover', '#EBEBEB');
+        root.style.setProperty('--odl-border', '#E0E0E0');
+        root.style.setProperty('--odl-primary', '#3560C1');
+        root.style.setProperty('--odl-primary-hover', '#2A4FA3');
+        root.style.setProperty('--odl-primary-light', '#E0F3FE');
+        root.style.setProperty('--odl-text-primary', '#161616');
+        root.style.setProperty('--odl-text-secondary', '#525252');
+        root.style.setProperty('--odl-text-tertiary', '#8D8D8D');
+        root.style.setProperty('--odl-text-disabled', '#C6C6C6');
+        root.style.setProperty('--odl-error', '#DA1E28');
+        root.style.setProperty('--odl-warning', '#FF832B');
+        root.style.setProperty('--odl-success', '#24A148');
+        root.style.setProperty('--odl-info', '#0F62FE');
+      }
     }
   }, [theme, colors]);
 
