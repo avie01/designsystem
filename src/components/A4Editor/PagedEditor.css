@@ -1,0 +1,511 @@
+/* PagedEditor CSS - Using ODL Design System Tokens */
+/* Self-contained styles - no external dependencies (Tailwind, etc.) */
+
+/* ========================================
+   A4 Editor Wrapper
+   ======================================== */
+.a4-editor-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: var(--odl-wave, #EDF1F5);
+}
+
+/* ========================================
+   Toolbar Styles
+   ======================================== */
+.a4-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--odl-spacing-1, 4px);
+  padding: var(--odl-spacing-2, 8px) var(--odl-spacing-4, 16px);
+  background-color: var(--odl-white, #FFFFFF);
+  border-bottom: 1px solid var(--odl-border, #E0E0E0);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.a4-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-1, 4px);
+}
+
+.a4-toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--odl-border, #E0E0E0);
+  margin: 0 var(--odl-spacing-1, 4px);
+}
+
+.a4-toolbar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--odl-border-radius-base, 4px);
+  background-color: transparent;
+  color: var(--odl-text-primary, #161616);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.a4-toolbar-button:hover:not(:disabled) {
+  background-color: var(--odl-surface, #F4F4F4);
+}
+
+.a4-toolbar-button:active:not(:disabled) {
+  background-color: var(--odl-surface-hover, #EBEBEB);
+}
+
+.a4-toolbar-button.active {
+  background-color: var(--odl-primary-light, #E0F3FE);
+  color: var(--odl-primary, #3560C1);
+}
+
+.a4-toolbar-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.a4-toolbar-button:focus-visible {
+  outline: 2px solid var(--odl-primary, #3560C1);
+  outline-offset: 2px;
+}
+
+.a4-toolbar-label {
+  font-family: var(--odl-font-family-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif);
+  font-size: var(--odl-font-size-sm, 12px);
+  font-weight: var(--odl-font-weight-semibold, 600);
+  line-height: 1;
+}
+
+.a4-toolbar-spacer {
+  flex: 1;
+  min-width: var(--odl-spacing-4, 16px);
+}
+
+.a4-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-2, 8px);
+}
+
+/* Zoom dropdown styling */
+.a4-zoom-select {
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-2, 8px);
+  padding: var(--odl-spacing-1, 4px) var(--odl-spacing-3, 12px);
+  border: 1px solid var(--odl-border, #E0E0E0);
+  border-radius: var(--odl-border-radius-base, 4px);
+  background-color: var(--odl-white, #FFFFFF);
+  font-family: var(--odl-font-family-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif);
+  font-size: var(--odl-font-size-sm, 12px);
+  color: var(--odl-text-primary, #161616);
+  cursor: pointer;
+  min-width: 90px;
+  height: 32px;
+}
+
+.a4-zoom-select:hover {
+  background-color: var(--odl-surface, #F4F4F4);
+  border-color: var(--odl-text-tertiary, #8D8D8D);
+}
+
+.a4-zoom-select:focus {
+  outline: none;
+  border-color: var(--odl-primary, #3560C1);
+  box-shadow: 0 0 0 2px var(--odl-primary-light, #E0F3FE);
+}
+
+/* ========================================
+   Base Editor Content
+   ======================================== */
+
+/* Base editor content class */
+.a4-editor-content {
+  outline: none;
+  max-width: none;
+}
+
+/* Editor link styling */
+.editor-link {
+  color: var(--odl-primary, #3560C1);
+  text-decoration: underline;
+}
+
+.editor-link:hover {
+  color: var(--odl-primary-hover, #2A4FA3);
+}
+
+/* Editor image styling */
+.editor-image {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Loading spinner animation */
+@keyframes a4-editor-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.a4-editor-spinner {
+  animation: a4-editor-spin 1s linear infinite;
+}
+
+.a4-editor-loading-state {
+  pointer-events: none;
+}
+
+/* Wrapper that uses full available height */
+.a4-paged-editor-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0;
+  background-color: transparent;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  .a4-paged-editor-wrapper {
+    padding: var(--odl-spacing-5, 20px);
+    background-color: var(--odl-wave, #EDF1F5);
+  }
+}
+
+/* Main container for pages */
+.a4-paged-editor-container {
+  transform-origin: top center;
+  transition: transform var(--odl-transition-normal, 0.2s ease);
+  width: auto;
+  height: auto;
+}
+
+/* Continuous editor container */
+.a4-continuous-editor {
+  position: relative;
+}
+
+/* Page background styling */
+.a4-page-background {
+  position: relative;
+  margin: 0 auto;
+}
+
+/* Page separator */
+.a4-page-separator {
+  margin: 0 auto;
+}
+
+/* Page separator background - only on desktop */
+.a4-page-separator-bg {
+  background-color: transparent;
+}
+
+@media (min-width: 768px) {
+  .a4-page-separator-bg {
+    background-color: var(--odl-wave, #EDF1F5);
+  }
+}
+
+/* Editor content overlay */
+.a4-editor-content-overlay {
+  position: absolute;
+}
+
+/* Editor content styling for continuous overlay */
+.a4-editor-content-overlay .ProseMirror {
+  outline: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--odl-font-family-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif);
+  font-size: var(--odl-font-size-md, 16px);
+  line-height: var(--odl-line-height-relaxed, 1.75);
+  color: var(--odl-text-primary, #161616);
+  background: transparent;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Add page break spacing */
+.a4-editor-content-overlay .ProseMirror > * {
+  margin-bottom: 0.75em;
+}
+
+/* Ensure proper text formatting */
+.a4-editor-content-overlay .ProseMirror p {
+  margin: 0 0 1em 0;
+}
+
+.a4-editor-content-overlay .ProseMirror h1,
+.a4-editor-content-overlay .ProseMirror h2,
+.a4-editor-content-overlay .ProseMirror h3,
+.a4-editor-content-overlay .ProseMirror h4,
+.a4-editor-content-overlay .ProseMirror h5,
+.a4-editor-content-overlay .ProseMirror h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: var(--odl-font-weight-semibold, 600);
+  color: var(--odl-text-primary, #161616);
+}
+
+.a4-editor-content-overlay .ProseMirror h1 { font-size: 2em; }
+.a4-editor-content-overlay .ProseMirror h2 { font-size: 1.5em; }
+.a4-editor-content-overlay .ProseMirror h3 { font-size: 1.17em; }
+.a4-editor-content-overlay .ProseMirror h4 { font-size: 1em; }
+.a4-editor-content-overlay .ProseMirror h5 { font-size: 0.83em; }
+.a4-editor-content-overlay .ProseMirror h6 { font-size: 0.67em; }
+
+/* Lists */
+.a4-editor-content-overlay .ProseMirror ul,
+.a4-editor-content-overlay .ProseMirror ol {
+  padding-left: 2em;
+  margin: 0.5em 0 1em 0;
+  list-style-position: outside;
+}
+
+.a4-editor-content-overlay .ProseMirror ul {
+  list-style-type: disc;
+}
+
+.a4-editor-content-overlay .ProseMirror ol {
+  list-style-type: decimal;
+}
+
+.a4-editor-content-overlay .ProseMirror ul ul {
+  list-style-type: circle;
+}
+
+.a4-editor-content-overlay .ProseMirror ul ul ul {
+  list-style-type: square;
+}
+
+.a4-editor-content-overlay .ProseMirror li {
+  margin: 0.25em 0;
+  display: list-item;
+}
+
+.a4-editor-content-overlay .ProseMirror li p {
+  margin: 0;
+}
+
+/* Blockquotes */
+.a4-editor-content-overlay .ProseMirror blockquote {
+  border-left: var(--odl-border-width-thick, 4px) solid var(--odl-border, #E0E0E0);
+  padding-left: 1em;
+  margin: 1em 0;
+  font-style: italic;
+  color: var(--odl-text-secondary, #525252);
+}
+
+/* Code blocks */
+.a4-editor-content-overlay .ProseMirror pre {
+  background-color: var(--odl-surface, #F4F4F4);
+  border-radius: var(--odl-border-radius-base, 4px);
+  padding: 1em;
+  overflow-x: auto;
+  margin: 1em 0;
+  font-family: var(--odl-font-family-mono, 'SF Mono', Monaco, Consolas, monospace);
+}
+
+.a4-editor-content-overlay .ProseMirror code {
+  background-color: var(--odl-surface, #F4F4F4);
+  padding: var(--odl-spacing-1, 4px) var(--odl-spacing-2, 8px);
+  border-radius: var(--odl-border-radius-sm, 2px);
+  font-family: var(--odl-font-family-mono, 'SF Mono', Monaco, Consolas, monospace);
+  font-size: 0.9em;
+}
+
+/* Tables */
+.a4-editor-content-overlay .ProseMirror table {
+  border-collapse: collapse;
+  margin: 1em 0;
+  width: 100%;
+}
+
+.a4-editor-content-overlay .ProseMirror td,
+.a4-editor-content-overlay .ProseMirror th {
+  border: var(--odl-border-width-thin, 1px) solid var(--odl-border, #E0E0E0);
+  padding: var(--odl-spacing-2, 8px);
+  text-align: left;
+}
+
+.a4-editor-content-overlay .ProseMirror th {
+  background-color: var(--odl-surface, #F4F4F4);
+  font-weight: var(--odl-font-weight-semibold, 600);
+}
+
+/* Images */
+.a4-editor-content-overlay .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em 0;
+}
+
+/* Horizontal rules */
+.a4-editor-content-overlay .ProseMirror hr {
+  border: none;
+  border-top: var(--odl-border-width-thin, 1px) solid var(--odl-border, #E0E0E0);
+  margin: 2em 0;
+}
+
+/* Links */
+.a4-editor-content-overlay .ProseMirror a {
+  color: var(--odl-primary, #3560C1);
+  text-decoration: underline;
+}
+
+.a4-editor-content-overlay .ProseMirror a:hover {
+  color: var(--odl-primary-hover, #2A4FA3);
+}
+
+/* Text formatting */
+.a4-editor-content-overlay .ProseMirror strong {
+  font-weight: var(--odl-font-weight-semibold, 600);
+}
+
+.a4-editor-content-overlay .ProseMirror em {
+  font-style: italic;
+}
+
+.a4-editor-content-overlay .ProseMirror u {
+  text-decoration: underline;
+}
+
+.a4-editor-content-overlay .ProseMirror s {
+  text-decoration: line-through;
+}
+
+.a4-editor-content-overlay .ProseMirror sup {
+  vertical-align: super;
+  font-size: smaller;
+}
+
+.a4-editor-content-overlay .ProseMirror sub {
+  vertical-align: sub;
+  font-size: smaller;
+}
+
+/* Text alignment */
+.a4-editor-content-overlay .ProseMirror .has-text-align-left {
+  text-align: left;
+}
+
+.a4-editor-content-overlay .ProseMirror .has-text-align-center {
+  text-align: center;
+}
+
+.a4-editor-content-overlay .ProseMirror .has-text-align-right {
+  text-align: right;
+}
+
+/* Highlighted text */
+.a4-editor-content-overlay .ProseMirror mark {
+  background-color: var(--odl-warning-light, #FDEED3);
+  padding: 0.1em 0;
+}
+
+/* Placeholder text */
+.a4-editor-content-overlay .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--odl-text-tertiary, #8D8D8D);
+  pointer-events: none;
+  height: 0;
+}
+
+/* Hide placeholder when generating */
+.a4-editor-content-overlay.generating .ProseMirror p.is-editor-empty:first-child::before {
+  display: none;
+}
+
+/* AI assistance loading overlay */
+.a4-editor-content-overlay.ai-assisting .ProseMirror::selection,
+.a4-editor-content-overlay.ai-assisting .ProseMirror *::selection {
+  background-color: var(--odl-primary-light, #E0F3FE);
+  position: relative;
+}
+
+.a4-ai-loading-overlay {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  border: var(--odl-border-width-thin, 1px) solid var(--odl-primary-light, #E0F3FE);
+  border-radius: var(--odl-border-radius-base, 4px);
+  padding: var(--odl-spacing-2, 8px) var(--odl-spacing-3, 12px);
+  display: flex;
+  align-items: center;
+  gap: var(--odl-spacing-2, 8px);
+  font-size: var(--odl-font-size-base, 14px);
+  font-family: var(--odl-font-family-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif);
+  color: var(--odl-text-secondary, #525252);
+  box-shadow: var(--odl-shadow-medium, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+  z-index: var(--odl-z-index-tooltip, 1030);
+  pointer-events: none;
+}
+
+/* Selection styling */
+.a4-editor-content-overlay .ProseMirror::selection,
+.a4-editor-content-overlay .ProseMirror *::selection {
+  background-color: var(--odl-primary-light, #E0F3FE);
+}
+
+/* Focus styles */
+.a4-editor-content-overlay .ProseMirror:focus {
+  outline: none;
+}
+
+/* Page number styling */
+.a4-page-number {
+  position: absolute;
+  bottom: 10mm;
+  right: 25mm;
+  font-size: var(--odl-font-size-2xs, 10px);
+  font-family: var(--odl-font-family-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif);
+  color: var(--odl-text-tertiary, #8D8D8D);
+  user-select: none;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Print styles */
+@media print {
+  .a4-paged-editor-wrapper {
+    background-color: var(--odl-white, #FFFFFF);
+    padding: 0;
+  }
+
+  .a4-paged-editor-container {
+    gap: 0;
+  }
+
+  .a4-page {
+    box-shadow: none;
+    border: none;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .a4-page:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+}

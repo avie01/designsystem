@@ -1,0 +1,60 @@
+/* A4 page container */
+.a4-container {
+  position: relative;
+}
+
+/* A4 page styling */
+.a4-pages {
+  width: 210mm;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Editor content with padding */
+.a4-content {
+  padding: 25mm;
+  position: relative;
+}
+
+/* Visual page break indicator - a line with gap */
+.page-break-indicator {
+  position: absolute;
+  left: -24px;
+  right: -24px;
+  height: 24px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.page-break-indicator::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 24px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, #cbd5e1 0, #cbd5e1 2px, transparent 2px, transparent 4px);
+}
+
+.page-break-indicator::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 11px;
+  width: 24px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, #cbd5e1 0, #cbd5e1 2px, transparent 2px, transparent 4px);
+}
+
+.page-break-label {
+  position: absolute;
+  right: 25mm;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #EDF1F5;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: #64748b;
+  border-radius: 4px;
+}

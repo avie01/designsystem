@@ -157,6 +157,7 @@ export const carbonIconMapping: Record<string, string> = {
   'heart-filled': 'FavoriteFilled',
   'help': 'Help',
   'help-filled': 'HelpFilled',
+  'highlight': 'Highlight',
   'history': 'Time',
   'home': 'Home',
   
@@ -223,6 +224,7 @@ export const carbonIconMapping: Record<string, string> = {
   
   // Q
   'question': 'Help',
+  'quotes': 'Quotes',
   
   // R
   'radio-button': 'RadioButton',
@@ -283,6 +285,8 @@ export const carbonIconMapping: Record<string, string> = {
   'text-indent-more': 'TextIndentMore',
   'text-italic': 'TextItalic',
   'text-strikethrough': 'TextStrikethrough',
+  'text-subscript': 'TextSubscript',
+  'text-superscript': 'TextSuperscript',
   'text-underline': 'TextUnderline',
   'thumbs-down': 'ThumbsDown',
   'thumbs-up': 'ThumbsUp',

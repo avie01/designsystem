@@ -1,0 +1,75 @@
+/* A4 Document CSS - Using ODL Design System Tokens */
+
+/* A4 page container */
+.a4-container {
+  position: relative;
+}
+
+/* A4 page styling */
+.a4-pages {
+  width: 210mm;
+  background: var(--odl-white, #FFFFFF);
+  box-shadow: var(--odl-shadow-medium, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+  position: relative;
+}
+
+/* Editor content with padding */
+.a4-content {
+  padding: 25mm;
+  position: relative;
+}
+
+/* Visual page break indicator - a line with gap */
+.page-break-indicator {
+  position: absolute;
+  left: calc(-1 * var(--odl-spacing-6, 24px));
+  right: calc(-1 * var(--odl-spacing-6, 24px));
+  height: var(--odl-spacing-6, 24px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.page-break-indicator::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: var(--odl-spacing-6, 24px);
+  height: var(--odl-border-width-base, 2px);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--odl-border, #E0E0E0) 0,
+    var(--odl-border, #E0E0E0) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+.page-break-indicator::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 11px;
+  width: var(--odl-spacing-6, 24px);
+  height: var(--odl-border-width-base, 2px);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--odl-border, #E0E0E0) 0,
+    var(--odl-border, #E0E0E0) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+.page-break-label {
+  position: absolute;
+  right: 25mm;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--odl-wave, #EDF1F5);
+  padding: var(--odl-spacing-1, 4px) var(--odl-spacing-2, 8px);
+  font-size: var(--odl-font-size-xs, 11px);
+  font-family: var(--odl-font-family-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif);
+  color: var(--odl-text-secondary, #525252);
+  border-radius: var(--odl-border-radius-base, 4px);
+}
