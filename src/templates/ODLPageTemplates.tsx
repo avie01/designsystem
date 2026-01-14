@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import ODLTheme from '../styles/ODLTheme';
 
 // ODL Components
+import A4Editor from '../components/A4Editor/A4Editor';
 import Button from '../components/Button/ButtonTW';
 // Import Button with icon support for BulkActionsBar
 import ButtonComponent from '../components/Button/Button';
@@ -1897,6 +1898,123 @@ export const ODLAdaptiveListTemplate: React.FC = () => {
   );
 };
 
+// ============================================
+// EDITOR PAGE TEMPLATE
+// ============================================
+export const ODLEditorPageTemplate: React.FC = () => {
+  const [currentPath, setCurrentPath] = useState('/editor');
+  const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
+  const [isRightCollapsed, setIsRightCollapsed] = useState(true);
+  const [content, setContent] = useState(`
+    <h1>Document Title</h1>
+    <p>Start writing your document here. This editor provides a familiar word processor experience with automatic pagination.</p>
+    <h2>Getting Started</h2>
+    <p>Use the toolbar above to format your text, add headings, lists, and more. The document is displayed in A4 page format with proper margins.</p>
+  `);
+  const [zoom, setZoom] = useState(100);
+  const zoomOptions = [50, 75, 100, 125, 150, 175, 200];
+
+  // Left navigation menu items
+  const leftMenuItems = [
+    { id: 'dashboard', label: 'Dashboard', iconName: 'dashboard', path: '/dashboard', description: 'View your dashboard' },
+    { id: 'documents', label: 'Documents', iconName: 'document', path: '/documents', description: 'Manage documents' },
+    { id: 'editor', label: 'Editor', iconName: 'edit', path: '/editor', description: 'Document editor' },
+    { id: 'templates', label: 'Templates', iconName: 'template', path: '/templates', description: 'Document templates' },
+    { id: 'settings', label: 'Settings', iconName: 'settings', path: '/settings', description: 'System settings' },
+  ];
+
+  // Right navigation menu items
+  const rightMenuItems = [
+    { id: 'comments', label: 'Comments', iconName: 'chat', path: '/comments', description: 'Document comments' },
+    { id: 'history', label: 'History', iconName: 'time', path: '/history', description: 'Version history' },
+    { id: 'share', label: 'Share', iconName: 'share', path: '/share', description: 'Share document' },
+  ];
+
+  const ZoomDropdown = (
+    <select
+      className="a4-zoom-select"
+      value={zoom}
+      onChange={(e) => setZoom(Number(e.target.value))}
+      aria-label="Zoom level"
+    >
+      {zoomOptions.map((value) => (
+        <option key={value} value={value}>
+          {value}%
+        </option>
+      ))}
+    </select>
+  );
+
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100vh',
+      background: ODLTheme.colors.white
+    }}>
+      {/* Header */}
+      <Header variant="build" userName="John Doe" />
+
+      {/* Main Layout with Navigation Rails */}
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        {/* Left Navigation Rail */}
+        <div style={{
+          height: '100%',
+          borderRight: `1px solid ${ODLTheme.colors.border}`
+        }}>
+          <NavigationRail
+            menuItems={leftMenuItems}
+            currentPath={currentPath}
+            onNavigate={(path) => setCurrentPath(path)}
+            collapsed={isLeftCollapsed}
+            position="left"
+            theme="light"
+            showHelpIcon={true}
+            showCollapseToggle={true}
+            onCollapseToggle={setIsLeftCollapsed}
+            showTooltips={true}
+          />
+        </div>
+
+        {/* Main Content Area - A4Editor fills the space */}
+        <div style={{
+          flex: 1,
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          background: ODLTheme.colors.wave
+        }}>
+          <A4Editor
+            initialContent={content}
+            onUpdate={setContent}
+            zoom={zoom}
+            toolbarRight={ZoomDropdown}
+            placeholder="Start writing your document..."
+          />
+        </div>
+
+        {/* Right Navigation Rail */}
+        <div style={{
+          height: '100%',
+          borderLeft: `1px solid ${ODLTheme.colors.border}`
+        }}>
+          <NavigationRail
+            menuItems={rightMenuItems}
+            currentPath={currentPath}
+            onNavigate={(path) => setCurrentPath(path)}
+            collapsed={isRightCollapsed}
+            position="right"
+            theme="light"
+            showCollapseToggle={true}
+            onCollapseToggle={setIsRightCollapsed}
+            showTooltips={true}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Export all templates
 export default {
   ODLDashboardTemplate,
@@ -1906,4 +2024,5 @@ export default {
   ODLCardsGridTemplate,
   ODLAppShellTemplate,
   ODLAdaptiveListTemplate,
+  ODLEditorPageTemplate,
 };

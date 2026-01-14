@@ -7,6 +7,7 @@ import {
   ODLCardsGridTemplate,
   ODLAppShellTemplate,
   ODLAdaptiveListTemplate,
+  ODLEditorPageTemplate,
 } from './ODLPageTemplates';
 
 /**
@@ -46,6 +47,7 @@ A collection of page templates built **exclusively with ODL Design System compon
 | **Cards Grid** | Grid of project/item cards | Cards, Chip, Button |
 | **AdaptiveList** | Flexible data display with multiple view types | AdaptiveList, Button, Icon |
 | **App Shell** | Full app layout with navigation | NavigationRail, Breadcrumb |
+| **Editor** | A4 document editor with toolbar | A4Editor, NavigationRail |
 
 ### How to Use
 
@@ -273,10 +275,40 @@ This template provides the standard ODL application layout structure.
 };
 
 /**
+ * Editor page template with A4 document editor.
+ *
+ * **Components used:**
+ * - Header (Build variant)
+ * - NavigationRail (left & right)
+ * - A4Editor (TipTap-based document editor)
+ */
+export const EditorPage: Story = {
+  name: '08 Editor Page',
+  render: () => <ODLEditorPageTemplate />,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+A document editor page featuring:
+- **Header**: Build variant with user profile
+- **Left Navigation Rail**: Document-focused navigation
+- **A4Editor**: Full-featured TipTap editor with A4 page layout
+- **Toolbar**: Rich text formatting controls
+- **Zoom Control**: Adjustable zoom level in toolbar
+- **Right Navigation Rail**: Contextual tools (comments, history, share)
+
+Perfect for document creation, reports, letters, or any content that needs print-ready formatting.
+        `,
+      },
+    },
+  },
+};
+
+/**
  * View all ODL templates together for comparison.
  */
 export const AllTemplates: Story = {
-  name: '08 All Templates',
+  name: '09 All Templates',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '60px', padding: '20px', backgroundColor: '#f5f5f5' }}>
       <section>
@@ -339,6 +371,15 @@ export const AllTemplates: Story = {
         </h2>
         <div style={{ border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'hidden', height: '600px' }}>
           <ODLAppShellTemplate />
+        </div>
+      </section>
+
+      <section>
+        <h2 style={{ marginBottom: '20px', color: '#161616', fontSize: '24px', fontWeight: 600 }}>
+          8. Editor Page Template
+        </h2>
+        <div style={{ border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'hidden', height: '700px' }}>
+          <ODLEditorPageTemplate />
         </div>
       </section>
     </div>
