@@ -103,11 +103,19 @@ const meta: Meta<typeof ThumbnailCards> = {
         type: { summary: '(checked: boolean) => void' },
       },
     },
-    onIconClick: { 
+    onIconClick: {
       action: 'icon-clicked',
       description: 'Icon button click handler function',
       table: {
         type: { summary: '() => void' },
+      },
+    },
+    showCheckbox: {
+      control: 'boolean',
+      description: 'Whether to show the checkbox (default: true)',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
       },
     },
   },
@@ -372,8 +380,56 @@ export const WithHeaderControls: Story = {
   },
 };
 
+export const WithoutCheckbox: Story = {
+  name: '13 Without Checkbox',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>Without Checkbox Variant</h3>
+      <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>
+        Use <code>showCheckbox=false</code> to hide the checkbox for non-selectable cards.
+      </p>
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        <div style={{ textAlign: 'center' }}>
+          <ThumbnailCards
+            size="small"
+            title="Small (no checkbox)"
+            showCheckbox={false}
+            iconName="overflow-menu-vertical"
+            onIconClick={() => alert('Menu clicked!')}
+          />
+          <div style={{ fontSize: '12px', marginTop: '8px', color: '#666' }}>Small</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <ThumbnailCards
+            size="medium"
+            title="Medium (no checkbox)"
+            showCheckbox={false}
+            iconName="overflow-menu-vertical"
+            onIconClick={() => alert('Menu clicked!')}
+          />
+          <div style={{ fontSize: '12px', marginTop: '8px', color: '#666' }}>Medium</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <ThumbnailCards
+            size="large"
+            title="Large (no checkbox)"
+            showCheckbox={false}
+            iconName="overflow-menu-vertical"
+            onIconClick={() => alert('Menu clicked!')}
+          />
+          <div style={{ fontSize: '12px', marginTop: '8px', color: '#666' }}>Large</div>
+        </div>
+      </div>
+      <h4 style={{ margin: '16px 0 8px 0', fontSize: '16px', fontWeight: 600 }}>Loading State (no checkbox)</h4>
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        <ThumbnailCards size="large" title="Loading" showCheckbox={false} loading={true} />
+      </div>
+    </div>
+  ),
+};
+
 export const GridLayout: Story = {
-  name: '13 Grid Layout Example',
+  name: '14 Grid Layout Example',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>Grid Layout</h3>
