@@ -393,6 +393,7 @@ interface AppShellWrapperProps {
   pageSubtitle?: string;
   showBreadcrumb?: boolean;
   breadcrumbItems?: Array<{ label: string; path?: string }>;
+  headerVariant?: 'build' | 'connect' | 'keystone' | 'nexus' | 'regworks' | '3sixty' | 'keyplan' | 'trapeze';
 }
 
 export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
@@ -402,6 +403,7 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
   pageSubtitle,
   showBreadcrumb = true,
   breadcrumbItems,
+  headerVariant = 'build',
 }) => {
   const [currentPath, setCurrentPath] = useState(currentPage);
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
@@ -537,8 +539,8 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
       height: '100vh',
       background: ODLTheme.colors.white
     }}>
-      {/* Header - Build variant with user info */}
-      <Header variant="build" userName="John Doe" />
+      {/* Header */}
+      <Header variant={headerVariant} userName="John Doe" />
 
       {/* Main Layout with Navigation Rails */}
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
@@ -1773,7 +1775,7 @@ export const ODLAppShellTemplate: React.FC = () => {
       height: '100vh',
       background: ODLTheme.colors.white
     }}>
-      {/* Header - Build variant with user info */}
+      {/* Header */}
       <Header variant="build" userName="John Doe" />
 
       {/* Main Layout with Navigation Rails */}
@@ -2361,38 +2363,6 @@ const AdaptiveListContent: React.FC = () => {
 
   return (
     <>
-      {/* Page Header */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        marginBottom: ODLTheme.spacing[6],
-        paddingBottom: ODLTheme.spacing[4],
-        borderBottom: `1px solid ${ODLTheme.colors.border}`
-      }}>
-        <div>
-          <h1 style={{
-            fontSize: ODLTheme.typography.fontSize['2xl'],
-            fontWeight: ODLTheme.typography.fontWeight.semibold,
-            color: ODLTheme.colors.text.primary,
-            margin: 0
-          }}>
-            Document Management
-          </h1>
-          <p style={{
-            fontSize: ODLTheme.typography.fontSize.base,
-            color: ODLTheme.colors.text.secondary,
-            margin: `${ODLTheme.spacing[2]} 0 0 0`
-          }}>
-            Manage and organize your documents with advanced filtering and view options
-          </p>
-        </div>
-        <Button variant="primary" size="md">
-          <Icon name="add" size={16} style={{ marginRight: ODLTheme.spacing[2] }} />
-          Add Document
-        </Button>
-      </div>
-
       {/* Bulk Actions Bar and AdaptiveList */}
       <div style={{ border: '1px solid #E0E0E0', borderRadius: '8px', overflow: 'hidden' }}>
         <BulkActionsBar
@@ -2441,6 +2411,7 @@ export const ODLAdaptiveListTemplate: React.FC = () => {
       currentPage="/documents"
       pageTitle="Document Management"
       pageSubtitle="Manage and organize your documents with advanced filtering and view options"
+      headerVariant="nexus"
       breadcrumbItems={[
         { label: 'Home', path: '/' },
         { label: 'Documents', path: '/documents' },
@@ -2603,7 +2574,7 @@ export const ODLEditorPageTemplate: React.FC = () => {
       background: ODLTheme.colors.white
     }}>
       {/* Header */}
-      <Header variant="build" userName="John Doe" />
+      <Header variant="nexus" userName="John Doe" />
 
       {/* Main Layout with Navigation Rails */}
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
