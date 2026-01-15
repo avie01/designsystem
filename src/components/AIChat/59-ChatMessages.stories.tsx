@@ -58,9 +58,9 @@ const UserMessage: React.FC<UserMessageProps> = ({
           maxWidth: '75%',
           padding: '12px 16px',
           borderRadius: '0px',
-          backgroundColor: '#F5F5F5',
+          backgroundColor: colors.grey300,
           color: colors.textPrimary,
-          borderLeft: '4px solid #d1d1d1',
+          borderLeft: `4px solid ${colors.grey500}`,
         }}
       >
         <div
@@ -73,7 +73,7 @@ const UserMessage: React.FC<UserMessageProps> = ({
         >
           <span
             style={{
-              color: 'var(--primary-obj-night, #32373F)',
+              color: colors.primaryNight,
               fontFamily: 'var(--font-family-noto)',
               fontSize: '14px',
               fontStyle: 'normal',
@@ -86,7 +86,7 @@ const UserMessage: React.FC<UserMessageProps> = ({
           {showTimestamp && timestamp && (
             <span
               style={{
-                color: 'var(--grey-700-obj-neutral, #707070)',
+                color: colors.grey700,
                 fontFamily: 'var(--font-family-noto)',
                 fontSize: '14px',
                 fontStyle: 'normal',
@@ -162,7 +162,7 @@ const AIResponse: React.FC<AIResponseProps> = ({
         >
           <span
             style={{
-              color: 'var(--primary-obj-night, #32373F)',
+              color: colors.primaryNight,
               fontFamily: 'var(--font-family-noto)',
               fontSize: '14px',
               fontStyle: 'normal',
@@ -175,7 +175,7 @@ const AIResponse: React.FC<AIResponseProps> = ({
           {showTimestamp && timestamp && (
             <span
               style={{
-                color: 'var(--grey-700-obj-neutral, #707070)',
+                color: colors.grey700,
                 fontFamily: 'var(--font-family-noto)',
                 fontSize: '14px',
                 fontStyle: 'normal',
@@ -458,7 +458,7 @@ export const AIResponseWithButtonActions: Story = {
             >
               <span
                 style={{
-                  color: 'var(--primary-obj-night, #32373F)',
+                  color: colors.primaryNight,
                   fontFamily: 'var(--font-family-noto)',
                   fontSize: '14px',
                   fontStyle: 'normal',
@@ -470,7 +470,7 @@ export const AIResponseWithButtonActions: Story = {
               </span>
               <span
                 style={{
-                  color: 'var(--grey-700-obj-neutral, #707070)',
+                  color: colors.grey700,
                   fontFamily: 'var(--font-family-noto)',
                   fontSize: '14px',
                   fontStyle: 'normal',
@@ -543,7 +543,7 @@ export const AIResponseWithIconButtonActions: Story = {
             >
               <span
                 style={{
-                  color: 'var(--primary-obj-night, #32373F)',
+                  color: colors.primaryNight,
                   fontFamily: 'var(--font-family-noto)',
                   fontSize: '14px',
                   fontStyle: 'normal',
@@ -555,7 +555,7 @@ export const AIResponseWithIconButtonActions: Story = {
               </span>
               <span
                 style={{
-                  color: 'var(--grey-700-obj-neutral, #707070)',
+                  color: colors.grey700,
                   fontFamily: 'var(--font-family-noto)',
                   fontSize: '14px',
                   fontStyle: 'normal',

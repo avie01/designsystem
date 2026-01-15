@@ -241,8 +241,8 @@ const AIChat: React.FC<AIChatProps> = ({
                 maxWidth: '75%',
                 padding: message.role === 'user' ? '12px 16px' : '0 16px 12px 0',
                 borderRadius: message.role === 'user' ? '0px' : undefined,
-                backgroundColor: message.role === 'user' ? '#F5F5F5' : undefined,
-                borderLeft: message.role === 'user' ? '4px solid #d1d1d1' : undefined,
+                backgroundColor: message.role === 'user' ? colors.grey300 : undefined,
+                borderLeft: message.role === 'user' ? `4px solid ${colors.grey500}` : undefined,
                 color: colors.textPrimary,
               }}
             >
@@ -256,7 +256,7 @@ const AIChat: React.FC<AIChatProps> = ({
               >
                 <span
                   style={{
-                    color: 'var(--primary-obj-night, #32373F)',
+                    color: colors.primaryNight,
                     fontFamily: 'var(--font-family-noto)',
                     fontSize: '14px',
                     fontStyle: 'normal',
@@ -268,7 +268,7 @@ const AIChat: React.FC<AIChatProps> = ({
                 </span>
                 <span
                   style={{
-                    color: 'var(--grey-700-obj-neutral, #707070)',
+                    color: colors.grey700,
                     fontFamily: 'var(--font-family-noto)',
                     fontSize: '14px',
                     fontStyle: 'normal',
@@ -358,9 +358,9 @@ const AIChat: React.FC<AIChatProps> = ({
           display: 'flex',
           flexDirection: 'column',
           padding: '10px 16px',
-          gap: '12px',
+          gap: '4px',
           alignSelf: 'stretch',
-          borderTop: '1px solid var(--grey-600-disabled-obj-neutral-ac, #ACACAC)',
+          borderTop: `1px solid ${colors.default}`,
         }}
         onKeyDown={handleKeyDown}
       >
@@ -422,7 +422,7 @@ const InlinePanel: React.FC<InlinePanelProps> = ({ isOpen, onClose, title, child
         height: '100%',
         backgroundColor: colors.paper,
         borderLeft: `1px solid ${colors.grey300}`,
-        borderRight: '1px solid #EDF1F5',
+        borderRight: `1px solid ${colors.default}`,
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -458,8 +458,9 @@ const sampleMessages: Message[] = [
 export const Default: Story = {
   name: '01 Default Chat',
   render: () => {
+    const { colors } = useTheme();
     return (
-      <div style={{ height: '600px', maxWidth: '500px', margin: '20px auto', border: '1px solid #e0e0e0', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ height: '600px', maxWidth: '500px', margin: '20px auto', border: `1px solid ${colors.border}`, borderRadius: '12px', overflow: 'hidden' }}>
         <AIChat
           initialMessages={sampleMessages}
           title="Objective Intelligence"
@@ -473,8 +474,9 @@ export const Default: Story = {
 export const EmptyState: Story = {
   name: '02 Empty State',
   render: () => {
+    const { colors } = useTheme();
     return (
-      <div style={{ height: '600px', maxWidth: '500px', margin: '20px auto', border: '1px solid #e0e0e0', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ height: '600px', maxWidth: '500px', margin: '20px auto', border: `1px solid ${colors.border}`, borderRadius: '12px', overflow: 'hidden' }}>
         <AIChat
           title="Objective Intelligence"
           placeholder="Type your question here..."
@@ -488,6 +490,7 @@ export const EmptyState: Story = {
 export const RightPanelVariant: Story = {
   name: '03 Right Panel',
   render: () => {
+    const { colors } = useTheme();
     const [isOpen, setIsOpen] = useState(true);
     const [currentPath, setCurrentPath] = useState('/dashboard');
 
@@ -519,7 +522,7 @@ export const RightPanelVariant: Story = {
           showTooltips={true}
         />
 
-        <div style={{ flex: 1, padding: '24px', backgroundColor: '#f5f5f5' }}>
+        <div style={{ flex: 1, padding: '24px', backgroundColor: colors.grey300 }}>
           <h1>Main Content Area</h1>
           <p>Click the Objective Intelligence icon on the right to toggle the chat panel.</p>
           <p>The AI Q&A panel appears beside the NavigationRail when activated.</p>
@@ -558,7 +561,7 @@ export const PopupVariant: Story = {
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     return (
-      <div style={{ height: '100vh', padding: '24px', backgroundColor: '#f5f5f5', position: 'relative' }}>
+      <div style={{ height: '100vh', padding: '24px', backgroundColor: colors.grey300, position: 'relative' }}>
         <h1>Popup AI Chat</h1>
         <p>Click the chat button in the bottom-right corner to open the AI assistant popup.</p>
 
@@ -627,10 +630,11 @@ export const PopupVariant: Story = {
 export const ModalVariant: Story = {
   name: '05 Modal',
   render: () => {
+    const { colors } = useTheme();
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-      <div style={{ height: '100vh', padding: '24px', backgroundColor: '#f5f5f5' }}>
+      <div style={{ height: '100vh', padding: '24px', backgroundColor: colors.grey300 }}>
         <h1>Modal AI Chat</h1>
         <p>Click the button below to open the AI assistant in a modal dialog.</p>
 
@@ -660,45 +664,46 @@ export const ModalVariant: Story = {
 export const FullPageVariant: Story = {
   name: '06 Full Page',
   render: () => {
+    const { colors } = useTheme();
     return (
       <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
         <div
           style={{
             padding: '16px 24px',
-            borderBottom: '1px solid #e0e0e0',
-            backgroundColor: 'white',
+            borderBottom: `1px solid ${colors.border}`,
+            backgroundColor: colors.paper,
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
           }}
         >
           <Icon name="arrow-left" size={20} style={{ cursor: 'pointer' }} />
-          <h2 style={{ margin: 0, fontSize: '18px' }}>AI Q&A Center</h2>
+          <h2 style={{ margin: 0, fontSize: '18px', color: colors.textPrimary }}>AI Q&A Center</h2>
         </div>
         <div style={{ flex: 1, display: 'flex' }}>
           <div
             style={{
               width: '280px',
-              borderRight: '1px solid #e0e0e0',
+              borderRight: `1px solid ${colors.border}`,
               padding: '16px',
-              backgroundColor: '#fafafa',
+              backgroundColor: colors.default,
             }}
           >
-            <h4 style={{ margin: '0 0 16px 0', fontSize: '14px', color: '#666' }}>Recent Conversations</h4>
+            <h4 style={{ margin: '0 0 16px 0', fontSize: '14px', color: colors.textSecondary }}>Recent Conversations</h4>
             {['Design System Questions', 'Component Usage', 'Theme Customization'].map((item, i) => (
               <div
                 key={i}
                 style={{
                   padding: '12px',
                   marginBottom: '8px',
-                  backgroundColor: i === 0 ? '#e3f2fd' : 'white',
+                  backgroundColor: i === 0 ? colors.selectedLight : colors.paper,
                   borderRadius: '8px',
                   cursor: 'pointer',
-                  border: i === 0 ? '1px solid #1976d2' : '1px solid #e0e0e0',
+                  border: i === 0 ? `1px solid ${colors.primaryMain}` : `1px solid ${colors.border}`,
                 }}
               >
-                <div style={{ fontWeight: 500, fontSize: '14px' }}>{item}</div>
-                <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
+                <div style={{ fontWeight: 500, fontSize: '14px', color: colors.textPrimary }}>{item}</div>
+                <div style={{ fontSize: '12px', color: colors.textMuted, marginTop: '4px' }}>
                   {i === 0 ? 'Active' : `${i + 1} days ago`}
                 </div>
               </div>
@@ -708,7 +713,7 @@ export const FullPageVariant: Story = {
                 width: '100%',
                 padding: '12px',
                 marginTop: '16px',
-                border: '1px dashed #ccc',
+                border: `1px dashed ${colors.grey600}`,
                 borderRadius: '8px',
                 backgroundColor: 'transparent',
                 cursor: 'pointer',
@@ -716,7 +721,7 @@ export const FullPageVariant: Story = {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                color: '#666',
+                color: colors.textSecondary,
               }}
             >
               <Icon name="add" size={16} />
@@ -778,54 +783,131 @@ export const MinimalVariant: Story = {
           }}
         >
           {messages.length > 0 && (
-            <div style={{ maxHeight: '300px', overflow: 'auto', padding: '16px' }}>
+            <div style={{ maxHeight: '300px', overflow: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {messages.map((msg) => (
                 <div
                   key={msg.id}
                   style={{
-                    marginBottom: '12px',
-                    padding: '12px',
-                    borderRadius: '8px',
-                    backgroundColor: msg.role === 'user' ? colors.primaryMain : colors.grey100,
-                    color: msg.role === 'user' ? 'white' : colors.textPrimary,
-                    marginLeft: msg.role === 'user' ? '40px' : '0',
-                    marginRight: msg.role === 'assistant' ? '40px' : '0',
+                    display: 'flex',
+                    flexDirection: msg.role === 'user' ? 'row-reverse' : 'row',
+                    gap: '12px',
+                    alignItems: 'flex-start',
                   }}
                 >
-                  {msg.content}
+                  {msg.role === 'user' ? (
+                    <div style={{ flexShrink: 0 }}>
+                      <UserAvatar size="lg" user={{ name: 'User' }} showPopup={false} />
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '6px',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <AIIcon size={32} />
+                    </div>
+                  )}
+                  <div
+                    style={{
+                      maxWidth: '75%',
+                      padding: msg.role === 'user' ? '12px 16px' : '0 16px 12px 0',
+                      borderRadius: msg.role === 'user' ? '0px' : undefined,
+                      backgroundColor: msg.role === 'user' ? colors.grey300 : undefined,
+                      borderLeft: msg.role === 'user' ? `4px solid ${colors.grey500}` : undefined,
+                      color: colors.textPrimary,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: colors.primaryNight,
+                          fontFamily: 'var(--font-family-noto)',
+                          fontSize: '14px',
+                          fontStyle: 'normal',
+                          fontWeight: 600,
+                          lineHeight: '21px',
+                        }}
+                      >
+                        {msg.role === 'user' ? 'User' : 'Objective Intelligence'}
+                      </span>
+                      <span
+                        style={{
+                          color: colors.grey700,
+                          fontFamily: 'var(--font-family-noto)',
+                          fontSize: '14px',
+                          fontStyle: 'normal',
+                          fontWeight: 500,
+                          lineHeight: '21px',
+                        }}
+                      >
+                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                    <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.5, whiteSpace: 'pre-wrap', fontFamily: 'var(--font-family-noto)' }}>{msg.content}</p>
+                    {msg.role === 'assistant' && (
+                      <div style={{ display: 'flex', gap: '4px', marginTop: '12px' }}>
+                        <IconButton icon="copy" variant="ghost" size="small" aria-label="Copy response" title="Copy" />
+                        <IconButton icon="restart" variant="ghost" size="small" aria-label="Regenerate response" title="Regenerate" />
+                        <IconButton icon="thumbs-up" variant="ghost" size="small" aria-label="Good response" title="Good response" />
+                        <IconButton icon="thumbs-down" variant="ghost" size="small" aria-label="Bad response" title="Bad response" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
-          <div style={{ display: 'flex', borderTop: messages.length > 0 ? `1px solid ${colors.grey300}` : 'none' }}>
-            <input
-              type="text"
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '10px 16px',
+              gap: '4px',
+              borderTop: `1px solid ${colors.default}`,
+            }}
+            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          >
+            <Input
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+              onChange={setInputValue}
               placeholder="Ask a question..."
-              style={{
-                flex: 1,
-                padding: '16px',
-                border: 'none',
-                outline: 'none',
-                fontSize: '14px',
-              }}
             />
-            <button
-              onClick={handleSend}
-              disabled={!inputValue.trim()}
-              style={{
-                padding: '16px 24px',
-                border: 'none',
-                backgroundColor: inputValue.trim() ? colors.primaryMain : colors.grey200,
-                color: 'white',
-                cursor: inputValue.trim() ? 'pointer' : 'not-allowed',
-              }}
-            >
-              <Icon name="send" size={18} />
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <IconButton
+                icon="add"
+                variant="ghost"
+                aria-label="Add attachment"
+              />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <IconButton
+                  icon="microphone"
+                  variant="ghost"
+                  aria-label="Voice input"
+                />
+                <IconButton
+                  icon="send"
+                  variant={inputValue.trim() ? 'primary' : 'disabled'}
+                  onClick={handleSend}
+                  disabled={!inputValue.trim()}
+                  aria-label="Send message"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -867,7 +949,7 @@ export const WithSuggestedQuestions: Story = {
     };
 
     return (
-      <div style={{ height: '600px', maxWidth: '500px', margin: '20px auto', border: '1px solid #e0e0e0', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ height: '600px', maxWidth: '500px', margin: '20px auto', border: `1px solid ${colors.border}`, borderRadius: '12px', overflow: 'hidden' }}>
         <AIChat
           initialMessages={messages}
           title="Objective Intelligence"
@@ -884,8 +966,8 @@ export const WithSuggestedQuestions: Story = {
                   style={{
                     padding: '8px 12px',
                     borderRadius: '16px',
-                    border: `1px solid ${colors.grey300}`,
-                    backgroundColor: 'white',
+                    border: `1px solid ${colors.grey500}`,
+                    backgroundColor: colors.paper,
                     fontSize: '13px',
                     cursor: 'pointer',
                     color: colors.textPrimary,
