@@ -9,7 +9,13 @@ const meta: Meta<typeof A4Editor> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'A4-styled document editor component built with TipTap. Renders content within an A4 page layout with automatic page breaks, zoom control, and full rich text formatting support. Perfect for document creation, reports, and printable content.',
+        component: `A4-styled document editor component with two modes:
+
+**Rich Text Editor Mode** (default): Built with TipTap, renders content within an A4 page layout with automatic page breaks, zoom control, and full rich text formatting support.
+
+**Template Builder Mode** (\`templateBuilder={true}\`): Powered by GrapesJS, provides a drag-and-drop interface for building document templates with blocks for text, headings, images, columns, sections, tables, and more.
+
+Both modes share the same HTML content interface (\`initialContent\`/\`onUpdate\`), allowing seamless switching between visual template building and rich text editing.`,
       },
     },
   },
@@ -96,6 +102,14 @@ const meta: Meta<typeof A4Editor> = {
       description: 'Custom content to render on the right side of the toolbar (e.g., zoom dropdown)',
       table: {
         type: { summary: 'React.ReactNode' },
+      },
+    },
+    templateBuilder: {
+      control: 'boolean',
+      description: 'Enable GrapesJS drag-and-drop template builder mode',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
   },
@@ -257,8 +271,8 @@ export const LoadingState: Story = {
       <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
         <div style={{
           padding: '16px 24px',
-          backgroundColor: '#fff',
-          borderBottom: '1px solid #E0E0E0'
+          backgroundColor: 'var(--odl-white)',
+          borderBottom: '1px solid var(--odl-border)'
         }}>
           <button
             onClick={() => {
@@ -269,11 +283,18 @@ export const LoadingState: Story = {
                 setContent('<h1>Reloaded Content</h1><p>The document has been reloaded.</p>');
               }, 2000);
             }}
-            style={{ padding: '8px 16px', cursor: 'pointer' }}
+            style={{
+              padding: '8px 16px',
+              cursor: 'pointer',
+              backgroundColor: 'var(--odl-surface)',
+              border: '1px solid var(--odl-border)',
+              borderRadius: '4px',
+              color: 'var(--odl-text-primary)'
+            }}
           >
             Reload Content
           </button>
-          <span style={{ marginLeft: '16px', fontSize: '14px', color: '#525252' }}>
+          <span style={{ marginLeft: '16px', fontSize: '14px', color: 'var(--odl-text-secondary)' }}>
             {isLoading ? 'Loading...' : 'Content loaded'}
           </span>
         </div>
@@ -450,5 +471,196 @@ hello();</code></pre>
         />
       </div>
     );
+  },
+};
+
+export const TemplateBuilder: Story = {
+  name: '09 Template Builder',
+  render: () => {
+    const [content, setContent] = useState('');
+
+    return (
+      <div style={{ height: '100vh' }}>
+        <A4Editor
+          templateBuilder={true}
+          initialContent={content}
+          onUpdate={(html) => {
+            setContent(html);
+            console.log('Template HTML:', html);
+          }}
+        />
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+**Template Builder Mode** enables a GrapesJS-powered drag-and-drop interface for building document templates.
+
+**Features:**
+- Drag-and-drop blocks (text, headings, images, columns, sections, tables, lists, quotes)
+- Visual editing with A4 page constraints
+- Style panel for customizing elements
+- Layer panel for managing element hierarchy
+
+**Usage:**
+\`\`\`tsx
+<A4Editor
+  templateBuilder={true}
+  initialContent={htmlContent}
+  onUpdate={(html) => console.log(html)}
+/>
+\`\`\`
+        `,
+      },
+    },
+  },
+};
+
+export const TemplateBuilderWithContent: Story = {
+  name: '10 Template Builder - With Initial Content',
+  render: () => {
+    const initialTemplate = `
+      <h1 style="margin: 0 0 16px 0; font-size: 24px; font-weight: 600; color: #161616;">Invoice Template</h1>
+      <div style="display: flex; gap: 24px; margin-bottom: 24px;">
+        <div style="flex: 1; padding: 16px; background: #f8f9fa; border-radius: 4px;">
+          <p style="margin: 0 0 8px 0; font-weight: 600;">From:</p>
+          <p style="margin: 0; color: #525252;">Your Company Name<br/>123 Business Street<br/>City, State 12345</p>
+        </div>
+        <div style="flex: 1; padding: 16px; background: #f8f9fa; border-radius: 4px;">
+          <p style="margin: 0 0 8px 0; font-weight: 600;">To:</p>
+          <p style="margin: 0; color: #525252;">Client Name<br/>456 Client Avenue<br/>City, State 67890</p>
+        </div>
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+        <thead>
+          <tr style="background: #3560C1; color: white;">
+            <th style="padding: 12px; border: 1px solid #E0E0E0; text-align: left;">Description</th>
+            <th style="padding: 12px; border: 1px solid #E0E0E0; text-align: right;">Quantity</th>
+            <th style="padding: 12px; border: 1px solid #E0E0E0; text-align: right;">Price</th>
+            <th style="padding: 12px; border: 1px solid #E0E0E0; text-align: right;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #E0E0E0;">Service Item 1</td>
+            <td style="padding: 12px; border: 1px solid #E0E0E0; text-align: right;">1</td>
+            <td style="padding: 12px; border: 1px solid #E0E0E0; text-align: right;">$100.00</td>
+            <td style="padding: 12px; border: 1px solid #E0E0E0; text-align: right;">$100.00</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #E0E0E0;">Service Item 2</td>
+            <td style="padding: 12px; border: 1px solid #E0E0E0; text-align: right;">2</td>
+            <td style="padding: 12px; border: 1px solid #E0E0E0; text-align: right;">$50.00</td>
+            <td style="padding: 12px; border: 1px solid #E0E0E0; text-align: right;">$100.00</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="text-align: right; padding: 16px; background: #f8f9fa; border-radius: 4px;">
+        <p style="margin: 0 0 8px 0; font-size: 18px; font-weight: 600;">Total: $200.00</p>
+        <p style="margin: 0; font-size: 12px; color: #8D8D8D;">Payment due within 30 days</p>
+      </div>
+    `;
+
+    const [content, setContent] = useState(initialTemplate);
+
+    return (
+      <div style={{ height: '100vh' }}>
+        <A4Editor
+          templateBuilder={true}
+          initialContent={content}
+          onUpdate={setContent}
+        />
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Template Builder with pre-loaded invoice template content. Demonstrates how existing HTML content can be edited in the drag-and-drop builder.',
+      },
+    },
+  },
+};
+
+export const ModeToggle: Story = {
+  name: '11 Mode Toggle',
+  render: () => {
+    const [isTemplateMode, setIsTemplateMode] = useState(false);
+    const [content, setContent] = useState(`
+      <h1 style="margin: 0 0 16px 0;">Shared Content</h1>
+      <p style="margin: 0 0 16px 0;">This content can be edited in both modes. Toggle between them to see how the same HTML works in both the rich text editor and the template builder.</p>
+      <ul style="margin: 0 0 16px 0; padding-left: 24px;">
+        <li>Edit text directly in Editor mode</li>
+        <li>Drag and drop blocks in Template Builder mode</li>
+        <li>Content syncs between both modes</li>
+      </ul>
+    `);
+
+    return (
+      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{
+          padding: '12px 24px',
+          borderBottom: '1px solid var(--odl-border)',
+          background: 'var(--odl-white)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px'
+        }}>
+          <span style={{ fontWeight: 600, color: 'var(--odl-text-primary)' }}>Editor Mode:</span>
+          <button
+            onClick={() => setIsTemplateMode(false)}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '4px',
+              border: '1px solid var(--odl-border)',
+              background: !isTemplateMode ? 'var(--odl-primary)' : 'var(--odl-white)',
+              color: !isTemplateMode ? 'var(--odl-white)' : 'var(--odl-text-primary)',
+              cursor: 'pointer',
+              fontWeight: 500,
+            }}
+          >
+            Rich Text Editor
+          </button>
+          <button
+            onClick={() => setIsTemplateMode(true)}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '4px',
+              border: '1px solid var(--odl-border)',
+              background: isTemplateMode ? 'var(--odl-primary)' : 'var(--odl-white)',
+              color: isTemplateMode ? 'var(--odl-white)' : 'var(--odl-text-primary)',
+              cursor: 'pointer',
+              fontWeight: 500,
+            }}
+          >
+            Template Builder
+          </button>
+          <span style={{ marginLeft: 'auto', fontSize: '12px', color: 'var(--odl-text-tertiary)' }}>
+            Content is shared between both modes
+          </span>
+        </div>
+        <div style={{ flex: 1, overflow: 'hidden' }}>
+          <A4Editor
+            key={isTemplateMode ? 'template' : 'editor'}
+            templateBuilder={isTemplateMode}
+            initialContent={content}
+            onUpdate={setContent}
+          />
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+**Mode Toggle Demo** shows how to switch between the standard TipTap editor and the GrapesJS Template Builder.
+
+Both modes share the same HTML content through the \`initialContent\` and \`onUpdate\` props, allowing seamless transitions between visual template building and rich text editing.
+        `,
+      },
+    },
   },
 };

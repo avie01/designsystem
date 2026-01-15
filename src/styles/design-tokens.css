@@ -191,6 +191,36 @@
 
 /* Dark theme overrides */
 [data-theme="dark"] {
+  /* ODL Theme Colors - Dark Mode */
+  --odl-white: #161616;
+  --odl-background: #161616;
+  --odl-wave: #262626;
+  --odl-surface: #262626;
+  --odl-surface-hover: #393939;
+  --odl-border: #525252;
+  --odl-primary: #78A9FF;
+  --odl-primary-hover: #A6C8FF;
+  --odl-primary-light: #002D5C;
+
+  /* Text Colors - Dark Mode */
+  --odl-text-primary: #F4F4F4;
+  --odl-text-secondary: #C6C6C6;
+  --odl-text-tertiary: #8D8D8D;
+  --odl-text-disabled: #525252;
+
+  /* Status Colors - Dark Mode (lighter for visibility) */
+  --odl-error: #FF8389;
+  --odl-warning: #FFB784;
+  --odl-success: #42BE65;
+  --odl-info: #78A9FF;
+
+  /* Status Light Colors - Dark Mode */
+  --odl-success-light: #044317;
+  --odl-warning-light: #5E3B00;
+  --odl-info-light: #002D5C;
+  --odl-error-light: #520408;
+
+  /* Legacy Colors */
   --color-white: var(--color-vacuum);
   --color-wave: var(--color-deep-space);
   --color-light-deco: var(--color-dark-deco);
@@ -200,12 +230,36 @@
 
 /* High contrast light theme */
 [data-theme="high-contrast-light"] {
+  /* ODL Theme Colors - High Contrast Light */
+  --odl-border: #161616;
+  --odl-primary: #0043CE;
+  --odl-text-tertiary: #525252;
+
+  /* Legacy Colors */
   --color-light-deco: var(--color-night);
   --focus-outline: 3px solid var(--color-night);
 }
 
 /* High contrast dark theme */
 [data-theme="high-contrast-dark"] {
+  /* ODL Theme Colors - High Contrast Dark */
+  --odl-white: #000000;
+  --odl-background: #000000;
+  --odl-wave: #161616;
+  --odl-surface: #161616;
+  --odl-surface-hover: #262626;
+  --odl-border: #FFFFFF;
+  --odl-primary: #78A9FF;
+  --odl-primary-hover: #A6C8FF;
+  --odl-primary-light: #002D5C;
+
+  /* Text Colors - High Contrast Dark */
+  --odl-text-primary: #FFFFFF;
+  --odl-text-secondary: #FFFFFF;
+  --odl-text-tertiary: #C6C6C6;
+  --odl-text-disabled: #525252;
+
+  /* Legacy Colors */
   --color-white: var(--color-vacuum);
   --color-wave: var(--color-deep-space);
   --color-light-deco: var(--color-white-dark);

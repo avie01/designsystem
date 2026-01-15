@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import Icon from '../Icon/Icon';
 import Checkbox from '../Checkbox/Checkbox';
 import Badge from '../Badge/Badge';
+import IconButton from '../IconButton/IconButton';
+import { PopupMenuItem } from '../PopupMenu/PopupMenu';
 import { ODLTheme } from '../../styles/ODLTheme';
 import { useTheme } from '../../../.storybook/theme-decorator';
 
@@ -18,6 +20,8 @@ export interface ListItem {
   expanded?: boolean;
   /** Optional caption/description text (shown in large size) */
   caption?: string;
+  /** Action menu items for the item (used with withActions prop) */
+  actions?: PopupMenuItem[];
 }
 
 export interface ListProps {
@@ -45,6 +49,12 @@ export interface ListProps {
   ariaLabel?: string;
   /** Whether to show checkboxes for multi-select mode */
   showCheckboxes?: boolean;
+  /** Whether the list items are draggable for reordering */
+  draggable?: boolean;
+  /** Callback when items are reordered via drag and drop */
+  onReorder?: (reorderedItems: ListItem[]) => void;
+  /** Whether to show action menu buttons on list items */
+  withActions?: boolean;
 }
 
 const List: React.FC<ListProps> = ({
@@ -60,12 +70,22 @@ const List: React.FC<ListProps> = ({
   ariaLabel = 'List',
   showCheckboxes = false,
   showBadges = false,
+  draggable = false,
+  onReorder,
+  withActions = false,
 }) => {
   const { colors } = useTheme();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [focusedItemId, setFocusedItemId] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const styleRef = useRef<HTMLStyleElement | null>(null);
+  const [draggedItemId, setDraggedItemId] = useState<string | null>(null);
+  const [dragOverItemId, setDragOverItemId] = useState<string | null>(null);
+  const [internalItems, setInternalItems] = useState<ListItem[]>(items);
+
+  useEffect(() => {
+    setInternalItems(items);
+  }, [items]);
 
   // Inject dynamic styles for theme-aware colors
   useEffect(() => {
@@ -88,10 +108,26 @@ const List: React.FC<ListProps> = ({
       .list-expand-icon:hover {
         color: ${colors.primaryMain} !important;
       }
+      .list-item--dragging {
+        opacity: 0.5 !important;
+        background-color: ${colors.grey300} !important;
+      }
+      .list-item--drag-over {
+        border-top: 2px solid ${colors.primaryMain} !important;
+      }
+      .list-drag-handle {
+        cursor: grab !important;
+      }
+      .list-drag-handle:active {
+        cursor: grabbing !important;
+      }
+      .list-drag-handle:hover {
+        color: ${colors.primaryMain} !important;
+      }
     `;
     document.head.appendChild(style);
     styleRef.current = style;
-    
+
     return () => {
       if (styleRef.current) {
         document.head.removeChild(styleRef.current);
@@ -158,6 +194,59 @@ const List: React.FC<ListProps> = ({
     setExpandedItems(newExpanded);
   };
 
+  const handleDragStart = (e: React.DragEvent, itemId: string) => {
+    setDraggedItemId(itemId);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', itemId);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedItemId(null);
+    setDragOverItemId(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent, itemId: string) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (itemId !== draggedItemId) {
+      setDragOverItemId(itemId);
+    }
+  };
+
+  const handleDragLeave = () => {
+    setDragOverItemId(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, targetItemId: string) => {
+    e.preventDefault();
+    if (!draggedItemId || draggedItemId === targetItemId) {
+      setDraggedItemId(null);
+      setDragOverItemId(null);
+      return;
+    }
+
+    const draggedIndex = internalItems.findIndex(item => item.id === draggedItemId);
+    const targetIndex = internalItems.findIndex(item => item.id === targetItemId);
+
+    if (draggedIndex === -1 || targetIndex === -1) {
+      setDraggedItemId(null);
+      setDragOverItemId(null);
+      return;
+    }
+
+    const newItems = [...internalItems];
+    const [draggedItem] = newItems.splice(draggedIndex, 1);
+    newItems.splice(targetIndex, 0, draggedItem);
+
+    setInternalItems(newItems);
+    setDraggedItemId(null);
+    setDragOverItemId(null);
+
+    if (onReorder) {
+      onReorder(newItems);
+    }
+  };
+
   const handleItemClick = (item: ListItem) => {
     if (item.disabled) return;
 
@@ -194,6 +283,8 @@ const List: React.FC<ListProps> = ({
     const isExpanded = expandedItems.has(item.id);
     const isFocused = focusedItemId === item.id;
     const hasChildren = hierarchical && item.children && item.children.length > 0;
+    const isDragging = draggedItemId === item.id;
+    const isDragOver = dragOverItemId === item.id;
 
     const itemStyles: React.CSSProperties = {
       display: 'flex',
@@ -202,6 +293,7 @@ const List: React.FC<ListProps> = ({
       position: 'relative',
       borderBottom: item._isLastChild ? 'none' : `1px solid ${colors.grey400}`,
       borderLeft: isSelected ? `4px solid ${colors.primaryMain}` : '4px solid transparent',
+      borderTop: isDragOver ? `2px solid ${colors.primaryMain}` : '2px solid transparent',
       cursor: item.disabled ? 'not-allowed' : 'pointer',
       fontSize: size === 'sm' ? ODLTypography.fontSize.sm : size === 'lg' ? ODLTypography.fontSize.md : ODLTypography.fontSize.base,
       fontWeight: ODLTypography.fontWeight.normal,
@@ -214,6 +306,7 @@ const List: React.FC<ListProps> = ({
       paddingBottom: size === 'sm' ? ODLSpacing['1'] : size === 'lg' ? ODLSpacing['4'] : ODLSpacing['3'],
       minHeight: size === 'sm' ? '30px' : size === 'lg' ? '52px' : '42px',
       backgroundColor: item.disabled ? 'transparent' : isSelected ? colors.selectedLight : 'transparent',
+      opacity: isDragging ? 0.5 : 1,
     };
 
     return (
@@ -222,11 +315,14 @@ const List: React.FC<ListProps> = ({
           role="option"
           className={`list-item ${isSelected ? 'list-item--selected' : ''} ${
             item.disabled ? 'list-item--disabled' : ''
-          }`}
+          } ${isDragging ? 'list-item--dragging' : ''} ${isDragOver ? 'list-item--drag-over' : ''}`}
           style={itemStyles}
           onClick={() => handleItemClick(item)}
           onMouseEnter={() => !item.disabled && setHoveredItem(item.id)}
-          onMouseLeave={() => setHoveredItem(null)}
+          onMouseLeave={() => {
+            setHoveredItem(null);
+            if (draggable) handleDragLeave();
+          }}
           onKeyDown={(e) => {
             if (item.disabled) return;
             if (e.key === 'ArrowRight' && hasChildren) {
@@ -250,12 +346,37 @@ const List: React.FC<ListProps> = ({
           aria-disabled={item.disabled}
           aria-level={level + 1}
           aria-expanded={hasChildren ? isExpanded : undefined}
+          draggable={draggable && !item.disabled && level === 0}
+          onDragStart={draggable ? (e) => handleDragStart(e, item.id) : undefined}
+          onDragEnd={draggable ? handleDragEnd : undefined}
+          onDragOver={draggable ? (e) => handleDragOver(e, item.id) : undefined}
+          onDrop={draggable ? (e) => handleDrop(e, item.id) : undefined}
           ref={(el) => {
             if (isFocused && el) {
               el.focus();
             }
           }}
         >
+          {draggable && level === 0 && !item.disabled && (
+            <span
+              className="list-drag-handle"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                color: colors.grey600,
+                marginRight: size === 'sm' ? ODLSpacing['1'] : ODLSpacing['2'],
+                cursor: 'grab',
+                flexShrink: 0,
+              }}
+              onMouseDown={(e) => e.stopPropagation()}
+              aria-label="Drag to reorder"
+            >
+              <Icon
+                name="draggable"
+                size={size === 'sm' ? 14 : size === 'lg' ? 20 : 16}
+              />
+            </span>
+          )}
           {showCheckboxes && multiSelect && (
             <span
               style={{
@@ -350,6 +471,29 @@ const List: React.FC<ListProps> = ({
               variant={item.badgeVariant || 'blue-dark'}
             />
           )}
+          {withActions && item.actions && item.actions.length > 0 && (
+            <span
+              className="list-item-actions"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                marginLeft: 'auto',
+                flexShrink: 0,
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <IconButton
+                icon="overflow-menu-vertical"
+                variant="disabled"
+                size={size === 'sm' ? 'xs' : size === 'lg' ? 'medium' : 'small'}
+                aria-label={`Actions for ${item.label}`}
+                menuItems={item.actions}
+                menuAlign="right"
+                menuSize={size}
+                disabled={item.disabled}
+              />
+            </span>
+          )}
           {hasChildren && showExpandIcons && (
             <button
               type="button"
@@ -418,6 +562,8 @@ const List: React.FC<ListProps> = ({
     padding: 0,
   };
 
+  const displayItems = draggable ? internalItems : items;
+
   return (
     <div className={`list-container list-container--${size} ${className}`} style={containerStyles}>
       <div
@@ -428,15 +574,15 @@ const List: React.FC<ListProps> = ({
         onKeyDown={handleListKeyDown}
         tabIndex={focusedItemId === null ? 0 : -1}
         onFocus={() => {
-          if (focusedItemId === null && items.length > 0) {
-            setFocusedItemId(items[0].id);
+          if (focusedItemId === null && displayItems.length > 0) {
+            setFocusedItemId(displayItems[0].id);
           }
         }}
         style={itemsContainerStyles}
       >
-        {items.map((item, index) => {
+        {displayItems.map((item, index) => {
           // Remove border from last item
-          const itemWithNoBorder = index === items.length - 1 ? 
+          const itemWithNoBorder = index === displayItems.length - 1 ?
             { ...item, _isLastChild: true } : item;
           return renderListItem(itemWithNoBorder);
         })}

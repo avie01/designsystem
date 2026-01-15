@@ -35,6 +35,8 @@ export interface ThumbnailCardsProps {
   iconName?: string;
   /** Icon button click handler */
   onIconClick?: () => void;
+  /** Whether to show the checkbox (default: true) */
+  showCheckbox?: boolean;
 }
 
 const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
@@ -51,6 +53,7 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
   onCheckboxChange,
   iconName = 'overflow-menu-vertical',
   onIconClick,
+  showCheckbox = true,
 }) => {
   const { colors } = useTheme();
   // Size configurations
@@ -244,21 +247,24 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
       >
         {/* Header with skeleton elements */}
         <div style={headerStyle}>
-          <div 
-            className="skeleton-box"
-            style={{
-              width: '20px',
-              height: '20px',
-              borderRadius: '4px',
-            }} 
-          />
-          <div 
+          {showCheckbox && (
+            <div
+              className="skeleton-box"
+              style={{
+                width: '20px',
+                height: '20px',
+                borderRadius: '4px',
+              }}
+            />
+          )}
+          <div
             className="skeleton-box"
             style={{
               width: size === 'small' ? '28px' : size === 'large' ? '44px' : '36px',
               height: size === 'small' ? '28px' : size === 'large' ? '44px' : '36px',
               borderRadius: '100px',
-            }} 
+              marginLeft: showCheckbox ? 0 : 'auto',
+            }}
           />
         </div>
 
@@ -342,18 +348,20 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
       <div style={headerStyle}>
         {loading ? (
           <>
-            <div className="ghost sizer" style={{ width: '24px', height: '24px' }}></div>
-            <div className="ghost sizer" style={{ width: '32px', height: '32px' }}></div>
+            {showCheckbox && <div className="ghost sizer" style={{ width: '24px', height: '24px' }}></div>}
+            <div className="ghost sizer" style={{ width: '32px', height: '32px', marginLeft: showCheckbox ? 0 : 'auto' }}></div>
           </>
         ) : (
           <>
-            <Checkbox
-              checked={checked || selected}
-              onChange={onCheckboxChange}
-              disabled={disabled}
-              size="lg"
-              aria-label={`Select ${title}`}
-            />
+            {showCheckbox && (
+              <Checkbox
+                checked={checked || selected}
+                onChange={onCheckboxChange}
+                disabled={disabled}
+                size="lg"
+                aria-label={`Select ${title}`}
+              />
+            )}
             <IconButton
               icon={iconName}
               variant="ghost"
@@ -361,6 +369,7 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
               onClick={onIconClick}
               disabled={disabled}
               aria-label={`More options for ${title}`}
+              style={!showCheckbox ? { marginLeft: 'auto' } : undefined}
             />
           </>
         )}
