@@ -33,6 +33,71 @@ import { useTheme } from '../../.storybook/theme-decorator';
  */
 
 // ============================================
+// INLINE PANEL COMPONENT - For RightPanel pattern
+// ============================================
+interface InlinePanelProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  width?: string;
+}
+
+const InlinePanel: React.FC<InlinePanelProps> = ({ isOpen, onClose, title, children, width = '320px' }) => {
+  const { colors } = useTheme();
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      style={{
+        width,
+        height: '100%',
+        backgroundColor: colors.paper,
+        borderLeft: `1px solid ${colors.grey300}`,
+        borderRight: '1px solid #EDF1F5',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        transition: 'width 0.2s ease-in-out',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '16px',
+          borderBottom: `1px solid ${colors.grey300}`,
+        }}
+      >
+        <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: colors.textPrimary }}>{title}</h2>
+        <button
+          onClick={onClose}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '4px',
+            color: colors.textSecondary,
+          }}
+          aria-label="Close panel"
+        >
+          <Icon name="close" size={20} />
+        </button>
+      </div>
+      <div style={{ flex: 1, overflow: 'auto' }}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// ============================================
 // APP SHELL WRAPPER - Reusable layout component
 // ============================================
 interface AppShellWrapperProps {
@@ -54,7 +119,7 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
 }) => {
   const [currentPath, setCurrentPath] = useState(currentPage);
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
-  const [isRightCollapsed, setIsRightCollapsed] = useState(true);
+  const [openRightPanel, setOpenRightPanel] = useState<string | null>(null);
 
   // Left navigation menu items - main navigation
   const leftMenuItems = [
@@ -74,6 +139,85 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
     { id: 'filters', label: 'Filters', iconName: 'filter', path: '/filters', description: 'Apply filters' },
   ];
 
+  // Right panel content based on selected item
+  const rightPanelContent: Record<string, { title: string; content: React.ReactNode }> = {
+    notifications: {
+      title: 'Notifications',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[
+              { title: 'New comment', desc: 'Sarah commented on your document', time: '5m ago' },
+              { title: 'Task completed', desc: 'Project milestone achieved', time: '1h ago' },
+              { title: 'System update', desc: 'New features available', time: '3h ago' },
+            ].map((item, i) => (
+              <div key={i} style={{ padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+                <div style={{ fontWeight: 500, marginBottom: '4px' }}>{item.title}</div>
+                <div style={{ fontSize: '14px', color: '#666' }}>{item.desc}</div>
+                <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>{item.time}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ),
+    },
+    profile: {
+      title: 'Profile',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: ODLTheme.colors.primary, margin: '0 auto 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '24px', fontWeight: 600 }}>JD</div>
+            <h3 style={{ margin: '0 0 4px 0' }}>John Doe</h3>
+            <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>john.doe@example.com</p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '6px', background: 'white', cursor: 'pointer', textAlign: 'left' }}>Edit Profile</button>
+            <button style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '6px', background: 'white', cursor: 'pointer', textAlign: 'left' }}>Account Settings</button>
+            <button style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '6px', background: 'white', cursor: 'pointer', textAlign: 'left' }}>Sign Out</button>
+          </div>
+        </div>
+      ),
+    },
+    search: {
+      title: 'Search',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <input type="text" placeholder="Search..." style={{ width: '100%', padding: '10px 12px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', boxSizing: 'border-box', marginBottom: '16px' }} />
+          <div style={{ fontWeight: 500, marginBottom: '8px' }}>Recent Searches</div>
+          <ul style={{ margin: 0, padding: '0 0 0 20px', color: '#666' }}>
+            <li>Project documents</li>
+            <li>Team members</li>
+            <li>Task reports</li>
+          </ul>
+        </div>
+      ),
+    },
+    filters: {
+      title: 'Filters',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontWeight: 500, marginBottom: '8px' }}>Status</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><input type="checkbox" /> Active</label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><input type="checkbox" /> Pending</label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><input type="checkbox" /> Completed</label>
+            </div>
+          </div>
+          <div>
+            <div style={{ fontWeight: 500, marginBottom: '8px' }}>Date Range</div>
+            <select style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}>
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last 90 days</option>
+              <option>All time</option>
+            </select>
+          </div>
+        </div>
+      ),
+    },
+  };
+
   const getActiveLabel = () => {
     const item = leftMenuItems.find(m => m.path === currentPath);
     return item?.label || 'Dashboard';
@@ -83,6 +227,17 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
     { label: 'Home', path: '/' },
     { label: getActiveLabel() },
   ];
+
+  const handleRightNavigate = (path: string) => {
+    const itemId = path.replace('/', '');
+    if (openRightPanel === itemId) {
+      setOpenRightPanel(null);
+    } else {
+      setOpenRightPanel(itemId);
+    }
+  };
+
+  const currentPanelContent = openRightPanel ? rightPanelContent[openRightPanel] : null;
 
   return (
     <div style={{
@@ -164,20 +319,26 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
           </div>
         </div>
 
-        {/* Right Navigation Rail - Contextual Tools */}
-        <div style={{
-          height: '100%',
-          borderLeft: `1px solid ${ODLTheme.colors.border}`
-        }}>
+        {/* Right Panel - InlinePanel + NavigationRail */}
+        <div style={{ display: 'flex', height: '100%' }}>
+          {currentPanelContent && (
+            <InlinePanel
+              isOpen={!!openRightPanel}
+              onClose={() => setOpenRightPanel(null)}
+              title={currentPanelContent.title}
+              width="320px"
+            >
+              {currentPanelContent.content}
+            </InlinePanel>
+          )}
+
           <NavigationRail
             menuItems={rightMenuItems}
-            currentPath={currentPath}
-            onNavigate={(path) => setCurrentPath(path)}
-            collapsed={isRightCollapsed}
+            currentPath={openRightPanel ? `/${openRightPanel}` : ''}
+            onNavigate={handleRightNavigate}
+            collapsed={true}
             position="right"
             theme="light"
-            showCollapseToggle={true}
-            onCollapseToggle={setIsRightCollapsed}
             showTooltips={true}
           />
         </div>
@@ -1194,7 +1355,7 @@ export const ODLCardsGridTemplate: React.FC = () => {
 export const ODLAppShellTemplate: React.FC = () => {
   const [currentPath, setCurrentPath] = useState('/dashboard');
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
-  const [isRightCollapsed, setIsRightCollapsed] = useState(true);
+  const [openRightPanel, setOpenRightPanel] = useState<string | null>(null);
 
   // Left navigation menu items - main navigation
   const leftMenuItems = [
@@ -1214,10 +1375,100 @@ export const ODLAppShellTemplate: React.FC = () => {
     { id: 'filters', label: 'Filters', iconName: 'filter', path: '/filters', description: 'Apply filters' },
   ];
 
+  // Right panel content based on selected item
+  const rightPanelContent: Record<string, { title: string; content: React.ReactNode }> = {
+    notifications: {
+      title: 'Notifications',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[
+              { title: 'New comment', desc: 'Sarah commented on your document', time: '5m ago' },
+              { title: 'Task completed', desc: 'Project milestone achieved', time: '1h ago' },
+              { title: 'System update', desc: 'New features available', time: '3h ago' },
+            ].map((item, i) => (
+              <div key={i} style={{ padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+                <div style={{ fontWeight: 500, marginBottom: '4px' }}>{item.title}</div>
+                <div style={{ fontSize: '14px', color: '#666' }}>{item.desc}</div>
+                <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>{item.time}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ),
+    },
+    profile: {
+      title: 'Profile',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: ODLTheme.colors.primary, margin: '0 auto 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '24px', fontWeight: 600 }}>JD</div>
+            <h3 style={{ margin: '0 0 4px 0' }}>John Doe</h3>
+            <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>john.doe@example.com</p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '6px', background: 'white', cursor: 'pointer', textAlign: 'left' }}>Edit Profile</button>
+            <button style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '6px', background: 'white', cursor: 'pointer', textAlign: 'left' }}>Account Settings</button>
+            <button style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '6px', background: 'white', cursor: 'pointer', textAlign: 'left' }}>Sign Out</button>
+          </div>
+        </div>
+      ),
+    },
+    search: {
+      title: 'Search',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <input type="text" placeholder="Search..." style={{ width: '100%', padding: '10px 12px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', boxSizing: 'border-box', marginBottom: '16px' }} />
+          <div style={{ fontWeight: 500, marginBottom: '8px' }}>Recent Searches</div>
+          <ul style={{ margin: 0, padding: '0 0 0 20px', color: '#666' }}>
+            <li>Project documents</li>
+            <li>Team members</li>
+            <li>Task reports</li>
+          </ul>
+        </div>
+      ),
+    },
+    filters: {
+      title: 'Filters',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontWeight: 500, marginBottom: '8px' }}>Status</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><input type="checkbox" /> Active</label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><input type="checkbox" /> Pending</label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><input type="checkbox" /> Completed</label>
+            </div>
+          </div>
+          <div>
+            <div style={{ fontWeight: 500, marginBottom: '8px' }}>Date Range</div>
+            <select style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}>
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last 90 days</option>
+              <option>All time</option>
+            </select>
+          </div>
+        </div>
+      ),
+    },
+  };
+
   const getActiveLabel = () => {
     const item = leftMenuItems.find(m => m.path === currentPath);
     return item?.label || 'Dashboard';
   };
+
+  const handleRightNavigate = (path: string) => {
+    const itemId = path.replace('/', '');
+    if (openRightPanel === itemId) {
+      setOpenRightPanel(null);
+    } else {
+      setOpenRightPanel(itemId);
+    }
+  };
+
+  const currentPanelContent = openRightPanel ? rightPanelContent[openRightPanel] : null;
 
   return (
     <div style={{
@@ -1432,20 +1683,26 @@ export const ODLAppShellTemplate: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Navigation Rail - Contextual Tools */}
-        <div style={{
-          height: '100%',
-          borderLeft: `1px solid ${ODLTheme.colors.border}`
-        }}>
+        {/* Right Panel - InlinePanel + NavigationRail */}
+        <div style={{ display: 'flex', height: '100%' }}>
+          {currentPanelContent && (
+            <InlinePanel
+              isOpen={!!openRightPanel}
+              onClose={() => setOpenRightPanel(null)}
+              title={currentPanelContent.title}
+              width="320px"
+            >
+              {currentPanelContent.content}
+            </InlinePanel>
+          )}
+
           <NavigationRail
             menuItems={rightMenuItems}
-            currentPath={currentPath}
-            onNavigate={(path) => setCurrentPath(path)}
-            collapsed={isRightCollapsed}
+            currentPath={openRightPanel ? `/${openRightPanel}` : ''}
+            onNavigate={handleRightNavigate}
+            collapsed={true}
             position="right"
             theme="light"
-            showCollapseToggle={true}
-            onCollapseToggle={setIsRightCollapsed}
             showTooltips={true}
           />
         </div>
@@ -1904,7 +2161,7 @@ export const ODLAdaptiveListTemplate: React.FC = () => {
 export const ODLEditorPageTemplate: React.FC = () => {
   const [currentPath, setCurrentPath] = useState('/editor');
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
-  const [isRightCollapsed, setIsRightCollapsed] = useState(true);
+  const [openRightPanel, setOpenRightPanel] = useState<string | null>(null);
   const [content, setContent] = useState(`
     <h1>Document Title</h1>
     <p>Start writing your document here. This editor provides a familiar word processor experience with automatic pagination.</p>
@@ -1929,6 +2186,103 @@ export const ODLEditorPageTemplate: React.FC = () => {
     { id: 'history', label: 'History', iconName: 'time', path: '/history', description: 'Version history' },
     { id: 'share', label: 'Share', iconName: 'share', path: '/share', description: 'Share document' },
   ];
+
+  // Right panel content for editor
+  const rightPanelContent: Record<string, { title: string; content: React.ReactNode }> = {
+    comments: {
+      title: 'Comments',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[
+              { author: 'Sarah J.', text: 'Great introduction paragraph!', time: '2h ago' },
+              { author: 'Michael C.', text: 'Can we add more details here?', time: '5h ago' },
+              { author: 'Emily R.', text: 'Approved the changes.', time: '1d ago' },
+            ].map((comment, i) => (
+              <div key={i} style={{ padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <span style={{ fontWeight: 500 }}>{comment.author}</span>
+                  <span style={{ fontSize: '12px', color: '#999' }}>{comment.time}</span>
+                </div>
+                <div style={{ fontSize: '14px', color: '#666' }}>{comment.text}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: '16px' }}>
+            <textarea placeholder="Add a comment..." style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', boxSizing: 'border-box', resize: 'vertical', minHeight: '80px' }} />
+            <button style={{ marginTop: '8px', padding: '8px 16px', backgroundColor: ODLTheme.colors.primary, color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Post Comment</button>
+          </div>
+        </div>
+      ),
+    },
+    history: {
+      title: 'Version History',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[
+              { version: 'v3.0', date: 'Today, 2:30 PM', author: 'You', current: true },
+              { version: 'v2.0', date: 'Yesterday, 4:15 PM', author: 'Sarah J.', current: false },
+              { version: 'v1.0', date: 'Dec 12, 10:00 AM', author: 'Michael C.', current: false },
+            ].map((item, i) => (
+              <div key={i} style={{ padding: '12px', backgroundColor: item.current ? '#e3f2fd' : '#f5f5f5', borderRadius: '8px', border: item.current ? `2px solid ${ODLTheme.colors.primary}` : 'none' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <span style={{ fontWeight: 600 }}>{item.version}</span>
+                  {item.current && <span style={{ fontSize: '12px', color: ODLTheme.colors.primary, fontWeight: 500 }}>Current</span>}
+                </div>
+                <div style={{ fontSize: '14px', color: '#666' }}>{item.date}</div>
+                <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>by {item.author}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ),
+    },
+    share: {
+      title: 'Share Document',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontWeight: 500, marginBottom: '8px' }}>Share with people</div>
+            <input type="email" placeholder="Enter email address..." style={{ width: '100%', padding: '10px 12px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', boxSizing: 'border-box' }} />
+          </div>
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontWeight: 500, marginBottom: '8px' }}>People with access</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {[
+                { name: 'John Doe (You)', role: 'Owner' },
+                { name: 'Sarah J.', role: 'Editor' },
+                { name: 'Michael C.', role: 'Viewer' },
+              ].map((person, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px', backgroundColor: '#f5f5f5', borderRadius: '6px' }}>
+                  <span>{person.name}</span>
+                  <span style={{ fontSize: '12px', color: '#666' }}>{person.role}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div style={{ fontWeight: 500, marginBottom: '8px' }}>Get link</div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <input type="text" value="https://docs.example.com/d/abc123" readOnly style={{ flex: 1, padding: '10px 12px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', backgroundColor: '#f5f5f5' }} />
+              <button style={{ padding: '10px 16px', backgroundColor: ODLTheme.colors.primary, color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Copy</button>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+  };
+
+  const handleRightNavigate = (path: string) => {
+    const itemId = path.replace('/', '');
+    if (openRightPanel === itemId) {
+      setOpenRightPanel(null);
+    } else {
+      setOpenRightPanel(itemId);
+    }
+  };
+
+  const currentPanelContent = openRightPanel ? rightPanelContent[openRightPanel] : null;
 
   const ZoomDropdown = (
     <select
@@ -1993,20 +2347,26 @@ export const ODLEditorPageTemplate: React.FC = () => {
           />
         </div>
 
-        {/* Right Navigation Rail */}
-        <div style={{
-          height: '100%',
-          borderLeft: `1px solid ${ODLTheme.colors.border}`
-        }}>
+        {/* Right Panel - InlinePanel + NavigationRail */}
+        <div style={{ display: 'flex', height: '100%' }}>
+          {currentPanelContent && (
+            <InlinePanel
+              isOpen={!!openRightPanel}
+              onClose={() => setOpenRightPanel(null)}
+              title={currentPanelContent.title}
+              width="320px"
+            >
+              {currentPanelContent.content}
+            </InlinePanel>
+          )}
+
           <NavigationRail
             menuItems={rightMenuItems}
-            currentPath={currentPath}
-            onNavigate={(path) => setCurrentPath(path)}
-            collapsed={isRightCollapsed}
+            currentPath={openRightPanel ? `/${openRightPanel}` : ''}
+            onNavigate={handleRightNavigate}
+            collapsed={true}
             position="right"
             theme="light"
-            showCollapseToggle={true}
-            onCollapseToggle={setIsRightCollapsed}
             showTooltips={true}
           />
         </div>
