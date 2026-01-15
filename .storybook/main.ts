@@ -26,6 +26,13 @@ const config: StorybookConfig = {
       '@mui/icons-material',
       '@mui/x-data-grid',
     ];
+
+    // Ensure SVG imports are handled as asset URLs
+    config.assetsInclude = config.assetsInclude || [];
+    if (Array.isArray(config.assetsInclude)) {
+      config.assetsInclude.push('**/*.svg');
+    }
+
     return config;
   },
 };
