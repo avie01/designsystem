@@ -57,7 +57,7 @@ const InlinePanel: React.FC<InlinePanelProps> = ({ isOpen, onClose, title, child
         height: '100%',
         backgroundColor: colors.paper,
         borderLeft: `1px solid ${colors.grey300}`,
-        borderRight: '1px solid #EDF1F5',
+        borderRight: `1px solid ${colors.default}`,
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -263,15 +263,15 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ onClose }) => {
                 maxWidth: '75%',
                 padding: message.role === 'user' ? '12px 16px' : '0 16px 12px 0',
                 borderRadius: message.role === 'user' ? '0px' : undefined,
-                backgroundColor: message.role === 'user' ? '#F5F5F5' : undefined,
-                borderLeft: message.role === 'user' ? '4px solid #d1d1d1' : undefined,
+                backgroundColor: message.role === 'user' ? colors.grey300 : undefined,
+                borderLeft: message.role === 'user' ? `4px solid ${colors.grey500}` : undefined,
                 color: colors.textPrimary,
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                 <span
                   style={{
-                    color: 'var(--primary-obj-night, #32373F)',
+                    color: colors.primaryNight,
                     fontFamily: 'var(--font-family-noto)',
                     fontSize: '14px',
                     fontWeight: 600,
@@ -282,7 +282,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ onClose }) => {
                 </span>
                 <span
                   style={{
-                    color: 'var(--grey-700-obj-neutral, #707070)',
+                    color: colors.grey700,
                     fontFamily: 'var(--font-family-noto)',
                     fontSize: '14px',
                     fontWeight: 500,
@@ -339,9 +339,9 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ onClose }) => {
           display: 'flex',
           flexDirection: 'column',
           padding: '10px 16px',
-          gap: '12px',
+          gap: '4px',
           alignSelf: 'stretch',
-          borderTop: '1px solid var(--grey-600-disabled-obj-neutral-ac, #ACACAC)',
+          borderTop: `1px solid ${colors.default}`,
         }}
         onKeyDown={handleKeyDown}
       >
