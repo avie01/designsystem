@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ODLTheme from '../styles/ODLTheme';
 
 // ODL Components
@@ -6,7 +6,7 @@ import A4Editor from '../components/A4Editor/A4Editor';
 import Button from '../components/Button/ButtonTW';
 // Import Button with icon support for BulkActionsBar
 import ButtonComponent from '../components/Button/Button';
-import Input from '../components/Input/InputTW';
+import Input from '../components/Input/Input';
 import Dropdown from '../components/Dropdown/Dropdown';
 import AdvancedTable, { TableColumn } from '../components/AdvancedTable/AdvancedTable';
 import AdaptiveList, { ViewType } from '../components/AdaptiveList/AdaptiveList';
@@ -24,7 +24,9 @@ import Drawer from '../components/Drawer/Drawer';
 import IconButton from '../components/IconButton/IconButton';
 import Checkbox from '../components/Checkbox/Checkbox';
 import PopupMenu, { PopupMenuItem } from '../components/PopupMenu/PopupMenu';
+import UserAvatar from '../components/UserAvatar/UserAvatar';
 import { useTheme } from '../../.storybook/theme-decorator';
+import oiIcon from '../assets/oi.svg';
 
 /**
  * PURE ODL PAGE TEMPLATES
@@ -62,37 +64,321 @@ const InlinePanel: React.FC<InlinePanelProps> = ({ isOpen, onClose, title, child
         transition: 'width 0.2s ease-in-out',
       }}
     >
+      {title && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '16px',
+            borderBottom: `1px solid ${colors.grey300}`,
+          }}
+        >
+          <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: colors.textPrimary }}>{title}</h2>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '4px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '4px',
+              color: colors.textSecondary,
+            }}
+            aria-label="Close panel"
+          >
+            <Icon name="close" size={20} />
+          </button>
+        </div>
+      )}
+      <div style={{ flex: 1, overflow: title ? 'auto' : 'hidden' }}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// AI ICON COMPONENT
+// ============================================
+const AIIcon: React.FC<{ size?: number }> = ({ size = 20 }) => (
+  <img src={oiIcon} alt="Objective Intelligence" width={size} height={size} style={{ borderRadius: '4px' }} />
+);
+
+// ============================================
+// AI CHAT MESSAGE INTERFACE
+// ============================================
+interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
+
+// ============================================
+// AI CHAT COMPONENT
+// ============================================
+interface AIChatPanelProps {
+  onClose?: () => void;
+}
+
+const AIChatPanel: React.FC<AIChatPanelProps> = ({ onClose }) => {
+  const { colors } = useTheme();
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: '1',
+      role: 'assistant',
+      content: 'Hello! I\'m your AI assistant. How can I help you today?',
+      timestamp: new Date(Date.now() - 60000),
+    },
+  ]);
+  const [inputValue, setInputValue] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const isInitialMount = useRef(true);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    scrollToBottom();
+  }, [messages]);
+
+  const simulateAIResponse = (userMessage: string) => {
+    setIsTyping(true);
+    setTimeout(() => {
+      const aiMessage: ChatMessage = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: `That's a great question about "${userMessage}". Let me help you with that. This is a simulated response demonstrating the AI chat functionality.`,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, aiMessage]);
+      setIsTyping(false);
+    }, 1500);
+  };
+
+  const handleSend = () => {
+    if (!inputValue.trim()) return;
+
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: inputValue.trim(),
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
+    simulateAIResponse(inputValue.trim());
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {/* Header */}
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
           alignItems: 'center',
+          justifyContent: 'space-between',
           padding: '16px',
           borderBottom: `1px solid ${colors.grey300}`,
+          backgroundColor: colors.paper,
         }}
       >
-        <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: colors.textPrimary }}>{title}</h2>
-        <button
-          onClick={onClose}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '4px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '4px',
-            color: colors.textSecondary,
-          }}
-          aria-label="Close panel"
-        >
-          <Icon name="close" size={20} />
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <AIIcon size={36} />
+          </div>
+          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: colors.textPrimary }}>Objective Intelligence</h3>
+        </div>
+        {onClose && (
+          <IconButton icon="close" variant="ghost" size="small" onClick={onClose} aria-label="Close chat" />
+        )}
       </div>
-      <div style={{ flex: 1, overflow: 'auto' }}>
-        {children}
+
+      {/* Messages */}
+      <div style={{ flex: 1, overflow: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            style={{
+              display: 'flex',
+              flexDirection: message.role === 'user' ? 'row-reverse' : 'row',
+              gap: '12px',
+              alignItems: 'flex-start',
+            }}
+          >
+            {message.role === 'user' ? (
+              <div style={{ flexShrink: 0 }}>
+                <UserAvatar size="lg" user={{ name: 'User' }} showPopup={false} />
+              </div>
+            ) : (
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '6px',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <AIIcon size={32} />
+              </div>
+            )}
+            <div
+              style={{
+                maxWidth: '75%',
+                padding: message.role === 'user' ? '12px 16px' : '0 16px 12px 0',
+                borderRadius: message.role === 'user' ? '0px' : undefined,
+                backgroundColor: message.role === 'user' ? '#F5F5F5' : undefined,
+                borderLeft: message.role === 'user' ? '4px solid #d1d1d1' : undefined,
+                color: colors.textPrimary,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <span
+                  style={{
+                    color: 'var(--primary-obj-night, #32373F)',
+                    fontFamily: 'var(--font-family-noto)',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    lineHeight: '21px',
+                  }}
+                >
+                  {message.role === 'user' ? 'User' : 'Objective Intelligence'}
+                </span>
+                <span
+                  style={{
+                    color: 'var(--grey-700-obj-neutral, #707070)',
+                    fontFamily: 'var(--font-family-noto)',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    lineHeight: '21px',
+                  }}
+                >
+                  {formatTime(message.timestamp)}
+                </span>
+              </div>
+              <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.5, whiteSpace: 'pre-wrap', fontFamily: 'var(--font-family-noto)' }}>{message.content}</p>
+              {message.role === 'assistant' && (
+                <div style={{ display: 'flex', gap: '4px', marginTop: '12px' }}>
+                  <IconButton icon="copy" variant="ghost" size="small" aria-label="Copy response" title="Copy" />
+                  <IconButton icon="restart" variant="ghost" size="small" aria-label="Regenerate response" title="Regenerate" />
+                  <IconButton icon="thumbs-up" variant="ghost" size="small" aria-label="Good response" title="Good response" />
+                  <IconButton icon="thumbs-down" variant="ghost" size="small" aria-label="Bad response" title="Bad response" />
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+
+        {isTyping && (
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '6px',
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <AIIcon size={32} />
+            </div>
+            <div style={{ padding: '12px 16px', borderRadius: '16px 16px 16px 4px', backgroundColor: colors.grey100 }}>
+              <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: colors.textSecondary, animation: 'typing-dot 1.4s infinite ease-in-out' }} />
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: colors.textSecondary, animation: 'typing-dot 1.4s infinite ease-in-out', animationDelay: '0.2s' }} />
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: colors.textSecondary, animation: 'typing-dot 1.4s infinite ease-in-out', animationDelay: '0.4s' }} />
+              </div>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </div>
+
+      {/* Input */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '10px 16px',
+          gap: '12px',
+          alignSelf: 'stretch',
+          borderTop: '1px solid var(--grey-600-disabled-obj-neutral-ac, #ACACAC)',
+        }}
+        onKeyDown={handleKeyDown}
+      >
+        <Input
+          value={inputValue}
+          onChange={setInputValue}
+          placeholder="Ask a question..."
+        />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <IconButton
+            icon="add"
+            variant="ghost"
+            aria-label="Add attachment"
+          />
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <IconButton
+              icon="microphone"
+              variant="ghost"
+              aria-label="Voice input"
+            />
+            <IconButton
+              icon="send"
+              variant={inputValue.trim() && !isTyping ? 'primary' : 'disabled'}
+              onClick={handleSend}
+              disabled={!inputValue.trim() || isTyping}
+              aria-label="Send message"
+            />
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes typing-dot {
+          0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+          30% { transform: translateY(-4px); opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 };
@@ -133,6 +419,7 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
 
   // Right navigation menu items - contextual tools
   const rightMenuItems = [
+    { id: 'ai-chat', label: 'Objective Intelligence', iconName: 'chat', path: '/ai-chat', description: 'Ask AI' },
     { id: 'notifications', label: 'Notifications', iconName: 'notification', path: '/notifications', description: 'View notifications' },
     { id: 'profile', label: 'Profile', iconName: 'user', path: '/profile', description: 'Your profile' },
     { id: 'search', label: 'Search', iconName: 'search', path: '/search', description: 'Search content' },
@@ -141,6 +428,10 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
 
   // Right panel content based on selected item
   const rightPanelContent: Record<string, { title: string; content: React.ReactNode }> = {
+    'ai-chat': {
+      title: 'Objective Intelligence',
+      content: <AIChatPanel onClose={() => setOpenRightPanel(null)} />,
+    },
     notifications: {
       title: 'Notifications',
       content: (
@@ -325,8 +616,8 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
             <InlinePanel
               isOpen={!!openRightPanel}
               onClose={() => setOpenRightPanel(null)}
-              title={currentPanelContent.title}
-              width="320px"
+              title={openRightPanel === 'ai-chat' ? '' : currentPanelContent.title}
+              width={openRightPanel === 'ai-chat' ? '380px' : '320px'}
             >
               {currentPanelContent.content}
             </InlinePanel>
@@ -1369,6 +1660,7 @@ export const ODLAppShellTemplate: React.FC = () => {
 
   // Right navigation menu items - contextual tools
   const rightMenuItems = [
+    { id: 'ai-chat', label: 'Objective Intelligence', iconName: 'chat', path: '/ai-chat', description: 'Ask AI' },
     { id: 'notifications', label: 'Notifications', iconName: 'notification', path: '/notifications', description: 'View notifications' },
     { id: 'profile', label: 'Profile', iconName: 'user', path: '/profile', description: 'Your profile' },
     { id: 'search', label: 'Search', iconName: 'search', path: '/search', description: 'Search content' },
@@ -1377,6 +1669,10 @@ export const ODLAppShellTemplate: React.FC = () => {
 
   // Right panel content based on selected item
   const rightPanelContent: Record<string, { title: string; content: React.ReactNode }> = {
+    'ai-chat': {
+      title: 'Objective Intelligence',
+      content: <AIChatPanel onClose={() => setOpenRightPanel(null)} />,
+    },
     notifications: {
       title: 'Notifications',
       content: (
@@ -1689,8 +1985,8 @@ export const ODLAppShellTemplate: React.FC = () => {
             <InlinePanel
               isOpen={!!openRightPanel}
               onClose={() => setOpenRightPanel(null)}
-              title={currentPanelContent.title}
-              width="320px"
+              title={openRightPanel === 'ai-chat' ? '' : currentPanelContent.title}
+              width={openRightPanel === 'ai-chat' ? '380px' : '320px'}
             >
               {currentPanelContent.content}
             </InlinePanel>
@@ -2353,8 +2649,8 @@ export const ODLEditorPageTemplate: React.FC = () => {
             <InlinePanel
               isOpen={!!openRightPanel}
               onClose={() => setOpenRightPanel(null)}
-              title={currentPanelContent.title}
-              width="320px"
+              title={openRightPanel === 'ai-chat' ? '' : currentPanelContent.title}
+              width={openRightPanel === 'ai-chat' ? '380px' : '320px'}
             >
               {currentPanelContent.content}
             </InlinePanel>

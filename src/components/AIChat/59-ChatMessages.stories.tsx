@@ -148,7 +148,7 @@ const AIResponse: React.FC<AIResponseProps> = ({
       <div
         style={{
           maxWidth: '75%',
-          padding: '0 16px 12px 16px',
+          padding: '0 16px 12px 0',
           color: colors.textPrimary,
         }}
       >
@@ -444,7 +444,7 @@ export const AIResponseWithButtonActions: Story = {
           <div
             style={{
               maxWidth: '75%',
-              padding: '0 16px 12px 16px',
+              padding: '0 16px 12px 0',
               color: colors.textPrimary,
             }}
           >
@@ -529,7 +529,7 @@ export const AIResponseWithIconButtonActions: Story = {
           <div
             style={{
               maxWidth: '75%',
-              padding: '0 16px 12px 16px',
+              padding: '0 16px 12px 0',
               color: colors.textPrimary,
             }}
           >

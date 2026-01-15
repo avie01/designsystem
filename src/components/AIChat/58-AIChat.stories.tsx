@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
+import Input from '../Input/Input';
 import Modal from '../Modal/Modal';
 import NavigationRail from '../NavigationRail/NavigationRail';
 import UserAvatar from '../UserAvatar/UserAvatar';
@@ -166,10 +167,7 @@ const AIChat: React.FC<AIChatProps> = ({
             >
               <AIIcon size={36} />
             </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: colors.textPrimary }}>{title}</h3>
-              <span style={{ fontSize: '12px', color: colors.textSecondary }}>Online</span>
-            </div>
+            <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: colors.textPrimary }}>{title}</h3>
           </div>
           {onClose && (
             <IconButton icon="close" variant="ghost" size="small" onClick={onClose} aria-label="Close chat" />
@@ -241,7 +239,7 @@ const AIChat: React.FC<AIChatProps> = ({
             <div
               style={{
                 maxWidth: '75%',
-                padding: message.role === 'user' ? '12px 16px' : '0 16px 12px 16px',
+                padding: message.role === 'user' ? '12px 16px' : '0 16px 12px 0',
                 borderRadius: message.role === 'user' ? '0px' : undefined,
                 backgroundColor: message.role === 'user' ? '#F5F5F5' : undefined,
                 borderLeft: message.role === 'user' ? '4px solid #d1d1d1' : undefined,
@@ -357,63 +355,41 @@ const AIChat: React.FC<AIChatProps> = ({
 
       <div
         style={{
-          padding: '16px',
-          borderTop: `1px solid ${colors.grey300}`,
-          backgroundColor: colors.paper,
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '10px 16px',
+          gap: '12px',
+          alignSelf: 'stretch',
+          borderTop: '1px solid var(--grey-600-disabled-obj-neutral-ac, #ACACAC)',
         }}
+        onKeyDown={handleKeyDown}
       >
-        <div
-          style={{
-            display: 'flex',
-            gap: '12px',
-            alignItems: 'flex-end',
-          }}
-        >
-          <textarea
-            ref={inputRef}
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={placeholder}
-            rows={1}
-            style={{
-              flex: 1,
-              padding: '12px 16px',
-              borderRadius: '24px',
-              border: `1px solid ${colors.grey300}`,
-              backgroundColor: colors.grey50,
-              fontSize: '14px',
-              resize: 'none',
-              outline: 'none',
-              fontFamily: 'inherit',
-              minHeight: '44px',
-              maxHeight: '120px',
-            }}
+        <Input
+          value={inputValue}
+          onChange={setInputValue}
+          placeholder={placeholder}
+        />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <IconButton
+            icon="add"
+            variant="ghost"
+            aria-label="Add attachment"
           />
-          <button
-            onClick={handleSend}
-            disabled={!inputValue.trim() || isTyping}
-            style={{
-              width: '44px',
-              height: '44px',
-              borderRadius: '50%',
-              border: 'none',
-              backgroundColor: inputValue.trim() && !isTyping ? colors.primaryMain : colors.grey300,
-              color: 'white',
-              cursor: inputValue.trim() && !isTyping ? 'pointer' : 'not-allowed',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'background-color 0.2s',
-            }}
-            aria-label="Send message"
-          >
-            <Icon name="send" size={20} />
-          </button>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <IconButton
+              icon="microphone"
+              variant="ghost"
+              aria-label="Voice input"
+            />
+            <IconButton
+              icon="send"
+              variant={inputValue.trim() && !isTyping ? 'primary' : 'disabled'}
+              onClick={handleSend}
+              disabled={!inputValue.trim() || isTyping}
+              aria-label="Send message"
+            />
+          </div>
         </div>
-        <p style={{ margin: '8px 0 0', fontSize: '11px', color: colors.textSecondary, textAlign: 'center' }}>
-          Press Enter to send, Shift+Enter for new line
-        </p>
       </div>
 
       <style>{`
