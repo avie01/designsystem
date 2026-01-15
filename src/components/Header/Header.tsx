@@ -109,57 +109,57 @@ const Header: React.FC<HeaderProps> = ({
   const getVariantConfig = (variant: string, isDark: boolean = false) => {
     const configs = {
       'build': {
-        lightLogo: '/src/assets/build-light.svg',
-        darkLogo: '/src/assets/build-dark.svg',
+        lightLogo: '/assets/build-light.svg',
+        darkLogo: '/assets/build-dark.svg',
         title: 'Build',
         logoAlt: 'Build Logo',
         color: '#5DA10C'
       },
       'connect': {
-        lightLogo: '/src/assets/connect-light.svg',
-        darkLogo: '/src/assets/connect-dark.svg',
+        lightLogo: '/assets/connect-light.svg',
+        darkLogo: '/assets/connect-dark.svg',
         title: 'Connect',
         logoAlt: 'Connect Logo',
         color: '#0B77D8'
       },
       'keystone': {
-        lightLogo: '/src/assets/keystone-light.svg',
-        darkLogo: '/src/assets/keystone-dark.svg',
+        lightLogo: '/assets/keystone-light.svg',
+        darkLogo: '/assets/keystone-dark.svg',
         title: 'Keystone',
         logoAlt: 'Keystone Logo',
         color: '#00928F'
       },
       'nexus': {
-        lightLogo: '/src/assets/nexus-light.svg',
-        darkLogo: '/src/assets/nexus-dark.svg',
+        lightLogo: '/assets/nexus-light.svg',
+        darkLogo: '/assets/nexus-dark.svg',
         title: 'Nexus',
         logoAlt: 'Nexus Logo',
         color: '#0B77D8'
       },
       'regworks': {
-        lightLogo: '/src/assets/regworks-light.svg',
-        darkLogo: '/src/assets/regworks-dark.svg',
+        lightLogo: '/assets/regworks-light.svg',
+        darkLogo: '/assets/regworks-dark.svg',
         title: 'Regworks',
         logoAlt: 'Regworks Logo',
         color: '#00928F'
       },
       '3sixty': {
-        lightLogo: '/src/assets/3sixty-light.svg',
-        darkLogo: '/src/assets/3sixty-dark.svg',
+        lightLogo: '/assets/3sixty-light.svg',
+        darkLogo: '/assets/3sixty-dark.svg',
         title: '3Sixty',
         logoAlt: '3Sixty Logo',
         color: '#0B77D8'
       },
       'keyplan': {
-        lightLogo: '/src/assets/keyplan-light.svg',
-        darkLogo: '/src/assets/keyplan-dark.svg',
+        lightLogo: '/assets/keyplan-light.svg',
+        darkLogo: '/assets/keyplan-dark.svg',
         title: 'Keyplan',
         logoAlt: 'Keyplan Logo',
         color: '#5DA10C'
       },
       'trapeze': {
-        lightLogo: '/src/assets/trapeze-light.svg',
-        darkLogo: '/src/assets/trapeze-dark.svg',
+        lightLogo: '/assets/trapeze-light.svg',
+        darkLogo: '/assets/trapeze-dark.svg',
         title: 'Trapeze',
         logoAlt: 'Trapeze Logo',
         color: '#5DA10C'
