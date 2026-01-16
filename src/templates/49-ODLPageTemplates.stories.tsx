@@ -8,6 +8,7 @@ import {
   ODLAppShellTemplate,
   ODLAdaptiveListTemplate,
   ODLEditorPageTemplate,
+  ODLAdaptiveDashboardTemplate,
 } from './ODLPageTemplates';
 
 /**
@@ -48,6 +49,7 @@ A collection of page templates built **exclusively with ODL Design System compon
 | **AdaptiveList** | Flexible data display with multiple view types | AdaptiveList, Button, Icon |
 | **App Shell** | Full app layout with navigation | NavigationRail, Breadcrumb |
 | **Editor** | A4 document editor with toolbar | A4Editor, NavigationRail |
+| **Adaptive Dashboard** | Drag-and-drop widget dashboard | GridStack, Icon, Graph |
 
 ### How to Use
 
@@ -305,10 +307,40 @@ Perfect for document creation, reports, letters, or any content that needs print
 };
 
 /**
+ * Adaptive dashboard with GridStack.js for drag-and-drop widget layout.
+ *
+ * **Components used:**
+ * - Header (Nexus variant)
+ * - NavigationRail (left & right)
+ * - GridStack (draggable/resizable widgets)
+ * - Icon, Breadcrumb
+ */
+export const AdaptiveDashboard: Story = {
+  name: '09 Adaptive Dashboard',
+  render: () => <ODLAdaptiveDashboardTemplate />,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+An adaptive dashboard page featuring GridStack.js:
+- **Header**: Nexus variant with user profile
+- **Left Navigation Rail**: Dashboard-focused navigation
+- **GridStack Layout**: Drag and drop widgets to customize layout
+- **Resizable Widgets**: Resize widgets to fit your needs
+- **Right Navigation Rail**: AI chat, notifications, and settings
+
+Perfect for analytics dashboards, admin panels, or any interface that needs customizable layouts.
+        `,
+      },
+    },
+  },
+};
+
+/**
  * View all ODL templates together for comparison.
  */
 export const AllTemplates: Story = {
-  name: '09 All Templates',
+  name: '10 All Templates',
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '60px', padding: '20px', backgroundColor: '#f5f5f5' }}>
       <section>

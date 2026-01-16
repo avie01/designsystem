@@ -27,6 +27,8 @@ import PopupMenu, { PopupMenuItem } from '../components/PopupMenu/PopupMenu';
 import UserAvatar from '../components/UserAvatar/UserAvatar';
 import { useTheme } from '../../.storybook/theme-decorator';
 import oiIcon from '../assets/oi.svg';
+import { GridStack } from 'gridstack';
+import 'gridstack/dist/gridstack.min.css';
 
 /**
  * PURE ODL PAGE TEMPLATES
@@ -2406,19 +2408,356 @@ const AdaptiveListContent: React.FC = () => {
 };
 
 export const ODLAdaptiveListTemplate: React.FC = () => {
+  const { colors } = useTheme();
+  const [currentPath, setCurrentPath] = useState('/documents');
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+  const [openRightPanel, setOpenRightPanel] = useState<string | null>(null);
+  const [panelWidth, setPanelWidth] = useState(280);
+  const [isDragging, setIsDragging] = useState(false);
+  const [panelCollapsed, setPanelCollapsed] = useState(false);
+  const [hasDragged, setHasDragged] = useState(false);
+
+  const leftMenuItems = [
+    { id: 'dashboard', label: 'Dashboard', iconName: 'dashboard', path: '/dashboard', description: 'View your dashboard' },
+    { id: 'documents', label: 'Documents', iconName: 'document', path: '/documents', description: 'Manage documents' },
+    { id: 'projects', label: 'Projects', iconName: 'folder', path: '/projects', description: 'Manage projects' },
+    { id: 'team', label: 'Team', iconName: 'user-multiple', path: '/team', description: 'Manage team' },
+    { id: 'settings', label: 'Settings', iconName: 'settings', path: '/settings', description: 'System settings' },
+  ];
+
+  const rightMenuItems = [
+    { id: 'ai-chat', label: 'Objective Intelligence', iconName: 'chat', path: '/ai-chat', description: 'Ask AI' },
+    { id: 'notifications', label: 'Notifications', iconName: 'notification', path: '/notifications', description: 'View notifications' },
+    { id: 'profile', label: 'Profile', iconName: 'user', path: '/profile', description: 'Your profile' },
+    { id: 'search', label: 'Search', iconName: 'search', path: '/search', description: 'Search content' },
+    { id: 'filters', label: 'Filters', iconName: 'filter', path: '/filters', description: 'Apply filters' },
+  ];
+
+  const rightPanelContent: Record<string, { title: string; content: React.ReactNode }> = {
+    'ai-chat': {
+      title: 'Objective Intelligence',
+      content: <AIChatPanel onClose={() => setOpenRightPanel(null)} />,
+    },
+    notifications: {
+      title: 'Notifications',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[
+              { title: 'New comment', desc: 'Sarah commented on your document', time: '5m ago' },
+              { title: 'Task completed', desc: 'Project milestone achieved', time: '1h ago' },
+              { title: 'System update', desc: 'New features available', time: '3h ago' },
+            ].map((item, i) => (
+              <div key={i} style={{ padding: '12px', backgroundColor: colors.grey300, borderRadius: '8px' }}>
+                <div style={{ fontWeight: 500, marginBottom: '4px', color: colors.textPrimary }}>{item.title}</div>
+                <div style={{ fontSize: '14px', color: colors.textSecondary }}>{item.desc}</div>
+                <div style={{ fontSize: '12px', color: colors.textMuted, marginTop: '4px' }}>{item.time}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ),
+    },
+    profile: {
+      title: 'Profile',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: colors.primaryMain, margin: '0 auto 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: colors.textInverse, fontSize: '24px', fontWeight: 600 }}>JD</div>
+            <h3 style={{ margin: '0 0 4px 0', color: colors.textPrimary }}>John Doe</h3>
+            <p style={{ margin: 0, color: colors.textSecondary, fontSize: '14px' }}>john.doe@example.com</p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button style={{ padding: '10px', border: `1px solid ${colors.border}`, borderRadius: '6px', background: colors.paper, cursor: 'pointer', textAlign: 'left', color: colors.textPrimary }}>Edit Profile</button>
+            <button style={{ padding: '10px', border: `1px solid ${colors.border}`, borderRadius: '6px', background: colors.paper, cursor: 'pointer', textAlign: 'left', color: colors.textPrimary }}>Account Settings</button>
+            <button style={{ padding: '10px', border: `1px solid ${colors.border}`, borderRadius: '6px', background: colors.paper, cursor: 'pointer', textAlign: 'left', color: colors.textPrimary }}>Sign Out</button>
+          </div>
+        </div>
+      ),
+    },
+    search: {
+      title: 'Search',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <input type="text" placeholder="Search..." style={{ width: '100%', padding: '10px 12px', border: `1px solid ${colors.border}`, borderRadius: '6px', fontSize: '14px', boxSizing: 'border-box', marginBottom: '16px', backgroundColor: colors.paper, color: colors.textPrimary }} />
+          <div style={{ fontWeight: 500, marginBottom: '8px', color: colors.textPrimary }}>Recent Searches</div>
+          <ul style={{ margin: 0, padding: '0 0 0 20px', color: colors.textSecondary }}>
+            <li>Project documents</li>
+            <li>Team members</li>
+            <li>Task reports</li>
+          </ul>
+        </div>
+      ),
+    },
+    filters: {
+      title: 'Filters',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontWeight: 500, marginBottom: '8px', color: colors.textPrimary }}>Status</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colors.textPrimary }}><input type="checkbox" /> Active</label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colors.textPrimary }}><input type="checkbox" /> Pending</label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colors.textPrimary }}><input type="checkbox" /> Completed</label>
+            </div>
+          </div>
+          <div>
+            <div style={{ fontWeight: 500, marginBottom: '8px', color: colors.textPrimary }}>Date Range</div>
+            <select style={{ width: '100%', padding: '8px', borderRadius: '6px', border: `1px solid ${colors.border}`, backgroundColor: colors.paper, color: colors.textPrimary }}>
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last 90 days</option>
+              <option>All time</option>
+            </select>
+          </div>
+        </div>
+      ),
+    },
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+    setHasDragged(false);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      setHasDragged(true);
+      if (panelCollapsed) {
+        setPanelCollapsed(false);
+      }
+      const railWidth = isNavCollapsed ? 56 : 200;
+      const newWidth = e.clientX - railWidth;
+      const clampedWidth = Math.max(200, Math.min(400, newWidth));
+      setPanelWidth(clampedWidth);
+    };
+
+    const handleMouseUp = () => {
+      if (isDragging && !hasDragged) {
+        setPanelCollapsed((prev) => !prev);
+      }
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, isNavCollapsed, hasDragged, panelCollapsed]);
+
+  const handleRightNavigate = (path: string) => {
+    const itemId = path.replace('/', '');
+    if (openRightPanel === itemId) {
+      setOpenRightPanel(null);
+    } else {
+      setOpenRightPanel(itemId);
+    }
+  };
+
+  const documentCategories = [
+    { name: 'All Documents', count: 156, icon: 'document' },
+    { name: 'Recent', count: 24, icon: 'time' },
+    { name: 'Favorites', count: 12, icon: 'star' },
+    { name: 'Shared with me', count: 38, icon: 'share' },
+    { name: 'Archived', count: 45, icon: 'archive' },
+  ];
+
+  const documentTypes = [
+    { name: 'PDFs', count: 42, color: '#E53935' },
+    { name: 'Word Docs', count: 38, color: '#1E88E5' },
+    { name: 'Spreadsheets', count: 31, color: '#43A047' },
+    { name: 'Presentations', count: 25, color: '#FB8C00' },
+    { name: 'Images', count: 20, color: '#8E24AA' },
+  ];
+
   return (
-    <ODLAppShellWrapper
-      currentPage="/documents"
-      pageTitle="Document Management"
-      pageSubtitle="Manage and organize your documents with advanced filtering and view options"
-      headerVariant="nexus"
-      breadcrumbItems={[
-        { label: 'Home', path: '/' },
-        { label: 'Documents', path: '/documents' },
-      ]}
-    >
-      <AdaptiveListContent />
-    </ODLAppShellWrapper>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: colors.paper, cursor: isDragging ? 'col-resize' : 'default' }}>
+      <Header variant="nexus" userName="John Doe" />
+
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', height: '100%' }}>
+          <NavigationRail
+            menuItems={leftMenuItems}
+            currentPath={currentPath}
+            onNavigate={setCurrentPath}
+            collapsed={isNavCollapsed}
+            position="left"
+            theme="light"
+            showHelpIcon={true}
+            showCollapseToggle={true}
+            onCollapseToggle={setIsNavCollapsed}
+            showTooltips={true}
+          />
+
+          <div style={{ display: 'flex', height: '100%' }}>
+            {!panelCollapsed && (
+              <div style={{
+                width: `${panelWidth}px`,
+                height: '100%',
+                backgroundColor: colors.paper,
+                borderRight: `1px solid ${colors.default}`,
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
+              }}>
+                <div style={{
+                  padding: '16px',
+                  borderBottom: `1px solid ${colors.grey300}`,
+                }}>
+                  <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 600, color: colors.textPrimary }}>Documents</h3>
+                  <p style={{ margin: 0, fontSize: '12px', color: colors.textMuted }}>Browse and filter your files</p>
+                </div>
+
+                <div style={{ flex: 1, overflow: 'auto', padding: '12px' }}>
+                  <div style={{ marginBottom: '20px' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 600, color: colors.textMuted, textTransform: 'uppercase', marginBottom: '8px', padding: '0 8px' }}>Categories</div>
+                    {documentCategories.map((cat, i) => (
+                      <div key={i} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        padding: '10px 8px',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        backgroundColor: i === 0 ? colors.grey300 : 'transparent',
+                      }}>
+                        <Icon name={cat.icon} size={18} color={i === 0 ? colors.primaryMain : colors.textSecondary} />
+                        <span style={{ flex: 1, fontSize: '14px', color: i === 0 ? colors.primaryMain : colors.textPrimary, fontWeight: i === 0 ? 500 : 400 }}>{cat.name}</span>
+                        <span style={{ fontSize: '12px', color: colors.textMuted, backgroundColor: colors.grey300, padding: '2px 8px', borderRadius: '10px' }}>{cat.count}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{ marginBottom: '20px' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 600, color: colors.textMuted, textTransform: 'uppercase', marginBottom: '8px', padding: '0 8px' }}>File Types</div>
+                    {documentTypes.map((type, i) => (
+                      <div key={i} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        padding: '8px',
+                        cursor: 'pointer',
+                      }}>
+                        <div style={{ width: '12px', height: '12px', borderRadius: '3px', backgroundColor: type.color }} />
+                        <span style={{ flex: 1, fontSize: '14px', color: colors.textPrimary }}>{type.name}</span>
+                        <span style={{ fontSize: '12px', color: colors.textMuted }}>{type.count}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div>
+                    <div style={{ fontSize: '11px', fontWeight: 600, color: colors.textMuted, textTransform: 'uppercase', marginBottom: '8px', padding: '0 8px' }}>Storage</div>
+                    <div style={{ padding: '8px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                        <span style={{ fontSize: '13px', color: colors.textPrimary }}>Used</span>
+                        <span style={{ fontSize: '13px', color: colors.textMuted }}>4.2 GB / 10 GB</span>
+                      </div>
+                      <div style={{ height: '6px', backgroundColor: colors.grey300, borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ height: '100%', width: '42%', backgroundColor: colors.primaryMain, borderRadius: '3px' }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div
+              onMouseDown={handleMouseDown}
+              style={{
+                width: '17.2px',
+                height: '100%',
+                backgroundColor: colors.paper,
+                borderRight: `1px solid ${colors.border}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: panelCollapsed ? 'pointer' : 'col-resize',
+                userSelect: 'none',
+                transition: isDragging ? 'none' : 'background-color 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                if (!isDragging) {
+                  e.currentTarget.style.backgroundColor = colors.grey300;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isDragging) {
+                  e.currentTarget.style.backgroundColor = colors.paper;
+                }
+              }}
+            >
+              <Icon name="draggable" size={16} color={colors.textPrimary} />
+            </div>
+          </div>
+        </div>
+
+        <div style={{ flex: 1, overflow: 'auto', padding: ODLTheme.spacing[6], background: colors.paper }}>
+          <Breadcrumb items={[{ label: 'Home', path: '/' }, { label: 'Documents', path: '/documents' }]} />
+
+          <h1 style={{
+            fontSize: ODLTheme.typography.fontSize['2xl'],
+            fontWeight: ODLTheme.typography.fontWeight.semibold,
+            color: colors.textPrimary,
+            margin: `${ODLTheme.spacing[4]} 0 ${ODLTheme.spacing[2]} 0`
+          }}>
+            Document Management
+          </h1>
+
+          <p style={{
+            fontSize: ODLTheme.typography.fontSize.base,
+            color: colors.textSecondary,
+            margin: `0 0 ${ODLTheme.spacing[6]} 0`
+          }}>
+            Manage and organize your documents with advanced filtering and view options
+          </p>
+
+          <div style={{
+            background: colors.default,
+            borderRadius: ODLTheme.borders.radius.lg,
+            padding: ODLTheme.spacing[6],
+            minHeight: '400px'
+          }}>
+            <div style={{
+              background: colors.paper,
+              borderRadius: ODLTheme.borders.radius.md,
+              padding: ODLTheme.spacing[6]
+            }}>
+              <AdaptiveListContent />
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', height: '100%' }}>
+          {openRightPanel && rightPanelContent[openRightPanel] && (
+            <InlinePanel
+              isOpen={!!openRightPanel}
+              onClose={() => setOpenRightPanel(null)}
+              title={openRightPanel === 'ai-chat' ? '' : rightPanelContent[openRightPanel].title}
+              width={openRightPanel === 'ai-chat' ? '380px' : '320px'}
+            >
+              {rightPanelContent[openRightPanel].content}
+            </InlinePanel>
+          )}
+
+          <NavigationRail
+            menuItems={rightMenuItems}
+            currentPath={openRightPanel ? `/${openRightPanel}` : ''}
+            onNavigate={handleRightNavigate}
+            collapsed={true}
+            position="right"
+            theme="light"
+            showTooltips={true}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -2642,6 +2981,425 @@ export const ODLEditorPageTemplate: React.FC = () => {
   );
 };
 
+// ============================================
+// ADAPTIVE DASHBOARD TEMPLATE - GridStack Layout
+// ============================================
+export const ODLAdaptiveDashboardTemplate: React.FC = () => {
+  const { colors } = useTheme();
+  const [currentPath, setCurrentPath] = useState('/dashboard');
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+  const [openRightPanel, setOpenRightPanel] = useState<string | null>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const gridInstance = useRef<GridStack | null>(null);
+
+  const leftMenuItems = [
+    { id: 'dashboard', label: 'Dashboard', iconName: 'dashboard', path: '/dashboard', description: 'View your dashboard' },
+    { id: 'analytics', label: 'Analytics', iconName: 'chart-line', path: '/analytics', description: 'View analytics' },
+    { id: 'reports', label: 'Reports', iconName: 'document', path: '/reports', description: 'View reports' },
+    { id: 'settings', label: 'Settings', iconName: 'settings', path: '/settings', description: 'System settings' },
+  ];
+
+  const rightMenuItems = [
+    { id: 'ai-chat', label: 'Objective Intelligence', iconName: 'chat', path: '/ai-chat', description: 'Ask AI' },
+    { id: 'notifications', label: 'Notifications', iconName: 'notification', path: '/notifications', description: 'View notifications' },
+    { id: 'settings', label: 'Settings', iconName: 'settings', path: '/settings', description: 'Settings' },
+  ];
+
+  const rightPanelContent: Record<string, { title: string; content: React.ReactNode }> = {
+    'ai-chat': {
+      title: 'Objective Intelligence',
+      content: <AIChatPanel onClose={() => setOpenRightPanel(null)} />,
+    },
+    notifications: {
+      title: 'Notifications',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[
+              { title: 'Dashboard updated', desc: 'Your dashboard layout has been saved', time: '2m ago' },
+              { title: 'New data available', desc: 'Q4 metrics are now ready', time: '1h ago' },
+              { title: 'Widget added', desc: 'Revenue chart added to dashboard', time: '3h ago' },
+            ].map((item, i) => (
+              <div key={i} style={{ padding: '12px', backgroundColor: colors.grey300, borderRadius: '8px' }}>
+                <div style={{ fontWeight: 500, marginBottom: '4px', color: colors.textPrimary }}>{item.title}</div>
+                <div style={{ fontSize: '14px', color: colors.textSecondary }}>{item.desc}</div>
+                <div style={{ fontSize: '12px', color: colors.textMuted, marginTop: '4px' }}>{item.time}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ),
+    },
+    settings: {
+      title: 'Dashboard Settings',
+      content: (
+        <div style={{ padding: '16px' }}>
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontWeight: 500, marginBottom: '8px', color: colors.textPrimary }}>Layout Options</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colors.textPrimary }}>
+                <input type="checkbox" defaultChecked /> Enable drag & drop
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colors.textPrimary }}>
+                <input type="checkbox" defaultChecked /> Enable resize
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colors.textPrimary }}>
+                <input type="checkbox" /> Lock layout
+              </label>
+            </div>
+          </div>
+          <div>
+            <div style={{ fontWeight: 500, marginBottom: '8px', color: colors.textPrimary }}>Grid Columns</div>
+            <select style={{ width: '100%', padding: '8px', borderRadius: '6px', border: `1px solid ${colors.border}`, backgroundColor: colors.paper, color: colors.textPrimary }}>
+              <option>12 columns</option>
+              <option>8 columns</option>
+              <option>6 columns</option>
+            </select>
+          </div>
+        </div>
+      ),
+    },
+  };
+
+  useEffect(() => {
+    if (!gridRef.current) return;
+
+    gridInstance.current = GridStack.init({
+      column: 12,
+      cellHeight: 80,
+      margin: 12,
+      animate: true,
+      float: false,
+    }, gridRef.current);
+
+    return () => {
+      gridInstance.current?.destroy(false);
+    };
+  }, []);
+
+  const handleRightNavigate = (path: string) => {
+    const itemId = path.replace('/', '');
+    if (openRightPanel === itemId) {
+      setOpenRightPanel(null);
+    } else {
+      setOpenRightPanel(itemId);
+    }
+  };
+
+  const currentPanelContent = openRightPanel ? rightPanelContent[openRightPanel] : null;
+
+  const DashboardWidget: React.FC<{ title: string; icon: string; children: React.ReactNode }> = ({ title, icon, children }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+      <div
+        style={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundColor: colors.paper,
+          borderRadius: '8px',
+          border: `2px solid ${isHovered ? colors.primaryMain : 'transparent'}`,
+          overflow: 'visible',
+          transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+          boxShadow: isHovered ? '0 4px 12px rgba(0, 0, 0, 0.15)' : 'none',
+          position: 'relative',
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '12px 16px',
+          backgroundColor: colors.paper,
+          cursor: 'move',
+          borderRadius: '6px 6px 0 0',
+        }}>
+          {isHovered && <Icon name="draggable" size={18} color={colors.textPrimary} />}
+          <Icon name={icon} size={18} color={colors.primaryMain} />
+          <span style={{ fontWeight: 600, fontSize: '14px', color: colors.textPrimary }}>{title}</span>
+        </div>
+        <div style={{ flex: 1, padding: '16px', overflow: 'auto', borderRadius: '0 0 6px 6px' }}>
+          {children}
+        </div>
+      </div>
+    );
+  };
+
+  const GridStackStyles = () => (
+    <style>{`
+      .grid-stack-item-content {
+        overflow: visible !important;
+      }
+      .grid-stack-item {
+        overflow: visible !important;
+      }
+      .grid-stack-item > .ui-resizable-se,
+      .grid-stack-item > .ui-resizable-handle {
+        width: 32px !important;
+        height: 32px !important;
+        bottom: -4px !important;
+        right: -4px !important;
+        background: ${colors.primaryMain} url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 32 32' fill='white'%3E%3Cpath d='M28 28H16v-2h10V16h2z'/%3E%3Cpath d='M4 4h12v2H6v10H4z'/%3E%3C/svg%3E") center center no-repeat !important;
+        border-radius: 1000px !important;
+        cursor: nwse-resize !important;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+      .grid-stack-item:hover > .ui-resizable-se,
+      .grid-stack-item:hover > .ui-resizable-handle {
+        opacity: 1;
+      }
+      .grid-stack-item.ui-draggable-dragging .grid-stack-item-content > div,
+      .grid-stack-item.gs-dragging .grid-stack-item-content > div {
+        border: 2px solid ${colors.primaryMain} !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+        transform: rotate(1deg) scale(1.01);
+      }
+      .grid-stack-item.ui-draggable-dragging > .ui-resizable-se,
+      .grid-stack-item.gs-dragging > .ui-resizable-se {
+        opacity: 1;
+      }
+    `}</style>
+  );
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: colors.paper }}>
+      <Header variant="nexus" userName="John Doe" />
+
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        <div style={{ height: '100%', borderRight: `1px solid ${colors.border}` }}>
+          <NavigationRail
+            menuItems={leftMenuItems}
+            currentPath={currentPath}
+            onNavigate={setCurrentPath}
+            collapsed={isNavCollapsed}
+            position="left"
+            theme="light"
+            showHelpIcon={true}
+            showCollapseToggle={true}
+            onCollapseToggle={setIsNavCollapsed}
+            showTooltips={true}
+          />
+        </div>
+
+        <div style={{ flex: 1, overflow: 'auto', padding: '24px', background: colors.default }}>
+          <div style={{ marginBottom: '24px' }}>
+            <Breadcrumb items={[{ label: 'Home', path: '/' }, { label: 'Dashboard', path: '/dashboard' }]} />
+            <h1 style={{
+              fontSize: ODLTheme.typography.fontSize['2xl'],
+              fontWeight: ODLTheme.typography.fontWeight.semibold,
+              color: colors.textPrimary,
+              margin: `${ODLTheme.spacing[4]} 0 ${ODLTheme.spacing[2]} 0`
+            }}>
+              Adaptive Dashboard
+            </h1>
+            <p style={{
+              fontSize: ODLTheme.typography.fontSize.base,
+              color: colors.textSecondary,
+              margin: 0
+            }}>
+              Drag and resize widgets to customize your dashboard layout
+            </p>
+          </div>
+
+          <GridStackStyles />
+          <div ref={gridRef} className="grid-stack">
+            <div className="grid-stack-item" gs-x="0" gs-y="0" gs-w="3" gs-h="2">
+              <div className="grid-stack-item-content">
+                <DashboardWidget title="Total Revenue" icon="wallet">
+                  <div>
+                    <div style={{ fontSize: '32px', fontWeight: 600, color: colors.primaryMain, marginBottom: '8px' }}>$48,250</div>
+                    <div style={{ fontSize: '14px', color: colors.successMain, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Icon name="arrow-up" size={14} /> +12.5% from last month
+                    </div>
+                  </div>
+                </DashboardWidget>
+              </div>
+            </div>
+
+            <div className="grid-stack-item" gs-x="3" gs-y="0" gs-w="3" gs-h="2">
+              <div className="grid-stack-item-content">
+                <DashboardWidget title="Active Users" icon="user-multiple">
+                  <div>
+                    <div style={{ fontSize: '32px', fontWeight: 600, color: colors.successMain, marginBottom: '8px' }}>2,847</div>
+                    <div style={{ fontSize: '14px', color: colors.successMain, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Icon name="arrow-up" size={14} /> +8.2% from last month
+                    </div>
+                  </div>
+                </DashboardWidget>
+              </div>
+            </div>
+
+            <div className="grid-stack-item" gs-x="6" gs-y="0" gs-w="3" gs-h="2">
+              <div className="grid-stack-item-content">
+                <DashboardWidget title="Conversion Rate" icon="analytics">
+                  <div>
+                    <div style={{ fontSize: '32px', fontWeight: 600, color: colors.warningMain, marginBottom: '8px' }}>3.24%</div>
+                    <div style={{ fontSize: '14px', color: colors.errorMain, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Icon name="arrow-down" size={14} /> -2.1% from last month
+                    </div>
+                  </div>
+                </DashboardWidget>
+              </div>
+            </div>
+
+            <div className="grid-stack-item" gs-x="9" gs-y="0" gs-w="3" gs-h="2">
+              <div className="grid-stack-item-content">
+                <DashboardWidget title="Avg. Session" icon="time">
+                  <div>
+                    <div style={{ fontSize: '32px', fontWeight: 600, color: colors.primaryMain, marginBottom: '8px' }}>4m 32s</div>
+                    <div style={{ fontSize: '14px', color: colors.successMain, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Icon name="arrow-up" size={14} /> +15% from last month
+                    </div>
+                  </div>
+                </DashboardWidget>
+              </div>
+            </div>
+
+            <div className="grid-stack-item" gs-x="0" gs-y="2" gs-w="8" gs-h="4">
+              <div className="grid-stack-item-content">
+                <DashboardWidget title="Revenue Overview" icon="chart-line">
+                  <div style={{ height: '100%', display: 'flex', alignItems: 'flex-end', gap: '8px', paddingBottom: '20px' }}>
+                    {[40, 65, 45, 80, 55, 90, 70, 85, 60, 95, 75, 88].map((height, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          flex: 1,
+                          height: `${height}%`,
+                          backgroundColor: colors.primaryMain,
+                          borderRadius: '4px 4px 0 0',
+                          opacity: 0.7 + (i * 0.025),
+                        }}
+                      />
+                    ))}
+                  </div>
+                </DashboardWidget>
+              </div>
+            </div>
+
+            <div className="grid-stack-item" gs-x="8" gs-y="2" gs-w="4" gs-h="4">
+              <div className="grid-stack-item-content">
+                <DashboardWidget title="Top Products" icon="star">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {[
+                      { name: 'Product Alpha', sales: 1234, progress: 85 },
+                      { name: 'Product Beta', sales: 987, progress: 72 },
+                      { name: 'Product Gamma', sales: 756, progress: 58 },
+                      { name: 'Product Delta', sales: 543, progress: 45 },
+                    ].map((product, i) => (
+                      <div key={i}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                          <span style={{ fontSize: '13px', color: colors.textPrimary }}>{product.name}</span>
+                          <span style={{ fontSize: '12px', color: colors.textMuted }}>{product.sales} sales</span>
+                        </div>
+                        <div style={{ height: '6px', backgroundColor: colors.grey300, borderRadius: '3px', overflow: 'hidden' }}>
+                          <div style={{ height: '100%', width: `${product.progress}%`, backgroundColor: colors.primaryMain, borderRadius: '3px' }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </DashboardWidget>
+              </div>
+            </div>
+
+            <div className="grid-stack-item" gs-x="0" gs-y="6" gs-w="6" gs-h="3">
+              <div className="grid-stack-item-content">
+                <DashboardWidget title="Recent Activity" icon="time">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {[
+                      { action: 'New order received', time: '2 min ago', icon: 'cart' },
+                      { action: 'User signup completed', time: '15 min ago', icon: 'user' },
+                      { action: 'Report generated', time: '1 hour ago', icon: 'document' },
+                      { action: 'Payment processed', time: '2 hours ago', icon: 'wallet' },
+                    ].map((item, i) => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px', backgroundColor: colors.grey300, borderRadius: '6px' }}>
+                        <Icon name={item.icon} size={16} color={colors.primaryMain} />
+                        <span style={{ flex: 1, color: colors.textPrimary, fontSize: '14px' }}>{item.action}</span>
+                        <span style={{ color: colors.textMuted, fontSize: '12px' }}>{item.time}</span>
+                      </div>
+                    ))}
+                  </div>
+                </DashboardWidget>
+              </div>
+            </div>
+
+            <div className="grid-stack-item" gs-x="6" gs-y="6" gs-w="6" gs-h="3">
+              <div className="grid-stack-item-content">
+                <DashboardWidget title="Team Performance" icon="user-multiple">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {[
+                      { name: 'Sarah Chen', role: 'Sales Lead', score: 95, avatar: 'SC' },
+                      { name: 'Mike Roberts', role: 'Support', score: 88, avatar: 'MR' },
+                      { name: 'Lisa Wong', role: 'Marketing', score: 82, avatar: 'LW' },
+                    ].map((member, i) => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          backgroundColor: colors.primaryMain,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: colors.textInverse,
+                          fontSize: '12px',
+                          fontWeight: 500,
+                        }}>
+                          {member.avatar}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: '13px', color: colors.textPrimary, fontWeight: 500 }}>{member.name}</div>
+                          <div style={{ fontSize: '12px', color: colors.textMuted }}>{member.role}</div>
+                        </div>
+                        <div style={{
+                          padding: '4px 8px',
+                          borderRadius: '4px',
+                          backgroundColor: member.score >= 90 ? colors.successMain : member.score >= 80 ? colors.warningMain : colors.grey300,
+                          color: member.score >= 80 ? colors.textInverse : colors.textPrimary,
+                          fontSize: '12px',
+                          fontWeight: 500,
+                        }}>
+                          {member.score}%
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </DashboardWidget>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', height: '100%' }}>
+          {currentPanelContent && (
+            <InlinePanel
+              isOpen={!!openRightPanel}
+              onClose={() => setOpenRightPanel(null)}
+              title={openRightPanel === 'ai-chat' ? '' : currentPanelContent.title}
+              width={openRightPanel === 'ai-chat' ? '380px' : '320px'}
+            >
+              {currentPanelContent.content}
+            </InlinePanel>
+          )}
+
+          <NavigationRail
+            menuItems={rightMenuItems}
+            currentPath={openRightPanel ? `/${openRightPanel}` : ''}
+            onNavigate={handleRightNavigate}
+            collapsed={true}
+            position="right"
+            theme="light"
+            showTooltips={true}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Export all templates
 export default {
   ODLDashboardTemplate,
@@ -2652,4 +3410,5 @@ export default {
   ODLAppShellTemplate,
   ODLAdaptiveListTemplate,
   ODLEditorPageTemplate,
+  ODLAdaptiveDashboardTemplate,
 };
