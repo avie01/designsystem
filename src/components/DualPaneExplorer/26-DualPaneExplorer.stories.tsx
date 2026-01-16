@@ -12,7 +12,7 @@ const meta: Meta<typeof DualPaneExplorer> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'hidden'],
   argTypes: {
     data: {
       description: 'Array of explorer nodes with hierarchical structure',

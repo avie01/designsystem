@@ -12,7 +12,7 @@ const meta: Meta<typeof DocumentTreemap> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'hidden'],
   argTypes: {
     data: {
       description: 'Array of documents with classification, department, and status',

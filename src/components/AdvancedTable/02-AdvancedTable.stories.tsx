@@ -146,7 +146,7 @@ const meta: Meta<typeof AdvancedTable> = {
       </div>
     ),
   ],
-  tags: ['autodocs'],
+  tags: ['autodocs', 'hidden'],
   argTypes: {
     data: {
       control: false,

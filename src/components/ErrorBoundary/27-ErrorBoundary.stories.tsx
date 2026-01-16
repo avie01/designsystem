@@ -14,7 +14,7 @@ const meta: Meta<typeof ErrorBoundary> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'hidden'],
   argTypes: {
     children: {
       control: false,
