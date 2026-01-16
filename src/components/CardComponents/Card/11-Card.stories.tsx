@@ -9,7 +9,7 @@ const meta: Meta<typeof Card> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'hidden'],
   argTypes: {
     padding: {
       control: 'select',

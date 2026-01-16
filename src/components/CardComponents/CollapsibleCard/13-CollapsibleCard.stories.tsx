@@ -13,7 +13,7 @@ const meta: Meta<typeof CollapsibleCard> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'hidden'],
   argTypes: {
     title: {
       control: 'text',

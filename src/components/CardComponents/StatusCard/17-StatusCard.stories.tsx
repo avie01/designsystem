@@ -13,7 +13,7 @@ const meta: Meta<typeof StatusCard> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'hidden'],
   argTypes: {
     title: {
       control: 'text',
