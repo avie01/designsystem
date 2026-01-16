@@ -3088,32 +3088,81 @@ export const ODLAdaptiveDashboardTemplate: React.FC = () => {
 
   const currentPanelContent = openRightPanel ? rightPanelContent[openRightPanel] : null;
 
-  const DashboardWidget: React.FC<{ title: string; icon: string; children: React.ReactNode }> = ({ title, icon, children }) => (
-    <div style={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      backgroundColor: colors.paper,
-      borderRadius: '8px',
-      border: `1px solid ${colors.border}`,
-      overflow: 'hidden',
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        padding: '12px 16px',
-        borderBottom: `1px solid ${colors.border}`,
-        backgroundColor: colors.grey300,
-        cursor: 'move',
-      }}>
-        <Icon name={icon} size={18} color={colors.primaryMain} />
-        <span style={{ fontWeight: 600, fontSize: '14px', color: colors.textPrimary }}>{title}</span>
+  const DashboardWidget: React.FC<{ title: string; icon: string; children: React.ReactNode }> = ({ title, icon, children }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+      <div
+        style={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundColor: colors.paper,
+          borderRadius: '8px',
+          border: `2px solid ${isHovered ? colors.primaryMain : 'transparent'}`,
+          overflow: 'visible',
+          transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+          boxShadow: isHovered ? '0 4px 12px rgba(0, 0, 0, 0.15)' : 'none',
+          position: 'relative',
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '12px 16px',
+          backgroundColor: colors.paper,
+          cursor: 'move',
+          borderRadius: '6px 6px 0 0',
+        }}>
+          {isHovered && <Icon name="draggable" size={18} color={colors.textPrimary} />}
+          <Icon name={icon} size={18} color={colors.primaryMain} />
+          <span style={{ fontWeight: 600, fontSize: '14px', color: colors.textPrimary }}>{title}</span>
+        </div>
+        <div style={{ flex: 1, padding: '16px', overflow: 'auto', borderRadius: '0 0 6px 6px' }}>
+          {children}
+        </div>
       </div>
-      <div style={{ flex: 1, padding: '16px', overflow: 'auto' }}>
-        {children}
-      </div>
-    </div>
+    );
+  };
+
+  const GridStackStyles = () => (
+    <style>{`
+      .grid-stack-item-content {
+        overflow: visible !important;
+      }
+      .grid-stack-item {
+        overflow: visible !important;
+      }
+      .grid-stack-item > .ui-resizable-se,
+      .grid-stack-item > .ui-resizable-handle {
+        width: 32px !important;
+        height: 32px !important;
+        bottom: -4px !important;
+        right: -4px !important;
+        background: ${colors.primaryMain} url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 32 32' fill='white'%3E%3Cpath d='M28 28H16v-2h10V16h2z'/%3E%3Cpath d='M4 4h12v2H6v10H4z'/%3E%3C/svg%3E") center center no-repeat !important;
+        border-radius: 1000px !important;
+        cursor: nwse-resize !important;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+      .grid-stack-item:hover > .ui-resizable-se,
+      .grid-stack-item:hover > .ui-resizable-handle {
+        opacity: 1;
+      }
+      .grid-stack-item.ui-draggable-dragging .grid-stack-item-content > div,
+      .grid-stack-item.gs-dragging .grid-stack-item-content > div {
+        border: 2px solid ${colors.primaryMain} !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+        transform: rotate(1deg) scale(1.01);
+      }
+      .grid-stack-item.ui-draggable-dragging > .ui-resizable-se,
+      .grid-stack-item.gs-dragging > .ui-resizable-se {
+        opacity: 1;
+      }
+    `}</style>
   );
 
   return (
@@ -3156,6 +3205,7 @@ export const ODLAdaptiveDashboardTemplate: React.FC = () => {
             </p>
           </div>
 
+          <GridStackStyles />
           <div ref={gridRef} className="grid-stack">
             <div className="grid-stack-item" gs-x="0" gs-y="0" gs-w="3" gs-h="2">
               <div className="grid-stack-item-content">

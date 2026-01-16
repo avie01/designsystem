@@ -17,6 +17,43 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+const GridStackStyles: React.FC<{ primaryColor: string; textPrimaryColor: string }> = ({ primaryColor, textPrimaryColor }) => (
+  <style>{`
+    .grid-stack-item-content {
+      overflow: visible !important;
+    }
+    .grid-stack-item {
+      overflow: visible !important;
+    }
+    .grid-stack-item > .ui-resizable-se,
+    .grid-stack-item > .ui-resizable-handle {
+      width: 32px !important;
+      height: 32px !important;
+      bottom: -4px !important;
+      right: -4px !important;
+      background: ${primaryColor} url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 32 32' fill='white'%3E%3Cpath d='M28 28H16v-2h10V16h2z'/%3E%3Cpath d='M4 4h12v2H6v10H4z'/%3E%3C/svg%3E") center center no-repeat !important;
+      border-radius: 1000px !important;
+      cursor: nwse-resize !important;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .grid-stack-item:hover > .ui-resizable-se,
+    .grid-stack-item:hover > .ui-resizable-handle {
+      opacity: 1;
+    }
+    .grid-stack-item.ui-draggable-dragging .grid-stack-item-content > div,
+    .grid-stack-item.gs-dragging .grid-stack-item-content > div {
+      border: 2px solid ${primaryColor} !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+      transform: rotate(1deg) scale(1.01);
+    }
+    .grid-stack-item.ui-draggable-dragging > .ui-resizable-se,
+    .grid-stack-item.gs-dragging > .ui-resizable-se {
+      opacity: 1;
+    }
+  `}</style>
+);
+
 interface DashboardWidgetProps {
   title: string;
   icon?: string;
@@ -26,27 +63,36 @@ interface DashboardWidgetProps {
 
 const DashboardWidget: React.FC<DashboardWidgetProps> = ({ title, icon, children, onRemove }) => {
   const { colors } = useTheme();
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div style={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      backgroundColor: colors.paper,
-      borderRadius: '8px',
-      border: `1px solid ${colors.border}`,
-      overflow: 'hidden',
-    }}>
+    <div
+      style={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: colors.paper,
+        borderRadius: '8px',
+        border: `2px solid ${isHovered ? colors.primaryMain : 'transparent'}`,
+        overflow: 'visible',
+        transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
+        boxShadow: isHovered ? '0 4px 12px rgba(0, 0, 0, 0.15)' : 'none',
+        position: 'relative',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '12px 16px',
-        borderBottom: `1px solid ${colors.border}`,
-        backgroundColor: colors.grey300,
+        backgroundColor: colors.paper,
         cursor: 'move',
+        borderRadius: '6px 6px 0 0',
       }} className="widget-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {isHovered && <Icon name="draggable" size={18} color={colors.textPrimary} />}
           {icon && <Icon name={icon} size={18} color={colors.primaryMain} />}
           <span style={{ fontWeight: 600, fontSize: '14px', color: colors.textPrimary }}>{title}</span>
         </div>
@@ -67,7 +113,7 @@ const DashboardWidget: React.FC<DashboardWidgetProps> = ({ title, icon, children
           </button>
         )}
       </div>
-      <div style={{ flex: 1, padding: '16px', overflow: 'auto' }}>
+      <div style={{ flex: 1, padding: '16px', overflow: 'auto', borderRadius: '0 0 6px 6px' }}>
         {children}
       </div>
     </div>
@@ -99,6 +145,7 @@ export const Default: Story = {
 
     return (
       <div style={{ padding: '24px', backgroundColor: colors.default, minHeight: '100vh' }}>
+        <GridStackStyles primaryColor={colors.primaryMain} textPrimaryColor={colors.textPrimary} />
         <div style={{ marginBottom: '24px' }}>
           <h1 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 600, color: colors.textPrimary }}>
             GridStack.js Basic Example
@@ -264,6 +311,7 @@ export const DynamicWidgets: Story = {
 
     return (
       <div style={{ padding: '24px', backgroundColor: colors.default, minHeight: '100vh' }}>
+        <GridStackStyles primaryColor={colors.primaryMain} textPrimaryColor={colors.textPrimary} />
         <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <h1 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 600, color: colors.textPrimary }}>
@@ -313,6 +361,7 @@ export const LockedWidgets: Story = {
 
     return (
       <div style={{ padding: '24px', backgroundColor: colors.default, minHeight: '100vh' }}>
+        <GridStackStyles primaryColor={colors.primaryMain} textPrimaryColor={colors.textPrimary} />
         <div style={{ marginBottom: '24px' }}>
           <h1 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 600, color: colors.textPrimary }}>
             Locked Widgets Example
@@ -416,6 +465,7 @@ export const ResponsiveGrid: Story = {
 
     return (
       <div style={{ padding: '24px', backgroundColor: colors.default, minHeight: '100vh' }}>
+        <GridStackStyles primaryColor={colors.primaryMain} textPrimaryColor={colors.textPrimary} />
         <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <h1 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 600, color: colors.textPrimary }}>
@@ -532,6 +582,7 @@ export const DashboardExample: Story = {
 
     return (
       <div style={{ padding: '24px', backgroundColor: colors.default, minHeight: '100vh' }}>
+        <GridStackStyles primaryColor={colors.primaryMain} textPrimaryColor={colors.textPrimary} />
         <div style={{ marginBottom: '24px' }}>
           <h1 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 600, color: colors.textPrimary }}>
             Analytics Dashboard
@@ -707,424 +758,3 @@ export const DashboardExample: Story = {
   },
 };
 
-export const WidgetStates: Story = {
-  name: '06 Widget States',
-  render: () => {
-    const { colors } = useTheme();
-
-    interface StateWidgetProps {
-      title: string;
-      state: 'default' | 'hover' | 'dragging' | 'locked' | 'disabled';
-      icon?: string;
-      children: React.ReactNode;
-    }
-
-    const StateWidget: React.FC<StateWidgetProps> = ({ title, state, icon, children }) => {
-      const getStateStyles = () => {
-        switch (state) {
-          case 'hover':
-            return {
-              border: `2px solid ${colors.primaryMain}`,
-              boxShadow: `0 4px 12px rgba(0, 0, 0, 0.15)`,
-              transform: 'translateY(-2px)',
-            };
-          case 'dragging':
-            return {
-              border: `2px dashed ${colors.primaryMain}`,
-              boxShadow: `0 8px 24px rgba(0, 0, 0, 0.2)`,
-              transform: 'rotate(2deg) scale(1.02)',
-              opacity: 0.9,
-            };
-          case 'locked':
-            return {
-              border: `1px solid ${colors.border}`,
-              backgroundColor: colors.grey300,
-            };
-          case 'disabled':
-            return {
-              border: `1px solid ${colors.border}`,
-              opacity: 0.5,
-              pointerEvents: 'none' as const,
-            };
-          default:
-            return {
-              border: `1px solid ${colors.border}`,
-            };
-        }
-      };
-
-      const getHeaderStyles = () => {
-        switch (state) {
-          case 'hover':
-            return {
-              backgroundColor: colors.primaryMain,
-              color: colors.textInverse,
-            };
-          case 'dragging':
-            return {
-              backgroundColor: colors.primaryMain,
-              color: colors.textInverse,
-            };
-          case 'locked':
-            return {
-              backgroundColor: colors.grey300,
-              cursor: 'not-allowed',
-            };
-          case 'disabled':
-            return {
-              backgroundColor: colors.grey300,
-              cursor: 'not-allowed',
-            };
-          default:
-            return {
-              backgroundColor: colors.grey300,
-              cursor: 'move',
-            };
-        }
-      };
-
-      const stateStyles = getStateStyles();
-      const headerStyles = getHeaderStyles();
-
-      return (
-        <div style={{
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          backgroundColor: state === 'locked' ? colors.grey300 : colors.paper,
-          borderRadius: '8px',
-          overflow: 'hidden',
-          transition: 'all 0.2s ease',
-          ...stateStyles,
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '12px 16px',
-            borderBottom: `1px solid ${colors.border}`,
-            ...headerStyles,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              {icon && (
-                <Icon
-                  name={icon}
-                  size={18}
-                  color={state === 'hover' || state === 'dragging' ? colors.textInverse : state === 'disabled' ? colors.textMuted : colors.primaryMain}
-                />
-              )}
-              <span style={{
-                fontWeight: 600,
-                fontSize: '14px',
-                color: state === 'hover' || state === 'dragging' ? colors.textInverse : state === 'disabled' ? colors.textMuted : colors.textPrimary
-              }}>
-                {title}
-              </span>
-            </div>
-            {state === 'locked' && (
-              <Icon name="lock" size={16} color={colors.textMuted} />
-            )}
-            {state === 'dragging' && (
-              <Icon name="draggable" size={16} color={colors.textInverse} />
-            )}
-          </div>
-          <div style={{
-            flex: 1,
-            padding: '16px',
-            overflow: 'auto',
-            color: state === 'disabled' ? colors.textMuted : colors.textPrimary,
-          }}>
-            {children}
-          </div>
-          <div style={{
-            padding: '8px 16px',
-            borderTop: `1px solid ${colors.border}`,
-            backgroundColor: state === 'locked' || state === 'disabled' ? colors.grey300 : colors.paper,
-          }}>
-            <span style={{
-              fontSize: '11px',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-              color: state === 'hover' ? colors.primaryMain :
-                     state === 'dragging' ? colors.warningMain :
-                     state === 'locked' ? colors.textMuted :
-                     state === 'disabled' ? colors.textMuted :
-                     colors.textSecondary,
-            }}>
-              {state === 'default' && 'Default State'}
-              {state === 'hover' && 'Hover State'}
-              {state === 'dragging' && 'Dragging State'}
-              {state === 'locked' && 'Locked State'}
-              {state === 'disabled' && 'Disabled State'}
-            </span>
-          </div>
-        </div>
-      );
-    };
-
-    return (
-      <div style={{ padding: '24px', backgroundColor: colors.default, minHeight: '100vh' }}>
-        <div style={{ marginBottom: '24px' }}>
-          <h1 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 600, color: colors.textPrimary }}>
-            Widget States
-          </h1>
-          <p style={{ margin: 0, color: colors.textSecondary }}>
-            Visual representation of different widget states in the GridStack layout.
-          </p>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-          <div style={{ height: '220px' }}>
-            <StateWidget title="Default Widget" state="default" icon="dashboard">
-              <div style={{ color: colors.textSecondary }}>
-                <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>This is the default widget state.</p>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px' }}>
-                  <li>Normal border appearance</li>
-                  <li>Standard background color</li>
-                  <li>Cursor shows as "move"</li>
-                  <li>Ready for interaction</li>
-                </ul>
-              </div>
-            </StateWidget>
-          </div>
-
-          <div style={{ height: '220px' }}>
-            <StateWidget title="Hover Widget" state="hover" icon="cursor-1">
-              <div style={{ color: colors.textSecondary }}>
-                <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>Widget appearance on mouse hover.</p>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px' }}>
-                  <li>Primary color border</li>
-                  <li>Elevated shadow effect</li>
-                  <li>Slight upward lift</li>
-                  <li>Header highlights</li>
-                </ul>
-              </div>
-            </StateWidget>
-          </div>
-
-          <div style={{ height: '220px' }}>
-            <StateWidget title="Dragging Widget" state="dragging" icon="move">
-              <div style={{ color: colors.textSecondary }}>
-                <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>Widget appearance while being dragged.</p>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px' }}>
-                  <li>Dashed border indicator</li>
-                  <li>Strong shadow effect</li>
-                  <li>Slight rotation</li>
-                  <li>Reduced opacity</li>
-                </ul>
-              </div>
-            </StateWidget>
-          </div>
-
-          <div style={{ height: '220px' }}>
-            <StateWidget title="Locked Widget" state="locked" icon="lock">
-              <div style={{ color: colors.textSecondary }}>
-                <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>Widget that cannot be moved or resized.</p>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px' }}>
-                  <li>Lock icon displayed</li>
-                  <li>Muted background</li>
-                  <li>Cursor not-allowed</li>
-                  <li>Position is fixed</li>
-                </ul>
-              </div>
-            </StateWidget>
-          </div>
-
-          <div style={{ height: '220px' }}>
-            <StateWidget title="Disabled Widget" state="disabled" icon="view-off">
-              <div>
-                <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>Widget that is completely disabled.</p>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px' }}>
-                  <li>Reduced opacity (50%)</li>
-                  <li>No pointer events</li>
-                  <li>Muted colors</li>
-                  <li>Non-interactive</li>
-                </ul>
-              </div>
-            </StateWidget>
-          </div>
-        </div>
-
-        <div style={{ marginTop: '48px' }}>
-          <h2 style={{ margin: '0 0 16px 0', fontSize: '20px', fontWeight: 600, color: colors.textPrimary }}>
-            State Transitions
-          </h2>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            padding: '24px',
-            backgroundColor: colors.paper,
-            borderRadius: '8px',
-            border: `1px solid ${colors.border}`,
-            overflowX: 'auto',
-          }}>
-            <div style={{ textAlign: 'center', minWidth: '100px' }}>
-              <div style={{
-                width: '60px',
-                height: '60px',
-                margin: '0 auto 8px',
-                borderRadius: '8px',
-                backgroundColor: colors.paper,
-                border: `1px solid ${colors.border}`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Icon name="dashboard" size={24} color={colors.primaryMain} />
-              </div>
-              <span style={{ fontSize: '12px', color: colors.textSecondary }}>Default</span>
-            </div>
-
-            <Icon name="arrow-right" size={20} color={colors.textMuted} />
-
-            <div style={{ textAlign: 'center', minWidth: '100px' }}>
-              <div style={{
-                width: '60px',
-                height: '60px',
-                margin: '0 auto 8px',
-                borderRadius: '8px',
-                backgroundColor: colors.paper,
-                border: `2px solid ${colors.primaryMain}`,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Icon name="cursor-1" size={24} color={colors.primaryMain} />
-              </div>
-              <span style={{ fontSize: '12px', color: colors.textSecondary }}>Hover</span>
-            </div>
-
-            <Icon name="arrow-right" size={20} color={colors.textMuted} />
-
-            <div style={{ textAlign: 'center', minWidth: '100px' }}>
-              <div style={{
-                width: '60px',
-                height: '60px',
-                margin: '0 auto 8px',
-                borderRadius: '8px',
-                backgroundColor: colors.paper,
-                border: `2px dashed ${colors.primaryMain}`,
-                boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
-                transform: 'rotate(2deg)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Icon name="move" size={24} color={colors.primaryMain} />
-              </div>
-              <span style={{ fontSize: '12px', color: colors.textSecondary }}>Dragging</span>
-            </div>
-
-            <Icon name="arrow-right" size={20} color={colors.textMuted} />
-
-            <div style={{ textAlign: 'center', minWidth: '100px' }}>
-              <div style={{
-                width: '60px',
-                height: '60px',
-                margin: '0 auto 8px',
-                borderRadius: '8px',
-                backgroundColor: colors.paper,
-                border: `1px solid ${colors.border}`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Icon name="checkmark" size={24} color={colors.successMain} />
-              </div>
-              <span style={{ fontSize: '12px', color: colors.textSecondary }}>Dropped</span>
-            </div>
-          </div>
-        </div>
-
-        <div style={{ marginTop: '32px' }}>
-          <h2 style={{ margin: '0 0 16px 0', fontSize: '20px', fontWeight: 600, color: colors.textPrimary }}>
-            State Properties
-          </h2>
-          <div style={{
-            backgroundColor: colors.paper,
-            borderRadius: '8px',
-            border: `1px solid ${colors.border}`,
-            overflow: 'hidden',
-          }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-              <thead>
-                <tr style={{ backgroundColor: colors.grey300 }}>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: colors.textPrimary, borderBottom: `1px solid ${colors.border}` }}>State</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: colors.textPrimary, borderBottom: `1px solid ${colors.border}` }}>Border</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: colors.textPrimary, borderBottom: `1px solid ${colors.border}` }}>Shadow</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: colors.textPrimary, borderBottom: `1px solid ${colors.border}` }}>Cursor</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: colors.textPrimary, borderBottom: `1px solid ${colors.border}` }}>Interaction</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style={{ padding: '12px 16px', color: colors.textPrimary, borderBottom: `1px solid ${colors.border}` }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: colors.textSecondary }} />
-                      Default
-                    </span>
-                  </td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>1px solid</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>None</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>move</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>Drag & Resize</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '12px 16px', color: colors.textPrimary, borderBottom: `1px solid ${colors.border}` }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: colors.primaryMain }} />
-                      Hover
-                    </span>
-                  </td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>2px solid primary</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>Elevated (4px)</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>grab</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>Ready to drag</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '12px 16px', color: colors.textPrimary, borderBottom: `1px solid ${colors.border}` }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: colors.warningMain }} />
-                      Dragging
-                    </span>
-                  </td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>2px dashed primary</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>Strong (8px)</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>grabbing</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>Being moved</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '12px 16px', color: colors.textPrimary, borderBottom: `1px solid ${colors.border}` }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: colors.textMuted }} />
-                      Locked
-                    </span>
-                  </td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>1px solid</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>None</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>not-allowed</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary, borderBottom: `1px solid ${colors.border}` }}>View only</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '12px 16px', color: colors.textPrimary }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: colors.grey600 }} />
-                      Disabled
-                    </span>
-                  </td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary }}>1px solid (50% opacity)</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary }}>None</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary }}>default</td>
-                  <td style={{ padding: '12px 16px', color: colors.textSecondary }}>None</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    );
-  },
-};
