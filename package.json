@@ -148,6 +148,7 @@
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.4.0",
     "bundlesize": "^0.18.0",
+    "chromatic": "^13.3.5",
     "compression": "^1.8.1",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
