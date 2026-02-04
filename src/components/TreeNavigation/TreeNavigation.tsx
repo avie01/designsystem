@@ -195,7 +195,7 @@ const TreeNavigation: React.FC<TreeNavigationProps> = ({
             style={{
               padding: ODLTheme.spacing[6],
               textAlign: 'center',
-              color: colors.textTertiary,
+              color: colors.textSecondary,
               fontSize: ODLTheme.typography.fontSize.base,
               fontFamily: ODLTheme.typography.fontFamily.sans,
             }}

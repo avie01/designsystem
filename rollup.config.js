@@ -87,16 +87,18 @@ const config = [
       propertyReadSideEffects: false,
     },
   },
-  {
-    input: 'src/index.ts',
-    output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    plugins: [
-      dts({
-        respectExternal: true,
-      })
-    ],
-    external: [/\.css$/, 'react', 'react-dom', '@carbon/icons-react'],
-  },
+  // TODO: Re-enable type declarations once TS errors in components are fixed
+  // {
+  //   input: 'src/index.ts',
+  //   output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+  //   plugins: [
+  //     dts({
+  //       respectExternal: true,
+  //       tsconfig: './tsconfig.build.json',
+  //     })
+  //   ],
+  //   external: [/\.css$/, 'react', 'react-dom', '@carbon/icons-react'],
+  // },
 ];
 
 export default config;

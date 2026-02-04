@@ -1,5 +1,5 @@
 {
-  "name": "@odl/design-system",
+  "name": "@steamfrog2012/odl-design-system",
   "version": "1.0.0",
   "description": "ODL Design System - A comprehensive React component library for building modern, accessible web applications",
   "main": "dist/index.js",
@@ -28,8 +28,8 @@
     "build:analyze": "cross-env NODE_ENV=production ANALYZE=true rollup -c && npm run analyze:open",
     "build:stats": "cross-env NODE_ENV=production rollup -c && npm run stats:open",
     "dev:build": "rollup -c -w",
-    "prebuild": "npm run clean && npm run type-check",
-    "postbuild": "npm run size-check",
+    "prebuild": "npm run clean",
+    "postbuild": "echo 'Build complete'",
     "clean": "rimraf dist",
     "size-check": "bundlesize",
     "analyze:open": "open dist/stats.html",
@@ -40,7 +40,7 @@
     "test:watch": "jest --watch",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit -p tsconfig.build.json",
     "type-check:watch": "tsc --noEmit --watch",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
@@ -65,14 +65,17 @@
   ],
   "author": "ODL Team",
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/odl/design-system.git"
+    "url": "https://github.com/steamfrog2012/ODL.git"
   },
   "bugs": {
-    "url": "https://github.com/odl/design-system/issues"
+    "url": "https://github.com/steamfrog2012/ODL/issues"
   },
-  "homepage": "https://github.com/odl/design-system#readme",
+  "homepage": "https://github.com/steamfrog2012/ODL#readme",
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"

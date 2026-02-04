@@ -220,13 +220,14 @@ const MillerColumns: React.FC<MillerColumnsProps> = ({
                       display: 'inline-flex',
                       alignItems: 'center'
                     }}>
-                      <Checkbox
-                        checked={selectedItems.includes(item.id)}
-                        onChange={(checked) => handleCheckboxChange(item.id, checked)}
-                        disabled={disabled}
-                        size={size === 'sm' ? 'sm' : 'md'}
-                        onClick={(e) => e.stopPropagation()}
-                      />
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <Checkbox
+                          checked={selectedItems.includes(item.id)}
+                          onChange={(checked) => handleCheckboxChange(item.id, checked)}
+                          disabled={disabled}
+                          size={size === 'sm' ? 'sm' : 'md'}
+                        />
+                      </div>
                     </div>
                   )}
                   {showIcons && (

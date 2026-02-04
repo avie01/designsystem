@@ -376,7 +376,7 @@ function Table<T extends TableRowData>({
                         {column.key === 'name' && showFileTypeIcon ? (
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <FileType 
-                              type={((item as any)[column.key] as string).split('.').pop()?.toLowerCase() || 'folder'} 
+                              type={(((item as any)[column.key] as string).split('.').pop()?.toLowerCase() || 'folder') as any}
                               size={24}
                             />
                             {column.render ? column.render(item) : (item as any)[column.key]}

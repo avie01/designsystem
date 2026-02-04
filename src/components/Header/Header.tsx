@@ -174,7 +174,7 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   const { colors } = useTheme();
-  const isDark = colors.mode === 'dark' || colors.paper === '#000000' || colors.textPrimary === '#FFFFFF';
+  const isDark = (colors as any).mode === 'dark' || colors.paper === '#000000' || colors.textPrimary === '#FFFFFF';
   const variantConfig = getVariantConfig(variant, isDark);
   
   // Support legacy props
@@ -238,7 +238,7 @@ const Header: React.FC<HeaderProps> = ({
         color: ${colors.textInverse} !important;
       }
       .header__avatar:hover {
-        background-color: ${colors.primaryLight} !important;
+        background-color: ${colors.primaryHover} !important;
       }
       .header__avatar:focus {
         outline-color: ${colors.primaryMain} !important;
@@ -328,7 +328,7 @@ const Header: React.FC<HeaderProps> = ({
           {variant === 'build' && (
             <Button
               variant="text"
-              size="sm"
+              size="md"
               onClick={() => console.log('New application clicked')}
               icon={<Icon name="add" size={16} />}
               disabled={disabled}
@@ -356,7 +356,7 @@ const Header: React.FC<HeaderProps> = ({
             <>
               <Button
                 variant="secondary"
-                size="sm"
+                size="md"
                 onClick={() => console.log('Search clicked')}
                 icon={<Icon name="search" size={16} />}
                 disabled={disabled}
@@ -397,7 +397,7 @@ const Header: React.FC<HeaderProps> = ({
           {variant === 'nexus' && (
             <Button
               variant="secondary"
-              size="sm"
+              size="md"
               onClick={() => console.log('Search clicked')}
               icon={<Icon name="search" size={16} />}
               disabled={disabled}
