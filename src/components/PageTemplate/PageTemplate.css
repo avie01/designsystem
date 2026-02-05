@@ -1,7 +1,5 @@
 /* ODL-Compliant Page Template */
-
-/* Import ODL design tokens */
-@import '../../styles/design-tokens.css';
+/* Design tokens are imported globally via src/index.ts */
 
 /* ============================================
    PAGE TEMPLATE LAYOUT

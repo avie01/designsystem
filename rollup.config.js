@@ -56,7 +56,6 @@ const config = [
       commonjs(),
       postcss({
         extract: 'styles.css',
-        modules: true,
         use: ['sass'],
         minimize: isProduction,
       }),
@@ -83,7 +82,7 @@ const config = [
       '@carbon/icons-react',
     ],
     treeshake: {
-      moduleSideEffects: false,
+      moduleSideEffects: (id) => /\.css$/.test(id) || /\.scss$/.test(id),
       propertyReadSideEffects: false,
     },
   },
