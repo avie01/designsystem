@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import Tabs from './Tabs';
+import Badge from '../Badge/Badge';
 import {
   Add,
   Settings,
@@ -486,8 +487,121 @@ export const WithRightIcons: Story = {
   ),
 };
 
+export const WithBadges: Story = {
+  name: '12 With Badges',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Tabs with Red Badges</h4>
+        <p style={{ marginBottom: '16px', fontSize: '14px', color: '#6C757D' }}>
+          Badges can indicate counts, notifications, or status on tabs.
+        </p>
+        <Tabs
+          tabs={[
+            {
+              id: 'inbox',
+              label: (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  Inbox
+                  <Badge value={5} variant="red-dark" />
+                </span>
+              ),
+              content: (
+                <div>
+                  <h3 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 600 }}>Inbox</h3>
+                  <p style={{ color: 'var(--color-dusk)' }}>
+                    You have 5 unread messages in your inbox.
+                  </p>
+                </div>
+              )
+            },
+            {
+              id: 'notifications',
+              label: (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  Notifications
+                  <Badge value={12} variant="red-dark" />
+                </span>
+              ),
+              content: (
+                <div>
+                  <h3 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 600 }}>Notifications</h3>
+                  <p style={{ color: 'var(--color-dusk)' }}>
+                    You have 12 new notifications to review.
+                  </p>
+                </div>
+              )
+            },
+            {
+              id: 'alerts',
+              label: (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  Alerts
+                  <Badge value={3} variant="red-dark" />
+                </span>
+              ),
+              content: (
+                <div>
+                  <h3 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 600 }}>Alerts</h3>
+                  <p style={{ color: 'var(--color-dusk)' }}>
+                    3 critical alerts require your attention.
+                  </p>
+                </div>
+              )
+            },
+            {
+              id: 'archived',
+              label: 'Archived',
+              content: (
+                <div>
+                  <h3 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 600 }}>Archived</h3>
+                  <p style={{ color: 'var(--color-dusk)' }}>
+                    View your archived items here.
+                  </p>
+                </div>
+              )
+            }
+          ]}
+          variant="default"
+        />
+      </div>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Compact with Badges</h4>
+        <Tabs
+          tabs={[
+            {
+              id: 'pending',
+              label: (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  Pending
+                  <Badge value={8} variant="red-dark" />
+                </span>
+              )
+            },
+            {
+              id: 'review',
+              label: (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  In Review
+                  <Badge value={2} variant="red-dark" />
+                </span>
+              )
+            },
+            {
+              id: 'completed',
+              label: 'Completed'
+            }
+          ]}
+          variant="compact"
+          showContent={false}
+        />
+      </div>
+    </div>
+  ),
+};
+
 export const Playground: Story = {
-  name: '12 Playground',
+  name: '13 Playground',
   args: {
     tabs: sampleTabs,
     variant: 'default',
