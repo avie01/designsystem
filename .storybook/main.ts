@@ -34,7 +34,15 @@ const config: StorybookConfig = {
       '@mui/material',
       '@mui/icons-material',
       '@mui/x-data-grid',
+      'reactflow',
+      '@reactflow/core',
+      '@reactflow/background',
+      '@reactflow/controls',
+      '@reactflow/minimap',
     ];
+
+    // Force re-optimization when dependencies change
+    config.optimizeDeps.force = true;
 
     // Ensure SVG imports are handled as asset URLs
     config.assetsInclude = config.assetsInclude || [];
