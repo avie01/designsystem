@@ -39,6 +39,8 @@ const config: StorybookConfig = {
       '@reactflow/background',
       '@reactflow/controls',
       '@reactflow/minimap',
+      'leaflet',
+      'react-leaflet',
     ];
 
     // Force re-optimization when dependencies change
