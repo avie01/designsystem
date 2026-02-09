@@ -5,6 +5,7 @@ import 'gridstack/dist/gridstack.min.css';
 import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
+import Maps from '../Maps/Maps';
 import { useTheme } from '../../../.storybook/theme-decorator';
 
 const meta: Meta = {
@@ -982,6 +983,121 @@ export const WithDescription: Story = {
                       <Icon name={action.icon} size={16} />
                       {action.label}
                     </Button>
+                  ))}
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const WithMap: Story = {
+  name: '08 With Map',
+  render: () => {
+    const { colors } = useTheme();
+    const gridRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (!gridRef.current) return;
+      const grid = GridStack.init({
+        column: 12,
+        cellHeight: 80,
+        margin: 8,
+        float: true,
+        disableOneColumnMode: true,
+      }, gridRef.current);
+      return () => grid.destroy(false);
+    }, []);
+
+    return (
+      <div style={{ padding: '20px', backgroundColor: colors.default, minHeight: '100vh' }}>
+        <GridStackStyles primaryColor={colors.primaryMain} textPrimaryColor={colors.textPrimary} />
+        <h1 style={{ color: colors.textPrimary, marginBottom: '20px' }}>Widget with Map</h1>
+        <p style={{ color: colors.textSecondary, marginBottom: '20px' }}>Widgets can contain interactive maps with fullscreen and layer controls.</p>
+        <div className="grid-stack" ref={gridRef}>
+          <div className="grid-stack-item" gs-x="0" gs-y="0" gs-w="8" gs-h="5">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Location Overview"
+                description="Office locations worldwide"
+                iconButtons={[
+                  { icon: 'add', tooltip: 'Add Location' },
+                  { icon: 'filter', tooltip: 'Filter' },
+                  { icon: 'overflow-menu-vertical', tooltip: 'More' },
+                ]}
+              >
+                <div style={{ margin: '-16px', marginTop: '0', height: 'calc(100% + 16px)' }}>
+                  <Maps
+                    longitude={150.8931}
+                    latitude={-34.4278}
+                    zoom={12}
+                    height="100%"
+                    showFullscreenControl={true}
+                    showLayerControl={true}
+                    markers={[
+                      { id: '1', longitude: 150.8931, latitude: -34.4278, color: colors.primaryMain, popup: '<strong>HQ Office</strong><br/>Wollongong CBD' },
+                      { id: '2', longitude: 150.9027, latitude: -34.4048, color: colors.successMain, popup: '<strong>Sales Office</strong><br/>North Wollongong' },
+                      { id: '3', longitude: 150.8636, latitude: -34.4988, color: colors.warningMain, popup: '<strong>Warehouse</strong><br/>Port Kembla' },
+                    ]}
+                  />
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+
+          <div className="grid-stack-item" gs-x="8" gs-y="0" gs-w="4" gs-h="2">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Total Locations"
+                icon="location"
+              >
+                <div style={{ color: colors.textSecondary }}>
+                  <div style={{ fontSize: '32px', fontWeight: 600, color: colors.primaryMain, marginBottom: '8px' }}>3</div>
+                  <div>Active offices</div>
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+
+          <div className="grid-stack-item" gs-x="8" gs-y="2" gs-w="4" gs-h="3">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Office List"
+                icon="list"
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {[
+                    { name: 'HQ Office', city: 'Wollongong CBD', status: 'Active' },
+                    { name: 'Sales Office', city: 'North Wollongong', status: 'Active' },
+                    { name: 'Warehouse', city: 'Port Kembla', status: 'Active' },
+                  ].map((office, i) => (
+                    <div key={i} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '8px 12px',
+                      backgroundColor: colors.grey300,
+                      borderRadius: '6px',
+                      gap: '12px',
+                    }}>
+                      <Icon name="location" size={16} color={colors.primaryMain} />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '13px', fontWeight: 500, color: colors.textPrimary }}>{office.name}</div>
+                        <div style={{ fontSize: '11px', color: colors.textMuted }}>{office.city}</div>
+                      </div>
+                      <span style={{
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        fontSize: '10px',
+                        fontWeight: 500,
+                        backgroundColor: colors.successMain,
+                        color: colors.textInverse,
+                      }}>
+                        {office.status}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </DashboardWidget>
