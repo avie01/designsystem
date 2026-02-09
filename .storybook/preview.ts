@@ -2,6 +2,7 @@ import type { Preview } from '@storybook/react-vite'
 import '../src/styles/index.css';
 import './custom.css';
 import 'reactflow/dist/style.css';
+import 'leaflet/dist/leaflet.css';
 import { withTheme } from './theme-decorator';
 
 const preview: Preview = {
