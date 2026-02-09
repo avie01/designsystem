@@ -394,6 +394,8 @@ interface AppShellWrapperProps {
   pageTitle?: string;
   pageSubtitle?: string;
   showBreadcrumb?: boolean;
+  showLeftPanel?: boolean;
+  showRightPanel?: boolean;
   breadcrumbItems?: Array<{ label: string; path?: string }>;
   headerVariant?: 'build' | 'connect' | 'keystone' | 'nexus' | 'regworks' | '3sixty' | 'keyplan' | 'trapeze';
 }
@@ -404,6 +406,8 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
   pageTitle,
   pageSubtitle,
   showBreadcrumb = true,
+  showLeftPanel = false,
+  showRightPanel = true,
   breadcrumbItems,
   headerVariant = 'build',
 }) => {
@@ -565,6 +569,50 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
           />
         </div>
 
+        {/* Left Panel */}
+        {showLeftPanel && (
+          <div style={{
+            width: '320px',
+            height: '100%',
+            borderRight: `1px solid ${ODLTheme.colors.border}`,
+            backgroundColor: ODLTheme.colors.white,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '16px',
+              borderBottom: `1px solid ${ODLTheme.colors.border}`,
+            }}>
+              <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: ODLTheme.colors.text.primary }}>
+                {getActiveLabel()}
+              </h2>
+            </div>
+            <div style={{ flex: 1, overflow: 'auto', padding: '16px' }}>
+              <p style={{ margin: '0 0 12px 0', color: ODLTheme.colors.text.secondary }}>
+                Select an item from the navigation to view details.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+                  <div style={{ fontWeight: 500, color: ODLTheme.colors.text.primary }}>Item 1</div>
+                  <div style={{ fontSize: '14px', color: ODLTheme.colors.text.secondary }}>Description for item 1</div>
+                </div>
+                <div style={{ padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+                  <div style={{ fontWeight: 500, color: ODLTheme.colors.text.primary }}>Item 2</div>
+                  <div style={{ fontSize: '14px', color: ODLTheme.colors.text.secondary }}>Description for item 2</div>
+                </div>
+                <div style={{ padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+                  <div style={{ fontWeight: 500, color: ODLTheme.colors.text.primary }}>Item 3</div>
+                  <div style={{ fontSize: '14px', color: ODLTheme.colors.text.secondary }}>Description for item 3</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Main Content Area */}
         <div style={{
           flex: 1,
@@ -615,28 +663,30 @@ export const ODLAppShellWrapper: React.FC<AppShellWrapperProps> = ({
         </div>
 
         {/* Right Panel - InlinePanel + NavigationRail */}
-        <div style={{ display: 'flex', height: '100%' }}>
-          {currentPanelContent && (
-            <InlinePanel
-              isOpen={!!openRightPanel}
-              onClose={() => setOpenRightPanel(null)}
-              title={openRightPanel === 'ai-chat' ? '' : currentPanelContent.title}
-              width={openRightPanel === 'ai-chat' ? '380px' : '320px'}
-            >
-              {currentPanelContent.content}
-            </InlinePanel>
-          )}
+        {showRightPanel && (
+          <div style={{ display: 'flex', height: '100%' }}>
+            {currentPanelContent && (
+              <InlinePanel
+                isOpen={!!openRightPanel}
+                onClose={() => setOpenRightPanel(null)}
+                title={openRightPanel === 'ai-chat' ? '' : currentPanelContent.title}
+                width={openRightPanel === 'ai-chat' ? '380px' : '320px'}
+              >
+                {currentPanelContent.content}
+              </InlinePanel>
+            )}
 
-          <NavigationRail
-            menuItems={rightMenuItems}
-            currentPath={openRightPanel ? `/${openRightPanel}` : ''}
-            onNavigate={handleRightNavigate}
-            collapsed={true}
-            position="right"
-            theme="light"
-            showTooltips={true}
-          />
-        </div>
+            <NavigationRail
+              menuItems={rightMenuItems}
+              currentPath={openRightPanel ? `/${openRightPanel}` : ''}
+              onNavigate={handleRightNavigate}
+              collapsed={true}
+              position="right"
+              theme="light"
+              showTooltips={true}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
