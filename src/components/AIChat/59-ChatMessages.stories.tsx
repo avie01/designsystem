@@ -7,6 +7,7 @@ import Checkbox from '../Checkbox/Checkbox';
 import Icon from '../Icon/Icon';
 import Cards from '../CardComponents/Cards/Cards';
 import Workflows, { WorkflowNode, WorkflowEdge } from '../Workflows/Workflows';
+import Maps, { MapMarker } from '../Maps/Maps';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import oiIcon from '../../assets/oi.svg';
 
@@ -1160,6 +1161,171 @@ export const AIResponseWithWorkflowMap: Story = {
                 interactive={false}
                 height="400px"
               />
+            </div>
+            <div style={{ display: 'flex', gap: '4px', marginTop: '12px' }}>
+              <IconButton icon="copy" variant="ghost" size="small" aria-label="Copy response" title="Copy" />
+              <IconButton icon="restart" variant="ghost" size="small" aria-label="Regenerate response" title="Regenerate" />
+              <IconButton icon="thumbs-up" variant="ghost" size="small" aria-label="Good response" title="Good response" />
+              <IconButton icon="thumbs-down" variant="ghost" size="small" aria-label="Bad response" title="Bad response" />
+              <IconButton icon="share" variant="ghost" size="small" aria-label="Share response" title="Share" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const AIResponseWithMap: Story = {
+  name: '19 AI Response with Map',
+  render: () => {
+    const { colors } = useTheme();
+
+    const markers: MapMarker[] = [
+      { id: '1', longitude: 151.2093, latitude: -33.8688, color: '#0F62FE', popup: '<strong>Sydney CBD</strong><br/>Central Business District' },
+      { id: '2', longitude: 151.2153, latitude: -33.8568, color: '#198038', popup: '<strong>Sydney Opera House</strong><br/>Iconic performing arts venue' },
+      { id: '3', longitude: 151.2111, latitude: -33.8523, color: '#DA1E28', popup: '<strong>Sydney Harbour Bridge</strong><br/>Historic bridge crossing' },
+      { id: '4', longitude: 151.1957, latitude: -33.8908, color: '#6929C4', popup: '<strong>Central Station</strong><br/>Main railway terminus' },
+    ];
+
+    return (
+      <div style={{ padding: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '12px', alignItems: 'flex-start', maxWidth: '700px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <AIIcon size={32} />
+          </div>
+          <div style={{ maxWidth: '100%', padding: '0 16px 12px 0', color: colors.textPrimary, flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <span style={{ color: colors.primaryNight, fontFamily: 'var(--font-family-noto)', fontSize: '14px', fontWeight: 600, lineHeight: '21px' }}>Objective Intelligence</span>
+              <span style={{ color: colors.grey700, fontFamily: 'var(--font-family-noto)', fontSize: '14px', fontWeight: 500, lineHeight: '21px' }}>2:30 PM</span>
+            </div>
+            <p style={{ margin: '0 0 16px 0', fontSize: '14px', lineHeight: 1.5, fontFamily: 'var(--font-family-noto)' }}>
+              Here are the key landmarks in Sydney that you asked about. The map shows the CBD area with major points of interest marked:
+            </p>
+            <div style={{ backgroundColor: colors.paper, border: `1px solid ${colors.border}`, borderRadius: '8px', overflow: 'hidden' }}>
+              <Maps
+                longitude={151.2093}
+                latitude={-33.8688}
+                zoom={14}
+                height="350px"
+                markers={markers}
+                tileStyle="standard"
+              />
+            </div>
+            <div style={{ marginTop: '12px', padding: '12px', backgroundColor: colors.grey100, borderRadius: '8px' }}>
+              <p style={{ margin: 0, fontSize: '13px', color: colors.textSecondary }}>
+                <strong style={{ color: colors.textPrimary }}>Tip:</strong> Click on the markers to see more details about each location. You can zoom and pan to explore the area.
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: '4px', marginTop: '12px' }}>
+              <IconButton icon="copy" variant="ghost" size="small" aria-label="Copy response" title="Copy" />
+              <IconButton icon="restart" variant="ghost" size="small" aria-label="Regenerate response" title="Regenerate" />
+              <IconButton icon="thumbs-up" variant="ghost" size="small" aria-label="Good response" title="Good response" />
+              <IconButton icon="thumbs-down" variant="ghost" size="small" aria-label="Bad response" title="Bad response" />
+              <IconButton icon="share" variant="ghost" size="small" aria-label="Share response" title="Share" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const AIResponseWithMapDirections: Story = {
+  name: '20 AI Response with Map Directions',
+  render: () => {
+    const { colors } = useTheme();
+
+    const routeMarkers: MapMarker[] = [
+      { id: 'start', longitude: 151.2093, latitude: -33.8688, color: '#198038', popup: '<strong>Start: Sydney CBD</strong><br/>Your starting point' },
+      { id: 'waypoint1', longitude: 151.2153, latitude: -33.8568, color: '#0F62FE', popup: '<strong>Stop 1: Opera House</strong><br/>15 min walk' },
+      { id: 'waypoint2', longitude: 151.2111, latitude: -33.8523, color: '#0F62FE', popup: '<strong>Stop 2: Harbour Bridge</strong><br/>10 min walk' },
+      { id: 'end', longitude: 151.1957, latitude: -33.8568, color: '#DA1E28', popup: '<strong>End: Milsons Point</strong><br/>Final destination' },
+    ];
+
+    const directions = [
+      { step: 1, instruction: 'Start at Sydney CBD (George Street)', distance: '0 km', duration: '-', icon: 'location' },
+      { step: 2, instruction: 'Head north on George Street toward Circular Quay', distance: '0.8 km', duration: '10 min', icon: 'arrow-up' },
+      { step: 3, instruction: 'Turn right and walk along the waterfront to the Opera House', distance: '0.5 km', duration: '7 min', icon: 'arrow-right' },
+      { step: 4, instruction: 'Continue west along the harbour foreshore', distance: '0.6 km', duration: '8 min', icon: 'arrow-left' },
+      { step: 5, instruction: 'Walk across Sydney Harbour Bridge', distance: '1.1 km', duration: '15 min', icon: 'arrow-up' },
+      { step: 6, instruction: 'Arrive at Milsons Point', distance: '3.0 km total', duration: '40 min total', icon: 'flag' },
+    ];
+
+    return (
+      <div style={{ padding: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '12px', alignItems: 'flex-start', maxWidth: '800px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <AIIcon size={32} />
+          </div>
+          <div style={{ maxWidth: '100%', padding: '0 16px 12px 0', color: colors.textPrimary, flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <span style={{ color: colors.primaryNight, fontFamily: 'var(--font-family-noto)', fontSize: '14px', fontWeight: 600, lineHeight: '21px' }}>Objective Intelligence</span>
+              <span style={{ color: colors.grey700, fontFamily: 'var(--font-family-noto)', fontSize: '14px', fontWeight: 500, lineHeight: '21px' }}>2:30 PM</span>
+            </div>
+            <p style={{ margin: '0 0 16px 0', fontSize: '14px', lineHeight: 1.5, fontFamily: 'var(--font-family-noto)' }}>
+              Here are the walking directions from Sydney CBD to Milsons Point via the Opera House and Harbour Bridge:
+            </p>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              <div style={{ flex: '1 1 350px', backgroundColor: colors.paper, border: `1px solid ${colors.border}`, borderRadius: '8px', overflow: 'hidden' }}>
+                <Maps
+                  longitude={151.2050}
+                  latitude={-33.8600}
+                  zoom={14}
+                  height="300px"
+                  markers={routeMarkers}
+                  tileStyle="standard"
+                />
+              </div>
+              <div style={{ flex: '1 1 280px', backgroundColor: colors.paper, border: `1px solid ${colors.border}`, borderRadius: '8px', padding: '16px', maxHeight: '300px', overflowY: 'auto' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', paddingBottom: '12px', borderBottom: `1px solid ${colors.border}` }}>
+                  <Icon name="directions" size={20} color={colors.primaryMain} />
+                  <span style={{ fontWeight: 600, fontSize: '14px', color: colors.textPrimary }}>Walking Directions</span>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+                  {directions.map((dir, index) => (
+                    <div
+                      key={dir.step}
+                      style={{
+                        display: 'flex',
+                        gap: '12px',
+                        padding: '10px 0',
+                        borderBottom: index < directions.length - 1 ? `1px solid ${colors.grey200}` : 'none',
+                      }}
+                    >
+                      <div style={{
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '50%',
+                        backgroundColor: dir.step === 1 ? colors.successMain : dir.step === directions.length ? colors.errorMain : colors.primaryMain,
+                        color: colors.textInverse,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        flexShrink: 0,
+                      }}>
+                        {dir.step}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <p style={{ margin: '0 0 4px 0', fontSize: '13px', color: colors.textPrimary, lineHeight: 1.4 }}>
+                          {dir.instruction}
+                        </p>
+                        <p style={{ margin: 0, fontSize: '12px', color: colors.textSecondary }}>
+                          {dir.distance} • {dir.duration}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div style={{ marginTop: '12px', padding: '12px', backgroundColor: colors.grey100, borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <Icon name="information" size={18} color={colors.primaryMain} />
+              <p style={{ margin: 0, fontSize: '13px', color: colors.textSecondary }}>
+                Total distance: <strong style={{ color: colors.textPrimary }}>3.0 km</strong> • Estimated time: <strong style={{ color: colors.textPrimary }}>40 minutes</strong> walking
+              </p>
             </div>
             <div style={{ display: 'flex', gap: '4px', marginTop: '12px' }}>
               <IconButton icon="copy" variant="ghost" size="small" aria-label="Copy response" title="Copy" />
