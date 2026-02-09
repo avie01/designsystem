@@ -1,6 +1,6 @@
 {
   "name": "@steamfrog2012/odl-design-system",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "ODL Design System - A comprehensive React component library for building modern, accessible web applications",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
