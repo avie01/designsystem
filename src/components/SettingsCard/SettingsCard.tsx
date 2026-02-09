@@ -144,7 +144,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
   };
 
   const descriptionStyles: React.CSSProperties = {
-    fontSize: colors.fontSize?.base || '14px',
+    fontSize: '14px',
     color: disabled ? colors.textDisabled : colors.textSecondary,
     lineHeight: '1.5',
     margin: 0,
