@@ -3,19 +3,25 @@ import { useTheme } from '../../../.storybook/theme-decorator';
 import { ODLTheme } from '../../styles/ODLTheme';
 import Checkbox from '../Checkbox/Checkbox';
 import IconButton from '../IconButton/IconButton';
+import Icon from '../Icon/Icon';
 import FileType, { FileTypeVariant } from '../FileType/FileType';
 import './ThumbnailCards.css';
 
 export type ThumbnailCardSize = 'small' | 'medium' | 'large';
+export type ThumbnailCardVariant = 'file' | 'link';
 
 export interface ThumbnailCardsProps {
   /** Size variant of the thumbnail card */
   size?: ThumbnailCardSize;
+  /** Card variant: 'file' for documents, 'link' for web links */
+  variant?: ThumbnailCardVariant;
   /** Thumbnail image source */
   thumbnailSrc?: string;
   /** Title of the card */
   title?: string;
-  /** File type for the icon next to title */
+  /** URL for link variant (displayed as subtitle and used for navigation) */
+  url?: string;
+  /** File type for the icon next to title (used in file variant) */
   fileType?: FileTypeVariant;
   /** Additional CSS classes */
   className?: string;
@@ -41,8 +47,10 @@ export interface ThumbnailCardsProps {
 
 const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
   size = 'large',
+  variant = 'file',
   thumbnailSrc,
   title = 'Document Title',
+  url,
   fileType = 'folder',
   className = '',
   onClick,
@@ -171,13 +179,13 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
 
   const thumbnailStyle: React.CSSProperties = {
     width: config.thumbnailSize,
-    height: size === 'small' ? '120px' : size === 'medium' ? '180px' : '240px',
+    height: variant === 'link' ? '100%' : (size === 'small' ? '120px' : size === 'medium' ? '180px' : '240px'),
     borderRadius: '4px',
     backgroundColor: colors.surfaceHover,
     backgroundImage: thumbnailSrc ? `url(${thumbnailSrc})` : undefined,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    flexShrink: 0,
+    flexShrink: variant === 'link' ? 1 : 0,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -198,9 +206,11 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
   const imageContainerStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: variant === 'link' ? 'stretch' : 'center',
     width: '100%',
-    marginBottom: '16px',
+    marginBottom: variant === 'link' ? '8px' : '16px',
+    flex: variant === 'link' ? 1 : undefined,
+    minHeight: 0,
   };
 
   const contentStyle: React.CSSProperties = {
@@ -384,11 +394,37 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
           }}></div>
         ) : (
           <div style={thumbnailStyle}>
-            {!thumbnailSrc && (
-              <svg 
-                width="100%" 
-                height="100%" 
-                viewBox="0 0 100 100" 
+            {!thumbnailSrc && variant === 'link' ? (
+              <svg
+                width="100%"
+                height="100%"
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ borderRadius: '4px' }}
+                role="img"
+                aria-label="Website preview"
+              >
+                <rect width="100" height="100" fill="#F8F9FA"/>
+                <rect x="5" y="5" width="90" height="12" fill="#E9ECEF" rx="2"/>
+                <circle cx="12" cy="11" r="3" fill="#DEE2E6"/>
+                <circle cx="22" cy="11" r="3" fill="#DEE2E6"/>
+                <circle cx="32" cy="11" r="3" fill="#DEE2E6"/>
+                <rect x="40" y="8" width="50" height="6" fill="#DEE2E6" rx="3"/>
+                <rect x="5" y="22" width="90" height="73" fill="#FFFFFF" stroke="#E9ECEF" strokeWidth="1"/>
+                <rect x="10" y="30" width="35" height="20" fill="#E9ECEF" rx="2"/>
+                <rect x="50" y="30" width="40" height="4" fill="#DEE2E6" rx="1"/>
+                <rect x="50" y="38" width="35" height="3" fill="#E9ECEF" rx="1"/>
+                <rect x="50" y="44" width="30" height="3" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="58" width="80" height="3" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="65" width="75" height="3" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="72" width="70" height="3" fill="#E9ECEF" rx="1"/>
+                <rect x="10" y="82" width="25" height="8" fill={colors.primaryMain || '#4A90E2'} rx="2"/>
+              </svg>
+            ) : !thumbnailSrc ? (
+              <svg
+                width="100%"
+                height="100%"
+                viewBox="0 0 100 100"
                 xmlns="http://www.w3.org/2000/svg"
                 style={{ borderRadius: '4px' }}
                 role="img"
@@ -409,15 +445,15 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
                 <rect x="10" y="78" width="30" height="8" fill="#DEE2E6" rx="2"/>
                 <rect x="45" y="78" width="25" height="8" fill="#DEE2E6" rx="2"/>
               </svg>
-            )}
+            ) : null}
           </div>
         )}
       </div>
 
       {/* Content Below Image */}
-      <div 
+      <div
         id={`thumbnail-${title?.replace(/\s+/g, '-').toLowerCase()}-content`}
-        style={contentStyle}
+        style={variant === 'link' ? { ...contentStyle, flexDirection: 'column', alignItems: 'flex-start', gap: '4px' } : contentStyle}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         tabIndex={onClick && !disabled && !loading ? 0 : -1}
@@ -429,6 +465,29 @@ const ThumbnailCards: React.FC<ThumbnailCardsProps> = ({
           <>
             <div className="ghost sizer" style={{ width: '24px', height: '24px' }}></div>
             <div className="ghost sizer" style={{ width: '150px', height: '16px' }}></div>
+          </>
+        ) : variant === 'link' ? (
+          <>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%' }}>
+              <Icon name="link" size={20} color={colors.primaryMain} aria-hidden="true" />
+              <h4 style={titleStyle} id={`thumbnail-${title?.replace(/\s+/g, '-').toLowerCase()}-title`}>{title}</h4>
+            </div>
+            {url && (
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: '12px',
+                  color: colors.textSecondary,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  width: '100%',
+                  fontFamily: 'var(--font-family-noto)',
+                }}
+              >
+                {url}
+              </p>
+            )}
           </>
         ) : (
           <>

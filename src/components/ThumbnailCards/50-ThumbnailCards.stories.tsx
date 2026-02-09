@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import ThumbnailCards, { ThumbnailCardSize } from './ThumbnailCards';
+import ThumbnailCards, { ThumbnailCardSize, ThumbnailCardVariant } from './ThumbnailCards';
 import { getAvailableFileTypes } from '../FileType/fileTypeSvgs';
 
 const meta: Meta<typeof ThumbnailCards> = {
@@ -23,6 +23,22 @@ const meta: Meta<typeof ThumbnailCards> = {
       table: {
         type: { summary: 'ThumbnailCardSize' },
         defaultValue: { summary: 'large' },
+      },
+    },
+    variant: {
+      control: { type: 'select' },
+      options: ['file', 'link'],
+      description: 'Card variant: file for documents, link for web links',
+      table: {
+        type: { summary: 'ThumbnailCardVariant' },
+        defaultValue: { summary: 'file' },
+      },
+    },
+    url: {
+      control: 'text',
+      description: 'URL for link variant (displayed as subtitle)',
+      table: {
+        type: { summary: 'string' },
       },
     },
     thumbnailSrc: {
@@ -433,9 +449,9 @@ export const GridLayout: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>Grid Layout</h3>
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(272px, 1fr))', 
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(272px, 1fr))',
         gap: '16px',
         maxWidth: '900px'
       }}>
@@ -452,4 +468,147 @@ export const GridLayout: Story = {
       </div>
     </div>
   ),
+};
+
+export const LinkVariant: Story = {
+  name: '15 Link Variant',
+  args: {
+    size: 'large',
+    variant: 'link',
+    title: 'Anthropic',
+    url: 'https://www.anthropic.com',
+    thumbnailSrc: 'https://via.placeholder.com/240x240/4A90E2/FFFFFF?text=Website+Preview',
+  },
+};
+
+export const LinkVariantWithoutThumbnail: Story = {
+  name: '16 Link Variant (No Thumbnail)',
+  args: {
+    size: 'large',
+    variant: 'link',
+    title: 'GitHub',
+    url: 'https://github.com',
+  },
+};
+
+export const LinkVariantAllSizes: Story = {
+  name: '17 Link Variant - All Sizes',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'flex-start' }}>
+      <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>Link Variant - Size Comparison</h3>
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        <div style={{ textAlign: 'center' }}>
+          <ThumbnailCards
+            size="small"
+            variant="link"
+            title="Google"
+            url="https://google.com"
+            thumbnailSrc="https://via.placeholder.com/148x120/4285F4/FFFFFF?text=Google"
+          />
+          <div style={{ fontSize: '12px', marginTop: '8px', color: '#666' }}>Small (180px)</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <ThumbnailCards
+            size="medium"
+            variant="link"
+            title="Stack Overflow"
+            url="https://stackoverflow.com"
+            thumbnailSrc="https://via.placeholder.com/194x180/F48024/FFFFFF?text=Stack+Overflow"
+          />
+          <div style={{ fontSize: '12px', marginTop: '8px', color: '#666' }}>Medium (226px)</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <ThumbnailCards
+            size="large"
+            variant="link"
+            title="MDN Web Docs"
+            url="https://developer.mozilla.org"
+            thumbnailSrc="https://via.placeholder.com/240x240/000000/FFFFFF?text=MDN"
+          />
+          <div style={{ fontSize: '12px', marginTop: '8px', color: '#666' }}>Large (272px)</div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const LinkVariantInteractiveStates: Story = {
+  name: '18 Link Variant - Interactive States',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>Link Variant - Interactive States</h3>
+      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+        <ThumbnailCards
+          size="large"
+          variant="link"
+          title="Normal State"
+          url="https://example.com"
+          thumbnailSrc="https://via.placeholder.com/240x240/4A90E2/FFFFFF?text=Normal"
+          onClick={() => alert('Link clicked!')}
+        />
+        <ThumbnailCards
+          size="large"
+          variant="link"
+          title="Selected State"
+          url="https://example.com/selected"
+          selected={true}
+          thumbnailSrc="https://via.placeholder.com/240x240/50C878/FFFFFF?text=Selected"
+          onClick={() => alert('Selected link clicked!')}
+        />
+        <ThumbnailCards
+          size="large"
+          variant="link"
+          title="Disabled State"
+          url="https://example.com/disabled"
+          disabled={true}
+          thumbnailSrc="https://via.placeholder.com/240x240/CCCCCC/FFFFFF?text=Disabled"
+        />
+        <ThumbnailCards
+          size="large"
+          variant="link"
+          title="Loading State"
+          url="https://example.com/loading"
+          loading={true}
+        />
+      </div>
+    </div>
+  ),
+};
+
+export const LinkVariantGrid: Story = {
+  name: '19 Link Variant - Grid Layout',
+  render: () => {
+    const links = [
+      { title: 'Anthropic', url: 'https://anthropic.com', color: '6B4FBB' },
+      { title: 'OpenAI', url: 'https://openai.com', color: '00A67E' },
+      { title: 'Google AI', url: 'https://ai.google', color: '4285F4' },
+      { title: 'Hugging Face', url: 'https://huggingface.co', color: 'FFD21E' },
+      { title: 'GitHub', url: 'https://github.com', color: '24292E' },
+      { title: 'Stack Overflow', url: 'https://stackoverflow.com', color: 'F48024' },
+    ];
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>Link Variant - Grid Layout</h3>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(272px, 1fr))',
+          gap: '16px',
+          maxWidth: '900px'
+        }}>
+          {links.map((link, index) => (
+            <ThumbnailCards
+              key={index}
+              size="large"
+              variant="link"
+              title={link.title}
+              url={link.url}
+              thumbnailSrc={`https://via.placeholder.com/240x240/${link.color}/FFFFFF?text=${encodeURIComponent(link.title)}`}
+              onClick={() => window.open(link.url, '_blank')}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  },
 };

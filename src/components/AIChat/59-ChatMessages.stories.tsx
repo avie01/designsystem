@@ -6,6 +6,7 @@ import IconButton from '../IconButton/IconButton';
 import Checkbox from '../Checkbox/Checkbox';
 import Icon from '../Icon/Icon';
 import Cards from '../CardComponents/Cards/Cards';
+import Workflows, { WorkflowNode, WorkflowEdge } from '../Workflows/Workflows';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import oiIcon from '../../assets/oi.svg';
 
@@ -1102,6 +1103,70 @@ export const AIResponseWithCard: Story = {
                   onMenuClick={() => alert(`More options for ${doc.title}`)}
                 />
               ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const AIResponseWithWorkflowMap: Story = {
+  name: '18 AI Response with Workflow Map',
+  render: () => {
+    const { colors } = useTheme();
+
+    const workflowNodes: WorkflowNode[] = [
+      { id: 'start', type: 'start', label: 'Submit Request', position: { x: 250, y: 0 } },
+      { id: 'review', type: 'process', label: 'Initial Review', description: 'Manager reviews request', status: 'completed', position: { x: 250, y: 100 } },
+      { id: 'decision', type: 'decision', label: 'Approve?', position: { x: 250, y: 220 } },
+      { id: 'approved', type: 'process', label: 'Process Approval', description: 'Execute approved action', status: 'pending', position: { x: 100, y: 350 } },
+      { id: 'rejected', type: 'process', label: 'Send Rejection', description: 'Notify requestor', status: 'pending', position: { x: 400, y: 350 } },
+      { id: 'end', type: 'end', label: 'Complete', position: { x: 250, y: 480 } },
+    ];
+
+    const workflowEdges: WorkflowEdge[] = [
+      { id: 'e-start-review', source: 'start', target: 'review' },
+      { id: 'e-review-decision', source: 'review', target: 'decision' },
+      { id: 'e-decision-approved', source: 'decision', target: 'approved', label: 'Yes' },
+      { id: 'e-decision-rejected', source: 'decision', target: 'rejected', label: 'No' },
+      { id: 'e-approved-end', source: 'approved', target: 'end' },
+      { id: 'e-rejected-end', source: 'rejected', target: 'end' },
+    ];
+
+    return (
+      <div style={{ padding: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '12px', alignItems: 'flex-start', maxWidth: '700px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <AIIcon size={32} />
+          </div>
+          <div style={{ maxWidth: '100%', padding: '0 16px 12px 0', color: colors.textPrimary, flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <span style={{ color: colors.primaryNight, fontFamily: 'var(--font-family-noto)', fontSize: '14px', fontWeight: 600, lineHeight: '21px' }}>Objective Intelligence</span>
+              <span style={{ color: colors.grey700, fontFamily: 'var(--font-family-noto)', fontSize: '14px', fontWeight: 500, lineHeight: '21px' }}>2:30 PM</span>
+            </div>
+            <p style={{ margin: '0 0 16px 0', fontSize: '14px', lineHeight: 1.5, fontFamily: 'var(--font-family-noto)' }}>
+              Here's the approval workflow for your request. The process starts with submission, goes through manager review, and branches based on the approval decision:
+            </p>
+            <div style={{ backgroundColor: colors.paper, border: `1px solid ${colors.border}`, borderRadius: '8px', overflow: 'hidden' }}>
+              <Workflows
+                nodes={workflowNodes}
+                edges={workflowEdges}
+                showControls={true}
+                showMiniMap={false}
+                showBackground={true}
+                backgroundVariant="dots"
+                fitView={true}
+                interactive={false}
+                height="400px"
+              />
+            </div>
+            <div style={{ display: 'flex', gap: '4px', marginTop: '12px' }}>
+              <IconButton icon="copy" variant="ghost" size="small" aria-label="Copy response" title="Copy" />
+              <IconButton icon="restart" variant="ghost" size="small" aria-label="Regenerate response" title="Regenerate" />
+              <IconButton icon="thumbs-up" variant="ghost" size="small" aria-label="Good response" title="Good response" />
+              <IconButton icon="thumbs-down" variant="ghost" size="small" aria-label="Bad response" title="Bad response" />
+              <IconButton icon="share" variant="ghost" size="small" aria-label="Share response" title="Share" />
             </div>
           </div>
         </div>
