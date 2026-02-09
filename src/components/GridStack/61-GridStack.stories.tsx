@@ -4,10 +4,11 @@ import { GridStack } from 'gridstack';
 import 'gridstack/dist/gridstack.min.css';
 import Icon from '../Icon/Icon';
 import Button from '../Button/Button';
+import IconButton from '../IconButton/IconButton';
 import { useTheme } from '../../../.storybook/theme-decorator';
 
 const meta: Meta = {
-  title: 'Design System/Components/GridStack',
+  title: 'Design System/Components/Widgets',
   parameters: {
     layout: 'fullscreen',
   },
@@ -54,14 +55,22 @@ const GridStackStyles: React.FC<{ primaryColor: string; textPrimaryColor: string
   `}</style>
 );
 
+interface IconButtonConfig {
+  icon: string;
+  onClick?: () => void;
+  tooltip?: string;
+}
+
 interface DashboardWidgetProps {
   title: string;
   icon?: string;
+  description?: string;
+  iconButtons?: IconButtonConfig[];
   children: React.ReactNode;
   onRemove?: () => void;
 }
 
-const DashboardWidget: React.FC<DashboardWidgetProps> = ({ title, icon, children, onRemove }) => {
+const DashboardWidget: React.FC<DashboardWidgetProps> = ({ title, icon, description, iconButtons, children, onRemove }) => {
   const { colors } = useTheme();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -91,27 +100,38 @@ const DashboardWidget: React.FC<DashboardWidgetProps> = ({ title, icon, children
         cursor: 'move',
         borderRadius: '6px 6px 0 0',
       }} className="widget-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {isHovered && <Icon name="draggable" size={18} color={colors.textPrimary} />}
-          {icon && <Icon name={icon} size={18} color={colors.primaryMain} />}
-          <span style={{ fontWeight: 600, fontSize: '14px', color: colors.textPrimary }}>{title}</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {isHovered && <Icon name="draggable" size={18} color={colors.textPrimary} />}
+            {icon && <Icon name={icon} size={18} color={colors.primaryMain} />}
+            <span style={{ fontWeight: 600, fontSize: '18px', color: colors.textPrimary }}>{title}</span>
+          </div>
+          {description && (
+            <span style={{ fontSize: '14px', color: colors.textSecondary, marginLeft: icon ? '26px' : isHovered ? '26px' : '0' }}>{description}</span>
+          )}
         </div>
-        {onRemove && (
-          <button
-            onClick={onRemove}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '4px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Icon name="close" size={16} color={colors.textMuted} />
-          </button>
-        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          {iconButtons && iconButtons.map((btn, index) => (
+            <IconButton
+              key={index}
+              icon={btn.icon}
+              onClick={btn.onClick}
+              title={btn.tooltip}
+              aria-label={btn.tooltip || btn.icon}
+              variant="disabled"
+              size="small"
+            />
+          ))}
+          {onRemove && (
+            <IconButton
+              icon="close"
+              onClick={onRemove}
+              aria-label="Remove widget"
+              variant="disabled"
+              size="small"
+            />
+          )}
+        </div>
       </div>
       <div style={{ flex: 1, padding: '16px', overflow: 'auto', borderRadius: '0 0 6px 6px' }}>
         {children}
@@ -288,7 +308,7 @@ export const DynamicWidgets: Story = {
       const content = `
         <div style="height: 100%; display: flex; flex-direction: column; background: ${colors.paper}; border-radius: 8px; border: 1px solid ${colors.border}; overflow: hidden;">
           <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid ${colors.border}; background: ${colors.grey300}; cursor: move;">
-            <span style="font-weight: 600; font-size: 14px; color: ${colors.textPrimary}">${randomWidget.title}</span>
+            <span style="font-weight: 600; font-size: 18px; color: ${colors.textPrimary}">${randomWidget.title}</span>
             <button class="remove-widget" style="background: none; border: none; cursor: pointer; padding: 4px;">✕</button>
           </div>
           <div style="flex: 1; padding: 16px; display: flex; align-items: center; justify-content: center; color: ${colors.textSecondary};">
@@ -758,3 +778,217 @@ export const DashboardExample: Story = {
   },
 };
 
+export const WithIconButtons: Story = {
+  name: '06 With Icon Buttons',
+  render: () => {
+    const { colors } = useTheme();
+    const gridRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (!gridRef.current) return;
+      const grid = GridStack.init({
+        column: 12,
+        cellHeight: 80,
+        margin: 8,
+        float: true,
+        disableOneColumnMode: true,
+      }, gridRef.current);
+      return () => grid.destroy(false);
+    }, []);
+
+    const iconButtonsConfig = [
+      { icon: 'settings', onClick: () => alert('Settings clicked'), tooltip: 'Settings' },
+      { icon: 'filter', onClick: () => alert('Filter clicked'), tooltip: 'Filter' },
+      { icon: 'overflow-menu-vertical', onClick: () => alert('More options'), tooltip: 'More' },
+    ];
+
+    return (
+      <div style={{ padding: '20px', backgroundColor: colors.default, minHeight: '100vh' }}>
+        <GridStackStyles primaryColor={colors.primaryMain} textPrimaryColor={colors.textPrimary} />
+        <h1 style={{ color: colors.textPrimary, marginBottom: '20px' }}>Widgets with Icon Buttons</h1>
+        <p style={{ color: colors.textSecondary, marginBottom: '20px' }}>Widgets can have icon buttons in the header for quick actions.</p>
+        <div className="grid-stack" ref={gridRef}>
+          <div className="grid-stack-item" gs-x="0" gs-y="0" gs-w="4" gs-h="2">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Sales Overview"
+                icon="chart-line"
+                iconButtons={iconButtonsConfig}
+              >
+                <div style={{ color: colors.textSecondary }}>
+                  <div style={{ fontSize: '32px', fontWeight: 600, color: colors.primaryMain, marginBottom: '8px' }}>$24,500</div>
+                  <div>Monthly revenue</div>
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+
+          <div className="grid-stack-item" gs-x="4" gs-y="0" gs-w="4" gs-h="2">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Active Users"
+                icon="user-multiple"
+                iconButtons={[
+                  { icon: 'add', onClick: () => alert('Add user'), tooltip: 'Add User' },
+                  { icon: 'search', onClick: () => alert('Search'), tooltip: 'Search' },
+                  { icon: 'download', onClick: () => alert('Export'), tooltip: 'Export' },
+                ]}
+              >
+                <div style={{ color: colors.textSecondary }}>
+                  <div style={{ fontSize: '32px', fontWeight: 600, color: colors.successMain, marginBottom: '8px' }}>1,234</div>
+                  <div>Online now</div>
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+
+          <div className="grid-stack-item" gs-x="8" gs-y="0" gs-w="4" gs-h="2">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Pending Tasks"
+                icon="calendar"
+                iconButtons={[
+                  { icon: 'refresh', onClick: () => alert('Refresh'), tooltip: 'Refresh' },
+                  { icon: 'view', onClick: () => alert('View all'), tooltip: 'View All' },
+                  { icon: 'edit', onClick: () => alert('Edit'), tooltip: 'Edit' },
+                ]}
+              >
+                <div style={{ color: colors.textSecondary }}>
+                  <div style={{ fontSize: '32px', fontWeight: 600, color: colors.warningMain, marginBottom: '8px' }}>42</div>
+                  <div>Requires attention</div>
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const WithDescription: Story = {
+  name: '07 With Description',
+  render: () => {
+    const { colors } = useTheme();
+    const gridRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (!gridRef.current) return;
+      const grid = GridStack.init({
+        column: 12,
+        cellHeight: 80,
+        margin: 8,
+        float: true,
+        disableOneColumnMode: true,
+      }, gridRef.current);
+      return () => grid.destroy(false);
+    }, []);
+
+    return (
+      <div style={{ padding: '20px', backgroundColor: colors.default, minHeight: '100vh' }}>
+        <GridStackStyles primaryColor={colors.primaryMain} textPrimaryColor={colors.textPrimary} />
+        <h1 style={{ color: colors.textPrimary, marginBottom: '20px' }}>Widgets with Description</h1>
+        <p style={{ color: colors.textSecondary, marginBottom: '20px' }}>Widgets can have a secondary description line under the title.</p>
+        <div className="grid-stack" ref={gridRef}>
+          <div className="grid-stack-item" gs-x="0" gs-y="0" gs-w="4" gs-h="3">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Sales Overview"
+                description="Monthly performance metrics"
+              >
+                <div style={{ color: colors.textSecondary }}>
+                  <div style={{ fontSize: '32px', fontWeight: 600, color: colors.primaryMain, marginBottom: '8px' }}>$24,500</div>
+                  <div>Total revenue this month</div>
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+
+          <div className="grid-stack-item" gs-x="4" gs-y="0" gs-w="4" gs-h="3">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Active Users"
+                description="Real-time user activity"
+              >
+                <div style={{ color: colors.textSecondary }}>
+                  <div style={{ fontSize: '32px', fontWeight: 600, color: colors.successMain, marginBottom: '8px' }}>1,234</div>
+                  <div>Currently online</div>
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+
+          <div className="grid-stack-item" gs-x="8" gs-y="0" gs-w="4" gs-h="3">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Pending Tasks"
+                description="Tasks requiring your attention"
+              >
+                <div style={{ color: colors.textSecondary }}>
+                  <div style={{ fontSize: '32px', fontWeight: 600, color: colors.warningMain, marginBottom: '8px' }}>42</div>
+                  <div>Due this week</div>
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+
+          <div className="grid-stack-item" gs-x="0" gs-y="3" gs-w="6" gs-h="3">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Recent Activity"
+                description="Latest updates from your team"
+                iconButtons={[
+                  { icon: 'refresh', tooltip: 'Refresh' },
+                  { icon: 'filter', tooltip: 'Filter' },
+                  { icon: 'overflow-menu-vertical', tooltip: 'More' },
+                ]}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {[
+                    { action: 'Created new project', user: 'John D.', time: '5m ago' },
+                    { action: 'Completed task', user: 'Sarah M.', time: '12m ago' },
+                    { action: 'Added comment', user: 'Mike R.', time: '1h ago' },
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px', backgroundColor: colors.grey300, borderRadius: '6px' }}>
+                      <div>
+                        <div style={{ fontWeight: 500, color: colors.textPrimary }}>{item.action}</div>
+                        <div style={{ fontSize: '12px', color: colors.textMuted }}>{item.user}</div>
+                      </div>
+                      <span style={{ fontSize: '12px', color: colors.textMuted }}>{item.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+
+          <div className="grid-stack-item" gs-x="6" gs-y="3" gs-w="6" gs-h="3">
+            <div className="grid-stack-item-content">
+              <DashboardWidget
+                title="Quick Actions"
+                description="Frequently used shortcuts"
+                iconButtons={[
+                  { icon: 'settings', tooltip: 'Configure' },
+                ]}
+              >
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  {[
+                    { label: 'New Project', icon: 'add' },
+                    { label: 'Upload File', icon: 'upload' },
+                    { label: 'Invite Team', icon: 'user-multiple' },
+                    { label: 'Generate Report', icon: 'document' },
+                  ].map((action, i) => (
+                    <Button key={i} variant="secondary" size="md" style={{ justifyContent: 'flex-start', gap: '8px' }}>
+                      <Icon name={action.icon} size={16} />
+                      {action.label}
+                    </Button>
+                  ))}
+                </div>
+              </DashboardWidget>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
