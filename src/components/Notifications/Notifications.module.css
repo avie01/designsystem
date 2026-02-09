@@ -1,4 +1,4 @@
-/* AlertPanel - ODL Compliant CSS Module */
+/* Notifications - ODL Compliant CSS Module */
 
 .panel {
   position: fixed;
@@ -13,6 +13,7 @@
   border: 1px solid var(--odl-border-color);
   display: flex;
   flex-direction: column;
+  font-family: var(--odl-font-family-sans);
 }
 
 .header {
@@ -29,43 +30,24 @@
 }
 
 .title {
-  font-size: var(--odl-font-size-lg);
+  font-family: var(--odl-font-family-sans);
+  font-size: var(--odl-font-size-md);
   font-weight: var(--odl-font-weight-semibold);
+  line-height: var(--odl-line-height-tight);
   color: var(--odl-text-primary);
   margin: 0;
 }
 
 .subtitle {
-  font-size: var(--odl-font-size-sm);
+  font-family: var(--odl-font-family-sans);
+  font-size: var(--odl-font-size-base);
+  font-weight: var(--odl-font-weight-regular);
+  line-height: var(--odl-line-height-normal);
   color: var(--odl-text-secondary);
   margin: 0;
 }
 
-.closeButton {
-  padding: var(--odl-spacing-1);
-  background: transparent;
-  border: none;
-  border-radius: var(--odl-border-radius-lg);
-  cursor: pointer;
-  transition: var(--odl-transition-normal);
-}
-
-.closeButton:hover {
-  background-color: var(--odl-background-hover);
-}
-
-.closeButton:focus {
-  outline: var(--odl-focus-border-width) solid var(--odl-focus-border-color);
-  outline-offset: var(--odl-focus-outline-offset);
-}
-
-.closeButtonIcon {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: var(--odl-text-secondary);
-}
-
-.alertsList {
+.notificationsList {
   flex: 1;
   overflow-y: auto;
   min-height: 0;
@@ -84,6 +66,10 @@
 }
 
 .emptyStateText {
+  font-family: var(--odl-font-family-sans);
+  font-size: var(--odl-font-size-base);
+  font-weight: var(--odl-font-weight-regular);
+  line-height: var(--odl-line-height-normal);
   color: var(--odl-text-secondary);
   margin: 0;
 }
@@ -103,8 +89,10 @@
 }
 
 .sectionHeaderLabel {
-  font-size: var(--odl-font-size-xs);
+  font-family: var(--odl-font-family-sans);
+  font-size: var(--odl-font-size-base);
   font-weight: var(--odl-font-weight-semibold);
+  line-height: var(--odl-line-height-tight);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -117,33 +105,33 @@
   color: var(--odl-text-secondary);
 }
 
-.alertItem {
+.notificationItem {
   padding: var(--odl-spacing-3) var(--odl-spacing-4);
   border-bottom: 1px solid var(--odl-border-color-light);
   transition: var(--odl-transition-normal);
   cursor: pointer;
 }
 
-.alertItem:hover {
+.notificationItem:hover {
   background-color: var(--odl-background-hover);
 }
 
-.readAlertItem {
+.readNotificationItem {
   opacity: 0.75;
 }
 
-.alertItemContent {
+.notificationItemContent {
   display: flex;
   align-items: flex-start;
   gap: var(--odl-spacing-3);
 }
 
-.alertIconContainer {
+.notificationIconContainer {
   flex-shrink: 0;
   margin-top: 0.125rem;
 }
 
-.alertIcon {
+.notificationIcon {
   width: 1.25rem;
   height: 1.25rem;
 }
@@ -164,65 +152,48 @@
   color: var(--odl-info);
 }
 
-.alertTextContent {
+.notificationTextContent {
   flex: 1;
   min-width: 0;
 }
 
-.alertTitle {
-  font-size: var(--odl-font-size-sm);
+.notificationTitle {
+  font-family: var(--odl-font-family-sans);
+  font-size: var(--odl-font-size-base);
   font-weight: var(--odl-font-weight-semibold);
+  line-height: var(--odl-line-height-tight);
   color: var(--odl-text-primary);
   margin: 0;
 }
 
-.readAlertTitle {
+.readNotificationTitle {
   font-weight: var(--odl-font-weight-medium);
   color: var(--odl-text-secondary);
 }
 
-.alertMessage {
-  font-size: var(--odl-font-size-sm);
+.notificationMessage {
+  font-family: var(--odl-font-family-sans);
+  font-size: var(--odl-font-size-base);
+  font-weight: var(--odl-font-weight-regular);
+  line-height: var(--odl-line-height-normal);
   color: var(--odl-text-secondary);
   margin: var(--odl-spacing-1) 0 0;
 }
 
-.readAlertMessage {
+.readNotificationMessage {
   color: var(--odl-text-muted);
 }
 
-.alertTimestamp {
-  font-size: var(--odl-font-size-xs);
+.notificationTimestamp {
+  font-family: var(--odl-font-family-sans);
+  font-size: var(--odl-font-size-base);
+  font-weight: var(--odl-font-weight-regular);
+  line-height: var(--odl-line-height-normal);
   color: var(--odl-text-muted);
   margin: var(--odl-spacing-2) 0 0;
 }
 
-.readAlertTimestamp {
-  color: var(--odl-text-disabled);
-}
-
-.dismissButton {
-  flex-shrink: 0;
-  padding: var(--odl-spacing-1);
-  background: transparent;
-  border: none;
-  border-radius: var(--odl-border-radius-base);
-  cursor: pointer;
-  transition: var(--odl-transition-normal);
-}
-
-.dismissButton:hover {
-  background-color: var(--odl-background-hover);
-}
-
-.dismissButton:focus {
-  outline: var(--odl-focus-border-width) solid var(--odl-focus-border-color);
-  outline-offset: var(--odl-focus-outline-offset);
-}
-
-.dismissButtonIcon {
-  width: 1rem;
-  height: 1rem;
+.readNotificationTimestamp {
   color: var(--odl-text-disabled);
 }
 
@@ -231,28 +202,8 @@
   padding: var(--odl-spacing-3) var(--odl-spacing-4);
   border-top: 1px solid var(--odl-border-color);
   flex-shrink: 0;
-}
-
-.markAllReadButton {
-  width: 100%;
-  font-size: var(--odl-font-size-sm);
-  font-weight: var(--odl-font-weight-medium);
-  color: var(--odl-info);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: var(--odl-transition-normal);
-  padding: var(--odl-spacing-1);
-}
-
-.markAllReadButton:hover {
-  color: var(--odl-info-dark, #1e40af);
-}
-
-.markAllReadButton:focus {
-  outline: var(--odl-focus-border-width) solid var(--odl-focus-border-color);
-  outline-offset: var(--odl-focus-outline-offset);
-  border-radius: var(--odl-border-radius-base);
+  display: flex;
+  justify-content: center;
 }
 
 /* Responsive design */
@@ -271,23 +222,14 @@
     border-width: 2px;
   }
 
-  .alertItem:hover {
+  .notificationItem:hover {
     border: 1px solid var(--odl-border-color);
-  }
-
-  .closeButton:focus,
-  .dismissButton:focus,
-  .markAllReadButton:focus {
-    outline-width: 3px;
   }
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .closeButton,
-  .dismissButton,
-  .alertItem,
-  .markAllReadButton {
+  .notificationItem {
     transition: none;
   }
 }

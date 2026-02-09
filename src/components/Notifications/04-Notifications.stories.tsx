@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import AlertPanel, { Alert } from './AlertPanel';
+import Notifications, { Notification } from './Notifications';
 
-const mockAlerts: Alert[] = [
+const mockNotifications: Notification[] = [
   {
     id: '1',
     title: 'Planning Scheme Update',
@@ -45,9 +45,9 @@ const mockAlerts: Alert[] = [
   },
 ];
 
-const meta: Meta<typeof AlertPanel> = {
-  title: 'Design System/Components/AlertPanel',
-  component: AlertPanel,
+const meta: Meta<typeof Notifications> = {
+  title: 'Design System/Components/Notifications',
+  component: Notifications,
   parameters: {
     layout: 'centered',
   },
@@ -64,39 +64,39 @@ const meta: Meta<typeof AlertPanel> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const AlertPanelWithState = ({ initialAlerts }: { initialAlerts: Alert[] }) => {
-  const [alerts, setAlerts] = useState(initialAlerts);
+const NotificationsWithState = ({ initialNotifications }: { initialNotifications: Notification[] }) => {
+  const [notifications, setNotifications] = useState(initialNotifications);
   const [isOpen, setIsOpen] = useState(true);
 
-  const handleDismiss = (alertId: string) => {
-    setAlerts(prev => prev.filter(a => a.id !== alertId));
+  const handleDismiss = (notificationId: string) => {
+    setNotifications(prev => prev.filter(n => n.id !== notificationId));
   };
 
-  const handleRead = (alertId: string) => {
-    setAlerts(prev => prev.map(a =>
-      a.id === alertId ? { ...a, read: true } : a
+  const handleRead = (notificationId: string) => {
+    setNotifications(prev => prev.map(n =>
+      n.id === notificationId ? { ...n, read: true } : n
     ));
   };
 
   return (
-    <AlertPanel
-      alerts={alerts}
+    <Notifications
+      notifications={notifications}
       isOpen={isOpen}
       onClose={() => setIsOpen(false)}
-      onAlertDismiss={handleDismiss}
-      onAlertRead={handleRead}
+      onNotificationDismiss={handleDismiss}
+      onNotificationRead={handleRead}
     />
   );
 };
 
 export const Default: Story = {
-  render: () => <AlertPanelWithState initialAlerts={mockAlerts} />,
+  render: () => <NotificationsWithState initialNotifications={mockNotifications} />,
 };
 
 export const AllUnread: Story = {
   render: () => (
-    <AlertPanelWithState
-      initialAlerts={mockAlerts.map(a => ({ ...a, read: false }))}
+    <NotificationsWithState
+      initialNotifications={mockNotifications.map(n => ({ ...n, read: false }))}
     />
   ),
 };
@@ -104,33 +104,33 @@ export const AllUnread: Story = {
 export const AllRead: Story = {
   name: '03 All Read',
   render: () => (
-    <AlertPanelWithState
-      initialAlerts={mockAlerts.map(a => ({ ...a, read: true }))}
+    <NotificationsWithState
+      initialNotifications={mockNotifications.map(n => ({ ...n, read: true }))}
     />
   ),
 };
 
 export const Empty: Story = {
-  render: () => <AlertPanelWithState initialAlerts={[]} />,
+  render: () => <NotificationsWithState initialNotifications={[]} />,
 };
 
-export const SingleAlert: Story = {
+export const SingleNotification: Story = {
   render: () => (
-    <AlertPanelWithState
-      initialAlerts={[mockAlerts[0]]}
+    <NotificationsWithState
+      initialNotifications={[mockNotifications[0]]}
     />
   ),
 };
 
-export const MixedAlertTypes: Story = {
-  name: '06 Mixed Alert Types',
+export const MixedNotificationTypes: Story = {
+  name: '06 Mixed Notification Types',
   render: () => (
-    <AlertPanelWithState
-      initialAlerts={[
-        { ...mockAlerts[0], type: 'info', read: false },
-        { ...mockAlerts[1], type: 'success', read: false },
-        { ...mockAlerts[2], type: 'warning', read: false },
-        { ...mockAlerts[3], type: 'error', read: false },
+    <NotificationsWithState
+      initialNotifications={[
+        { ...mockNotifications[0], type: 'info', read: false },
+        { ...mockNotifications[1], type: 'success', read: false },
+        { ...mockNotifications[2], type: 'warning', read: false },
+        { ...mockNotifications[3], type: 'error', read: false },
       ]}
     />
   ),
