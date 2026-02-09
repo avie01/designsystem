@@ -4,6 +4,7 @@ import Icon from '../Icon/Icon';
 import Switch from '../Switch/Switch';
 import Button from '../Button/Button';
 import Dropdown from '../Dropdown/Dropdown';
+import Chip from '../Chip/Chip';
 
 export interface SettingsCardProps {
   /** Primary text content */
@@ -31,7 +32,7 @@ export interface SettingsCardProps {
   /** Tag/badge text */
   tag?: string;
   /** Tag variant */
-  tagVariant?: 'default' | 'success' | 'warning' | 'error' | 'info';
+  tagVariant?: 'default' | 'success' | 'warning' | 'error' | 'info' | 'neutral' | 'blue';
   /** Button label text */
   buttonLabel?: string;
   /** Button variant */
@@ -79,18 +80,22 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
   const { colors } = useTheme();
   const [isHovered, setIsHovered] = useState(false);
 
-  const getTagColors = () => {
+  const getChipVariant = (): 'success' | 'warning' | 'error' | 'info' | 'neutral' | 'blue' => {
     switch (tagVariant) {
       case 'success':
-        return { bg: colors.successLight || '#E6F4EA', text: colors.successMain || '#198038' };
+        return 'success';
       case 'warning':
-        return { bg: colors.warningLight || '#FFF3CD', text: colors.warningMain || '#F1C21B' };
+        return 'warning';
       case 'error':
-        return { bg: colors.errorLight || '#FDECEA', text: colors.errorMain || '#DA1E28' };
+        return 'error';
       case 'info':
-        return { bg: '#E5F6FD', text: '#0043CE' };
+        return 'info';
+      case 'blue':
+        return 'blue';
+      case 'neutral':
+        return 'neutral';
       default:
-        return { bg: colors.grey200, text: colors.textSecondary };
+        return 'neutral';
     }
   };
 
@@ -156,17 +161,6 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
     marginRight: showArrow ? colors.spacing[2] : 0,
   };
 
-  const tagColors = getTagColors();
-  const tagStyles: React.CSSProperties = {
-    fontSize: '12px',
-    fontWeight: 500,
-    padding: '2px 8px',
-    borderRadius: '4px',
-    backgroundColor: tagColors.bg,
-    color: tagColors.text,
-    marginRight: showArrow ? colors.spacing[2] : 0,
-  };
-
   return (
     <div
       className={`settings-card ${className}`}
@@ -201,7 +195,15 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
 
       {value && <span style={valueStyles}>{value}</span>}
 
-      {tag && <span style={tagStyles}>{tag}</span>}
+      {tag && (
+        <Chip
+          label={tag}
+          variant={getChipVariant()}
+          size="sm"
+          disabled={disabled}
+          style={{ marginRight: showArrow ? colors.spacing[2] : 0 }}
+        />
+      )}
 
       {buttonLabel && (
         <div onClick={(e) => e.stopPropagation()}>

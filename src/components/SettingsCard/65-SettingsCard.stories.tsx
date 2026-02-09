@@ -58,7 +58,7 @@ const meta: Meta<typeof SettingsCard> = {
     },
     tagVariant: {
       control: 'select',
-      options: ['default', 'success', 'warning', 'error', 'info'],
+      options: ['default', 'success', 'warning', 'error', 'info', 'neutral', 'blue'],
       description: 'Tag color variant',
     },
   },
@@ -228,7 +228,7 @@ export const WithTags: Story = {
           description="Manage API keys and tokens"
           icon="api"
           tag="Expired"
-          tagVariant="error"
+          tagVariant="neutral"
           showArrow
           onClick={() => alert('Manage API')}
         />
@@ -237,7 +237,7 @@ export const WithTags: Story = {
           description="Try new features before release"
           icon="star"
           tag="New"
-          tagVariant="info"
+          tagVariant="blue"
           showArrow
           onClick={() => alert('Manage Beta Features')}
           showDivider={false}
