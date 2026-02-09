@@ -5,6 +5,7 @@ import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
 import Checkbox from '../Checkbox/Checkbox';
 import Icon from '../Icon/Icon';
+import Cards from '../CardComponents/Cards/Cards';
 import { useTheme } from '../../../.storybook/theme-decorator';
 import oiIcon from '../../assets/oi.svg';
 
@@ -989,18 +990,18 @@ export const AIResponseWithReferenceLink: Story = {
                   href={ref.url}
                   style={{
                     display: 'flex',
-                    alignItems: 'flex-start',
+                    alignItems: 'center',
                     gap: '12px',
                     padding: '12px',
                     backgroundColor: colors.paper,
                     border: `1px solid ${colors.border}`,
-                    borderRadius: '8px',
+                    borderRadius: '2px',
                     textDecoration: 'none',
                     transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = colors.primaryMain;
-                    e.currentTarget.style.backgroundColor = colors.grey100;
+                    e.currentTarget.style.borderColor = colors.primaryNight;
+                    e.currentTarget.style.backgroundColor = colors.grey400;
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.borderColor = colors.border;
@@ -1010,25 +1011,96 @@ export const AIResponseWithReferenceLink: Story = {
                   <div style={{
                     width: '36px',
                     height: '36px',
-                    borderRadius: '8px',
+                    borderRadius: '2px',
                     backgroundColor: colors.grey200,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
                   }}>
-                    <Icon name={ref.icon} size={20} color={colors.primaryMain} />
+                    <Icon name={ref.icon} size={20} color={colors.primaryNight} />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <p style={{ margin: '0 0 4px 0', fontSize: '14px', fontWeight: 500, color: colors.primaryMain }}>
+                    <p style={{ margin: '0 0 4px 0', fontSize: '14px', fontWeight: 500, color: colors.primaryNight }}>
                       {ref.title}
                     </p>
                     <p style={{ margin: 0, fontSize: '12px', color: colors.textSecondary }}>
                       {ref.description}
                     </p>
                   </div>
-                  <Icon name="arrow-right" size={16} color={colors.textSecondary} />
+                  <Icon name="arrow-right" size={16} color={colors.primaryNight} />
                 </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const AIResponseWithCard: Story = {
+  name: '17 AI Response with Card',
+  render: () => {
+    const { colors } = useTheme();
+
+    const documents = [
+      {
+        id: 1,
+        title: 'Project Requirements.pdf',
+        subtitle: 'Updated 2 hours ago by Sarah Chen',
+        tag: 'v2.1',
+        fileType: 'pdf' as const,
+      },
+      {
+        id: 2,
+        title: 'Design System Guidelines.fig',
+        subtitle: 'Shared with design team',
+        tag: 'Final',
+        fileType: 'figma' as const,
+      },
+      {
+        id: 3,
+        title: 'Q4 Analytics Report.xlsx',
+        subtitle: 'Created 3 days ago',
+        tag: 'Draft',
+        fileType: 'excel' as const,
+      },
+      {
+        id: 4,
+        title: 'Meeting Notes.docx',
+        subtitle: 'Last edited 1 hour ago',
+        tag: 'WIP',
+        fileType: 'word' as const,
+      },
+    ];
+
+    return (
+      <div style={{ padding: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '12px', alignItems: 'flex-start', maxWidth: '600px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <AIIcon size={32} />
+          </div>
+          <div style={{ maxWidth: '100%', padding: '0 16px 12px 0', color: colors.textPrimary, flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <span style={{ color: colors.primaryNight, fontFamily: 'var(--font-family-noto)', fontSize: '14px', fontWeight: 600, lineHeight: '21px' }}>Objective Intelligence</span>
+              <span style={{ color: colors.grey700, fontFamily: 'var(--font-family-noto)', fontSize: '14px', fontWeight: 500, lineHeight: '21px' }}>2:30 PM</span>
+            </div>
+            <p style={{ margin: '0 0 16px 0', fontSize: '14px', lineHeight: 1.5, fontFamily: 'var(--font-family-noto)' }}>
+              I found the following documents related to your query:
+            </p>
+            <style>{`.ai-cards-no-checkbox .cards-container__checkbox { display: none; }`}</style>
+            <div className="ai-cards-no-checkbox" style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+              {documents.map((doc) => (
+                <Cards
+                  key={doc.id}
+                  title={doc.title}
+                  subtitle={doc.subtitle}
+                  tag={doc.tag}
+                  fileType={doc.fileType}
+                  onInfoClick={() => alert(`View details for ${doc.title}`)}
+                  onMenuClick={() => alert(`More options for ${doc.title}`)}
+                />
               ))}
             </div>
           </div>
